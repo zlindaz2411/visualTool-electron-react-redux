@@ -1,0 +1,80 @@
+.sidebar {
+    position: fixed;
+    width: 15rem;
+    margin: 0;
+    background: #D9EAD6;
+    padding: 0;
+    height: 100%;
+    z-index: 1;
+
+    nav, nav ul, nav ul li {
+        margin: 0;
+        padding: 0;
+    }
+    button {
+        margin-left:1rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        background-color: #50525E;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 3rem;
+        font-size: 1.3rem;
+        width: 12rem;
+        height:3.5rem;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      button:focus, button:active, button.active, :focus:active {
+        background-image: none;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+         
+      }
+
+      .text {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+    nav {
+        ul {
+            li {
+                display: block;
+                width: 100%;
+                list-style-type: none;
+
+                a {
+                    display: block;
+                    width: 100%;
+                    padding: 2rem 0;
+                    font-size: 2.5rem;
+                    line-height: normal;
+                    color: $white;
+                    text-align:left
+                
+
+                    &.active {
+                        background: #CFDFCC;
+                    }
+
+                }
+
+            }
+        }
+    }
+
+}

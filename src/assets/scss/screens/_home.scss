@@ -1,0 +1,35 @@
+.home_wrap {
+    position: fixed;
+    width: 100% - 15%;
+    margin-left: 15rem;
+    padding: 0;
+
+    .title{
+        padding-top: 7.5rem;
+        text-align: center;
+    }
+
+    .sub_text{
+        padding-top: 1rem;
+        text-align: center;
+    }
+
+
+    .img_wrap{
+            width: 100% - 30%;
+            height: auto;
+            img {
+                display: block;
+                width: 100%;
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-drag: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+
+    }
+  
+}
+
+    
