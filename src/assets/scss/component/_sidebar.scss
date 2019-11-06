@@ -2,7 +2,7 @@
     position: fixed;
     width: 15rem;
     margin: 0;
-    background: #D9EAD6;
+    background: $mainGreen;
     padding: 0;
     height: 100%;
     z-index: 1;
@@ -15,7 +15,7 @@
         margin-left:1rem;
         margin-top: 2rem;
         margin-bottom: 2rem;
-        background-color: #50525E;
+        background-color: $txtCol;
         color: white;
         font-weight: bold;
         text-align: center;
@@ -65,13 +65,16 @@
                     line-height: normal;
                     color: $white;
                     text-align:left
-                
-
-                    &.active {
-                        background: #CFDFCC;
-                    }
-
                 }
+
+                .inactive {
+                    background: $mainGreen;
+                }
+                
+                .active {
+                    background: $darkGreen;
+                  }
+
 
             }
         }

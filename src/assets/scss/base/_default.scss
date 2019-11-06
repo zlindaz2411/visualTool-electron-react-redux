@@ -114,9 +114,9 @@ h4{
   }
 
 h6{
-    margin-left:1.5rem;
+    margin-left:1rem;
     color: $txtCol ;
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     font-weight: bold;
   }
 
@@ -125,6 +125,36 @@ textarea{
     border-style: none; 
     resize:none;
 }
+
+
+button {
+    margin-top:3rem;
+    background-color: $white;
+    border-color: $txtCol;
+    color: $txtCol;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 3rem;
+    font-size: 1.5rem;
+    width: 12rem;
+    height: 3.5rem;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  button:focus, button:active, button.active, :focus:active {
+    background-image: none;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: $background;
+  }
 
 
 

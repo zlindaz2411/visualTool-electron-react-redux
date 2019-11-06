@@ -1,68 +1,79 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import Popup from 'reactjs-popup';
+
 class Sidebar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { open: false };
-        this.openPopup = this.openPopup.bind(this);
-        this.closePopup = this.closePopup.bind(this);
-      }
-      openPopup() {
-        this.setState({ open: true });
-      }
-      closePopup() {
-        this.setState({ open: false });
-      }
-    
+
     render() {
         return (
             <aside className="sidebar">  
                 <nav>
                     <ul>
                         <li>   
-                            <NavLink  activeClassName="active" to="/" alt="HomePage" replace>
+                            <NavLink  className = "inactive"  to="/" alt="HomePage" replace>
                              <h6><font color ="#84C262"> visual</font>MinSpanningTree</h6>
                             </NavLink>     
                         </li>
                         <li>
                         <div>
-                            <button onClick ={this.openPopup}>Draw a graph</button>
+                            <button onClick ={this.open}>Draw a graph</button>
                             </div>                       
                         </li>
 
                         <li>   
-                            <NavLink activeClassName="active" to="/algorithm" alt="AlgorithmPage"  replace>
+                            <NavLink  className = "inactive" activeClassName="active" to={{
+                                pathname:"/algorithm",
+                                name:"Kruskal"
+                            }} alt="AlgorithmPage"  replace>
                              <h5>Algorithms &#9662;</h5>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  activeClassName="active" to="/algorithm" alt="AlgorithmPage"  replace>
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/algorithm",
+                                name:"Kruskal"
+                            }
+                        }alt="AlgorithmPage"  replace>
                              <h4>Kruskal</h4>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  activeClassName="active" to="/algorithm" alt="AlgorithmPage"  replace>
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/algorithm",
+                                name:"Prim"
+                            }} alt="AlgorithmPage" replace>
                              <h4>Prim</h4>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  activeClassName="active" to="/algorithm" alt="AlgorithmPage"  replace>
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/algorithm",
+                                name:"Borvska"
+                            }} alt="AlgorithmPage"  replace>
                              <h4>Borvska</h4>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  activeClassName="active" to="/algorithm" alt="AlgorithmPage"  replace>
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/algorithm",
+                                name:"Borvska Parallel"
+                            }} alt="AlgorithmPage"  replace>
                              <h4>Borvska Parallel</h4>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  to="/about" alt="AboutPage" replace>
+                            <NavLink   className = "inactive" activeClassName="active" to="/performance" alt="PerformancePage"  replace>
+                             <h5>Performance</h5>
+                            </NavLink> 
+                        </li>
+                        <br></br>
+                        <br></br>
+                        <li>   
+                            <NavLink  className = "inactive" activeClassName="active" to="/about" alt="AboutPage" replace>
                              <h5>About</h5>
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink  to="/notes" alt="Notes" replace>
+                            <NavLink  className = "inactive" activeClassName="active" to="/notes" alt="Notes" replace>
                              <h5>Documentation</h5>
                             </NavLink> 
                         </li>
@@ -71,6 +82,9 @@ class Sidebar extends Component {
                 </nav>
             </aside>
         )
+    }
+    open(){
+        window.open('../../screens/draw.js', 'Draw a graph', 'width=700,height=500');
     }
 }
 

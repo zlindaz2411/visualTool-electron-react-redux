@@ -3,6 +3,7 @@ const electron = require('electron');
 const isDev = require('electron-is-dev');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
+
 let mainWindow;
 let db_notes;
 
@@ -10,7 +11,12 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 700,
-        webPreferences: { backgroundThrottling: true }
+        // frame: false,
+        backgroundColor: '#FBFBFB',
+    fullscreen:false,
+        webPreferences: { 
+            backgroundThrottling: true,
+        }
     });
     mainWindow.loadURL(`file://${__dirname}/build/index.html`);
     mainWindow.on('closed', () => app.quit());

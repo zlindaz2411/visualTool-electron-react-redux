@@ -1,4 +1,4 @@
-.algorithm_wrap {
+.performance_wrap {
     position: fixed;
     margin-left: 15rem;
     width: 100% - 15%;
@@ -8,11 +8,11 @@
         padding-top: 7.5rem;
         text-align: center;
     }
+
     .grid{
         padding-top: 5rem;
         max-width: 100% - 15%;
     }
-    
 
     .first_column{
         margin-right:2rem;
@@ -22,30 +22,13 @@
         border-spacing: 2rem;
         background-color: $white;
     }
-
     .second_column{
         margin-left:2rem;
         border-radius: 2rem;
         box-shadow: 0 3px 8px #888888;
         height:38rem;
         border-spacing: 2rem;
-        padding-top:1.5rem;
         background-color: $white;
-        
-        h3{
-            float: left;
-            white-space: pre-line;
-            font-size:1.5rem;
-            padding:0.8rem;
-        }
     }
-
-    .action_buttons button{
-        margin:3rem;
-        display: inline-block;
-     //   justify-content: space-between;
-    }
-
-
 
 }

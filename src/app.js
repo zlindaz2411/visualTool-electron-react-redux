@@ -9,6 +9,7 @@ import Notes from './screens/notes';
 import AlgorithmPage from './screens/algorithm';
 import HomePage from './screens/home';
 import AboutPage from './screens/about';
+import PerformancePage from './screens/performance';
 
 
 
@@ -21,10 +22,15 @@ class App extends Component {
                         <MainLayout>
                              <AlgorithmPage{...props} />
                         </MainLayout>
-                    )} />
+                    )}/>
                     <Route path="/about" render={props => (
                         <MainLayout>
                              <AboutPage {...props} />
+                        </MainLayout>
+                    )} />
+                      <Route path="/performance" render={props => (
+                        <MainLayout>
+                             <PerformancePage {...props} />
                         </MainLayout>
                     )} />
                      <Route path="/notes" render={props => (

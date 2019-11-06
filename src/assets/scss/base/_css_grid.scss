@@ -5,17 +5,17 @@
 /* Apply Global Content Width */
 .grid {
 	max-width: 114.0rem;
-	margin: 0 auto;
+	margin: 0;
 }
 
 .column {
-    float: left;
-    padding: 0 10px;
-    margin: 0 auto;
-}
+	float: left;
+//	margin-left:2rem;
 
+	
+}
 /* - Remove additional padding on child elements (Must be the same value as 'grid_col' padding) */
-.col_child { margin: 0 -10px; }
+.col_child { margin-left:2rem; }
 
 /* Default column widths - DO NOT CHANGE */
 .column_1_12 { width: 8.33333%; }
@@ -23,7 +23,7 @@
 .column_3_12 { width: 25%;}
 .column_4_12 { width: 33.33333%;}
 .column_5_12 { width: 41.66667%;}
-.column_6_12 { width: 50%; }
+.column_6_12 { width: 50%; 	}
 .column_7_12 { width: 58.33333%; }
 .column_8_12 { width: 66.66667%; }
 .column_9_12 { width: 75%; }
@@ -97,18 +97,3 @@
 
 
 
-@media only screen and (max-width: 1140px) {
-	.grid {
-		margin: 0 10px;
-	}
-}
-
-@media only screen and (max-width: 960px) {
-
-    .column, .flexbox_col { width: 100%; }
-
-    .flexbox {
-    	display: block;
-    }
-
-}
