@@ -1,8 +1,14 @@
 import UnionFind from 'lib/unionFind';
 import PriorityQueue from 'lib/priorityQueue'
 
- function kruskals(edgeList, nodes) {
-    let edges = edgeList.sort((a,b) => {return a[2] - b[2];});
+/**
+ * Kruskals algorithm
+ * @param {*} edges 
+ * @param {*} nodes 
+ */
+ function kruskals(edges, nodes) {
+    //Sort the edges 
+    edges = edges.sort((a,b) => {return a[2] - b[2];});
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let uf = new UnionFind(nodes);
@@ -10,6 +16,7 @@ import PriorityQueue from 'lib/priorityQueue'
     for(let i =0;i<edges.length;i++){
         let u = edges[i][0];
         let v = edges[i][1];
+        //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
            MST.add(edges[i])
            uf.union(u,v)
@@ -19,12 +26,16 @@ import PriorityQueue from 'lib/priorityQueue'
  }
 
 
- function prims(edgeList,nodes) {
+ /**
+  * Prim's algorithm
+  * @param {*} edges 
+  * @param {*} nodes 
+  */
+ function prims(edges,nodes) {
     // Initialize graph that'll contain the MST
     let MST = new Set();
     // Select first node as starting node
     let s = nodes[0];
-    let edges = edgelist;
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();
@@ -43,7 +54,7 @@ import PriorityQueue from 'lib/priorityQueue'
    
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
-       // COntinue removing edges till we get an edge with an unexplored node
+       // Continue removing edges till we get an edge with an unexplored node
        let currentMinEdge = edgeQueue.dequeue();
        let u = currentMinEdge.element[0]
        let v =  currentMinEdge.element[1]
@@ -66,5 +77,52 @@ import PriorityQueue from 'lib/priorityQueue'
     }
     return MST;
  }
-
  
+ /**
+  * Boruvka algorithm
+  * @param {*} edges 
+  * @param {*} nodes 
+  */
+ function boruvkas(edges, nodes) {
+    let subset = new UnionFind(nodes);
+    let num = nodes.length;
+    // Initialize graph that'll contain the MST
+    let MST = new Set();
+    let cheapest = [];
+
+    while(num>1){
+        //set the cheapest map to -1
+        for(let v=0;v<nodes.length;v++){
+              cheapest[nodes[v]]= -1;
+        }
+    
+    //for each component check if a weight connected to the component is smaller and set that as cheapest edge
+    for(let i =0;i<edges.length;i++){
+        let u = subset.find(edges[i][0]);
+        let v = subset.find(edges[i][1]);
+        if(u==v) continue;
+        else{
+            if(cheapest[u] == -1 || edges[i][2] < cheapest[u][2]) cheapest[u]=edges[i]
+            if(cheapest[v] == -1 || edges[i][2] < cheapest[v][2]) cheapest[v]=edges[i]
+        }
+    }
+    //for each element in cheapest
+    for(let i =0;i<V.length;i++){
+        let e = cheapest[nodes[i]];
+        //check if it's null
+        if(e!=-1){
+            let u = subset.find(e[0]);
+            let v = subset.find(e[1]);
+            if(u==v) continue;
+            //check if adding edge to mst is acyclic
+            if(!subset.connected(u,v)){
+                MST.add(cheapest[V[i]]);
+                subset.union(u,v);
+                num--; //decrease the number of vertices
+            }
+        }
+    }
+}
+    return MST  
+
+}

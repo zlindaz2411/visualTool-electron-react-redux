@@ -60994,13 +60994,22 @@ function getPseudocode(name) {
     case "Boruvka":
       //Borvska's
       var boruvka = [];
-      boruvka.push("Initialize the set V = vertices");
       boruvka.push("Initialize the set T = empty set");
-      boruvka.push("while (V.size > 1)");
-      boruvka.push("for (i=0; i<vertices.length; i++)");
-      boruvka.push("\xa0 \xa0edge e = shortest edge between vertices[i] and adjacent vertices ");
-      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 add e to T");
-      boruvka.push("\xa0 \xa0else do nothing");
+      boruvka.push("Initialize the subset F = map of one-vertex trees to its component");
+      boruvka.push("Initialize count = number of vertices");
+      boruvka.push("while (count > 1)");
+      boruvka.push("Initialize the cheapest edge for each component to -1");
+      boruvka.push("\xa0 \xa0for (i=0; i<edgeList.length; i++)");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0if(componenet of u != component of v");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the component of u");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Set (u,v) as the cheapest edge for the component of u");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the component of v");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Set (u,v) as the cheapest edge for the component of v");
+      boruvka.push("\xa0 \xa0 for(i=0;i<vertices.length;i++");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0if(cheapest[vertices[i]]!=-1)");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic )");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T");
+      boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0count--");
       boruvka.push("return T");
       return boruvka;
     case "Boruvka Parallel":
