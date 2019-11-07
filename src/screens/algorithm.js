@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
-import * as d3 from "d3";
+
 import { Graph } from "react-d3-graph";
 import { data, myConfig } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../constants/pseudocode";
@@ -60,16 +60,8 @@ class AlgorithmPage extends Component {
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                     data={data}
                     config={myConfig}
-                    onClickNode={onClickNode}
-                    onRightClickNode={onRightClickNode}
-                    onClickGraph={onClickGraph}
-                    onClickLink={onClickLink}
-                    onRightClickLink={onRightClickLink}
-                    onMouseOverNode={onMouseOverNode}
-                    onMouseOutNode={onMouseOutNode}
-                    onMouseOverLink={onMouseOverLink}
-                    onMouseOutLink={onMouseOutLink}
-                    onNodePositionChange={onNodePositionChange}
+                    _setNodeHighlightedValue={1,true}
+
                   />
                 </div>
               </div>

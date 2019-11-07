@@ -9,13 +9,15 @@ class Sidebar extends Component {
                 <nav>
                     <ul>
                         <li>   
-                            <NavLink  className = "inactive"  to="/" alt="HomePage" replace>
+                            <NavLink  to="/" alt="HomePage" replace>
                              <h6><font color ="#84C262"> visual</font>MinSpanningTree</h6>
                             </NavLink>     
                         </li>
                         <li>
                         <div>
-                            <button onClick ={this.open}>Draw a graph</button>
+                        <NavLink  to="/draw" alt="DrawPage" replace>
+                          <button >Draw a graph</button>
+                          </NavLink>    
                             </div>                       
                         </li>
 
@@ -47,7 +49,7 @@ class Sidebar extends Component {
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
                                 pathname:"/algorithm",
-                                name:"Borvska"
+                                name:"Boruvka"
                             }} alt="AlgorithmPage"  replace>
                              <h4>Borvska</h4>
                             </NavLink> 
@@ -55,9 +57,9 @@ class Sidebar extends Component {
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
                                 pathname:"/algorithm",
-                                name:"Borvska Parallel"
+                                name:"Boruvka Parallel"
                             }} alt="AlgorithmPage"  replace>
-                             <h4>Borvska Parallel</h4>
+                             <h4>Boruvka Parallel</h4>
                             </NavLink> 
                         </li>
                         <li>   
@@ -83,9 +85,9 @@ class Sidebar extends Component {
             </aside>
         )
     }
-    open(){
-        window.open('../../screens/draw.js', 'Draw a graph', 'width=700,height=500');
-    }
+    // open(){
+    //     return <NavLink   to="/draw" alt="DrawPage" replace></NavLink>
+    // }
 }
 
 export default Sidebar;

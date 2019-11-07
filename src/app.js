@@ -10,6 +10,7 @@ import AlgorithmPage from './screens/algorithm';
 import HomePage from './screens/home';
 import AboutPage from './screens/about';
 import PerformancePage from './screens/performance';
+import DrawPage from './screens/draw';
 
 
 
@@ -26,6 +27,11 @@ class App extends Component {
                     <Route path="/about" render={props => (
                         <MainLayout>
                              <AboutPage {...props} />
+                        </MainLayout>
+                    )} />
+                     <Route path="/draw" render={props => (
+                        <MainLayout>
+                             <DrawPage {...props} />
                         </MainLayout>
                     )} />
                       <Route path="/performance" render={props => (

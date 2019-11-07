@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-
+import { Graph } from "react-d3-graph";
+import { data, myConfig } from "../constants/defaultGraph";
 // graph event callbacks
 const onClickGraph = function() {
-    data.nodes.push({ id: "john" });
-    //window.alert(data.nodes);
+    data.nodes.push({ id: data.nodes.length+1, x:200,y:200});
+    window.alert(data.nodes.id);
     //window.alert(`Clicked the graph background`);
   };
   
@@ -49,6 +50,12 @@ const onClickGraph = function() {
     );
   };
 class DrawPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          graph:data,
+        };
+      }
 
     render(){
         return(
@@ -60,7 +67,7 @@ class DrawPage extends Component {
                 <div>
                 <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
-                    data={data}
+                    data={this.state.graph}
                     config={myConfig}
                     onClickNode={onClickNode}
                     onRightClickNode={onRightClickNode}
@@ -73,6 +80,7 @@ class DrawPage extends Component {
                     onMouseOutLink={onMouseOutLink}
                     onNodePositionChange={onNodePositionChange}
                   />
+                
 
 </div>
                 </center>

@@ -26,25 +26,25 @@ export function getPseudocode(name) {
         prim.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing;");
         prim.push("return T");
         return prim;
-      case "Borvska": //Borvska's
-        let borvska = [];
-        borvska.push("Initialize the set V = vertices");
-        borvska.push("Initialize the set T = empty set");
-        borvska.push("while (V.size > 1)");
-        borvska.push("for (i=0; i<vertices.length; i++)");
-        borvska.push(
+      case "Boruvka": //Borvska's
+        let boruvka = [];
+        boruvka.push("Initialize the set V = vertices");
+        boruvka.push("Initialize the set T = empty set");
+        boruvka.push("while (V.size > 1)");
+        boruvka.push("for (i=0; i<vertices.length; i++)");
+        boruvka.push(
           "\xa0 \xa0edge e = shortest edge between vertices[i] and adjacent vertices "
         );
-        borvska.push("\xa0 \xa0 \xa0 \xa0 \xa0 add e to T");
-        borvska.push("\xa0 \xa0else do nothing");
-        borvska.push("return T");
-        return borvska;
-      case "Borvska Parallel": // Parallel Boruvska
-        let borvskaParallel = [];
-        borvskaParallel.push("Initialize the set V = vertices");
-        borvskaParallel.push("Initialize the set T = empty set");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 add e to T");
+        boruvka.push("\xa0 \xa0else do nothing");
+        boruvka.push("return T");
+        return boruvka;
+      case "Boruvka Parallel": // Parallel Boruvska
+        let boruvkaParallel = [];
+        boruvkaParallel.push("Initialize the set V = vertices");
+        boruvkaParallel.push("Initialize the set T = empty set");
 
-        return borvskaParallel;
+        return boruvkaParallel;
         break;
     }
   }
