@@ -184,7 +184,6 @@ class AlgorithmPage extends Component {
           ),
           index : this.state.index +=1
       });
-      console.log(this.state.states[2])
      // console.log(this.state.states[this.state.index].highlighted)
       for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){
         // console.log( this.state.states[index].highlighted[0])

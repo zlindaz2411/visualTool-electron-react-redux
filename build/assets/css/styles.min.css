@@ -736,6 +736,13 @@ textarea {
   border-style: none;
   resize: none; }
 
+form {
+  padding: 1.5rem; }
+
+label {
+  font-weight: bold;
+  color: #50525E; }
+
 button {
   margin-top: 3rem;
   background-color: #ffffff;
@@ -1154,7 +1161,12 @@ header {
   .performance_wrap .second_column {
     margin-left: 2rem;
     border-radius: 2rem;
-    box-shadow: 0 3px 8px #888888;
     height: 38rem;
     border-spacing: 2rem;
-    background-color: #ffffff; }
+    display: inline-block; }
+    .performance_wrap .second_column .checkbox {
+      padding: 1rem;
+      float: left;
+      clear: left; }
+    .performance_wrap .second_column .button {
+      padding-top: 20rem; }

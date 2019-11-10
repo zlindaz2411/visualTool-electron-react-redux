@@ -25,10 +25,22 @@
     .second_column{
         margin-left:2rem;
         border-radius: 2rem;
-        box-shadow: 0 3px 8px #888888;
+        // box-shadow: 0 3px 8px #888888;
         height:38rem;
         border-spacing: 2rem;
-        background-color: $white;
+        display: inline-block;
+        
+        // background-color: $white;
+
+        .checkbox{
+            padding: 1rem;
+        float: left;
+        clear: left;
+        }
+
+        .button{
+            padding-top:20rem;
+        }
     }
 
 }

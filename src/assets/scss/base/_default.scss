@@ -126,6 +126,15 @@ textarea{
     resize:none;
 }
 
+form{
+    padding: 1.5rem;
+}
+
+label{
+    font-weight: bold;
+    color: $txtCol;
+}
+
 
 button {
     margin-top:3rem;
