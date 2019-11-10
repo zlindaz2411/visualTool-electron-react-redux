@@ -6,6 +6,7 @@ export function getPseudocode(name) {
         kruskal.push("Sort the edge list E by weight (smallest first)");
         kruskal.push("Initialize the set T = empty set");
         kruskal.push("for (i=0; i<edgeList.length; i++)");
+        kruskal.push("\xa0 \xa0 e = edgelist[i]");
         kruskal.push("\xa0 \xa0 if adding e=edgelist[i] to T is acyclic");
         kruskal.push("\xa0 \xa0 \xa0\xa0 \xa0add e to T");
         kruskal.push("\xa0 \xa0else do nothing");
@@ -29,23 +30,22 @@ export function getPseudocode(name) {
       case "Boruvka": //Borvska's
         let boruvka = [];
         boruvka.push("Initialize the set T = empty set");
-        boruvka.push("Initialize the subset F = map of one-vertex trees to its component");
-        boruvka.push("Initialize count = number of vertices");
-        boruvka.push("while (count > 1)");
-        boruvka.push("Initialize the cheapest edge for each component to -1");
+        boruvka.push("Initialize the F = map of one-vertex trees to its component");
+        boruvka.push("while (number of vertices > 1)");
+        boruvka.push("\xa0 \xa0Initialize the cheapest edge for each component to -1");
         boruvka.push(
           "\xa0 \xa0for (i=0; i<edgeList.length; i++)"
         );
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0if(componenet of u != component of v");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the component of u");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Set (u,v) as the cheapest edge for the component of u");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the component of v");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Set (u,v) as the cheapest edge for the component of v");
-        boruvka.push("\xa0 \xa0 for(i=0;i<vertices.length;i++");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0if(componenet of u != component of v)");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the comp(u)");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 Set (u,v) as the cheapest edge for the component of u");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0If (u,v) is cheaper than the cheapest edge for the component of v");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 Set (u,v) as the cheapest edge for the component of v");
+        boruvka.push("\xa0 \xa0 for(i=0;i<vertices.length;i++)");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0if(cheapest[vertices[i]]!=-1)");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic )");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic)");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0count--");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0number of vertices--");
         boruvka.push("return T");
         return boruvka;
       case "Boruvka Parallel": // Parallel Boruvska

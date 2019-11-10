@@ -4,22 +4,28 @@ import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
 
-import { Graph } from "react-d3-graph";
-import { data, myConfig } from "../constants/defaultGraph";
+// import { Graph } from "react-d3-graph";
+import { data1, myConfig, nodes, links} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../constants/pseudocode";
+
+import Graph from '../components/d3/graph';
+import {kruskals} from '../constants/algorithms';
 
 
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
+import { Accelerator } from "electron";
 
-let status = 0;
+
 
 const initialState = {
   edgeList: [],
   nodeList: [],
   start: false,
   highlightedEdges: [],
-  highlightedNodes: []
+  highlightedNodes: [],
+  data:data1,
+  index : 0,
 };
 
 const colors = ["#84C262", "#50525E"];
@@ -42,7 +48,9 @@ class AlgorithmPage extends Component {
         name: this.props.location.name,
         pseudocode: getPseudocode(this.props.location.name),
         pseudoMap: null,
-        start:false
+        start:false,
+        states:[],
+        data: data1,
       });
       // location.reload();
     }
@@ -55,14 +63,16 @@ class AlgorithmPage extends Component {
           <center>
             <div className="grid">
               <div className="column column_7_12">
-                <div className="first_column">
-                  <Graph
+                <div className="canvas">
+                  <Graph data={this.state.data}/>
+
+                  {/* <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                     data={data}
                     config={myConfig}
                     _setNodeHighlightedValue={1,true}
 
-                  />
+                  /> */}
                 </div>
               </div>
 
@@ -80,7 +90,7 @@ class AlgorithmPage extends Component {
                     >
                       {" "}
                       {pseudo}
-                    </h3>
+                    </h3> 
                   ))}
                 </div>
               </div>
@@ -99,8 +109,9 @@ class AlgorithmPage extends Component {
                     start: true,
                     pseudoMap: setUpPseudocodeMap(
                       this.props.location.name,
-                      status
-                    )
+                      0
+                    ),
+                    states: kruskals(nodes, this.state.data.edges),
                   })
                 }
               >
@@ -113,7 +124,7 @@ class AlgorithmPage extends Component {
     );
   }
   previous(){
-    if(status == 0) {
+    if(this.state.index == 0) {
         confirmAlert({
             title: `Warning!`,
             message: `Nothing before the start of the algorithm`,
@@ -125,18 +136,36 @@ class AlgorithmPage extends Component {
         })
     }
     else{
-      status -=1;
       this.setState({
+        index : this.state.index -=1,
         pseudoMap: setUpPseudocodeMap(
             this.props.location.name,
-            status
-          )
-      })
+            this.state.states[this.state.index].status
+          ),
+
+      });
+      for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){    
+        for(let j =0;j<this.state.data.edges.length; j++){
+          if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
+              this.state.data.edges[j].highlight = true;
+              this.setState({
+                data:this.state.data,
+              })
+          }
+          else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
+            this.state.data.edges[j].highlight = true;
+              this.setState({
+                data:this.state.data,
+              })
+          }
+         }
+        }
+          
     }
   }
 
    next() {
-    if(status == this.state.pseudocode.length-1) {
+    if(this.state.index == this.state.states.length-1) {
         confirmAlert({
             title: `Warning!`,
             message: `End of the algorithm`,
@@ -148,13 +177,32 @@ class AlgorithmPage extends Component {
         })
     }
     else{
-      status +=1;
       this.setState({
         pseudoMap: setUpPseudocodeMap(
             this.props.location.name,
-            status
-          )
-      })
+            this.state.states[this.state.index].status
+          ),
+          index : this.state.index +=1
+      });
+      console.log(this.state.states[2])
+     // console.log(this.state.states[this.state.index].highlighted)
+      for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){
+        // console.log( this.state.states[index].highlighted[0])
+         for(let j =0;j<this.state.data.edges.length; j++){
+           if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
+               this.state.data.edges[j].highlight = true;
+               this.setState({
+                 data:this.state.data,
+               })
+           }
+           else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
+             this.state.data.edges[j].highlight = true;
+               this.setState({
+                 data:this.state.data,
+               })
+           }
+          }
+         }
     }
   }
 

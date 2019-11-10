@@ -1,4 +1,4 @@
-class UnionFind {
+export class UnionFind {
     constructor(elements) {
        // Number of disconnected components
        this.count = elements.length;

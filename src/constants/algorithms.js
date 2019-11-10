@@ -1,29 +1,69 @@
-import UnionFind from 'lib/unionFind';
-import PriorityQueue from 'lib/priorityQueue'
+import {UnionFind} from '../constants/lib/unionFind'
+import {PriorityQueue} from '../constants/lib/priorityQueue'
 
 /**
  * Kruskals algorithm
  * @param {*} edges 
  * @param {*} nodes 
  */
- function kruskals(edges, nodes) {
+export function kruskals(nodes, edges) {
+    let states = [{highlighted: [], status:0}];
     //Sort the edges 
-    edges = edges.sort((a,b) => {return a[2] - b[2];});
+    edges = edges.sort((a,b) => {return a.weight - b.weight;});
     // Initialize graph that'll contain the MST
     let MST = new Set();
+    states.push({highlighted: [], status:1});
+
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
     for(let i =0;i<edges.length;i++){
-        let u = edges[i][0];
-        let v = edges[i][1];
+        let arr = states[states.length-1].highlighted;
+        states.push({highlighted: arr, status:2});
+        let u = edges[i].source;
+        let v = edges[i].target;     
+        arr.push(edges[i]);
+        states.push({highlighted:arr, status:3})
+        
         //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
+           states.push({highlighted:arr, status:4})
            MST.add(edges[i])
            uf.union(u,v)
+           states.push({highlighted:arr, status:5})
+        }
+        else{
+           arr.pop();
+           states.push({highlighted:arr, status:6})
         }
     }
-    return MST;
+    states.push({highlighted:states[states.length-1].highlighted, status:7});
+    return states;
  }
+
+
+//  /**
+//  * Kruskals algorithm
+//  * @param {*} edges 
+//  * @param {*} nodes 
+//  */
+// function kruskals(edges, nodes) {
+//     //Sort the edges 
+//     edges = edges.sort((a,b) => {return a[2] - b[2];});
+//     // Initialize graph that'll contain the MST
+//     let MST = new Set();
+//     let uf = new UnionFind(nodes);
+//     // Add all edges to the Queue:
+//     for(let i =0;i<edges.length;i++){
+//         let u = edges[i][0];
+//         let v = edges[i][1];
+//         //if edges[i] in MST is not acyclic
+//         if(!uf.connected(u,v)){
+//            MST.add(edges[i])
+//            uf.union(u,v)
+//         }
+//     }
+//     return MST;
+//  }
 
 
  /**

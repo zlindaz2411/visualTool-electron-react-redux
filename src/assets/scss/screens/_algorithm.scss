@@ -14,7 +14,7 @@
     }
     
 
-    .first_column{
+    .canvas{
         margin-right:2rem;
         border-radius: 2rem;
         box-shadow: 0 3px 8px #888888;
@@ -29,14 +29,14 @@
         box-shadow: 0 3px 8px #888888;
         height:38rem;
         border-spacing: 2rem;
-        padding-top:1.5rem;
+        padding-top:1rem;
         background-color: $white;
         
         h3{
             float: left;
-            white-space: pre-line;
-            font-size:1.5rem;
-            padding:0.8rem;
+           // white-space: pre-line;
+            font-size:1rem;
+            padding:0.5rem;
         }
     }
 

@@ -9,9 +9,29 @@
         text-align: center;
     }
 
-    .txt_area{
-        padding-top: 3rem;
+    .canvas{
+        margin:2rem;
+        border-radius: 2rem;
+        padding-top: 0em;
+        box-shadow: 0 3px 8px #888888;
+        height:38rem;
+        width: 60rem;
+        border-spacing: 2rem;
+        background-color: $white;
+        
     }
+    
+    .text {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+
+
 
 
 }

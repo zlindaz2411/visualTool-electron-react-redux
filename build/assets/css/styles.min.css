@@ -1051,7 +1051,7 @@ header {
   .algorithm_wrap .grid {
     padding-top: 5rem;
     max-width: 85%; }
-  .algorithm_wrap .first_column {
+  .algorithm_wrap .canvas {
     margin-right: 2rem;
     border-radius: 2rem;
     box-shadow: 0 3px 8px #888888;
@@ -1064,13 +1064,12 @@ header {
     box-shadow: 0 3px 8px #888888;
     height: 38rem;
     border-spacing: 2rem;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
     background-color: #ffffff; }
     .algorithm_wrap .second_column h3 {
       float: left;
-      white-space: pre-line;
-      font-size: 1.5rem;
-      padding: 0.8rem; }
+      font-size: 1rem;
+      padding: 0.5rem; }
   .algorithm_wrap .action_buttons button {
     margin: 3rem;
     display: inline-block; }
@@ -1117,8 +1116,22 @@ header {
   .about_wrap .title {
     padding-top: 7.5rem;
     text-align: center; }
-  .about_wrap .txt_area {
-    padding-top: 3rem; }
+  .about_wrap .canvas {
+    margin: 2rem;
+    border-radius: 2rem;
+    padding-top: 0em;
+    box-shadow: 0 3px 8px #888888;
+    height: 38rem;
+    width: 60rem;
+    border-spacing: 2rem;
+    background-color: #ffffff; }
+  .about_wrap .text {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
 
 .performance_wrap {
   position: fixed;
