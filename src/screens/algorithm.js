@@ -6,17 +6,12 @@ import classNames from "classnames";
 
 // import { Graph } from "react-d3-graph";
 import { data1, myConfig, nodes, links} from "../constants/defaultGraph";
-import { getPseudocode, setUpPseudocodeMap } from "../constants/pseudocode";
+import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import Graph from '../components/d3/graph';
-import {kruskals} from '../constants/algorithms';
-
-
+import {kruskals} from '../functions/algorithms';
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
-import { Accelerator } from "electron";
-
-
 
 const initialState = {
   edgeList: [],
@@ -64,7 +59,7 @@ class AlgorithmPage extends Component {
             <div className="grid">
               <div className="column column_7_12">
                 <div className="canvas">
-                  <Graph data={this.state.data}/>
+                  <Graph update={false} data={this.state.data}/>
 
                   {/* <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error

@@ -30,13 +30,14 @@ module.exports = {
                     ]
                 } 
             },
+            
             {
                 test: /\.(png|jpg|gif)$/,
                 use: [
                   {
                     loader: 'file-loader',
                     options: {
-                        name: 'assets/graphics/[name].[ext]',
+                        name: 'assets/images/[name].[ext]',
                     }
                   }
                 ]

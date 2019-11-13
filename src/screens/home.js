@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import SpanTree from './../assets/graphics/graph.png';
+import SpanTree from './../assets/images/graph.png';
+
 
 class HomePage extends Component {
 

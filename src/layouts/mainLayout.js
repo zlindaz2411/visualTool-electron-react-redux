@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Header from './../components/header';
 import Sidebar from './../components/sidebar';
 
 class MainLayout extends Component {

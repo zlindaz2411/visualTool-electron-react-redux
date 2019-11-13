@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import {test} from '../functions/algorithms';
+
 
 class Sidebar extends Component {
 
@@ -15,9 +17,9 @@ class Sidebar extends Component {
                         </li>
                         <li>
                         <div>
-                        <NavLink  to="/draw" alt="DrawPage" replace>
-                          <button >Draw a graph</button>
-                          </NavLink>    
+                        {/* <NavLink  to="/draw" alt="DrawPage" replace> */}
+                          <button onClick={()=>test()} >Draw a graph</button>
+                          {/* </NavLink>     */}
                             </div>                       
                         </li>
 
@@ -55,7 +57,7 @@ class Sidebar extends Component {
                             </NavLink> 
                         </li>
                         <li>   
-                            <NavLink   className = "inactive" activeClassName="active" to={{
+                            <NavLink  className = "inactive" activeClassName="active" to={{
                                 pathname:"/algorithm",
                                 name:"Boruvka Parallel"
                             }} alt="AlgorithmPage"  replace>

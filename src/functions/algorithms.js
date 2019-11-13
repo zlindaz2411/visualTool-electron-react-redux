@@ -1,6 +1,6 @@
-import {UnionFind} from '../constants/lib/unionFind'
-import {PriorityQueue} from '../constants/lib/priorityQueue'
-
+import {UnionFind} from '../functions/lib/unionFind'
+import {PriorityQueue} from '../functions/lib/priorityQueue'
+// import * as Parallel from 'paralleljs'
 /**
  * Kruskals algorithm
  * @param {*} edges 
@@ -220,4 +220,52 @@ export function kruskals(nodes, edges) {
 }
     return MST  
 
+}
+
+export function test(){
+    // var p = new Parallel([1, 2, 3, 4, 5]);
+    // console.log(p.data)
+}
+
+function parallel(edges, nodes) {
+    let subset = new UnionFind(nodes);
+    let num = nodes.length;
+    // Initialize graph that'll contain the MST
+    let MST = new Set();
+    let cheapest = [];
+
+    while(num>1){
+        //set the cheapest map to -1
+        for(let v=0;v<nodes.length;v++){
+              cheapest[nodes[v]]= -1;
+        }
+    
+    //for each component check if a weight connected to the component is smaller and set that as cheapest edge
+    for(let i =0;i<edges.length;i++){
+        let u = subset.find(edges[i][0]);
+        let v = subset.find(edges[i][1]);
+        if(u==v) continue;
+        else{
+            if(cheapest[u] == -1 || edges[i][2] < cheapest[u][2]) cheapest[u]=edges[i]
+            if(cheapest[v] == -1 || edges[i][2] < cheapest[v][2]) cheapest[v]=edges[i]
+        }
+    }
+    //for each element in cheapest
+    for(let i =0;i<V.length;i++){
+        let e = cheapest[nodes[i]];
+        //check if it's null
+        if(e!=-1){
+            let u = subset.find(e[0]);
+            let v = subset.find(e[1]);
+            if(u==v) continue;
+            //check if adding edge to mst is acyclic
+            if(!subset.connected(u,v)){
+                MST.add(cheapest[V[i]]);
+                subset.union(u,v);
+                num--; //decrease the number of vertices
+            }
+        }
+    }
+}
+    return MST  
 }
