@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { data1, myConfig, nodes, links} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
-import Graph from '../components/d3/graph';
+import {removeAll, drawGraph} from '../components/d3/graph1';
 import {kruskals} from '../functions/algorithms';
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
@@ -37,7 +37,11 @@ class AlgorithmPage extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount(){
+    drawGraph(data1);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.location.name !== this.props.location.name) {
       this.setState({
         name: this.props.location.name,
@@ -50,6 +54,7 @@ class AlgorithmPage extends Component {
       // location.reload();
     }
   }
+
   render() {
     return (
       <div className="algorithm_wrap">
@@ -59,8 +64,6 @@ class AlgorithmPage extends Component {
             <div className="grid">
               <div className="column column_7_12">
                 <div className="canvas">
-                  <Graph update={false} data={this.state.data}/>
-
                   {/* <Graph
                     id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                     data={data}
@@ -118,6 +121,7 @@ class AlgorithmPage extends Component {
       </div>
     );
   }
+
   previous(){
     if(this.state.index == 0) {
         confirmAlert({
@@ -142,16 +146,20 @@ class AlgorithmPage extends Component {
       for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){    
         for(let j =0;j<this.state.data.edges.length; j++){
           if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
-              this.state.data.edges[j].highlight = true;
+              this.state.data.edges[j].highlight = false;
               this.setState({
                 data:this.state.data,
               })
+              removeAll();
+              drawGraph(this.state.data)
           }
           else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
-            this.state.data.edges[j].highlight = true;
+            this.state.data.edges[j].highlight = false;
               this.setState({
                 data:this.state.data,
               })
+              removeAll();
+              drawGraph(this.state.data)
           }
          }
         }
@@ -188,12 +196,16 @@ class AlgorithmPage extends Component {
                this.setState({
                  data:this.state.data,
                })
+               removeAll();
+               drawGraph(this.state.data)
            }
            else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
              this.state.data.edges[j].highlight = true;
                this.setState({
                  data:this.state.data,
                })
+               removeAll();
+               drawGraph(this.state.data)
            }
           }
          }

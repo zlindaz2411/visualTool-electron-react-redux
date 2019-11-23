@@ -1,9 +1,5 @@
-import React, { Component, Fragment } from "react";
-import * as d3 from "d3";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 
-// import { saveNote, addNote, fetchNotes, deleteNote } from './../actions/index';
+import * as d3 from "d3";
 
 const w = 580,
   h = 350,
@@ -19,37 +15,15 @@ const yScale = d3
   .domain([0,h])
   .range([0, h]);
 
-class Graph extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: this.props.data
-    };
-  }
-  componentDidMount() {
-    setInterval(this.drawGraph(), 1000);
 
-    
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ data: nextProps.data });
-  }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.data !== this.state.data) {
-  //     this.removeAll();
-  //     this.drawGraph();
-  //   }
-  // }
-  
-  removeAll(){
+export function removeAll(){
     d3.select("svg").remove();
   }
-  drawGraph() {
-    const nodeList = this.state.data.nodes;
 
-    const edgeList = this.state.data.edges;
+  export function drawGraph(data) {
+    const nodeList =data.nodes;
+
+    const edgeList = data.edges;
     var id = nodeList.length + 1;
 
     const svg = d3
@@ -60,14 +34,13 @@ class Graph extends React.Component {
       .on("click", () => {
         var x = document.querySelector(".canvas").getBoundingClientRect().left;
         var y = document.querySelector(".canvas").getBoundingClientRect().top;
-        this.state.data.nodes.push({
+       data.nodes.push({
           id: id,
           x: Math.round(xScale(d3.event.x-x-10)),
           y: Math.round(yScale(d3.event.y-y-15))
         });
-        this.removeAll();
-      this.drawGraph();
-       // console.log(this.props.data.nodes);
+        removeAll();
+        drawGraph();
       });
 
     const rect = d3
@@ -170,14 +143,3 @@ class Graph extends React.Component {
       .attr("stroke", "black")
       .on("click", () => {});
   }
-
-  render() {
-    return <path className="canvas" />;
-  }
-}
-
-function mapStateToProps(state) {
-  return {};
-}
-
-export default withRouter(connect(mapStateToProps, {})(Graph));
