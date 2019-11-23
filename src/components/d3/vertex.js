@@ -1,43 +1,38 @@
-import React, {Component} from 'react';
-import * as d3 from "d3";
-
-export default class Vertex extends React.Component {
-/**
- * Handle click on the node.
- * @returns {undefined}
- */
-handleOnClickNode = () => this.props.onClickNode && this.props.onClickNode(this.props.id);
-
-/**
- * Handle right click on the node.
- * @param {Object} event - native event.
- * @returns {undefined}
- */
-handleOnRightClickNode = event => this.props.onRightClickNode && this.props.onRightClickNode(event, this.props.id);
+import React, { Component, Fragment } from 'react';
+import * as d3 from 'd3';
 
 
-render() {
-    const nodeProps = {
-        cursor: this.props.cursor,
-        onClick: this.handleOnClickNode,
-        onContextMenu: this.handleOnRightClickNode,
-    };
 
-    const textProps = {
-        // dx: this.props.dx || CONST.NODE_LABEL_DX,
-        // dy: CONST.NODE_LABEL_DY,
-        fill: this.props.fontColor,
-        fontSize: this.props.fontSize,
-        fontWeight: this.props.fontWeight,
-    };
+export class Vertex extends React.Component {
 
 
-        return (
-            <g {...gProps}>
-                {node}
-                {this.props.renderLabel && label}
-            </g>
-        );
+    componentDidMount() {
+    this.drawGraph();
     }
-}
 
+    drawVertex(){
+            this.svg
+            .selectAll("circle")
+            .data(this.props.nodeList)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) {
+                return this.props.xScale(d.x);
+            })
+            .attr("cy", function(d) {
+            return this.props.yScale(d.y);
+            })
+            .attr("r", this.props.radius)
+            .attr("fill", "white")
+            .attr("stroke", "black")
+            .on("click", ()=>{this.props.handleNodeClick})
+    }
+
+    render(){
+    return(
+        <svg ref={ svg => this.svg = svg } />
+    )
+    }
+
+    
+    }

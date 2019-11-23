@@ -17,9 +17,9 @@ class Sidebar extends Component {
                         </li>
                         <li>
                         <div>
-                        {/* <NavLink  to="/draw" alt="DrawPage" replace> */}
-                          <button onClick={()=>test()} >Draw a graph</button>
-                          {/* </NavLink>     */}
+                        <NavLink  to="/draw" alt="DrawPage" replace> 
+                          <button >Draw a graph</button>
+                         </NavLink>    
                             </div>                       
                         </li>
 

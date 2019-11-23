@@ -9,8 +9,6 @@ class DrawPage extends Component {
     constructor(props) {
         super(props);
       }
-
-
      
     render(){
         return(
@@ -20,7 +18,7 @@ class DrawPage extends Component {
                 </div>
                 <center >
                   <div className="canvas">
-                  <Graph data={data1}/>
+                  <Graph data={data1} />
                   </div>
                 <div>
        

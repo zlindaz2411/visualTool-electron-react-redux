@@ -1,4 +1,4 @@
-import { FETCH_GRAPH, ADD_GRAPH } from './../../actions/types';
+import { FETCH_GRAPH, ADD_GRAPH, ADD_EDGE, ADD_NODE} from './../../actions/types';
 
 const INITIAL_STATE = {
     arr: [],

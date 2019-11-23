@@ -2,15 +2,30 @@ import React, { Component, Fragment, formSubmitEvent } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
-import classNames from "classnames";
-import { Graph } from "react-d3-graph";
+
+
+import {Line} from 'react-chartjs-2';
 
 
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
 
 
-
+const state = {
+  labels: ['January', 'February', 'March',
+           'April', 'May'],
+  datasets: [
+    {
+      label: 'Rainfall',
+      fill: false,
+      lineTension: 0.5,
+      backgroundColor: 'rgba(75,192,192,1)',
+      borderColor: 'rgba(0,0,0,1)',
+      borderWidth: 2,
+      data: [65, 59, 80, 81, 56]
+    }
+  ]
+}
 class PerformancePage extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +63,22 @@ class PerformancePage extends Component {
         <center>
           <div className="grid">
             <div className="column column_8_12">
-                <div className ="first_column"></div>
+                <div className ="first_column">
+                <Line
+          data={state}
+          options={{
+            title:{
+              display:true,
+              text:'Average Rainfall per month',
+              fontSize:20
+            },
+            legend:{
+              display:true,
+              position:'right'
+            }
+          }}
+        />
+                </div>
             </div>
             <div className="column column_4_12">
             <div className ="second_column">
