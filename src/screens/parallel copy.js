@@ -25,15 +25,13 @@ const initialState = {
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
-const pageName = "Boruvka";
-
-
-class BoruvkaPage extends Component {
+class ParallelPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ...initialState,
-      pseudocode: getPseudocode(pageName),
+      name: this.props.location.name,
+      pseudocode: getPseudocode(this.props.location.name),
       start: false,
       pseudoMap: null
     };
@@ -43,11 +41,25 @@ class BoruvkaPage extends Component {
     drawGraph(data1);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.location.name !== this.props.location.name) {
+      this.setState({
+        name: this.props.location.name,
+        pseudocode: getPseudocode(this.props.location.name),
+        pseudoMap: null,
+        start:false,
+        states:[],
+        data: data1,
+      });
+      // location.reload();
+    }
+  }
+
   render() {
     return (
       <div className="algorithm_wrap">
         <div className="title">
-          <h1>{pageName}</h1>
+          <h1>{this.state.name}</h1>
           <center>
             <div className="grid">
               <div className="column column_7_12">
@@ -94,7 +106,7 @@ class BoruvkaPage extends Component {
                   this.setState({
                     start: true,
                     pseudoMap: setUpPseudocodeMap(
-                      pageName,
+                      this.props.location.name,
                       0
                     ),
                     states: kruskals(nodes, this.state.data.edges),
@@ -126,7 +138,7 @@ class BoruvkaPage extends Component {
         this.setState({
           index : this.state.index -=1,
           pseudoMap: setUpPseudocodeMap(
-            pageName,
+              this.props.location.name,
               this.state.states[this.state.index].status,
             ),
         });
@@ -264,8 +276,8 @@ class BoruvkaPage extends Component {
          }
          this.setState({
           pseudoMap: setUpPseudocodeMap(
-            pageName,
-             this.state.states[this.state.index].status
+              this.props.location.name,
+              this.state.states[this.state.index].status
             ),
             index : this.state.index +=1
         });
@@ -318,5 +330,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { addNote, saveNote, fetchNotes, deleteNote }
-  )(BoruvkaPage)
+  )(ParallelPage)
 );

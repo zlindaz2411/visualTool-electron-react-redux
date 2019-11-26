@@ -888,6 +888,10 @@ header {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
+  .sidebar .algorithms {
+    padding-top: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem; }
   .sidebar nav ul li {
     display: block;
     width: 100%;

@@ -24,38 +24,37 @@ class Sidebar extends Component {
                         </li>
 
                         <li>   
-                             <h5>Algorithms &#9662;</h5>
+                        <div className = "algorithms">
+                        <h5>Algorithms &#9662;</h5>
+                            </div>                       
+                            
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/kruskal",
-                                name:"Kruskal"
+                                pathname:"/kruskal"
                             }
-                        }alt="AlgorithmPage"  replace>
+                        }alt="KruskalPage"  replace>
                              <h4>Kruskal</h4>
                             </NavLink> 
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/prim",
-                                name:"Prim"
-                            }} alt="AlgorithmPage" replace>
+                                pathname:"/prim"
+                            }} alt="PrimPage" replace>
                              <h4>Prim</h4>
                             </NavLink> 
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/boruvka",
-                                name:"Boruvka"
-                            }} alt="AlgorithmPage"  replace>
-                             <h4>Borvska</h4>
+                                pathname:"/boruvka"
+                            }} alt="BoruvkaPage"  replace>
+                             <h4>Boruvka</h4>
                             </NavLink> 
                         </li>
                         <li>   
                             <NavLink  className = "inactive" activeClassName="active" to={{
                                 pathname:"/parallel",
-                                name:"Boruvka Parallel"
-                            }} alt="AlgorithmPage"  replace>
+                            }} alt="ParallelPage"  replace>
                              <h4>Boruvka Parallel</h4>
                             </NavLink> 
                         </li>

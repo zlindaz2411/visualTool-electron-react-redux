@@ -23,6 +23,8 @@ const initialState = {
   index : 0,
 };
 
+const pageName = "Boruvka Parallel";
+
 const colors = ["#84C262", "#50525E", "#B22222"];
 
 class ParallelPage extends Component {
@@ -30,8 +32,7 @@ class ParallelPage extends Component {
     super(props);
     this.state = {
       ...initialState,
-      name: this.props.location.name,
-      pseudocode: getPseudocode(this.props.location.name),
+      pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null
     };
@@ -41,25 +42,12 @@ class ParallelPage extends Component {
     drawGraph(data1);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.location.name !== this.props.location.name) {
-      this.setState({
-        name: this.props.location.name,
-        pseudocode: getPseudocode(this.props.location.name),
-        pseudoMap: null,
-        start:false,
-        states:[],
-        data: data1,
-      });
-      // location.reload();
-    }
-  }
 
   render() {
     return (
       <div className="algorithm_wrap">
         <div className="title">
-          <h1>{this.state.name}</h1>
+          <h1>{pageName}</h1>
           <center>
             <div className="grid">
               <div className="column column_7_12">
@@ -106,7 +94,7 @@ class ParallelPage extends Component {
                   this.setState({
                     start: true,
                     pseudoMap: setUpPseudocodeMap(
-                      this.props.location.name,
+                      pageName,
                       0
                     ),
                     states: kruskals(nodes, this.state.data.edges),
@@ -138,7 +126,7 @@ class ParallelPage extends Component {
         this.setState({
           index : this.state.index -=1,
           pseudoMap: setUpPseudocodeMap(
-              this.props.location.name,
+            pageName,
               this.state.states[this.state.index].status,
             ),
         });
@@ -276,7 +264,7 @@ class ParallelPage extends Component {
          }
          this.setState({
           pseudoMap: setUpPseudocodeMap(
-              this.props.location.name,
+            pageName,
               this.state.states[this.state.index].status
             ),
             index : this.state.index +=1

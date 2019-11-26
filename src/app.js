@@ -22,7 +22,7 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/algorithm" render={props => (
+                    <Route path="/kruskal" render={props => (
                         <MainLayout>
                              <KruskalPage{...props} />
                         </MainLayout>
