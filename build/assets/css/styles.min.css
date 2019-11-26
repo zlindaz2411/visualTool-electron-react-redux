@@ -1127,6 +1127,9 @@ header {
   .about_wrap .title {
     padding-top: 7.5rem;
     text-align: center; }
+  .about_wrap .sub_text {
+    padding-top: 1rem;
+    text-align: center; }
   .about_wrap .canvas {
     margin: 2rem;
     border-radius: 2rem;

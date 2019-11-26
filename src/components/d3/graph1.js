@@ -20,7 +20,8 @@ export function removeAll(){
     d3.select("svg").remove();
   }
 
-  export function drawGraph(data) {
+
+export function drawGraph(data) {
     const nodeList =data.nodes;
 
     const edgeList = data.edges;
@@ -34,13 +35,13 @@ export function removeAll(){
       .on("click", () => {
         var x = document.querySelector(".canvas").getBoundingClientRect().left;
         var y = document.querySelector(".canvas").getBoundingClientRect().top;
-       data.nodes.push({
+        nodeList.push({
           id: id,
           x: Math.round(xScale(d3.event.x-x-10)),
-          y: Math.round(yScale(d3.event.y-y-15))
+          y: Math.round(yScale(d3.event.y-y))
         });
         removeAll();
-        drawGraph();
+        drawGraph(data);
       });
 
     const rect = d3
@@ -132,6 +133,9 @@ export function removeAll(){
       .data(nodeList)
       .enter()
       .append("circle")
+      .attr("id",  function(d) {
+        return (d.id);
+      })
       .attr("cx", function(d) {
         return (d.x);
       })
@@ -141,5 +145,142 @@ export function removeAll(){
       .attr("r", radius)
       .attr("fill", "white")
       .attr("stroke", "black")
-      .on("click", () => {});
+      .on("click", () =>{})
+      .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end",(d) =>{dragended(d, edgeList)} )
+                );
+
   }
+
+  var line;
+//   function mousedown() {
+//     var m = d3.mouse(this);
+//     line = d3.select('svg').append("line")
+//         .attr("x1", m[0])
+//         .attr("y1", m[1])
+//         .attr("x2", m[0])
+//         .attr("y2", m[1]);
+
+//     d3.select('svg').on("mousemove", mousemove);
+// }
+
+//   function mousemove() {
+//     var m = d3.mouse(this);
+//     line.attr("x2", m[0])
+//         .attr("y2", m[1]);
+//   }
+
+//   function mouseup() {
+//     d3.select('svg').on("mousemove", null);
+// }
+
+  function dragstarted(d) {
+    d3.select(this).raise().classed("active", true);
+    line = d3.select('svg').append("line")
+    .style('stroke', 'black')
+          .attr("x1", d.x)
+          .attr("y1", d.y)
+          .attr("x2", d.x)
+          .attr("y2", d.x);
+
+}
+
+function dragged(d) {
+  var x = document.querySelector(".canvas").getBoundingClientRect().left;     
+  var y = document.querySelector(".canvas").getBoundingClientRect().top;
+
+  
+  line.attr('x2', Math.round(xScale(d3.event.x)))
+      .attr('y2', Math.round(yScale(d3.event.y)));
+    // d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+}
+
+function dragended(d, edges) {
+    var x = document.querySelector(".canvas").getBoundingClientRect().left;     
+    var y = document.querySelector(".canvas").getBoundingClientRect().top;
+  
+    // edges.push({
+    //   source:, target:2, weight:4,highlight:false, tree:false,
+    // })
+
+    // d3.select("svg").append('line')
+    //    .style('stroke', 'black')
+    //    .attr('x1', d.x)
+    //    .attr('y1', d.y)
+    //    .attr('x2', Math.round(xScale(d3.event.x)))
+    //    .attr('y2', Math.round(yScale(d3.event.y)));
+    d3.select(this).classed("active", false);
+}
+
+let selected = false;
+let nodeToDeleteIndex = -1;
+let nodeToDelete = null;
+
+//When node is selected, fill with colour green, no more than 2 nodes can be selected
+function handleSelectNode(node, nodeList){
+  if(!selected){
+     selected = true;
+
+    console.log("circle#" + node)
+    //  d3.select("circle#" + node)
+    //     .attr("stroke", "#84C262");
+      nodeToDeleteIndex = nodeList.indexOf(node);
+      nodeToDelete = this;
+  }else{
+    selected = false;
+    d3.selectAll("circle")
+       .attr("stroke", "black");
+    nodeToDelete = null;
+    nodeToDeleteIndex = -1;
+  }
+};
+
+//Delete the selected node;
+function handleDelete(){
+  if(nodeToDeleteIndex != -1){
+    nodeList.splice(nodeToDeleteIndex,1);
+    for(let i =0;i<edgeList.length;i++){
+      if(edgeList[i].source == nodeList[nodeToDeleteIndex].id){
+        edgeList.splice(i,1);
+      }
+      if(edgeList[i].destination == nodeList[nodeToDeleteIndex].id){
+        edgeList.splice(i,1);
+      }
+    }
+    svg.selectAll('circle').remove()
+    svg.selectAll('text').remove()
+    svg.selectAll('line').remove()
+    updateGraph();
+  }
+  else{
+    alert("You must select a node to delete")
+  }
+}
+
+
+//  /* Drag has started
+//   * @return null
+//   */
+//  function dragStarted(d) {
+//  }
+
+
+//     /**
+//      * Element is dragged
+//      * @return null
+//      */
+//     function dragged(d) {
+     
+//       // Follow the mouse with
+//       // the chosen circle
+//       console.log(d)
+//     }
+
+//   function dragEnded(d) {
+//     // Append line that tracks
+//     // the dragging movement
+
+//     
+//   }
