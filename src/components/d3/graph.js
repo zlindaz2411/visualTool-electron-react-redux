@@ -66,7 +66,7 @@ class Graph extends React.Component {
           y: Math.round(yScale(d3.event.y-y-15))
         });
         this.removeAll();
-      this.drawGraph();
+        this.drawGraph();
        // console.log(this.props.data.nodes);
       });
 

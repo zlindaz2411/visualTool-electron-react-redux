@@ -6,7 +6,10 @@ import MainLayout from './layouts/mainLayout';
 
 // routes/screens
 import Notes from './screens/notes';
-import AlgorithmPage from './screens/algorithm';
+import KruskalPage from './screens/kruskal';
+import PrimPage from './screens/prim';
+import BoruvkaPage from './screens/boruvka';
+import ParallelPage from './screens/parallel';
 import HomePage from './screens/home';
 import AboutPage from './screens/about';
 import PerformancePage from './screens/performance';
@@ -21,7 +24,22 @@ class App extends Component {
                 <Switch>
                     <Route path="/algorithm" render={props => (
                         <MainLayout>
-                             <AlgorithmPage{...props} />
+                             <KruskalPage{...props} />
+                        </MainLayout>
+                    )}/>
+                      <Route path="/prim" render={props => (
+                        <MainLayout>
+                             <PrimPage{...props} />
+                        </MainLayout>
+                    )}/>
+                      <Route path="/boruvka" render={props => (
+                        <MainLayout>
+                             <BoruvkaPage{...props} />
+                        </MainLayout>
+                    )}/>
+                      <Route path="/parallel" render={props => (
+                        <MainLayout>
+                             <ParallelPage{...props} />
                         </MainLayout>
                     )}/>
                     <Route path="/about" render={props => (

@@ -11,7 +11,7 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import {removeAll, drawGraph} from '../components/d3/graph1';
 import {kruskals} from '../functions/algorithms';
 
-import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
+import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 
 const initialState = {
   edgeList: [],
@@ -23,9 +23,9 @@ const initialState = {
   index : 0,
 };
 
-const colors = ["#84C262", "#50525E"];
+const colors = ["#84C262", "#50525E", "#B22222"];
 
-class AlgorithmPage extends Component {
+class KruskalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -135,34 +135,76 @@ class AlgorithmPage extends Component {
         })
     }
     else{
-      this.setState({
-        index : this.state.index -=1,
-        pseudoMap: setUpPseudocodeMap(
-            this.props.location.name,
-            this.state.states[this.state.index].status
-          ),
-
-      });
-      for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){    
+        this.setState({
+          index : this.state.index -=1,
+          pseudoMap: setUpPseudocodeMap(
+              this.props.location.name,
+              this.state.states[this.state.index].status,
+            ),
+        });
+      for(let i =0; i< this.state.states[this.state.index].tree.length;i++){    
         for(let j =0;j<this.state.data.edges.length; j++){
-          if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
-              this.state.data.edges[j].highlight = false;
+          //check if there is a matching non-highlighted edge
+          if(this.state.data.edges[j].source == this.state.states[this.state.index].tree[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].tree[i].target){
+              this.state.data.edges[j].tree = true;
               this.setState({
                 data:this.state.data,
               })
               removeAll();
               drawGraph(this.state.data)
           }
-          else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
-            this.state.data.edges[j].highlight = false;
+          else if(this.state.data.edges[j].source == this.state.states[this.state.index].tree[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].tree[i].source){
+            this.state.data.edges[j].tree = true;
               this.setState({
                 data:this.state.data,
               })
               removeAll();
               drawGraph(this.state.data)
           }
+          // else{
+          //   this.state.data.edges[j].tree = false;
+          //   this.setState({
+          //     data:this.state.data,
+          //   })
+          //   removeAll();
+          //   drawGraph(this.state.data)
+          //  }
          }
         }
+
+      for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){
+         for(let j =0;j<this.state.data.edges.length; j++){
+           //check if there is a matching highlighted edge
+           
+           if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
+               this.state.data.edges[j].highlight = true;
+               this.setState({
+                 data:this.state.data,
+               })
+               removeAll();
+               drawGraph(this.state.data)
+           }
+           else if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].source){
+             this.state.data.edges[j].highlight = true;
+               this.setState({
+                 data:this.state.data,
+               })
+               removeAll();
+               drawGraph(this.state.data)
+           }
+           else{
+            this.state.data.edges[j].highlight = false;
+            this.setState({
+              data:this.state.data,
+            })
+            removeAll();
+            drawGraph(this.state.data)
+           }
+          
+          }
+         }
+     
+      
           
     }
   }
@@ -180,17 +222,32 @@ class AlgorithmPage extends Component {
         })
     }
     else{
-      this.setState({
-        pseudoMap: setUpPseudocodeMap(
-            this.props.location.name,
-            this.state.states[this.state.index].status
-          ),
-          index : this.state.index +=1
-      });
-     // console.log(this.state.states[this.state.index].highlighted)
+      for(let i =0; i< this.state.states[this.state.index].tree.length;i++){    
+        for(let j =0;j<this.state.data.edges.length; j++){
+          //check if there is a matching non-highlighted edge
+          if(this.state.data.edges[j].source == this.state.states[this.state.index].tree[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].tree[i].target){
+              this.state.data.edges[j].tree = true;
+              this.setState({
+                data:this.state.data,
+              })
+              removeAll();
+              drawGraph(this.state.data)
+          }
+          else if(this.state.data.edges[j].source == this.state.states[this.state.index].tree[i].target && this.state.data.edges[j].target == this.state.states[this.state.index].tree[i].source){
+            this.state.data.edges[j].tree = true;
+              this.setState({
+                data:this.state.data,
+              })
+              removeAll();
+              drawGraph(this.state.data)
+          }
+         }
+        }
+
       for(let i =0; i< this.state.states[this.state.index].highlighted.length;i++){
-        // console.log( this.state.states[index].highlighted[0])
          for(let j =0;j<this.state.data.edges.length; j++){
+           //check if there is a matching highlighted edge
+           
            if(this.state.data.edges[j].source == this.state.states[this.state.index].highlighted[i].source && this.state.data.edges[j].target == this.state.states[this.state.index].highlighted[i].target){
                this.state.data.edges[j].highlight = true;
                this.setState({
@@ -207,12 +264,60 @@ class AlgorithmPage extends Component {
                removeAll();
                drawGraph(this.state.data)
            }
+           else{
+            this.state.data.edges[j].highlight = false;
+            this.setState({
+              data:this.state.data,
+            })
+            removeAll();
+            drawGraph(this.state.data)
+           }
           }
          }
+         this.setState({
+          pseudoMap: setUpPseudocodeMap(
+              this.props.location.name,
+              this.state.states[this.state.index].status
+            ),
+            index : this.state.index +=1
+        });
+         
     }
   }
 
 }
+
+// function updateGraph(array){
+//   for(let i =0; i<array.length;i++){    
+//     for(let j =0;j<this.state.data.edges.length; j++){
+//       //check if there is a matching non-highlighted edge
+//       if(this.state.data.edges[j].source == array[i].source && this.state.data.edges[j].target == array[i].target){
+//           this.state.data.edges[j].tree = true;
+//           this.setState({
+//             data:this.state.data,
+//           })
+//           removeAll();
+//           drawGraph(this.state.data)
+//       }
+//       else if(this.state.data.edges[j].source == array[i].target && this.state.data.edges[j].target == array[i].source){
+//         this.state.data.edges[j].tree = true;
+//           this.setState({
+//             data:this.state.data,
+//           })
+//           removeAll();
+//           drawGraph(this.state.data)
+//       }
+//       else{
+//         this.state.data.edges[j].tree = false;
+//         this.setState({
+//           data:this.state.data,
+//         })
+//         removeAll();
+//         drawGraph(this.state.data)
+//       }
+//      }
+//     }
+// }
 
 function mapStateToProps(state) {
   return {
@@ -225,5 +330,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { addNote, saveNote, fetchNotes, deleteNote }
-  )(AlgorithmPage)
+  )(KruskalPage)
 );

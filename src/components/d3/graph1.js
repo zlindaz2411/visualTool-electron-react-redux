@@ -85,7 +85,7 @@ export function removeAll(){
       })
       .style("stroke-width", "2px")
       .style("stroke", function(d) {
-        return d.highlight == true ? d3.rgb("#84C262") : d3.rgb("#94979D");
+        return d.tree == true? d3.rgb("#84C262") : d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D");
       });
 
     svg

@@ -24,16 +24,11 @@ class Sidebar extends Component {
                         </li>
 
                         <li>   
-                            <NavLink  className = "inactive" activeClassName="active" to={{
-                                pathname:"/algorithm",
-                                name:"Kruskal"
-                            }} alt="AlgorithmPage"  replace>
                              <h5>Algorithms &#9662;</h5>
-                            </NavLink> 
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/algorithm",
+                                pathname:"/kruskal",
                                 name:"Kruskal"
                             }
                         }alt="AlgorithmPage"  replace>
@@ -42,7 +37,7 @@ class Sidebar extends Component {
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/algorithm",
+                                pathname:"/prim",
                                 name:"Prim"
                             }} alt="AlgorithmPage" replace>
                              <h4>Prim</h4>
@@ -50,7 +45,7 @@ class Sidebar extends Component {
                         </li>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
-                                pathname:"/algorithm",
+                                pathname:"/boruvka",
                                 name:"Boruvka"
                             }} alt="AlgorithmPage"  replace>
                              <h4>Borvska</h4>
@@ -58,7 +53,7 @@ class Sidebar extends Component {
                         </li>
                         <li>   
                             <NavLink  className = "inactive" activeClassName="active" to={{
-                                pathname:"/algorithm",
+                                pathname:"/parallel",
                                 name:"Boruvka Parallel"
                             }} alt="AlgorithmPage"  replace>
                              <h4>Boruvka Parallel</h4>
