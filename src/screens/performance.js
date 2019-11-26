@@ -2,56 +2,59 @@ import React, { Component, Fragment, formSubmitEvent } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
+import { comparePerformance } from "../functions/performance";
+import { data1, myConfig, nodes, links } from "../constants/defaultGraph";
 
-
-import {Line} from 'react-chartjs-2';
-
-
+import { Line } from "react-chartjs-2";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
+import { Algorithm } from "../constants/algorithms";
 
-
-const state = {
-  labels: ['January', 'February', 'March',
-           'April', 'May'],
-  datasets: [
-    {
-      label: 'Rainfall',
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,0,0,1)',
-      borderWidth: 2,
-      data: [65, 59, 80, 81, 56]
-    }
-  ]
-}
 class PerformancePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCheckboxes : [],
+      selectedCheckboxes: [],
       algos: [
-        'Kruskal',
-        'Prim',
-        'Boruvka',
-        'Boruvka Parallel',
+        Algorithm.KRUSKAL,
+        Algorithm.PRIM,
+        Algorithm.BORUVKA,
+        Algorithm.PARALLEL
       ],
+      data: {}
     };
   }
 
-  handleCheckboxChange(e){
-    const val = e.target.checked;
+  handleCheckboxChange(e) {
     const name = e.target.name;
-    let checked = Object.assign({}, this.state.selectedCheckboxes, {[name]:val})
-    this.setState({
-      selectedCheckboxes : checked
-    })
+    this.state.selectedCheckboxes.push(name);
   }
 
-  handleFormSubmit(e){
+  handleFormSubmit(e) {
+
     e.preventDefault();
-    console.log(this.state.selectedCheckboxes)
+
+    if(this.state.selectedCheckboxes.length == 0){
+      confirmAlert({
+        title: `Warning!`,
+        message: `You must choose at least one algorithm`,
+        buttons: [
+            {
+                label: 'Cancel'
+            }
+        ]
+    })
+    }
+    this.setState({
+      data: {
+        labels: this.state.selectedCheckboxes,
+        datasets: [
+          {
+            data: comparePerformance(this.state.selectedCheckboxes, data1)
+          }
+        ]
+      }
+    });
   }
 
   render() {
@@ -63,47 +66,34 @@ class PerformancePage extends Component {
         <center>
           <div className="grid">
             <div className="column column_8_12">
-                <div className ="first_column">
-                <Line
-          data={state}
-          options={{
-            title:{
-              display:true,
-              text:'Average Rainfall per month',
-              fontSize:20
-            },
-            legend:{
-              display:true,
-              position:'right'
-            }
-          }}
-        />
-                </div>
+              <div className="first_column">
+              <Line
+                data={this.state.data}
+                options={{}}
+              />
+              </div>
             </div>
             <div className="column column_4_12">
-            <div className ="second_column">
-            <form onSubmit={this.handleFormSubmit.bind(this)}>
-            {this.state.algos.map((algo,i) => 
-            <div className= "checkbox">
-              <label key={i}>
-                
-            
-              <input
-              type = "checkbox"
-              name = {algo}
-              onChange ={this.handleCheckboxChange.bind(this)}
-              value ={this.state.algos[algo]}
-              >
-              </input>
-              {algo}
-              </label>
+              <div className="second_column">
+                <form onSubmit={this.handleFormSubmit.bind(this)}>
+                  {this.state.algos.map((algo, i) => (
+                    <div className="checkbox">
+                      <label key={i}>
+                        <input
+                          type="checkbox"
+                          name={algo}
+                          onChange={this.handleCheckboxChange.bind(this)}
+                          value={this.state.algos[algo]}
+                        ></input>
+                        {algo}
+                      </label>
+                    </div>
+                  ))}
+                  <div className="button">
+                    <button>Compare</button>
+                  </div>
+                </form>
               </div>
-            )}
-              <div className ="button">
-              <button>Compare</button>
-              </div>
-            </form>
-      </div>
             </div>
           </div>
         </center>
@@ -120,8 +110,7 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { addNote, saveNote, fetchNotes, deleteNote }
-  )(PerformancePage)
+  connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(
+    PerformancePage
+  )
 );

@@ -1,57 +1,34 @@
 import {UnionFind} from '../functions/lib/unionFind'
 import {PriorityQueue} from '../functions/lib/priorityQueue'
-// import * as Parallel from 'paralleljs'
 
-/**
+ /**
  * Kruskals algorithm
- * Get all the states that are each step of the algorithm
  * @param {*} edges 
  * @param {*} nodes 
  */
 export function kruskals(nodes, edges) {
-    let states = [{highlighted: [], tree: [], status:0}];
     //Sort the edges 
-    edges = edges.sort((a,b) => {return a.weight - b.weight;});
+    edges = edges.sort((a,b) => {return a[2] - b[2];});
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    states.push({highlighted: [], tree:[], status:1});
-
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
     for(let i =0;i<edges.length;i++){
-        let arr = [states[states.length-1].highlighted.slice()] //a copy of highlighted
-        let t = states[states.length-1].tree.slice()
-        if(arr.length  == 0) states.push({highlighted: [], tree:[], status:2});
-        else states.push({highlighted: arr.slice(), tree:t.slice(), status:2});
         let u = edges[i].source;
-        let v = edges[i].target;  
-        
-        arr.push(edges[i]);
-        states.push({highlighted:arr.slice(), tree:t.slice(),status:3})
+        let v = edges[i].target;
         //if edges[i] in MST is not acyclic
-        states.push({highlighted:arr.slice(), tree:t.slice(),status:4})
         if(!uf.connected(u,v)){
            MST.add(edges[i])
            uf.union(u,v)
-           t.push(edges[i])       
-           states.push({highlighted:arr.slice(), tree:t.slice(), status:5})
         }
-        else{
-           arr.pop();
-           states.push({highlighted:arr.slice(), tree:t.slice(),  status:6});
-        }
-        
     }
-    
-    states.push({highlighted:states[states.length-1].highlighted,tree:states[states.length-1].tree,  status:7});
-    return states;
+    return MST;
  }
 
 
 
  /**
   * Prim's algorithm
-  * Get all the states that are each step of the algorithm
   * @param {*} edges 
   * @param {*} nodes 
   */
@@ -101,8 +78,8 @@ export function kruskals(nodes, edges) {
     }
     return MST;
  }
- 
- /**
+
+  /**
   * Boruvka algorithm
   * @param {*} edges 
   * @param {*} nodes 
@@ -146,11 +123,11 @@ export function kruskals(nodes, edges) {
 
 }
 
-export function test(){
-    // var p = new Parallel([1, 2, 3, 4, 5]);
-    // console.log(p.data)
-}
-
+  /**
+  * Boruvka Parallel algorithm
+  * @param {*} edges 
+  * @param {*} nodes 
+  */
 export function parallel(nodes,edges) {
     let subset = new UnionFind(nodes);
     let num = nodes.length;

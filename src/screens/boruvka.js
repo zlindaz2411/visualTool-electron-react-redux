@@ -11,6 +11,9 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import {removeAll, drawGraph} from '../components/d3/graph1';
 import {kruskals} from '../functions/algorithms';
 
+import {Algorithm} from '../constants/algorithms'
+
+
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 
 const initialState = {
@@ -25,7 +28,7 @@ const initialState = {
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
-const pageName = "Boruvka";
+const pageName = Algorithm.BORUVKA;
 
 
 class BoruvkaPage extends Component {

@@ -155,26 +155,6 @@ export function drawGraph(data) {
   }
 
   var line;
-//   function mousedown() {
-//     var m = d3.mouse(this);
-//     line = d3.select('svg').append("line")
-//         .attr("x1", m[0])
-//         .attr("y1", m[1])
-//         .attr("x2", m[0])
-//         .attr("y2", m[1]);
-
-//     d3.select('svg').on("mousemove", mousemove);
-// }
-
-//   function mousemove() {
-//     var m = d3.mouse(this);
-//     line.attr("x2", m[0])
-//         .attr("y2", m[1]);
-//   }
-
-//   function mouseup() {
-//     d3.select('svg').on("mousemove", null);
-// }
 
   function dragstarted(d) {
     d3.select(this).raise().classed("active", true);
@@ -182,8 +162,6 @@ export function drawGraph(data) {
     .style('stroke', 'black')
           .attr("x1", d.x)
           .attr("y1", d.y)
-          .attr("x2", d.x)
-          .attr("y2", d.x);
 
 }
 

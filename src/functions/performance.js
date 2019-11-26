@@ -1,0 +1,30 @@
+import {Algorithm} from '../constants/algorithms';
+import {kruskals, prims, boruvkas, parallel} from '../functions/originalAlgorithms'
+import {performance} from 'perf_hooks'
+
+export function comparePerformance(list, graph){
+    let result = [];
+    for(let i =0;i<list.length;i++){
+        if(list[i] == Algorithm.KRUSKAL ){
+           result.push(calculateTime(function() {kruskals(graph.nodes, graph.edges)}))
+        }
+        else if(list[i] == Algorithm.PRIM){
+            result.push(calculateTime(function() {prims(graph.nodes, graph.edges)}))
+        }
+        else if(list[i] == Algorithm.BORUVKA){
+            result.push(calculateTime(function() {boruvkas(graph.nodes, graph.edges)}))
+        }
+        else if(list[i] == Algorithm.PARALLEL){
+            result.push(calculateTime(function() {parallel(graph.nodes, graph.edges)}))
+        }
+    }
+    return result;
+}
+
+function calculateTime(func){
+    let startTime = performance.now();
+    func();
+    let endTime = performance.now();
+
+    return endTime - startTime;
+}
