@@ -8,7 +8,7 @@ export class UnionFind {
  
        // Initialize the data structure such that all
        // elements have themselves as parents
-       elements.forEach(e => (this.parent[e] = e));
+       elements.forEach(e => (this.parent[e.id] = e.id));
     }
  
     union(a, b) {
@@ -29,12 +29,15 @@ export class UnionFind {
     }
 
      // Returns final parent of a node
-   find(a) {
-    while (this.parent[a] !== a) {
-       a = this.parent[a];
-    }
-    return a;
-    }
+     find(a) {
+      if(this.parent[a] && a){
+      while (this.parent[a] !== a) {
+         a = this.parent[a];
+      }
+      }
+      return a;
+      
+   }
 
     // Checks connectivity of the 2 nodes
     connected(a, b) {

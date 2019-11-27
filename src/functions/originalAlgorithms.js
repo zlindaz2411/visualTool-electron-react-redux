@@ -8,7 +8,7 @@ import {PriorityQueue} from '../functions/lib/priorityQueue'
  */
 export function kruskals(nodes, edges) {
     //Sort the edges 
-    edges = edges.sort((a,b) => {return a[2] - b[2];});
+    edges = edges.sort((a,b) => {return a.weight - b.weight;});
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let uf = new UnionFind(nodes);
@@ -19,6 +19,7 @@ export function kruskals(nodes, edges) {
         //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
            MST.add(edges[i])
+           
            uf.union(u,v)
         }
     }
@@ -40,16 +41,16 @@ export function kruskals(nodes, edges) {
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();
-    explored.add(s);
+    explored.add(s.id);
     let uf = new UnionFind(nodes);
  
     // Add all edges from this starting node to the PQ taking weights as priority
     for(let i=0;i<edges.length;i++){
-        if(edges[i].source == s){
-            edgeQueue.enqueue([s, edges[i].target], edges[i].weight)
+        if(edges[i].source == s.id){
+            edgeQueue.enqueue([s.id, edges[i].target], edges[i].weight)
         }
         if(edges[i].target == s){
-            edgeQueue.enqueue([s, edges[i].source], edges[i].weight);
+            edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
         }
     }
    
@@ -92,9 +93,8 @@ export function kruskals(nodes, edges) {
     let cheapest = [];
     while(num>1){
         for(let v=0;v<nodes.length;v++){
-              cheapest[nodes[v]]= -1;
+              cheapest[nodes[v].id]= -1;
         }
-  
     for(let i =0;i<edges.length;i++){
         let u = subset.find(edges[i].source);
         let v = subset.find(edges[i].target);
@@ -105,14 +105,13 @@ export function kruskals(nodes, edges) {
         }
     }
     for(let i =0;i<nodes.length;i++){
-       
-        let e = cheapest[nodes[i]];
+        let e = cheapest[nodes[i].id];
         if(e!=-1){
             let u = subset.find(e.source);
             let v = subset.find(e.target);
             if(u==v) continue;
             if(!subset.connected(u,v)){
-                MST.add(cheapest[nodes[i]]);
+                MST.add(e);
                 subset.union(u,v);
                 num--;
             }
@@ -136,9 +135,8 @@ export function parallel(nodes,edges) {
     let cheapest = [];
     while(num>1){
         for(let v=0;v<nodes.length;v++){
-              cheapest[nodes[v]]= -1;
+              cheapest[nodes[v].id]= -1;
         }
-  
     for(let i =0;i<edges.length;i++){
         let u = subset.find(edges[i].source);
         let v = subset.find(edges[i].target);
@@ -149,14 +147,13 @@ export function parallel(nodes,edges) {
         }
     }
     for(let i =0;i<nodes.length;i++){
-       
-        let e = cheapest[nodes[i]];
+        let e = cheapest[nodes[i].id];
         if(e!=-1){
             let u = subset.find(e.source);
             let v = subset.find(e.target);
             if(u==v) continue;
             if(!subset.connected(u,v)){
-                MST.add(cheapest[nodes[i]]);
+                MST.add(e);
                 subset.union(u,v);
                 num--;
             }

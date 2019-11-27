@@ -63,16 +63,16 @@ export function kruskals(nodes, edges) {
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();
-    explored.add(s);
+    explored.add(s.id);
     let uf = new UnionFind(nodes);
  
     // Add all edges from this starting node to the PQ taking weights as priority
     for(let i=0;i<edges.length;i++){
-        if(edges[i].source == s){
-            edgeQueue.enqueue([s, edges[i].target], edges[i].weight)
+        if(edges[i].source == s.id){
+            edgeQueue.enqueue([s.id, edges[i].target], edges[i].weight)
         }
         if(edges[i].target == s){
-            edgeQueue.enqueue([s, edges[i].source], edges[i].weight);
+            edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
         }
     }
    

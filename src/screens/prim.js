@@ -97,7 +97,7 @@ class PrimPage extends Component {
                       this.props.location.name,
                       0
                     ),
-                    states: kruskals(nodes, this.state.data.edges),
+                    states: kruskals(this.state.data.nodes, this.state.data.edges),
                   })
                 }
               >

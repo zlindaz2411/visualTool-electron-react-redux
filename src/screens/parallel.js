@@ -5,7 +5,7 @@ import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
 
 // import { Graph } from "react-d3-graph";
-import { data1, myConfig, nodes, links} from "../constants/defaultGraph";
+import { data1} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import {removeAll, drawGraph} from '../components/d3/graph1';
@@ -98,7 +98,7 @@ class ParallelPage extends Component {
                       pageName,
                       0
                     ),
-                    states: kruskals(nodes, this.state.data.edges),
+                    states: kruskals(this.state.data.nodes, this.state.data.edges),
                   })
                 }
               >
