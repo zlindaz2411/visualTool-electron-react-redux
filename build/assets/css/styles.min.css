@@ -1165,6 +1165,8 @@ header {
     height: 38rem;
     border-spacing: 2rem;
     background-color: #ffffff; }
+    .performance_wrap .first_column .chart {
+      padding: 2rem; }
   .performance_wrap .second_column {
     margin-left: 2rem;
     border-radius: 2rem;

@@ -120,16 +120,10 @@ class KruskalPage extends Component {
         ) {
           if (tree) this.state.data.edges[j].tree = true;
           else this.state.data.edges[j].highlight = true;
-          this.setState({
-            data: this.state.data
-          });
           removeAll();
           drawGraph(this.state.data);
         } else {
           this.state.data.edges[j].highlight = false;
-          this.setState({
-            data: this.state.data
-          });
           removeAll();
           drawGraph(this.state.data);
         }

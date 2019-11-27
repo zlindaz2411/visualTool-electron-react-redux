@@ -28,11 +28,13 @@ class PerformancePage extends Component {
   handleCheckboxChange(e) {
     const name = e.target.name;
     this.state.selectedCheckboxes.push(name);
+    
   }
 
   handleFormSubmit(e) {
 
     e.preventDefault();
+    console.log(this.state.selectedCheckboxes)
 
     if(this.state.selectedCheckboxes.length == 0){
       confirmAlert({
@@ -46,6 +48,7 @@ class PerformancePage extends Component {
     })
     }
     this.setState({
+      selectedCheckboxes:[],
       data: {
         labels: this.state.selectedCheckboxes,
         datasets: [
@@ -67,10 +70,21 @@ class PerformancePage extends Component {
           <div className="grid">
             <div className="column column_8_12">
               <div className="first_column">
+                <div className = "chart">
               <Line
+                width={400}
+                height={325}
                 data={this.state.data}
-                options={{}}
+                options={{
+                  title:{
+                    display:false,
+                  },
+                  legend:{
+                    display:false,
+                  }
+                }}
               />
+              </div>
               </div>
             </div>
             <div className="column column_4_12">
