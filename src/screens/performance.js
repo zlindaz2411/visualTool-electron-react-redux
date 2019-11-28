@@ -10,11 +10,12 @@ import { Line } from "react-chartjs-2";
 import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
 import { Algorithm } from "../constants/algorithms";
 
+
 class PerformancePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCheckboxes: [],
+      selectedCheckboxes: new Set(),
       algos: [
         Algorithm.KRUSKAL,
         Algorithm.PRIM,
@@ -26,16 +27,17 @@ class PerformancePage extends Component {
   }
 
   handleCheckboxChange(e) {
+    e.target.checked
     const name = e.target.name;
-    this.state.selectedCheckboxes.push(name);
-    
+    if (e.target.checked) this.state.selectedCheckboxes.add(name);
+    else this.state.selectedCheckboxes.delete(name);
   }
+
 
   handleFormSubmit(e) {
 
     e.preventDefault();
-    console.log(this.state.selectedCheckboxes)
-
+    const selected = Array.from(this.state.selectedCheckboxes)
     if(this.state.selectedCheckboxes.length == 0){
       confirmAlert({
         title: `Warning!`,
@@ -48,12 +50,11 @@ class PerformancePage extends Component {
     })
     }
     this.setState({
-      selectedCheckboxes:[],
       data: {
-        labels: this.state.selectedCheckboxes,
+        labels: selected,
         datasets: [
           {
-            data: comparePerformance(this.state.selectedCheckboxes, data1)
+            data: comparePerformance(selected, data1)
           }
         ]
       }
@@ -78,11 +79,11 @@ class PerformancePage extends Component {
                 options={{
                   title:{
                     display:false,
-                  },
+            
                   legend:{
                     display:false,
                   }
-                }}
+                }}}
               />
               </div>
               </div>
@@ -92,15 +93,15 @@ class PerformancePage extends Component {
                 <form onSubmit={this.handleFormSubmit.bind(this)}>
                   {this.state.algos.map((algo, i) => (
                     <div className="checkbox">
+                    
                       <label key={i}>
                         <input
                           type="checkbox"
                           name={algo}
                           onChange={this.handleCheckboxChange.bind(this)}
-                          value={this.state.algos[algo]}
                         ></input>
                         {algo}
-                      </label>
+                      </label> 
                     </div>
                   ))}
                   <div className="button">
