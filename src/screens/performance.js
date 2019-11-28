@@ -26,19 +26,25 @@ class PerformancePage extends Component {
     };
   }
 
+  /**
+   * Each time the box is selected, add to the selected set 
+   * if is not selected, delete from the set.
+   * @param {*} e 
+   */
   handleCheckboxChange(e) {
-    e.target.checked
     const name = e.target.name;
     if (e.target.checked) this.state.selectedCheckboxes.add(name);
     else this.state.selectedCheckboxes.delete(name);
   }
 
-
+ 
+  /**
+   * Get the running time of each selected algorithm and update the dataset of the graph
+   */
   handleFormSubmit(e) {
-
     e.preventDefault();
     const selected = Array.from(this.state.selectedCheckboxes)
-    if(this.state.selectedCheckboxes.length == 0){
+    if(selected.length == 0){
       confirmAlert({
         title: `Warning!`,
         message: `You must choose at least one algorithm`,
@@ -79,11 +85,12 @@ class PerformancePage extends Component {
                 options={{
                   title:{
                     display:false,
-            
+                  },
                   legend:{
                     display:false,
+                    position:'right'
                   }
-                }}}
+                }}
               />
               </div>
               </div>
