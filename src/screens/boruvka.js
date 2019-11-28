@@ -5,10 +5,10 @@ import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
 
 // import { Graph } from "react-d3-graph";
-import { data1, myConfig, nodes, links } from "../constants/defaultGraph";
+import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
-import { removeAll, drawGraph } from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { kruskals } from "../functions/algorithms";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
@@ -20,7 +20,7 @@ const initialState = {
   start: false,
   highlightedEdges: [],
   highlightedNodes: [],
-  data: data1,
+  data: data,
   index: 0
 };
 
@@ -40,7 +40,8 @@ class BoruvkaPage extends Component {
   }
 
   componentDidMount() {
-    drawGraph(data1);
+    setWidthHeight();
+    drawGraph(data, false);
   }
 
   render() {
@@ -108,6 +109,11 @@ class BoruvkaPage extends Component {
     );
   }
 
+    /**
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array 
+   * @param {*} tree 
+   */
   updateGraph(array, tree) {
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < this.state.data.edges.length; j++) {
@@ -121,16 +127,19 @@ class BoruvkaPage extends Component {
           if (tree) this.state.data.edges[j].tree = true;
           else this.state.data.edges[j].highlight = true;
           removeAll();
-          drawGraph(this.state.data);
+          drawGraph(this.state.data, false);
         } else {
           this.state.data.edges[j].highlight = false;
           removeAll();
-          drawGraph(this.state.data);
+          drawGraph(this.state.data, false);
         }
       }
     }
   }
 
+  /**
+   * Reset data ui to original value (false)
+   */
   resetData(){
     for (let i = 0; i < this.state.data.edges.length; i++) {
       this.state.data.edges[i].highlight = false;
@@ -138,6 +147,10 @@ class BoruvkaPage extends Component {
     }
   }
 
+  /**
+   * When previous button is clicked: if it's at the start, display error message
+   * Else display the previous state of the algorithm
+   */
   previous() {
     if (this.state.index == 0) {
       confirmAlert({
@@ -164,6 +177,10 @@ class BoruvkaPage extends Component {
         }
     }
 
+  /**
+   * When next button is clicked: if it's at the end, display error message
+   * Else display the next state of the algorithm
+   */
   next() {
     if (this.state.index == this.state.states.length - 1) {
       confirmAlert({
@@ -201,4 +218,3 @@ export default withRouter(
     BoruvkaPage
   )
 );
-

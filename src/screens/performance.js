@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import { comparePerformance } from "../functions/performance";
-import { data1, myConfig, nodes, links } from "../constants/defaultGraph";
+import { data } from "../constants/defaultGraph";
 
 import { Line } from "react-chartjs-2";
 
@@ -65,7 +65,7 @@ class PerformancePage extends Component {
             pointBorderColor: "#50535D",
             pointRadius: 3,
             pointBackgroundColor: "#50535D",
-            data: comparePerformance(selected, data1)
+            data: comparePerformance(selected, data)
           }
         ]
       }

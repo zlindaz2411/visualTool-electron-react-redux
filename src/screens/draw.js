@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { data1, myConfig } from "../constants/defaultGraph";
+import { data } from "../constants/defaultGraph";
 import * as d3 from 'd3';
 import Graph from '../components/d3/graph';
 
-import { removeAll, drawGraph } from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight} from "../components/d3/graph1";
 
 
 
@@ -13,7 +13,8 @@ class DrawPage extends Component {
       }
 
       componentDidMount() {
-        drawGraph(data1);
+        setWidthHeight();
+        drawGraph(data, true);
       }
     render(){
         return(

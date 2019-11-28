@@ -1,27 +1,47 @@
 
 import * as d3 from "d3";
 
-const w = 580,
-  h = 350,
-  radius = 10;
+const radius = 10;
+const margin = 15;
 
-const xScale = d3
+var w = 0;
+var h =0;
+var xScale = 0;;
+var yScale = 0;;
+
+export function setWidthHeight(){
+  w = document.querySelector(".canvas").getBoundingClientRect().width;
+  h = document.querySelector(".canvas").getBoundingClientRect().height;
+  
+  setScales()
+}
+
+function setScales(){
+  xScale = d3
   .scaleLinear()
   .domain([0, w])
   .range([0, w]); // Set margins for x specific
 
-const yScale = d3
+  yScale = d3
   .scaleLinear()
   .domain([0,h])
   .range([0, h]);
+}
 
-
+/**
+ * Remove all the elements 
+ */
 export function removeAll(){
     d3.select("svg").remove();
   }
 
-
-export function drawGraph(data) {
+/**
+ * Draw the graph based on a given data
+ * Draw nodes, edges, weights
+ * @param {*} data 
+ * @param {*} draw 
+ */
+export function drawGraph(data, draw) {
     const nodeList =data.nodes;
 
     const edgeList = data.edges;
@@ -33,15 +53,17 @@ export function drawGraph(data) {
       .attr("width", w)
       .attr("height", h)
       .on("click", () => {
+        if(draw){
         var x = document.querySelector(".canvas").getBoundingClientRect().left;
         var y = document.querySelector(".canvas").getBoundingClientRect().top;
         nodeList.push({
           id: id,
-          x: Math.round(xScale(d3.event.x-x-10)),
+          x: Math.round(xScale(d3.event.x-x)),
           y: Math.round(yScale(d3.event.y-y))
         });
         removeAll();
         drawGraph(data);
+      }
       });
 
     const rect = d3
@@ -137,26 +159,32 @@ export function drawGraph(data) {
         return (d.id);
       })
       .attr("cx", function(d) {
-        return (d.x);
+        return xScale(d.x);
       })
       .attr("cy", function(d) {
-        return (d.y);
+        return yScale(d.y);
       })
       .attr("r", radius)
-      .attr("fill", "white")
+      .attr("fill", function(d){
+        return d.tree == true? d3.rgb("#84C262") : d.highlight == true ? d3.rgb("#B22222") : "white";
+      })
       .attr("stroke", "black")
       .on("click", () =>{})
       .call(d3.drag()
-                .on("start", dragstarted)
+                .on("start", dragStarted)
                 .on("drag", dragged)
-                .on("end",(d) =>{dragended(d, edgeList)} )
+                .on("end", dragEnded)
                 );
 
   }
 
   var line;
 
-  function dragstarted(d) {
+  /**
+   * Drag line start. Create a line and set the origin to the circle x and y.
+   * @param {*} d 
+   */
+  function dragStarted(d) {
     d3.select(this).raise().classed("active", true);
     line = d3.select('svg').append("line")
     .style('stroke', 'black')
@@ -165,6 +193,10 @@ export function drawGraph(data) {
 
 }
 
+/**
+ * While dragging the line, update the end of the line to be the mouse position
+ * @param {*} d 
+ */
 function dragged(d) {
   var x = document.querySelector(".canvas").getBoundingClientRect().left;     
   var y = document.querySelector(".canvas").getBoundingClientRect().top;
@@ -172,23 +204,15 @@ function dragged(d) {
   
   line.attr('x2', Math.round(xScale(d3.event.x)))
       .attr('y2', Math.round(yScale(d3.event.y)));
-    // d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
 }
 
-function dragended(d, edges) {
-    var x = document.querySelector(".canvas").getBoundingClientRect().left;     
-    var y = document.querySelector(".canvas").getBoundingClientRect().top;
-  
-    // edges.push({
-    //   source:, target:2, weight:4,highlight:false, tree:false,
-    // })
 
-    // d3.select("svg").append('line')
-    //    .style('stroke', 'black')
-    //    .attr('x1', d.x)
-    //    .attr('y1', d.y)
-    //    .attr('x2', Math.round(xScale(d3.event.x)))
-    //    .attr('y2', Math.round(yScale(d3.event.y)));
+/**
+ * When finished drag, set the circle class to be not active
+ * @param {*} d 
+ * @param {*} edges 
+ */
+function dragEnded(d, edges) {
     d3.select(this).classed("active", false);
 }
 
@@ -236,29 +260,3 @@ function handleDelete(){
     alert("You must select a node to delete")
   }
 }
-
-
-//  /* Drag has started
-//   * @return null
-//   */
-//  function dragStarted(d) {
-//  }
-
-
-//     /**
-//      * Element is dragged
-//      * @return null
-//      */
-//     function dragged(d) {
-     
-//       // Follow the mouse with
-//       // the chosen circle
-//       console.log(d)
-//     }
-
-//   function dragEnded(d) {
-//     // Append line that tracks
-//     // the dragging movement
-
-//     
-//   }
