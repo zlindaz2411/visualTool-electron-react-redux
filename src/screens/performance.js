@@ -60,6 +60,11 @@ class PerformancePage extends Component {
         labels: selected,
         datasets: [
           {
+            fill: false,
+            borderColor: "#D9E9D6",
+            pointBorderColor: "#50535D",
+            pointRadius: 3,
+            pointBackgroundColor: "#50535D",
             data: comparePerformance(selected, data1)
           }
         ]
