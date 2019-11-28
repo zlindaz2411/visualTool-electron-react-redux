@@ -137,44 +137,61 @@ class KruskalPage extends Component {
     }
   }
 
-  /**
-   * Reset data ui to original value (false)
+ /**
+   * Reset data ui to original value (tree = false)
    */
-  resetData(){
+  resetTree(){
     for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
       this.state.data.edges[i].tree = false;
     }
   }
+
+  /**
+   * Reset data ui to original value (highlight = false)
+   */
+  resetHighlight(){
+    for (let i = 0; i < this.state.data.edges.length; i++) {
+      this.state.data.edges[i].highlight = false;
+    }
+  }
+  
 
   /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
-    if (this.state.index == 0) {
-      confirmAlert({
-        title: `Warning!`,
-        message: `Nothing before the start of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
-    } else {
       this.setState({
-        index: (this.state.index -= 1),
+        index:  this.state.index -= 1,
+      });
+      if (this.state.index < 0) {
+        this.setState({
+          index: this.state.index+=1,
+          pseudoMap: setUpPseudocodeMap(
+            pageName,
+            0,
+          )
+        })
+        confirmAlert({
+          title: `Warning!`,
+          message: `Nothing before the start of the algorithm`,
+          buttons: [
+            {
+              label: "Cancel"
+            }
+          ]
+        });
+      } 
+      this.setState({
         pseudoMap: setUpPseudocodeMap(
           pageName,
           this.state.states[this.state.index].status
         )
       });
-      this.resetData()
+      this.resetTree();
+      this.resetHighlight();
       this.updateGraph(this.state.states[this.state.index].tree, true);
       this.updateGraph(this.state.states[this.state.index].highlighted, false);
-      
-        }
     }
 
   /**
@@ -182,27 +199,36 @@ class KruskalPage extends Component {
    * Else display the next state of the algorithm
    */
   next() {
-    if (this.state.index == this.state.states.length - 1) {
-      confirmAlert({
-        title: `Warning!`,
-        message: `End of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
-    } else {
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
       this.setState({
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          this.state.states[this.state.index].status
-        ),
-        index: (this.state.index += 1)
+        index: this.state.index += 1,
       });
+      if (this.state.index >= this.state.states.length) {
+        this.setState({
+          index: this.state.index-=1,
+          pseudoMap: setUpPseudocodeMap(
+            pageName,
+            this.state.pseudocode.length-1,
+          )})
+        confirmAlert({
+          title: `Warning!`,
+          message: `End of the algorithm`,
+          buttons: [
+            {
+              label: "Cancel"
+            }
+          ]
+        });
     }
+   
+    
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      ),
+    });
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
 }
 

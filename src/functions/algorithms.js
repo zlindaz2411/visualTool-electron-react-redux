@@ -128,6 +128,9 @@ export function kruskals(nodes, edges) {
             states.push({highlighted:arr.slice(), tree:t.slice(), status:8})
         }
        
+       }else{
+        arr.pop();
+        states.push({highlighted:arr.slice(), tree:t.slice(), status:8})
        };
         
     }
