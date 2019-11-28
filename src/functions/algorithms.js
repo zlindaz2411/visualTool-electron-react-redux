@@ -56,14 +56,17 @@ export function kruskals(nodes, edges) {
   * @param {*} nodes 
   */
  export function prims(nodes, edges) {
+    let states = [{highlighted: [], tree: [], status:0}];
     // Initialize graph that'll contain the MST
     let MST = new Set();
+    states.push({highlighted: [], tree: [], status:1});
     // Select first node as starting node
     let s = nodes[0];
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();
     explored.add(s.id);
+    
     let uf = new UnionFind(nodes);
  
     // Add all edges from this starting node to the PQ taking weights as priority
@@ -75,32 +78,64 @@ export function kruskals(nodes, edges) {
             edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
         }
     }
+
+    states.push({highlighted: [], tree: [], status:2});
    
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
        // Continue removing edges till we get an edge with an unexplored node
+
+       let arr = [states[states.length-1].highlighted.slice()] //a copy of highlighted
+       let t = states[states.length-1].tree.slice()
+       if(arr.length  == 0) states.push({highlighted: [], tree:[], status:3});
+       else states.push({highlighted: arr.slice(), tree:t.slice(), status:3});
+
        let currentMinEdge = edgeQueue.dequeue();
-       let u = currentMinEdge.element[0]
-       let v =  currentMinEdge.element[1]
+      
+       let u = currentMinEdge.element[0];
+       let v =  currentMinEdge.element[1];
+
+       arr.push({source: u, target:v});
+       states.push({highlighted:arr.slice(), tree:t.slice(),status:4})
+       states.push({highlighted:arr.slice(), tree:t.slice(),status:5})
+
        if(!explored.has(v)){
         if(!uf.connected(u,v)){
             explored.add(v);
             MST.add([u,v,currentMinEdge.priority]);
             uf.union(u,v)
+            t.push({source: u, target:v});
+            states.push({highlighted:arr.slice(), tree:t.slice(), status:6})
+            let temp = arr.slice();
+            for(let i=0;i<edges.length;i++){
+                if(edges[i].source== v){
+                      if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) {
+                          edgeQueue.enqueue([v, edges[i].target], edges[i].weight);
+                          temp.push(edges[i])
+                      }
+                  }
+                  if(edges[i].target == v ){
+                     if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) {
+                         edgeQueue.enqueue([v, edges[i].source], edges[i].weight);
+                         temp.push(edges[i])
+                     }
+                  }
+              }
+              states.push({highlighted:temp.slice(), tree:t.slice(), status:7})
         }
-        for(let i=0;i<edges.length;i++){
-          if(edges[i].source== v){
-                if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.enqueue([v, edges[i].target], edges[i].weight);
-            }
-            if(edges[i].target == v ){
-               if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.enqueue([v, edges[i].source], edges[i].weight);
-            }
+        else{
+            arr.pop();
+            states.push({highlighted:arr.slice(), tree:t.slice(), status:8})
         }
+       
        };
         
     }
-    return MST;
+    
+    states.push({highlighted:states[states.length-1].highlighted,tree:states[states.length-1].tree,  status:9});
+    return states;
  }
+
  
  /**
   * Boruvka algorithm

@@ -9,7 +9,7 @@ import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
-import { kruskals } from "../functions/algorithms";
+import { prims } from "../functions/algorithms";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
@@ -96,7 +96,7 @@ class PrimPage extends Component {
                   this.setState({
                     start: true,
                     pseudoMap: setUpPseudocodeMap(pageName, 0),
-                    states: kruskals(this.state.data.nodes, this.state.data.edges)
+                    states: prims(this.state.data.nodes, this.state.data.edges)
                   })
                 }
               >
@@ -128,10 +128,6 @@ class PrimPage extends Component {
           else this.state.data.edges[j].highlight = true;
           removeAll();
           drawGraph(this.state.data, false);
-        } else {
-          this.state.data.edges[j].highlight = false;
-          removeAll();
-          drawGraph(this.state.data, false);
         }
       }
     }
@@ -140,18 +136,30 @@ class PrimPage extends Component {
   /**
    * Reset data ui to original value (false)
    */
-  resetData(){
+  resetTree(){
     for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
       this.state.data.edges[i].tree = false;
     }
   }
+
+  /**
+   * Reset data ui to original value (false)
+   */
+  resetHighlight(){
+    for (let i = 0; i < this.state.data.edges.length; i++) {
+      this.state.data.edges[i].highlight = false;
+    }
+  }
+  
+  
 
   /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
+    this.resetHighlight();
+    this.resetTree();
     if (this.state.index == 0) {
       confirmAlert({
         title: `Warning!`,
@@ -170,11 +178,10 @@ class PrimPage extends Component {
           this.state.states[this.state.index].status
         )
       });
-      this.resetData()
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
-      
+
         }
+        this.updateGraph(this.state.states[this.state.index].tree, true);
+        this.updateGraph(this.state.states[this.state.index].highlighted, false);
     }
 
   /**
@@ -182,6 +189,7 @@ class PrimPage extends Component {
    * Else display the next state of the algorithm
    */
   next() {
+    this.resetHighlight();
     if (this.state.index == this.state.states.length - 1) {
       confirmAlert({
         title: `Warning!`,
@@ -193,8 +201,6 @@ class PrimPage extends Component {
         ]
       });
     } else {
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
       this.setState({
         pseudoMap: setUpPseudocodeMap(
           pageName,
@@ -203,6 +209,8 @@ class PrimPage extends Component {
         index: (this.state.index += 1)
       });
     }
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
 }
 

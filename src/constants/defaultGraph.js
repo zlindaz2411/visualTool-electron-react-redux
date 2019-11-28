@@ -1,4 +1,5 @@
 export var data= {
+    root: 1,
     nodes: [{ id: 1, x: 20, y: 200,highlight:false, tree:false },
         { id: 2, x: 80, y: 100,highlight:false, tree:false },
         { id: 3, x: 200, y: 100,highlight:false, tree:false },
