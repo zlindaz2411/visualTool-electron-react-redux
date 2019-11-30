@@ -224,8 +224,6 @@ next() {
   this.resetHighlight();
   this.updateGraph(this.state.states[this.state.index].tree, true);
   this.updateGraph(this.state.states[this.state.index].highlighted, false);
-  
-  console.log(this.state.states[this.state.index].highlighted)
 }
 }
 

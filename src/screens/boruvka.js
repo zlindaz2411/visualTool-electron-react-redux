@@ -9,7 +9,7 @@ import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
-import { kruskals } from "../functions/algorithms";
+import { boruvkas } from "../functions/algorithms";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
@@ -96,7 +96,7 @@ class BoruvkaPage extends Component {
                   this.setState({
                     start: true,
                     pseudoMap: setUpPseudocodeMap(pageName, 0),
-                    states: kruskals(this.state.data.nodes, this.state.data.edges)
+                    states: boruvkas(this.state.data.nodes, this.state.data.edges)
                   })
                 }
               >
@@ -138,21 +138,69 @@ class BoruvkaPage extends Component {
   }
 
   /**
-   * Reset data ui to original value (false)
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array 
+   * @param {*} tree 
    */
-  resetData(){
+  updateNodes(array) {
+    console.log(array)
+    console.log(this.state.data.nodes)
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < this.state.data.nodes.length; j++) {
+        //check if there is a matching non-highlighted edge
+        if 
+          (this.state.data.nodes[j].id == array[i]) {
+          this.state.data.nodes[j].highlight = true;
+          removeAll();
+          drawGraph(this.state.data, false);
+        } 
+      }
+    }
+  }
+
+    /**
+   * Reset data ui to original value (tree = false)
+   */
+  resetNodes(){
+    for (let i = 0; i < this.state.data.nodes.length; i++) {
+      this.state.data.nodes[i].highlight = false;
+    }
+  }
+
+    /**
+   * Reset data ui to original value (tree = false)
+   */
+  resetTree(){
     for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
       this.state.data.edges[i].tree = false;
     }
   }
 
   /**
+   * Reset data ui to original value (highlight = false)
+   */
+  resetHighlight(){
+    for (let i = 0; i < this.state.data.edges.length; i++) {
+      this.state.data.edges[i].highlight = false;
+    }
+  }
+
+    /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
-    if (this.state.index == 0) {
+    this.setState({
+      index:  this.state.index -= 1,
+    });
+    if (this.state.index < 0) {
+      this.setState({
+        index: this.state.index+=1,
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          0,
+        )
+      })
       confirmAlert({
         title: `Warning!`,
         message: `Nothing before the start of the algorithm`,
@@ -162,27 +210,34 @@ class BoruvkaPage extends Component {
           }
         ]
       });
-    } else {
+    } 
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      )
+    });
+    this.resetTree();
+    this.resetHighlight();
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+  }
+
+/**
+ * When next button is clicked: if it's at the end, display error message
+ * Else display the next state of the algorithm
+ */
+next() {
+    this.setState({
+      index: this.state.index += 1,
+    });
+    if (this.state.index >= this.state.states.length) {
       this.setState({
-        index: (this.state.index -= 1),
+        index: this.state.index-=1,
         pseudoMap: setUpPseudocodeMap(
           pageName,
-          this.state.states[this.state.index].status
-        )
-      });
-      this.resetData()
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
-      
-        }
-    }
-
-  /**
-   * When next button is clicked: if it's at the end, display error message
-   * Else display the next state of the algorithm
-   */
-  next() {
-    if (this.state.index == this.state.states.length - 1) {
+          this.state.pseudocode.length-1,
+        )})
       confirmAlert({
         title: `Warning!`,
         message: `End of the algorithm`,
@@ -192,19 +247,23 @@ class BoruvkaPage extends Component {
           }
         ]
       });
-    } else {
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
-      this.setState({
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          this.state.states[this.state.index].status
-        ),
-        index: (this.state.index += 1)
-      });
-    }
   }
+ 
+  
+  this.setState({
+    pseudoMap: setUpPseudocodeMap(
+      pageName,
+      this.state.states[this.state.index].status
+    ),
+  });
+  this.resetHighlight();
+  this.resetNodes();
+  this.updateGraph(this.state.states[this.state.index].tree, true);
+  this.updateGraph(this.state.states[this.state.index].highlighted, false);
+  this.updateNodes(this.state.states[this.state.index].highlightedNodes);
 }
+}
+
 
 function mapStateToProps(state) {
   return {

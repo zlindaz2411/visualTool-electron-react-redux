@@ -10,6 +10,7 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { kruskals } from "../functions/algorithms";
+import {resetTree, resetHighlight, updateGraph} from '../functions/graphAlgorithms';
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
@@ -108,8 +109,8 @@ class KruskalPage extends Component {
       </div>
     );
   }
-
-    /**
+  
+  /**
    * Update graph: update which edge needs to be highlighted
    * @param {*} array 
    * @param {*} tree 
@@ -137,24 +138,7 @@ class KruskalPage extends Component {
     }
   }
 
- /**
-   * Reset data ui to original value (tree = false)
-   */
-  resetTree(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].tree = false;
-    }
-  }
 
-  /**
-   * Reset data ui to original value (highlight = false)
-   */
-  resetHighlight(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
-    }
-  }
-  
 
   /**
    * When previous button is clicked: if it's at the start, display error message
@@ -188,10 +172,9 @@ class KruskalPage extends Component {
           this.state.states[this.state.index].status
         )
       });
-      this.resetTree();
-      this.resetHighlight();
-      this.updateGraph(this.state.states[this.state.index].tree, true);
-      this.updateGraph(this.state.states[this.state.index].highlighted, false);
+      resetTree(this.state.data.edges);
+      resetHighlight(this.state.data.edges);
+      this.updateGraph();
     }
 
   /**
@@ -219,7 +202,6 @@ class KruskalPage extends Component {
           ]
         });
     }
-   
     
     this.setState({
       pseudoMap: setUpPseudocodeMap(
@@ -227,8 +209,7 @@ class KruskalPage extends Component {
         this.state.states[this.state.index].status
       ),
     });
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.updateGraph();
   }
 }
 

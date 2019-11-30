@@ -46,6 +46,7 @@ export function getPseudocode(name) {
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic)");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0number of vertices--");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         boruvka.push("return T");
         return boruvka;
       case "Boruvka Parallel": // Parallel Boruvska

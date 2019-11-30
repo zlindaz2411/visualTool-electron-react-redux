@@ -146,43 +146,88 @@ export function kruskals(nodes, edges) {
   * @param {*} nodes 
   */
  export function boruvkas(nodes,edges) {
+    let states = [{highlighted: [], tree: [], highlightedNodes:[], treeNodes:[], status:0}];
+    states.push({highlighted: [], tree: [], highlightedNodes: [], treeNodes:[], status:1})
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let cheapest = [];
     while(num>1){
+        let hedge = states[states.length-1].highlighted.slice() //a copy of highlighted
+        let tedge = states[states.length-1].tree.slice()
+        let hnode = states[states.length-1].highlightedNodes.slice() //a copy of highlighted
+        let tnode = states[states.length-1].treeNodes.slice()
+
+        if(hedge.length  == 0) states.push({highlighted: [], tree: [], highlightedNodes: [], treeNodes:[], status:3});
+        else states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:3});
+
+
         for(let v=0;v<nodes.length;v++){
-              cheapest[nodes[v]]= -1;
+              cheapest[nodes[v].id]= -1;
         }
-  
+
+
     for(let i =0;i<edges.length;i++){
+        states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:4})
+
         let u = subset.find(edges[i].source);
         let v = subset.find(edges[i].target);
-        if(u==v) continue; 
+        hnode.push(u)
+        hnode.push(v)
+        states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:5})
+       
+        if(u==v) {
+            hnode.pop();
+            hnode.pop();
+            states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:5})
+            continue; 
+        }
         else{
-            if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
-            if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
+            states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:6})
+            if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) {
+                hnode.pop();
+                hnode.pop();
+                states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:7})
+                cheapest[u]=edges[i]
+            }
+            states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:8})
+            if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) {
+                hnode.pop();
+            hnode.pop();
+                states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:9})
+                cheapest[v]=edges[i]
+            }
         }
     }
     for(let i =0;i<nodes.length;i++){
-       
-        let e = cheapest[nodes[i]];
+        states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:10})
+        let e = cheapest[nodes[i].id];
+        states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:11})
         if(e!=-1){
             let u = subset.find(e.source);
             let v = subset.find(e.target);
             if(u==v) continue;
+            hedge.push(e)
+            states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:12})
             if(!subset.connected(u,v)){
-                MST.add(cheapest[nodes[i]]);
+                MST.add(e);
                 subset.union(u,v);
+                tedge.push(e);
+                states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:13})
                 num--;
+                states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:14})
+            }else{
+                hedge.pop();
+                states.push({highlighted: hedge.slice(), tree: tedge.slice(), highlightedNodes: hnode.slice(), treeNodes:tnode.slice(), status:15})
             }
         }
     }
 }
-    return MST  
-
+    states.push({highlighted: states[states.length-1].highlighted, tree: states[states.length-1].tree, highlightedNodes: states[states.length-1].highlightedNodes, treeNodes:states[states.length-1].treeNodes, status:16})
+    return states;
 }
+
 
 export function test(){
     // var p = new Parallel([1, 2, 3, 4, 5]);
