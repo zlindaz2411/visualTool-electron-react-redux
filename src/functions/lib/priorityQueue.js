@@ -26,7 +26,7 @@ export class PriorityQueue {
     // iterating through the entire 
     // item array to add element at the 
     // correct location of the Queue 
-    for (lrt i = 0; i < this.items.length; i++) { 
+    for (let i = 0; i < this.items.length; i++) { 
         if (this.items[i].priority > qElement.priority) { 
             // Once the correct location is found it is 
             // enqueued 
