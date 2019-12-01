@@ -10,7 +10,6 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { kruskals } from "../functions/algorithms";
-import {resetTree, resetHighlight, updateGraph} from '../functions/graphAlgorithms';
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
@@ -27,7 +26,7 @@ const initialState = {
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
-const pageName = Algorithm.KRUSKAL;
+const pageName = Algorithm.PRIM;
 
 class KruskalPage extends Component {
   constructor(props) {
@@ -109,8 +108,8 @@ class KruskalPage extends Component {
       </div>
     );
   }
-  
-  /**
+
+    /**
    * Update graph: update which edge needs to be highlighted
    * @param {*} array 
    * @param {*} tree 
@@ -129,88 +128,103 @@ class KruskalPage extends Component {
           else this.state.data.edges[j].highlight = true;
           removeAll();
           drawGraph(this.state.data, false);
-        } else {
-          this.state.data.edges[j].highlight = false;
-          removeAll();
-          drawGraph(this.state.data, false);
         }
       }
     }
   }
 
-
+  /**
+   * Reset data ui to original value (tree = false)
+   */
+  resetTree(){
+    for (let i = 0; i < this.state.data.edges.length; i++) {
+      this.state.data.edges[i].tree = false;
+    }
+  }
 
   /**
+   * Reset data ui to original value (highlight = false)
+   */
+  resetHighlight(){
+    for (let i = 0; i < this.state.data.edges.length; i++) {
+      this.state.data.edges[i].highlight = false;
+    }
+  }
+  
+  
+ /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
+    this.setState({
+      index:  this.state.index -= 1,
+    });
+    if (this.state.index < 0) {
       this.setState({
-        index:  this.state.index -= 1,
-      });
-      if (this.state.index < 0) {
-        this.setState({
-          index: this.state.index+=1,
-          pseudoMap: setUpPseudocodeMap(
-            pageName,
-            0,
-          )
-        })
-        confirmAlert({
-          title: `Warning!`,
-          message: `Nothing before the start of the algorithm`,
-          buttons: [
-            {
-              label: "Cancel"
-            }
-          ]
-        });
-      } 
-      this.setState({
+        index: this.state.index+=1,
         pseudoMap: setUpPseudocodeMap(
           pageName,
-          this.state.states[this.state.index].status
+          0,
         )
+      })
+      confirmAlert({
+        title: `Warning!`,
+        message: `Nothing before the start of the algorithm`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
       });
-      resetTree(this.state.data.edges);
-      resetHighlight(this.state.data.edges);
-      this.updateGraph();
-    }
-
-  /**
-   * When next button is clicked: if it's at the end, display error message
-   * Else display the next state of the algorithm
-   */
-  next() {
-      this.setState({
-        index: this.state.index += 1,
-      });
-      if (this.state.index >= this.state.states.length) {
-        this.setState({
-          index: this.state.index-=1,
-          pseudoMap: setUpPseudocodeMap(
-            pageName,
-            this.state.pseudocode.length-1,
-          )})
-        confirmAlert({
-          title: `Warning!`,
-          message: `End of the algorithm`,
-          buttons: [
-            {
-              label: "Cancel"
-            }
-          ]
-        });
-    }
-    
+    } 
     this.setState({
       pseudoMap: setUpPseudocodeMap(
         pageName,
         this.state.states[this.state.index].status
-      ),
+      )
     });
-    this.updateGraph();
+    this.resetTree();
+    this.resetHighlight();
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
+
+/**
+ * When next button is clicked: if it's at the end, display error message
+ * Else display the next state of the algorithm
+ */
+next() {
+    this.setState({
+      index: this.state.index += 1,
+    });
+    if (this.state.index >= this.state.states.length) {
+      this.setState({
+        index: this.state.index-=1,
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          this.state.pseudocode.length-1,
+        )})
+      confirmAlert({
+        title: `Warning!`,
+        message: `End of the algorithm`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+  }
+  this.setState({
+    pseudoMap: setUpPseudocodeMap(
+      pageName,
+      this.state.states[this.state.index].status
+    ),
+  });
+  this.resetHighlight();
+  this.updateGraph(this.state.states[this.state.index].tree, true);
+  this.updateGraph(this.state.states[this.state.index].highlighted, false);
+}
 }
 
 function mapStateToProps(state) {

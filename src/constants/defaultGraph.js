@@ -1,14 +1,14 @@
 export var data= {
     root: 1,
-    nodes: [{ id: 1, x: 20, y: 200,highlight:false, tree:false },
-        { id: 2, x: 80, y: 100,highlight:false, tree:false },
-        { id: 3, x: 200, y: 100,highlight:false, tree:false },
-        { id: 4, x: 320, y: 100,highlight:false, tree:false},
-        { id: 5, x: 380, y: 200,highlight:false, tree:false },
-        { id: 6, x: 320, y: 300,highlight:false, tree:false},
-        { id: 7, x: 200, y: 300,highlight:false, tree:false},
-        { id: 8, x: 80, y: 300,highlight:false, tree:false},
-        { id: 9, x: 150, y: 200,highlight:false, tree:false },
+    nodes: [{ id: 1, x: 20, y: 200,highlight:false},
+        { id: 2, x: 80, y: 100,highlight:false   },
+        { id: 3, x: 200, y: 100,highlight:false   },
+        { id: 4, x: 320, y: 100,highlight:false  },
+        { id: 5, x: 380, y: 200,highlight:false   },
+        { id: 6, x: 320, y: 300,highlight:false  },
+        { id: 7, x: 200, y: 300,highlight:false  },
+        { id: 8, x: 80, y: 300,highlight:false  },
+        { id: 9, x: 150, y: 200,highlight:false   },
     ],
 
     edges: [
