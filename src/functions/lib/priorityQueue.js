@@ -20,13 +20,13 @@ export class PriorityQueue {
     enqueue(element, priority) 
 { 
     // creating object from queue element 
-    var qElement = new QElement(element, priority); 
-    var contain = false; 
+    let qElement = new QElement(element, priority); 
+    let contain = false; 
   
     // iterating through the entire 
     // item array to add element at the 
     // correct location of the Queue 
-    for (var i = 0; i < this.items.length; i++) { 
+    for (lrt i = 0; i < this.items.length; i++) { 
         if (this.items[i].priority > qElement.priority) { 
             // Once the correct location is found it is 
             // enqueued 
