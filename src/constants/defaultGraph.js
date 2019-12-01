@@ -1,4 +1,4 @@
-export var data= {
+export let data= {
     root: 1,
     nodes: [{ id: 1, x: 20, y: 200,highlight:false},
         { id: 2, x: 80, y: 100,highlight:false   },

@@ -3,10 +3,10 @@ import * as d3 from "d3";
 const radius = 10;
 const margin = 15;
 
-var w = 0;
-var h = 0;
-var xScale = 0;
-var yScale = 0;
+let w = 0;
+let h = 0;
+let xScale = 0;
+let yScale = 0;
 
 export function setWidthHeight() {
   w = document.querySelector(".canvas").getBoundingClientRect().width;
@@ -47,7 +47,7 @@ export function drawGraph(data, draw) {
   const nodeList = data.nodes;
 
   const edgeList = data.edges;
-  var id = nodeList.length + 1;
+  let id = nodeList.length + 1;
 
   const svg = d3
     .select(".canvas")
@@ -56,8 +56,8 @@ export function drawGraph(data, draw) {
     .attr("height", h)
     .on("click", () => {
       if (draw) {
-        var x = document.querySelector(".canvas").getBoundingClientRect().left;
-        var y = document.querySelector(".canvas").getBoundingClientRect().top;
+        let x = document.querySelector(".canvas").getBoundingClientRect().left;
+        let y = document.querySelector(".canvas").getBoundingClientRect().top;
         nodeList.push({
           id: id,
           x: Math.round(xScale(d3.event.x - x)),
@@ -131,7 +131,7 @@ export function drawGraph(data, draw) {
       }
       for (let i = 0; i < nodeList.length; i++) {
         if (nodeList[i].id == d.target) {
-          x += yScale(nodeList[i].x);
+          x += xScale(nodeList[i].x);
         }
       }
       return Math.round(x / 2);
@@ -149,11 +149,12 @@ export function drawGraph(data, draw) {
             y += yScale(nodeList[i].y);
           }
         }
-        return Math.round(y / 2);
+        return Math.round(y/2);
       }
     })
-    .style("font-size", "12px")
-    .style("file", d3.rgb("#50525E"))
+    .style("font-size", "14px")
+    .style("font-family", "Lato")
+    .style("fill", d3.rgb("#50525E"))
     .attr("class", "weight")
     .text(d => d.weight)
     .on("click", function(d) {
@@ -196,10 +197,10 @@ export function drawGraph(data, draw) {
     );
 }
 
-var line;
-var destination;
-var selectedCircle;
-var selectedNode;
+let line;
+let destination;
+let selectedCircle;
+let selectedNode;
 /**
  * Drag line start. Create a line and set the origin to the circle x and y.
  * @param {*} d
@@ -226,15 +227,15 @@ function dragStarted(d) {
  * @param {*} d
  */
 function dragged(d, nodes) {
-  var x = document.querySelector(".canvas").getBoundingClientRect().left;
-  var y = document.querySelector(".canvas").getBoundingClientRect().top;
+  let x = document.querySelector(".canvas").getBoundingClientRect().left;
+  let y = document.querySelector(".canvas").getBoundingClientRect().top;
 
   let coords = [Math.round(xScale(d3.event.x)), Math.round(yScale(d3.event.y))];
   line.attr("x2", coords[0]).attr("y2", coords[1]);
 
   for (let i = 0; i < nodes.length; i++) {
     selectedCircle.attr("stroke", d3.rgb("#84C262"));
-    var circle = d3.select("#circle" + (i + 1));
+    let circle = d3.select("#circle" + (i + 1));
     if (
       coords[0] >= nodes[i].x - radius &&
       coords[0] <= nodes[i].x + radius &&
@@ -251,6 +252,7 @@ function dragged(d, nodes) {
 
 /**
  * When finished drag, set the circle class to be not active
+ * Add a new edge to the list of edges with calculated weight
  * @param {*} d
  * @param {*} edges
  */
@@ -275,7 +277,6 @@ function dragEnded(d, data, draw) {
           data.edges[i].target == newEdge.source)
           )
       ) {
-
         exists = true;
       }
     }
