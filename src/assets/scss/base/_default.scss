@@ -165,7 +165,9 @@ button {
     background: $background;
   }
 
-
+.text{
+    pointer-events: none;
+}
 
 // Page transitions
 .anim-appear {

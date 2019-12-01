@@ -3,7 +3,8 @@ import { data } from "../constants/defaultGraph";
 import * as d3 from 'd3';
 import Graph from '../components/d3/graph';
 
-import { removeAll, drawGraph, setWidthHeight} from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight, handleDelete} from "../components/d3/graph1";
+import { remove } from 'fs-extra-p';
 
 
 
@@ -25,19 +26,27 @@ class DrawPage extends Component {
                 </div>
                 <div className ="sub_text">
                    <h2 >Click on empty space to draw a vertex. Drag from vertex to vertex to create an edge.</h2>
-                   <h2 >Select a vertex to delete.</h2>
+                   <h2 >Select a vertex or an edge to delete.</h2>
                 </div>
                 <center >
                   <div className="canvas">
-               {/* <Graph data={data1} /> */}
                   </div>
-                <div>
-       
+                  <div className="action_buttons">
+                  <button onClick={() => this.delete()}>Delete</button>
+                  <button onClick={() => this.clearAll()}>CLear</button>
                 </div>
                 </center>
                 
             </div>
         )
+    }
+    delete(){
+      handleDelete(data);
+    }
+    clearAll(){
+     //   data = {};
+     //need to clear 
+        removeAll();
     }
 }
 

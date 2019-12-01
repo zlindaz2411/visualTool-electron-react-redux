@@ -770,6 +770,9 @@ button:focus, button:active, button.active, :focus:active {
   box-shadow: none;
   background: #FBFBFB; }
 
+.text {
+  pointer-events: none; }
+
 .anim-appear {
   opacity: 0; }
 
@@ -1146,6 +1149,9 @@ header {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
+  .about_wrap .action_buttons button {
+    margin: 3rem;
+    display: inline-block; }
 
 .performance_wrap {
   position: fixed;

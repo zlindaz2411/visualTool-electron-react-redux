@@ -26,7 +26,7 @@ const initialState = {
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
-const pageName = Algorithm.PRIM;
+const pageName = Algorithm.KRUSKAL;
 
 class KruskalPage extends Component {
   constructor(props) {

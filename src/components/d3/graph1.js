@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { confirmAlert } from "react-confirm-alert";
 
 const radius = 10;
 const margin = 15;
@@ -45,28 +46,28 @@ export function removeAll() {
  */
 export function drawGraph(data, draw) {
   const nodeList = data.nodes;
-
   const edgeList = data.edges;
+
   let id = nodeList.length + 1;
 
   const svg = d3
     .select(".canvas")
     .append("svg")
     .attr("width", w)
-    .attr("height", h)
-    .on("click", () => {
-      if (draw) {
-        let x = document.querySelector(".canvas").getBoundingClientRect().left;
-        let y = document.querySelector(".canvas").getBoundingClientRect().top;
-        nodeList.push({
-          id: id,
-          x: Math.round(xScale(d3.event.x - x)),
-          y: Math.round(yScale(d3.event.y - y))
-        });
-        removeAll();
-        drawGraph(data, draw);
-      }
-    });
+    .attr("height", h);
+  // .on("click", () => {
+  //   if (draw) {
+  //     let x = document.querySelector(".canvas").getBoundingClientRect().left;
+  //     let y = document.querySelector(".canvas").getBoundingClientRect().top;
+  //     nodeList.push({
+  //       id: id,
+  //       x: Math.round(xScale(d3.event.x - x)),
+  //       y: Math.round(yScale(d3.event.y - y))
+  //     });
+  //     removeAll();
+  //     drawGraph(data, draw);
+  //   }
+  // });
 
   const rect = d3
     .select("svg")
@@ -80,6 +81,9 @@ export function drawGraph(data, draw) {
     .data(edgeList)
     .enter()
     .append("line")
+    .attr("id", function(d) {
+      return "edge" + d.source + d.target;
+    })
     .attr("x1", function(d) {
       for (let i = 0; i < nodeList.length; i++) {
         if (nodeList[i].id == d.source) {
@@ -108,14 +112,15 @@ export function drawGraph(data, draw) {
         }
       }
     })
-    .style("stroke-width", "2px")
+    .style("stroke-width", "3px")
     .style("stroke", function(d) {
       return d.tree == true
         ? d3.rgb("#84C262")
         : d.highlight == true
         ? d3.rgb("#B22222")
         : d3.rgb("#94979D");
-    });
+    })
+    .on("click", handleSelectEdge);
 
   svg
     .selectAll("text.weight")
@@ -149,7 +154,7 @@ export function drawGraph(data, draw) {
             y += yScale(nodeList[i].y);
           }
         }
-        return Math.round(y/2);
+        return Math.round(y / 2);
       }
     })
     .style("font-size", "14px")
@@ -161,7 +166,7 @@ export function drawGraph(data, draw) {
       d.weight = 10;
       removeAll();
       drawGraph(data, draw);
-    });
+    })
 
   svg
     .selectAll("circle")
@@ -178,12 +183,12 @@ export function drawGraph(data, draw) {
       return yScale(d.y);
     })
     .attr("r", radius)
-    .attr("fill", function(d) {
-      return d.highlight == true ? d3.rgb("#B22222") : "white";
+    .attr("fill", "white")
+    .attr("stroke", function(d){
+      return d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D")
     })
-    .attr("stroke", d3.rgb("#94979D"))
-    .style("stroke-width", "2px")
-    .on("click", () => {})
+    .style("stroke-width", "3px")
+    .on("click", handleSelectNode)
     .call(
       d3
         .drag()
@@ -219,7 +224,7 @@ function dragStarted(d) {
     .attr("y1", d.y)
     .attr("x2", d.x)
     .attr("y2", d.y)
-    .style("stroke-width", "2px");
+    .style("stroke-width", "3px");
 }
 
 /**
@@ -271,11 +276,10 @@ function dragEnded(d, data, draw) {
     let exists = false;
     for (let i = 0; i < data.edges.length; i++) {
       if (
-        ((data.edges[i].source == newEdge.source &&
-          data.edges[i].target == newEdge.target)) ||(
+        (data.edges[i].source == newEdge.source &&
+          data.edges[i].target == newEdge.target) ||
         (data.edges[i].source == newEdge.target &&
           data.edges[i].target == newEdge.source)
-          )
       ) {
         exists = true;
       }
@@ -302,44 +306,106 @@ function calculateWeight(source, destination) {
 }
 
 let selected = false;
-let nodeToDeleteIndex = -1;
 let nodeToDelete = null;
+let edgeToDelete = null;
 
-//When node is selected, fill with colour green, no more than 2 nodes can be selected
-function handleSelectNode(node, nodeList) {
-  if (!selected) {
-    selected = true;
-
-    console.log("circle#" + node);
-    //  d3.select("circle#" + node)
-    //     .attr("stroke", "#84C262");
-    nodeToDeleteIndex = nodeList.indexOf(node);
-    nodeToDelete = this;
+/**
+ * When node is selected, fill with colour green, no more than 2 nodes can be selected
+ * @param {*} node
+ * @param {*} nodeList
+ */
+function handleSelectNode(node) {
+  if (!edgeToDelete) {
+    if (!selected) {
+      selected = true;
+      d3.select("#circle" + node.id).attr("stroke", "#84C262");
+      nodeToDelete = node;
+    } else {
+      selected = false;
+      d3.selectAll("circle").attr("stroke", d3.rgb("#94979D"));
+      nodeToDelete = null;
+    }
   } else {
-    selected = false;
-    d3.selectAll("circle").attr("stroke", d3.rgb("#94979D"));
-    nodeToDelete = null;
-    nodeToDeleteIndex = -1;
+    confirmAlert({
+      title: `Warning!`,
+      message: `You already selected an edge`,
+      buttons: [
+        {
+          label: "Cancel"
+        }
+      ]
+    });
   }
 }
 
-//Delete the selected node;
-function handleDelete() {
-  if (nodeToDeleteIndex != -1) {
-    nodeList.splice(nodeToDeleteIndex, 1);
-    for (let i = 0; i < edgeList.length; i++) {
-      if (edgeList[i].source == nodeList[nodeToDeleteIndex].id) {
-        edgeList.splice(i, 1);
+/**
+ * When edge is selected, fill with colour green, no more than 2 edges can be selected
+ * @param {*} edge
+ * @param {*} edgeList
+ */
+function handleSelectEdge(edge) {
+  if (!nodeToDelete) {
+    if (!selected) {
+      selected = true;
+      d3.select("#edge" + edge.source + edge.target).style("stroke", "#84C262");
+      edgeToDelete = edge;
+    } else {
+      selected = false;
+      d3.selectAll("line").style("stroke", d3.rgb("#94979D"));
+      edgeToDelete = null;
+    }
+  } else {
+    confirmAlert({
+      title: `Warning!`,
+      message: `You already selected a vertex`,
+      buttons: [
+        {
+          label: "Cancel"
+        }
+      ]
+    });
+  }
+}
+
+/**
+ * Delete the selected node or selected edge;
+ * Cascade action for node: delete all the connected edges.
+ * @param {*} data
+ */
+export function handleDelete(data) {
+  if (nodeToDelete) {
+    data.nodes.splice(data.nodes.indexOf(nodeToDelete), 1);
+    for (let i = 0; i < data.edges.length; i++) {
+      if (data.edges[i].source == nodeToDelete.id) {
+        data.edges.splice(i, 1);
+        i--;
       }
-      if (edgeList[i].destination == nodeList[nodeToDeleteIndex].id) {
-        edgeList.splice(i, 1);
+      if (data.edges[i].target == nodeToDelete.id) {
+        data.edges.splice(i, 1);
+        i--;
       }
     }
-    svg.selectAll("circle").remove();
-    svg.selectAll("text").remove();
-    svg.selectAll("line").remove();
-    updateGraph();
-  } else {
-    alert("You must select a node to delete");
+    selected = false;
+    nodeToDelete = null;
+    removeAll();
+    drawGraph(data, true);
+  } 
+  else if(edgeToDelete){
+    data.edges.splice(data.edges.indexOf(edgeToDelete), 1);
+    selected = false;
+    edgeToDelete = null;
+    removeAll();
+    drawGraph(data, true);
+  }
+  else {
+    confirmAlert({
+      title: `Warning!`,
+      message: `You must select at least one element`,
+      buttons: [
+        {
+          label: "Cancel"
+        }
+      ]
+    });
   }
 }
