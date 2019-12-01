@@ -770,9 +770,6 @@ button:focus, button:active, button.active, :focus:active {
   box-shadow: none;
   background: #FBFBFB; }
 
-.text {
-  pointer-events: none; }
-
 .anim-appear {
   opacity: 0; }
 

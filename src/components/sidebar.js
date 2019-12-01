@@ -11,7 +11,7 @@ class Sidebar extends Component {
                 <nav>
                     <ul>
                         <li>   
-                            <NavLink  to="/" alt="HomePage" replace>
+                            <NavLink className = "inactive" activeClassName="active" to="/" alt="HomePage" replace>
                              <h6><font color ="#84C262"> visual</font>MinSpanningTree</h6>
                             </NavLink>     
                         </li>

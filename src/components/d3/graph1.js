@@ -9,26 +9,40 @@ let h = 0;
 let xScale = 0;
 let yScale = 0;
 
-export function setWidthHeight() {
+export function setWidthHeight(nodes, draw) {
   w = document.querySelector(".canvas").getBoundingClientRect().width;
   h = document.querySelector(".canvas").getBoundingClientRect().height;
 
-  setScales();
+  setScales(nodes, draw);
+
 }
 
 /**
  * Scale graph
  */
-function setScales() {
-  xScale = d3
-    .scaleLinear()
-    .domain([0, w])
-    .range([0, w]); // Set margins for x specific
-
-  yScale = d3
-    .scaleLinear()
-    .domain([0, h])
-    .range([0, h]);
+function setScales(nodes, draw) {
+  if(draw){
+    xScale = d3
+      .scaleLinear()
+      .domain([0, w])
+      .range([0, w]); // Set margins for x specific
+    yScale = d3
+      .scaleLinear()
+      .domain([0, h])
+      .range([0, h]);
+  }
+  else{
+    nodes = nodes.sort((a,b) => {return b.x - a.x})
+    xScale = d3
+      .scaleLinear()
+      .domain([0, nodes[0].x])
+      .range([margin, w-margin]); // Set margins for x specific
+    nodes = nodes.sort((a,b) => {return b.y - a.y})
+    yScale = d3
+      .scaleLinear()
+      .domain([0, nodes[0].y + nodes[0].y/2])
+      .range([margin, h-margin]);
+  }
 }
 
 /**
@@ -54,20 +68,20 @@ export function drawGraph(data, draw) {
     .select(".canvas")
     .append("svg")
     .attr("width", w)
-    .attr("height", h);
-  // .on("click", () => {
-  //   if (draw) {
-  //     let x = document.querySelector(".canvas").getBoundingClientRect().left;
-  //     let y = document.querySelector(".canvas").getBoundingClientRect().top;
-  //     nodeList.push({
-  //       id: id,
-  //       x: Math.round(xScale(d3.event.x - x)),
-  //       y: Math.round(yScale(d3.event.y - y))
-  //     });
-  //     removeAll();
-  //     drawGraph(data, draw);
-  //   }
-  // });
+    .attr("height", h)
+    .on("click", () => {
+      if (draw) {
+        let x = document.querySelector(".canvas").getBoundingClientRect().left;
+        let y = document.querySelector(".canvas").getBoundingClientRect().top;
+        nodeList.push({
+          id: id,
+          x: Math.round(xScale(d3.event.x - x)),
+          y: Math.round(yScale(d3.event.y - y))
+        });
+        removeAll();
+        drawGraph(data, draw);
+      }
+    });
 
   const rect = d3
     .select("svg")
@@ -113,6 +127,7 @@ export function drawGraph(data, draw) {
       }
     })
     .style("stroke-width", "3px")
+    .style("cursor", "pointer")
     .style("stroke", function(d) {
       return d.tree == true
         ? d3.rgb("#84C262")
@@ -120,7 +135,9 @@ export function drawGraph(data, draw) {
         ? d3.rgb("#B22222")
         : d3.rgb("#94979D");
     })
-    .on("click", handleSelectEdge);
+    .on("click", function(d){
+      if(draw)handleSelectEdge(d)
+    } );
 
   svg
     .selectAll("text.weight")
@@ -159,13 +176,16 @@ export function drawGraph(data, draw) {
     })
     .style("font-size", "14px")
     .style("font-family", "Lato")
+    .style("cursor", "pointer")
     .style("fill", d3.rgb("#50525E"))
     .attr("class", "weight")
     .text(d => d.weight)
     .on("click", function(d) {
+      if(draw){
       d.weight = 10;
       removeAll();
       drawGraph(data, draw);
+      }
     })
 
   svg
@@ -188,18 +208,25 @@ export function drawGraph(data, draw) {
       return d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D")
     })
     .style("stroke-width", "3px")
-    .on("click", handleSelectNode)
+    .style("cursor", "pointer") 
+    .on("click", function(d){
+      if(draw) handleSelectNode(d)
+    })
     .call(
       d3
         .drag()
-        .on("start", dragStarted)
+        .clickDistance(4)
+        .on("start", function(d){
+          if(draw) dragStarted(d)
+        })
         .on("drag", function(d) {
-          dragged(d, nodeList);
+          if(draw) dragged(d, nodeList);
         })
         .on("end", function(d) {
-          dragEnded(d, data, draw);
+          if(draw) dragEnded(d, data, draw);
         })
-    );
+    )
+    
 }
 
 let line;
@@ -213,7 +240,7 @@ let selectedNode;
 function dragStarted(d) {
   selectedNode = d;
   selectedCircle = d3.select(this);
-  selectedCircle.raise().classed("active", true);
+
   selectedCircle.attr("stroke", d3.rgb("#84C262"));
   line = d3
     .select("svg")
@@ -286,7 +313,8 @@ function dragEnded(d, data, draw) {
     }
     if (!exists) data.edges.push(newEdge);
   }
-
+  selectedNode = null;
+  selectedCircle = null;
   removeAll();
   drawGraph(data, draw);
 }
@@ -301,7 +329,7 @@ function calculateWeight(source, destination) {
     Math.sqrt(
       Math.pow(destination.y - source.y, 2) +
         Math.pow(destination.x - source.x, 2)
-    )
+    )/10
   );
 }
 

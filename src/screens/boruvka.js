@@ -40,7 +40,7 @@ class BoruvkaPage extends Component {
   }
 
   componentDidMount() {
-    setWidthHeight();
+    setWidthHeight(data.nodes, false);
     drawGraph(data, false);
   }
 

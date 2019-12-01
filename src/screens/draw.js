@@ -14,7 +14,7 @@ class DrawPage extends Component {
       }
 
       componentDidMount() {
-        setWidthHeight();
+        setWidthHeight(data.nodes, true);
         drawGraph(data, true);
       }
     render(){
