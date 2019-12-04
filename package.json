@@ -1,7 +1,7 @@
 {
   "name": "visual-tool",
   "productName": "Visual Spanning Tree",
-  "version": "1.0.0",
+  "version": "1.13.0",
   "description": "Visual Spanning Tree is an algorithm visualization app developed by Linda Zhou",
   "main": "index.js",
   "author": "Linda Zhou",
