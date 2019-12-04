@@ -1,3 +1,5 @@
+require("babel-register")
+
 import kruskals from "../src/functions/algorithms";
 
 

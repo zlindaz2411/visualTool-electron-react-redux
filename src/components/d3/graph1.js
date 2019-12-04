@@ -1,5 +1,7 @@
 import * as d3 from "d3";
 import { confirmAlert } from "react-confirm-alert";
+let contextMenuFactory = require('d3-context-menu')
+
 
 const radius = 10;
 const margin = 15;
@@ -69,7 +71,7 @@ export function drawGraph(data, draw) {
     .append("svg")
     .attr("width", w)
     .attr("height", h)
-    .on("dblclick", () => {
+    .on("click", () => {
       if (draw) {
         let x = document.querySelector(".canvas").getBoundingClientRect().left;
         let y = document.querySelector(".canvas").getBoundingClientRect().top;
@@ -90,6 +92,7 @@ export function drawGraph(data, draw) {
     .attr("height", h)
     .style("fill", "none");
 
+  
   svg
     .selectAll("line")
     .data(edgeList)
@@ -135,10 +138,12 @@ export function drawGraph(data, draw) {
         ? d3.rgb("#B22222")
         : d3.rgb("#94979D");
     })
-    .on("click", function(d){
+    .on("contextmenu", function(d){
       if(draw) handleSelectEdge(d)
     } );
 
+    let weightX =  0;
+    let weightY = 0;
   svg
     .selectAll("text.weight")
     .data(edgeList)
@@ -156,7 +161,8 @@ export function drawGraph(data, draw) {
           x += xScale(nodeList[i].x);
         }
       }
-      return Math.round(x / 2);
+      weightX = Math.round(x / 2);
+      return weightX;
     })
     .attr("y", function(d) {
       for (let i = 0; i < nodeList.length; i++) {
@@ -171,7 +177,8 @@ export function drawGraph(data, draw) {
             y += yScale(nodeList[i].y);
           }
         }
-        return Math.round(y / 2);
+        weightY = Math.round(y / 2);
+        return weightY;
       }
     })
     .style("font-size", "14px")
@@ -183,10 +190,35 @@ export function drawGraph(data, draw) {
     .on("click", function(d) {
       if(draw){
       d.weight = 10;
-      removeAll();
-      drawGraph(data, draw);
+      svg
+          .append("foreignObject")
+          .attr("x", weightX)
+          .attr("y", weightY)
+          .attr("width", 140)
+          .attr("height", 20)
+          .html('<input type="text" value="Text goes here" />')
+          removeAll();
+          drawGraph(data, draw);
       }
     })
+
+    var menu = [
+      {
+          title: 'Header',
+      },
+      {
+          title: 'Normal item',
+          action: function() {}
+      },
+      {
+          divider: true
+      },
+      {
+          title: 'Last item',
+          action: function() {}
+      }
+  ];
+  
 
   svg
     .selectAll("circle")
@@ -209,15 +241,18 @@ export function drawGraph(data, draw) {
     })
     .style("stroke-width", "3px")
     .style("cursor", "pointer") 
+    .on("contextmenu", function(d){
+      if(draw) handleSelectNode(d)
+    })
     // .on("click", function(d){
     //   if(draw) handleSelectNode(d)
     // })
     .call(
       d3
         .drag()
-        .clickDistance(4)
+        .clickDistance(10)
         .on("start", function(d){
-          if(draw) dragStarted(d)
+          if(draw)  dragStarted(d)
         })
         .on("drag", function(d) {
           if(draw) dragged(d, nodeList);
@@ -226,13 +261,15 @@ export function drawGraph(data, draw) {
           if(draw) dragEnded(d, data, draw);
         })
     )
-    
+
 }
+
 
 let line;
 let destination;
 let selectedCircle;
 let selectedNode;
+
 /**
  * Drag line start. Create a line and set the origin to the circle x and y.
  * @param {*} d
@@ -253,6 +290,7 @@ function dragStarted(d) {
     .attr("x2", d.x)
     .attr("y2", d.y)
     .style("stroke-width", "3px");
+  
 }
 
 /**
@@ -262,17 +300,20 @@ function dragStarted(d) {
 function dragged(d, nodes) {
   let coords = [Math.round(xScale(d3.event.x)), Math.round(yScale(d3.event.y))];
   line.attr("x2", coords[0]).attr("y2", coords[1]);
+  selectedCircle.attr("stroke", d3.rgb("#84C262")); 
   for (let i = 0; i < nodes.length; i++) {
     selectedCircle.attr("stroke", d3.rgb("#84C262")); 
-    let circle = d3.select("#circle" + (i+1));
+    let circle = d3.select("#circle" + nodes[i].id);
     if (
       coords[0] >= nodes[i].x - radius &&
       coords[0] <= nodes[i].x + radius &&
       coords[1] >= nodes[i].y - radius &&
       coords[1] <= nodes[i].y + radius
     ) {
+      selectedCircle.attr("stroke", d3.rgb("#84C262")); 
       circle.attr("stroke", d3.rgb("#84C262"));
       destination = nodes[i];
+      
     } else {
       circle.attr("stroke", d3.rgb("#94979D"));
     }
@@ -340,7 +381,7 @@ let edgeToDelete = null;
  * @param {*} nodeList
  */
 function handleSelectNode(node) {
-  d3.event.preventDefault();
+  if (d3.event.defaultPrevented === false) {
   if (!edgeToDelete) {
     if (!selected) {
       selected = true;
@@ -362,6 +403,7 @@ function handleSelectNode(node) {
       ]
     });
   }
+}
 }
 
 /**
