@@ -69,7 +69,7 @@ export function drawGraph(data, draw) {
     .append("svg")
     .attr("width", w)
     .attr("height", h)
-    .on("click", () => {
+    .on("dblclick", () => {
       if (draw) {
         let x = document.querySelector(".canvas").getBoundingClientRect().left;
         let y = document.querySelector(".canvas").getBoundingClientRect().top;
@@ -136,7 +136,7 @@ export function drawGraph(data, draw) {
         : d3.rgb("#94979D");
     })
     .on("click", function(d){
-      if(draw)handleSelectEdge(d)
+      if(draw) handleSelectEdge(d)
     } );
 
   svg
@@ -209,9 +209,9 @@ export function drawGraph(data, draw) {
     })
     .style("stroke-width", "3px")
     .style("cursor", "pointer") 
-    .on("click", function(d){
-      if(draw) handleSelectNode(d)
-    })
+    // .on("click", function(d){
+    //   if(draw) handleSelectNode(d)
+    // })
     .call(
       d3
         .drag()
@@ -239,7 +239,8 @@ let selectedNode;
  */
 function dragStarted(d) {
   selectedNode = d;
-  selectedCircle = d3.select(this);
+  selectedCircle = d3.select("#circle" +d.id);
+
 
   selectedCircle.attr("stroke", d3.rgb("#84C262"));
   line = d3
@@ -259,15 +260,11 @@ function dragStarted(d) {
  * @param {*} d
  */
 function dragged(d, nodes) {
-  let x = document.querySelector(".canvas").getBoundingClientRect().left;
-  let y = document.querySelector(".canvas").getBoundingClientRect().top;
-
   let coords = [Math.round(xScale(d3.event.x)), Math.round(yScale(d3.event.y))];
   line.attr("x2", coords[0]).attr("y2", coords[1]);
-
   for (let i = 0; i < nodes.length; i++) {
-    selectedCircle.attr("stroke", d3.rgb("#84C262"));
-    let circle = d3.select("#circle" + (i + 1));
+    selectedCircle.attr("stroke", d3.rgb("#84C262")); 
+    let circle = d3.select("#circle" + (i+1));
     if (
       coords[0] >= nodes[i].x - radius &&
       coords[0] <= nodes[i].x + radius &&
@@ -343,6 +340,7 @@ let edgeToDelete = null;
  * @param {*} nodeList
  */
 function handleSelectNode(node) {
+  d3.event.preventDefault();
   if (!edgeToDelete) {
     if (!selected) {
       selected = true;
@@ -372,6 +370,8 @@ function handleSelectNode(node) {
  * @param {*} edgeList
  */
 function handleSelectEdge(edge) {
+  d3.event.preventDefault();
+
   if (!nodeToDelete) {
     if (!selected) {
       selected = true;

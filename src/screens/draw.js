@@ -25,8 +25,8 @@ class DrawPage extends Component {
                     
                 </div>
                 <div className ="sub_text">
-                   <h2 >Click on empty space to draw a vertex. Drag from vertex to vertex to create an edge.</h2>
-                   <h2 >Select a vertex or an edge to delete.</h2>
+                   <h2 >Double click on empty space to draw a vertex. Drag from vertex to vertex to create an edge.</h2>
+                   <h2 >Click on a vertex or an edge to delete.</h2>
                 </div>
                 <center >
                   <div className="canvas">

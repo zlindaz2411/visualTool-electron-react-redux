@@ -12,7 +12,7 @@ app.on('ready', () => {
         width: 1000,
         height: 700,
         // frame: false,
-        backgroundColor: '#FBFBFB',
+        backgroundColor: '#FCFCFF',
     fullscreen:false,
         webPreferences: { 
             backgroundThrottling: true,
