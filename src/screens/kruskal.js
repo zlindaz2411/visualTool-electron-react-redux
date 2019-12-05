@@ -17,7 +17,7 @@ import { Algorithm } from "../constants/algorithms";
 const initialState = {
   edgeList: [],
   nodeList: [],
-  start: false,
+  manual: false,
   highlightedEdges: [],
   highlightedNodes: [],
   data: data,
@@ -28,11 +28,15 @@ const colors = ["#84C262", "#50525E", "#B22222"];
 
 const pageName = Algorithm.KRUSKAL;
 
+const SPEED = 1000;
+
 class KruskalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ...initialState,
+      speed : SPEED,
+      automatic:false,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null
@@ -40,6 +44,8 @@ class KruskalPage extends Component {
   }
 
   componentDidMount() {
+    this.resetHighlight();
+    this.resetTree();
     setWidthHeight(data.nodes, false);
     drawGraph(data, false);
   }
@@ -85,24 +91,58 @@ class KruskalPage extends Component {
             </div>
           </center>
           <center>
-            {this.state.start ? (
+            {this.state.manual ? (
               <div className="action_buttons">
                 <button onClick={() => this.previous()}>Previous</button>
                 <button onClick={() => this.next()}>Next</button>
               </div>
-            ) : (
+            ) : this.state.automatic ? (
+              <div className="action_buttons">
+                <button onClick={() =>this.setState({
+                  speed : SPEED /2
+                })}>0.5x</button>
+                <button onClick={() => this.setState({
+                  speed : SPEED})}>1.0x</button>
+                <button onClick={() => this.setState({
+                  speed : SPEED *2})}>2.0x</button>
+              </div>):(
+                <div className="action_buttons">
               <button
                 onClick={() =>
                   this.setState({
-                    start: true,
+                    manual: true,
                     pseudoMap: setUpPseudocodeMap(pageName, 0),
                     states: kruskals(this.state.data.nodes, this.state.data.edges)
                   })
                 }
               >
-                Start
+                Manual
               </button>
-            )}
+               <button
+               onClick={() =>{
+                 this.setState({
+                   automatic:true,
+                   pseudoMap: setUpPseudocodeMap(pageName, 0),
+                   states: kruskals(this.state.data.nodes, this.state.data.edges)
+                 });
+                 let timer = setInterval(() => {
+                   if(this.state.index < this.state.states.length-1){
+                    this.next();
+                    console.log(this.state.index);
+                    console.log(this.state.states.length);
+                   }else{
+                    console.log(this.state.speed);
+                    clearInterval(timer);
+                   }
+                 }, this.state.speed);
+               }
+              }
+             >
+               Automatic
+             </button>
+            
+        </div>
+          )}
           </center>
         </div>
       </div>

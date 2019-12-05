@@ -40,6 +40,8 @@ class PrimPage extends Component {
   }
 
   componentDidMount() {
+    this.resetHighlight();
+    this.resetTree();
     setWidthHeight(data.nodes, false);
     drawGraph(data, false);
   }

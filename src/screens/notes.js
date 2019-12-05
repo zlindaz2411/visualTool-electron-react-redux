@@ -5,8 +5,9 @@ import { withRouter } from 'react-router';
 import { confirmAlert } from 'react-confirm-alert';
 import classNames from 'classnames';
 import toastr from 'toastr';
+import { data } from "../constants/defaultGraph";
 
-import { saveNote, addNote, fetchNotes, deleteNote } from './../actions/index';
+import { saveGraph, addGraph, fetchGraphs, deleteGraph } from '../actions/draw';
 
 const initialState = {
     newNote: '',
@@ -28,7 +29,7 @@ class Note extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchNotes();
+        this.props.fetchGraphs();
 
         toastr.options = {
             "closeButton": false,
@@ -112,7 +113,7 @@ class Note extends Component {
                     {
                         label: `Proceed, without saving`,
                         onClick: () => {
-                            this.props.addNote(tempObj);
+                            this.props.addGraph(tempObj);
                             this.setState({
                                 newItemAdded: true,
                                 newNote: ''
@@ -125,7 +126,7 @@ class Note extends Component {
                 ]
             })
         } else {
-            this.props.addNote(tempObj);
+            this.props.addGraph(data);
             this.setState({
                 newItemAdded: true,
                 newNote: ''
@@ -212,7 +213,7 @@ class Note extends Component {
             _id: this.state._id,
             content: this.state.content
         }
-        this.props.saveNote(tempObj);
+        this.props.saveGraph(tempObj);
         this.setState({
             initial_content: this.state.content,
             unsaved_changes: false
@@ -278,7 +279,7 @@ class Note extends Component {
 
                         <nav>
                             <ul>
-                                {this.props.notes.map((note, index) => (
+                                {this.props.graphs.map((note, index) => (
                                     <li key={index}>
                                         <span className={classNames({ 'item_wrap': true, 'active': note._id === this.state._id })} onClick={() => this.openNote(note)}>
                                             <span className="hash">#</span> <span className="title">{note.title}</span>
@@ -351,9 +352,9 @@ class Note extends Component {
 
 function mapStateToProps(state) {
     return {
-        notes: state.notes.arr,
-        latestNote: state.notes.latestNote
+        graphs: state.graph.arr,
+        latestGraph: state.graph.latestGraph
     }
 }
 
-export default withRouter(connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(Note));
+export default withRouter(connect(mapStateToProps, { addGraph, saveGraph, fetchGraphs, deleteGraph })(Note));

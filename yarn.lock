@@ -5798,6 +5798,11 @@ react-confirm-alert@2.0.5:
   resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.0.5.tgz#a450c4c773484da774298c3fa6c584f442ccfa4b"
   integrity sha1-pFDEx3NITad0KYw/psWE9ELM+ks=
 
+react-csv@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.1.2.tgz#6cb47e625f51878d24bb68a120efb45a30ad243a"
+  integrity sha512-pTOTYntW+gQWzCxyEGfS5ZeOfQw4Mu3B+DJd4jrJKNuAWFQ+EEyF2Earfg0+FVEkPwMr62OLtbYCHmc6vQWj2w==
+
 react-d3-graph@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-d3-graph/-/react-d3-graph-2.3.0.tgz#7f387d838033dc1fb1e6d81ab910a3062a49fdc2"

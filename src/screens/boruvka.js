@@ -40,6 +40,8 @@ class BoruvkaPage extends Component {
   }
 
   componentDidMount() {
+    this.resetHighlight();
+    this.resetTree();
     setWidthHeight(data.nodes, false);
     drawGraph(data, false);
   }
