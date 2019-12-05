@@ -23,6 +23,7 @@ export function fetchGraphs() {
 
     return dispatch => {
         ipcRenderer.send('fetchGraphs');
+        
         ipcRenderer.on('graphs:fetched', (event, graphs) => {
             console.log(graphs);
             dispatch({
@@ -31,7 +32,6 @@ export function fetchGraphs() {
             });
         });
     }
-
 }
 
 export function saveGraph(graph) {

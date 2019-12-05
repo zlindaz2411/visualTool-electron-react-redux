@@ -810,12 +810,6 @@ button:focus, button:active, button.active, :focus:active {
   border-radius: 10px;
   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
 
-.load {
-  margin-top: 2rem;
-  overflow: auto;
-  height: 35rem;
-  background: #F9F9F9; }
-
 .overlay {
   position: fixed;
   top: 0;
@@ -1142,6 +1136,11 @@ button:focus, button:active, button.active, :focus:active {
   .about_wrap .action_buttons button {
     margin: 3rem;
     display: inline-block; }
+  .about_wrap .load {
+    margin-top: 2rem;
+    overflow: auto;
+    height: 35rem;
+    background: #F9F9F9; }
 
 .performance_wrap {
   position: fixed;
