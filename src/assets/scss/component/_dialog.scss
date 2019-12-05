@@ -35,3 +35,10 @@
     -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
     animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
   }
+
+
+  .close{
+    position: relative;
+    float: right;
+    cursor: pointer;
+}

@@ -81,7 +81,10 @@ class DrawPage extends Component {
                     </button>
                   ))}
                 </div>
-            {/* <button onClick={() => this.handleClose()}>Close</button> */}
+                <div className="action_buttons">
+                    <button onClick={() => this.handleDelete()}>Delete</button>
+                    <button onClick={() => this.handleDelete()}>Load</button>
+                </div>
             </Dialog>
             {/* <Modal
           isOpen={this.state.isModalOpen}
