@@ -41,6 +41,8 @@ class KruskalPage extends Component {
       start: false,
       pseudoMap: null
     };
+
+    
   }
 
   componentDidMount() {

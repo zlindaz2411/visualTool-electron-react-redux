@@ -17,6 +17,9 @@ class DrawPage extends Component {
           isDialogOpen: false,
           selectedGraph: null,
        }
+      //  this.openModal = this.openModal.bind(this);
+      //  this.handleClose = this.handleClose.bind(this);
+      //  this.handleSelectGraph = this.handleSelectGraph.bind(this);
       }
 
       componentDidMount() {
@@ -24,16 +27,26 @@ class DrawPage extends Component {
         drawGraph(data, true);
       }
 
-
+      /**
+       * Set dialog state to be true, this toggle the dialog to be opened
+       */
       openModal(){
         this.props.fetchGraphs();
         this.setState({ isDialogOpen: true})
       }
+
+      /**
+       * Set dialog state to be false, this toggle the dialog to be closed
+       */
       handleClose(){
         console.log("here");
         this.setState({ isDialogOpen: false})
       }
 
+      /**
+       * Set the selected graph
+       * @param {*} graph 
+       */
       handleSelectGraph(graph){
         this.setState({selectedGraph:graph})
       }
@@ -54,11 +67,11 @@ class DrawPage extends Component {
                   </div>
                   <div className="action_buttons">
                   <button type="button" onClick={() => this.openModal()}>Load</button>
-                  <Dialog title ="Load Graph" isOpen={this.state.isDialogOpen} handleClose={this.handleClose}>
+                  <Dialog title ="Load Graph" isOpen={this.state.isDialogOpen} >
                     <div>
                       <div>
                        {this.props.graphs.map((graph, index) => ( 
-                                   <button onClick={() => this.handleSelectGraph(graph)}>{graph._id}</button>
+                                   <button onClick={() =>  this.handleSelectGraph(graph)}>{graph._id}</button>
                                 ))}
                         </div>
                       </div>
