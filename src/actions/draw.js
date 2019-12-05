@@ -26,7 +26,7 @@ export function fetchGraphs() {
         ipcRenderer.on('graphs:fetched', (event, graphs) => {
             console.log(graphs);
             dispatch({
-                type: FETCH_NOTES,
+                type: FETCH_GRAPHS,
                 payload: graphs,
             });
         });

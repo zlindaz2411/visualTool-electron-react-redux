@@ -255,10 +255,9 @@ button.toast-close-button {
   left: 0; }
 
 .react-confirm-alert-body > h1 {
-  margin-top: 0; }
+  margin-bottom: 3rem; }
 
 .react-confirm-alert-body > h3 {
-  margin: 0;
   font-size: 16px; }
 
 .react-confirm-alert-button-group {
@@ -267,19 +266,27 @@ button.toast-close-button {
   display: -ms-flex;
   display: -o-flex;
   display: flex;
-  justify-content: flex-start;
-  margin-top: 20px; }
+  justify-content: flex-start; }
 
 .react-confirm-alert-button-group > button {
-  outline: none;
-  background: #333;
-  border: none;
+  margin-top: 3rem;
+  background-color: #ffffff;
+  border-color: #50525E;
+  color: #50525E;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
   display: inline-block;
-  padding: 6px 18px;
-  color: #eee;
-  margin-right: 10px;
-  border-radius: 5px;
-  font-size: 12px;
+  border-radius: 3rem;
+  font-size: 1.5rem;
+  width: 12rem;
+  height: 3.5rem;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   cursor: pointer; }
 
 @-webkit-keyframes react-confirm-alert-fadeIn {
@@ -791,59 +798,45 @@ button:focus, button:active, button.active, :focus:active {
 .main {
   width: 100%; }
 
-header {
-  display: block;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  background: #1c1c1c; }
-  header nav {
-    display: block;
-    width: 100%;
-    height: 30px;
-    background-color: #FCFCFF;
-    -webkit-app-region: drag;
-    -webkit-user-select: none;
-    position: fixed;
-    z-index: 1; }
-  header nav #titleshown {
-    width: 30%;
-    height: 100%;
-    line-height: 30px;
-    color: #f7f7f7;
-    float: left;
-    padding: 0 0 0 1em; }
-  header nav #buttons {
-    float: right;
-    width: 150px;
-    height: 100%;
-    line-height: 30px;
-    background-color: #FCFCFF;
-    -webkit-app-region: drag; }
-  header nav #buttons #minimize,
-  header nav #buttons #maximize,
-  header nav #buttons #quit {
-    float: left;
-    height: 100%;
-    width: 33%;
-    text-align: center;
-    color: red;
-    cursor: default; }
-  header nav #buttons #minimize:hover {
-    background-color: #333333aa; }
-  header nav #buttons #maximize:hover {
-    background-color: #333333aa; }
-  header nav #buttons #quit:hover {
-    background-color: #ff0000dd; }
-  header main {
-    padding-top: 30px;
-    overflow: auto;
-    height: calc(100vh - 30px);
-    position: absolute;
-    top: 30px;
-    left: 0;
-    padding: 0;
-    width: 100%; }
+.dialog {
+  position: absolute;
+  height: 50rem;
+  width: 65rem;
+  top: 15%;
+  left: 25%;
+  padding: 2rem;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
+
+.load {
+  margin-top: 2rem;
+  overflow: auto;
+  height: 35rem;
+  background: #F9F9F9; }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background: rgba(255, 255, 255, 0.9);
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  -ms-align-items: center;
+  align-items: center;
+  opacity: 0;
+  -webkit-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+  -moz-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+  -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+  animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards; }
 
 .sidebar {
   position: fixed;

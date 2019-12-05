@@ -1,22 +1,43 @@
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+
+import Dialog from '../components/dialog';
+
 import { data } from "../constants/defaultGraph";
-import * as d3 from 'd3';
 import Graph from '../components/d3/graph';
-
-import { removeAll, drawGraph, setWidthHeight, handleDelete} from "../components/d3/graph1";
-import { remove } from 'fs-extra-p';
-
+import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
+import { saveGraph, fetchGraphs, deleteGraph } from '../actions/draw';
 
 
 class DrawPage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+          isDialogOpen: false,
+          selectedGraph: null,
+       }
       }
 
       componentDidMount() {
         setWidthHeight(data.nodes, true);
         drawGraph(data, true);
       }
+
+
+      openModal(){
+        this.props.fetchGraphs();
+        this.setState({ isDialogOpen: true})
+      }
+      handleClose(){
+        console.log("here");
+        this.setState({ isDialogOpen: false})
+      }
+
+      handleSelectGraph(graph){
+        this.setState({selectedGraph:graph})
+      }
+
     render(){
         return(
             <div className = "about_wrap">
@@ -32,6 +53,32 @@ class DrawPage extends Component {
                   <div className="canvas">
                   </div>
                   <div className="action_buttons">
+                  <button type="button" onClick={() => this.openModal()}>Load</button>
+                  <Dialog title ="Load Graph" isOpen={this.state.isDialogOpen} handleClose={this.handleClose}>
+                    <div>
+                      <div>
+                       {this.props.graphs.map((graph, index) => ( 
+                                   <button onClick={() => this.handleSelectGraph(graph)}>{graph._id}</button>
+                                ))}
+                        </div>
+                      </div>
+                  </Dialog>
+               {/* <Modal
+          isOpen={this.state.isModalOpen}
+          // onAfterOpen={this.afterOpenModal}
+          onRequestClose={() =>this.handleClose()}
+          // style={customStyles}
+          className="modal"
+          overlayClassName="overlay"
+          contentLabel="Example Modal"
+        >
+ 
+          <h2 >Hello</h2>
+          <button onClick={() =>this.handleClose()}>close</button>
+          <div>I am a modal</div>
+        </Modal> */}
+   
+                  <button onClick={() => this.save()}>Save</button>
                   <button onClick={() => this.delete()}>Delete</button>
                   <button onClick={() => this.clearAll()}>CLear</button>
                 </div>
@@ -50,5 +97,11 @@ class DrawPage extends Component {
     }
 }
 
+function mapStateToProps(state) {
+  return {
+      graphs: state.graph.arr,
+      latestGraph: state.graph.latestGraph
+  }
+}
 
-export default DrawPage;
+export default withRouter(connect(mapStateToProps, { saveGraph, fetchGraphs, deleteGraph })(DrawPage));
