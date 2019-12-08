@@ -1,0 +1,84 @@
+.inputDialog{
+    position: absolute;
+    height:20rem;
+    width: 40rem;
+    top: 35%;
+    left: 35%;
+    padding:2rem;
+    text-align: center;
+    background: $white;
+    border-radius: 5px;
+    box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13);
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(255, 255, 255, 0.9);
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: center;
+    -ms-align-items: center;
+    align-items: center;
+    opacity: 0;
+    -webkit-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+    -moz-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+    -o-animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+    animation: react-confirm-alert-fadeIn 0.5s 0.2s forwards;
+  }
+
+
+  .close{
+    position: relative;
+    float: right;
+    cursor: pointer;
+}
+
+form{
+  .textArea{
+    background: $whiteSmoke;
+    border-radius: 1.5rem;
+    font-size: 1.5rem;
+    width: 30rem;
+    height: 3.5rem;
+   // border-color: transparent;
+  }
+
+  .save {
+    margin-top:3rem;
+    background-color: $white;
+    border-color: $txtCol;
+    color: $txtCol;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 3rem;
+    font-size: 1.5rem;
+    width: 12rem;
+    height: 3.5rem;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-width: 0.2rem;
+  }
+
+  .save:focus, .save:active, .save.active, :focus:active {
+    background-image: none;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: $background;
+  }
+}

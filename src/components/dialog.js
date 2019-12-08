@@ -16,7 +16,10 @@ class Dialog extends Component{
                (<div className = "dialog">  
                <div className ="block">
                <h4 className = "close" onClick={() => this.handleClose()}>x</h4> 
+               <br></br>
+               <center>
                <h1>{this.props.title}</h1>     
+               </center>
                </div>   
                     <div>{this.props.children}</div>
                    

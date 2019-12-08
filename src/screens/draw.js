@@ -1,20 +1,30 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import { confirmAlert } from "react-confirm-alert";
 
 import Dialog from "../components/dialog";
+import InputDialog from "../components/inputDialog";
 
 import { data } from "../constants/defaultGraph";
 import Graph from "../components/d3/graph";
-import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
-import { saveGraph, fetchGraphs, deleteGraph } from "../actions/draw";
+import {
+  removeAll,
+  drawGraph,
+  setWidthHeight,
+  handleDelete
+} from "../components/d3/graph1";
+import { saveGraph, fetchGraphs, deleteGraph, addGraph } from "../actions/draw";
 
 class DrawPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isDialogOpen: false,
-      selectedGraph: null
+      selectedGraph: null,
+      isSaveDialogOpen: false,
+      loadedGraph: null,
+      name: ""
     };
     //  this.openModal = this.openModal.bind(this);
     //  this.handleClose = this.handleClose.bind(this);
@@ -27,20 +37,28 @@ class DrawPage extends Component {
   }
 
   /**
+   * Each time change textfield update text;
+   */
+  handleChange(event) {
+    this.setState({ name: event.target.value });
+  }
+
+  /**
    * Set dialog state to be true, this toggle the dialog to be opened
    */
   openModal() {
-    console.log("haha")
     this.props.fetchGraphs();
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
+    this.setState({ isDialogOpen: true });
   }
 
   /**
    * Set dialog state to be false, this toggle the dialog to be closed
    */
   handleClose() {
-    console.log("Close");
-    this.setState({ isDialogOpen: false });
+    this.setState({
+      isDialogOpen: false,
+      isSaveDialogOpen: false
+    });
   }
 
   /**
@@ -48,10 +66,91 @@ class DrawPage extends Component {
    * @param {*} graph
    */
   handleSelectGraph(graph) {
-    console.log(graph);
     this.setState({ selectedGraph: graph });
-    console.log(this.state.selectedGraph);
-    // this.handleClose();
+  }
+
+  /**
+   * Load the selected graph
+   * @param {*} graph
+   */
+  handleLoadGraph(graph) {
+    this.setState({
+      loadedGraph: graph,
+      selectedGraph: null
+    });
+
+    this.handleClose();
+  }
+
+  /**
+   * Delete the selected graph from database
+   * @param {*} graph
+   */
+  handleDeleteGraph(graph) {
+    if (!graph) {
+      confirmAlert({
+        title: `Warning!`,
+        message: `You have not selected a graph`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    } else {
+      confirmAlert({
+        title: `Warning!`,
+        message: `Are you sure you want to delete the graph?`,
+        buttons: [
+          {
+            label: `Delete`,
+            onClick: () => {
+              this.props.deleteGraph(graph._id);
+            }
+          },
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }
+  }
+
+  /**
+   * Save graph
+   */
+  save() {
+    if (this.state.loadedGraph) this.props.saveGraph(this.state.loadedGraph);
+    else {
+      this.setState({
+        isSaveDialogOpen: true
+      });
+    }
+  }
+
+  /**
+   * Save the new graph with new name
+   */
+  saveNewGraph(e) {
+    e.preventDefault();
+    if (!this.state.name) {
+      confirmAlert({
+        title: `Warning!`,
+        message: `You have not entered a name`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    } else {
+      let clone = Object.assign({}, data);
+      clone["name"] = this.state.name;
+      this.props.addGraph(clone);
+      this.setState({
+        name: ""
+      });
+    }
   }
 
   render() {
@@ -70,36 +169,43 @@ class DrawPage extends Component {
         <center>
           <div className="canvas"></div>
           <div className="action_buttons">
-            <button onClick={() => this.openModal()}>
-              Load
-            </button>
-            <Dialog title="Load Graph" isOpen={this.state.isDialogOpen} handleClose={() => this.handleClose()}>
-                <div className="load">
-                  {this.props.graphs.map((graph, index) => (
-                    <button onClick={() => this.handleSelectGraph(graph)}>
-                      {graph._id}
-                    </button>
-                  ))}
-                </div>
-                <div className="action_buttons">
-                    <button onClick={() => this.handleDelete()}>Delete</button>
-                    <button onClick={() => this.handleDelete()}>Load</button>
-                </div>
+            <button onClick={() => this.openModal()}>Load</button>
+            <Dialog
+              title="Load Graph"
+              isOpen={this.state.isDialogOpen}
+              handleClose={() => this.handleClose()}
+            >
+              <div className="load">
+                {this.props.graphs.map((graph, index) => (
+                  <button onClick={() => this.handleSelectGraph(graph)}>
+                    {graph.name}
+                  </button>
+                ))}
+              </div>
+              <div className="action_buttons">
+                <button
+                  onClick={() =>
+                    this.handleDeleteGraph(this.state.selectedGraph)
+                  }
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => this.handleLoadGraph(this.state.selectedGraph)}
+                >
+                  Load
+                </button>
+              </div>
             </Dialog>
-            {/* <Modal
-          isOpen={this.state.isModalOpen}
-          // onAfterOpen={this.afterOpenModal}
-          onRequestClose={() =>this.handleClose()}
-          // style={customStyles}
-          className="modal"
-          overlayClassName="overlay"
-          contentLabel="Example Modal"
-        >
- 
-          <h2 >Hello</h2>
-          <button onClick={() =>this.handleClose()}>close</button>
-          <div>I am a modal</div>
-        </Modal> */}
+            <InputDialog
+              handleClose={() => this.handleClose()}
+              isOpen={this.state.isSaveDialogOpen}
+              title="Enter a name for the graph"
+              submitAction={e => this.saveNewGraph(e)}
+              value={this.state.name}
+              handleChange={e => this.handleChange(e)}
+              buttonName="Save"
+            ></InputDialog>
 
             <button onClick={() => this.save()}>Save</button>
             <button onClick={() => this.delete()}>Delete</button>
@@ -109,9 +215,15 @@ class DrawPage extends Component {
       </div>
     );
   }
+  /**
+   * Delete selected node or edge
+   */
   delete() {
     handleDelete(data);
   }
+  /**
+   * Clear graph
+   */
   clearAll() {
     //   data = {};
     //need to clear
@@ -127,5 +239,7 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, { saveGraph, fetchGraphs, deleteGraph })(DrawPage)
+  connect(mapStateToProps, { saveGraph, fetchGraphs, deleteGraph, addGraph })(
+    DrawPage
+  )
 );

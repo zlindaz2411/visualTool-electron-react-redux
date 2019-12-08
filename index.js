@@ -156,7 +156,7 @@ ipcMain.on('deleteGraph', (event, ID) => {
 
     db_graphs.remove({ _id: ID }, {}, function (err, numRemoved) {
         if (!err) {
-            db_graphs.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
+            db_graphs.find({}).sort({ updatedAt: -1 }).exec(function (err, graphs) {
                 if (!err) {
                     mainWindow.webContents.send('graph:deleted', graphs);
                 }
@@ -165,6 +165,7 @@ ipcMain.on('deleteGraph', (event, ID) => {
     });
 
 });
+
 
 // Custom App Menu
 const menuTemplate = [

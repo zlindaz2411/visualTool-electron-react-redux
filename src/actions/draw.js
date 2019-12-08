@@ -23,7 +23,6 @@ export function fetchGraphs() {
 
     return dispatch => {
         ipcRenderer.send('fetchGraphs');
-        
         ipcRenderer.on('graphs:fetched', (event, graphs) => {
             console.log(graphs);
             dispatch({
@@ -33,6 +32,7 @@ export function fetchGraphs() {
         });
     }
 }
+
 
 export function saveGraph(graph) {
     return dispatch => {
@@ -46,9 +46,9 @@ export function saveGraph(graph) {
     }
 }
 
-export function deleteGraph(_id){
+export function deleteGraph(id){
     return dispatch => {
-        ipcRenderer.send('deleteGraph', _id);
+        ipcRenderer.send('deleteGraph', id);
         ipcRenderer.on('graph:deleted', (event, graphs) => {
             dispatch({
                 type: FETCH_GRAPHS,
