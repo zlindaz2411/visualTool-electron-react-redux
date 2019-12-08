@@ -150,6 +150,7 @@ class DrawPage extends Component {
       this.setState({
         name: ""
       });
+     this.handleClose();
     }
   }
 

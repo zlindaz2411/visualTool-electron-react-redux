@@ -847,7 +847,7 @@ button:focus, button:active, button.active, :focus:active {
   padding: 2rem;
   text-align: center;
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
 
 .overlay {
@@ -882,6 +882,7 @@ form .textArea {
   border-radius: 1.5rem;
   font-size: 1.5rem;
   width: 30rem;
+  padding: 0.5rem;
   height: 3.5rem; }
 
 form .save {
