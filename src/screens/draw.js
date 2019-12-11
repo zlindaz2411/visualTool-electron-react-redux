@@ -2,8 +2,10 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
+import htmlToImage from "html-to-image";
 
 import Dialog from "../components/dialog";
+import Card from "../components/card";
 import InputDialog from "../components/inputDialog";
 
 import { data } from "../constants/defaultGraph";
@@ -19,6 +21,7 @@ import { saveGraph, fetchGraphs, deleteGraph, addGraph } from "../actions/draw";
 class DrawPage extends Component {
   constructor(props) {
     super(props);
+    this.imgRef = React.createRef();
     this.state = {
       isDialogOpen: false,
       selectedGraph: null,
@@ -129,6 +132,16 @@ class DrawPage extends Component {
   }
 
   /**
+   * Convert html to image
+   */
+  async convertToImg(clone){
+    const img = this.imgRef.current;
+    await htmlToImage.toPng(img).then(function(dataUrl) {
+        clone["image"] = dataUrl;
+      });
+  }
+
+  /**
    * Save the new graph with new name
    */
   saveNewGraph(e) {
@@ -146,11 +159,13 @@ class DrawPage extends Component {
     } else {
       let clone = Object.assign({}, data);
       clone["name"] = this.state.name;
+     
+      this.convertToImg(clone)
       this.props.addGraph(clone);
       this.setState({
         name: ""
       });
-     this.handleClose();
+      this.handleClose();
     }
   }
 
@@ -168,7 +183,7 @@ class DrawPage extends Component {
           <h2>Click on a vertex or an edge to delete.</h2>
         </div>
         <center>
-          <div className="canvas"></div>
+          <div ref={this.imgRef} className="canvas"></div>
           <div className="action_buttons">
             <button onClick={() => this.openModal()}>Load</button>
             <Dialog
@@ -178,9 +193,7 @@ class DrawPage extends Component {
             >
               <div className="load">
                 {this.props.graphs.map((graph, index) => (
-                  <button onClick={() => this.handleSelectGraph(graph)}>
-                    {graph.name}
-                  </button>
+                  <Card isSelected={true} img={graph.image} name={graph.name} ></Card>
                 ))}
               </div>
               <div className="action_buttons">

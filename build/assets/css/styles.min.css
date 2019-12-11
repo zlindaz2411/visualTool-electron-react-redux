@@ -801,9 +801,9 @@ button:focus, button:active, button.active, :focus:active {
 
 .dialog {
   position: absolute;
-  height: 50rem;
+  height: 53rem;
   width: 65rem;
-  top: 15%;
+  top: 13%;
   left: 25%;
   padding: 2rem;
   text-align: center;
@@ -837,6 +837,25 @@ button:focus, button:active, button.active, :focus:active {
   position: relative;
   float: right;
   cursor: pointer; }
+
+.card {
+  position: absolute;
+  height: 8rem;
+  width: 5rem;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
+
+.selected {
+  position: absolute;
+  height: 8rem;
+  width: 5rem;
+  padding: 2rem;
+  border-color: #D9E9D6;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
 
 .inputDialog {
   position: absolute;
