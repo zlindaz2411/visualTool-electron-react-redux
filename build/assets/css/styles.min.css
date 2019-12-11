@@ -840,9 +840,8 @@ button:focus, button:active, button.active, :focus:active {
 
 .card {
   position: absolute;
-  height: 8rem;
-  width: 5rem;
-  padding: 2rem;
+  height: 16rem;
+  width: 20rem;
   background: #ffffff;
   border-radius: 5px;
   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
@@ -856,6 +855,16 @@ button:focus, button:active, button.active, :focus:active {
   background: #ffffff;
   border-radius: 5px;
   box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
+
+.graph {
+  width: 12rem;
+  height: 8rem;
+  display: block;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
 
 .inputDialog {
   position: absolute;

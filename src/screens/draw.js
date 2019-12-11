@@ -135,10 +135,15 @@ class DrawPage extends Component {
    * Convert html to image
    */
   async convertToImg(clone){
-    const img = this.imgRef.current;
-    await htmlToImage.toPng(img).then(function(dataUrl) {
+    const img = this.imgRef.current.innerHTML;
+    console.log(img);
+    await Promise.resolve(htmlToImage.toPng(img).then(function(dataUrl) {
         clone["image"] = dataUrl;
-      });
+      })).then(() => {
+       // this.props.addGraph(clone)
+      }
+      );
+    
   }
 
   /**
@@ -146,6 +151,7 @@ class DrawPage extends Component {
    */
   saveNewGraph(e) {
     e.preventDefault();
+    let clone = Object.assign({}, data);
     if (!this.state.name) {
       confirmAlert({
         title: `Warning!`,
@@ -157,11 +163,8 @@ class DrawPage extends Component {
         ]
       });
     } else {
-      let clone = Object.assign({}, data);
       clone["name"] = this.state.name;
-     
       this.convertToImg(clone)
-      this.props.addGraph(clone);
       this.setState({
         name: ""
       });
