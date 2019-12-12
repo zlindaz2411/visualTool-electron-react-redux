@@ -838,26 +838,6 @@ button:focus, button:active, button.active, :focus:active {
   float: right;
   cursor: pointer; }
 
-.card {
-  height: 13rem;
-  width: 16rem;
-  background: #ffffff;
-  border-radius: 5px; }
-  .card .graph {
-    padding-top: 1rem;
-    width: 13rem;
-    height: 9rem;
-    display: block;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
-    -ms-user-select: none; }
-  .card h2 {
-    color: #50525E;
-    font-size: 1.5rem;
-    font-weight: bold; }
-
 .inputDialog {
   position: absolute;
   height: 20rem;

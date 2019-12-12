@@ -6,7 +6,6 @@ import htmlToImage from "html-to-image";
 import parse from 'html-react-parser';
 
 import Dialog from "../components/dialog";
-import Card from "../components/card";
 import InputDialog from "../components/inputDialog";
 
 import { data } from "../constants/defaultGraph";
@@ -28,16 +27,24 @@ class DrawPage extends Component {
       selectedGraph: null,
       isSaveDialogOpen: false,
       loadedGraph: null,
+      graph: data,
       name: ""
     };
     //  this.openModal = this.openModal.bind(this);
     //  this.handleClose = this.handleClose.bind(this);
     //  this.handleSelectGraph = this.handleSelectGraph.bind(this);
   }
-
+  
   componentDidMount() {
-    setWidthHeight(data.nodes, true);
-    drawGraph(data, true);
+    this.draw();
+  }
+
+  /**
+  * Functions to draw graphs;
+  */
+  draw(){
+    setWidthHeight(this.state.graph.nodes, true);
+    drawGraph(this.state.graph, true);
   }
 
   /**
@@ -79,10 +86,12 @@ class DrawPage extends Component {
    */
   handleLoadGraph(graph) {
     this.setState({
+      graph:graph,
       loadedGraph: graph,
       selectedGraph: null
     });
-
+    removeAll();
+    this.draw();
     this.handleClose();
   }
 
