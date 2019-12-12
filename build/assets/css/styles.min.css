@@ -1255,7 +1255,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       border-color: transparent;
       color: #50525E;
       border-radius: 5px;
-      box-shadow: 0 3px 8px #888888;
+      box-shadow: 0 2px 6px #888888;
       margin-top: 3rem;
       text-align: center;
       font-weight: bold;
