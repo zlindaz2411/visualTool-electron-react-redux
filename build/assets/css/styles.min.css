@@ -839,32 +839,24 @@ button:focus, button:active, button.active, :focus:active {
   cursor: pointer; }
 
 .card {
-  position: absolute;
-  height: 16rem;
-  width: 20rem;
+  height: 13rem;
+  width: 16rem;
   background: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
-
-.selected {
-  position: absolute;
-  height: 8rem;
-  width: 5rem;
-  padding: 2rem;
-  border-color: #D9E9D6;
-  background: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 20px 75px rgba(0, 0, 0, 0.13); }
-
-.graph {
-  width: 12rem;
-  height: 8rem;
-  display: block;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none; }
+  border-radius: 5px; }
+  .card .graph {
+    padding-top: 1rem;
+    width: 13rem;
+    height: 9rem;
+    display: block;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none; }
+  .card h2 {
+    color: #50525E;
+    font-size: 1.5rem;
+    font-weight: bold; }
 
 .inputDialog {
   position: absolute;
@@ -1165,6 +1157,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     height: 38rem;
     border-spacing: 2rem;
     background-color: #ffffff; }
+    .algorithm_wrap .canvas .drawing {
+      border-radius: 2rem;
+      background-color: #ffffff; }
   .algorithm_wrap .second_column {
     margin-left: 2rem;
     border-radius: 2rem;
@@ -1235,6 +1230,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     width: 60rem;
     border-spacing: 2rem;
     background-color: #ffffff; }
+    .about_wrap .canvas .drawing {
+      border-radius: 2rem;
+      background-color: #ffffff; }
   .about_wrap .text {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1250,6 +1248,38 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     overflow: auto;
     height: 35rem;
     background: #F9F9F9; }
+    .about_wrap .load .cardBtn {
+      height: 12rem;
+      width: 14rem;
+      background-color: #ffffff;
+      border-color: transparent;
+      color: #50525E;
+      border-radius: 5px;
+      box-shadow: 0 3px 8px #888888;
+      margin-top: 3rem;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 3rem;
+      font-size: 1.5rem;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+      .about_wrap .load .cardBtn .graph {
+        padding-top: 0.5rem;
+        width: 12rem;
+        height: 8rem;
+        display: block;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -ms-user-select: none; }
+    .about_wrap .load .cardBtn:focus, .about_wrap .load .cardBtn:active, .about_wrap .load .cardBtn.active, .about_wrap .load :focus:active {
+      border: 2px solid #84C262; }
 
 .performance_wrap {
   position: fixed;

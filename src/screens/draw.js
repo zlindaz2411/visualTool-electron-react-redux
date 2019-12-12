@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import htmlToImage from "html-to-image";
+import parse from 'html-react-parser';
 
 import Dialog from "../components/dialog";
 import Card from "../components/card";
@@ -131,16 +132,16 @@ class DrawPage extends Component {
     }
   }
 
+
   /**
    * Convert html to image
    */
   async convertToImg(clone){
-    const img = this.imgRef.current.innerHTML;
-    console.log(img);
+    const img = this.imgRef.current;
     await Promise.resolve(htmlToImage.toPng(img).then(function(dataUrl) {
         clone["image"] = dataUrl;
       })).then(() => {
-       // this.props.addGraph(clone)
+        this.props.addGraph(clone)
       }
       );
     
@@ -180,13 +181,15 @@ class DrawPage extends Component {
         </div>
         <div className="sub_text">
           <h2>
-            Double click on empty space to draw a vertex. Drag from vertex to
+            Click on empty space to draw a vertex. Drag from vertex to
             vertex to create an edge.
           </h2>
           <h2>Click on a vertex or an edge to delete.</h2>
         </div>
         <center>
-          <div ref={this.imgRef} className="canvas"></div>
+          <div className="canvas">
+            <div ref={this.imgRef}  className="drawing"></div>
+            </div>
           <div className="action_buttons">
             <button onClick={() => this.openModal()}>Load</button>
             <Dialog
@@ -195,9 +198,12 @@ class DrawPage extends Component {
               handleClose={() => this.handleClose()}
             >
               <div className="load">
-                {this.props.graphs.map((graph, index) => (
-                  <Card isSelected={true} img={graph.image} name={graph.name} ></Card>
-                ))}
+                  {this.props.graphs.map((graph, index) => (
+                    <button onClick={() => this.handleSelectGraph(graph)} className="cardBtn">
+                       <img className="graph" src={graph.image}></img>
+                      {graph.name}
+                    </button>
+                  ))}
               </div>
               <div className="action_buttons">
                 <button

@@ -1,22 +1,33 @@
 import React, { Component } from "react";
 
 class Card extends Component {
-  body(){
-    return( <center>
-    <img className="graph" src={this.props.img} height="50" width="50"></img>
-    <h3>{this.props.name}</h3>
-  </center>)
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSelected: false
+    };
   }
+
+  /**
+   * Handle click on card, set isSelected
+   */
+  handleClick() {
+    this.setState({
+      isSelected: !isSelected
+    });
+  }
+
   render() {
     return (
-      this.props.isSelected ? (
-        <div className="card">
-        {this.body()}
-            </div>
-      ) :
-      <div className="selected">
-      {this.body()}
-     </div>
+      <center className="card">
+        <center>
+          <img className="graph" src={this.props.img}></img>
+        </center>
+        <br></br>
+        <center>
+          <h2>{this.props.name}</h2>
+        </center>
+      </center>
     );
   }
 }
