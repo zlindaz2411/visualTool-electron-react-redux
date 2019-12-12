@@ -14,7 +14,6 @@ import {
   removeAll,
   drawGraph,
   setWidthHeight,
-  handleDelete
 } from "../components/d3/graph1";
 import { saveGraph, fetchGraphs, deleteGraph, addGraph } from "../actions/draw";
 
@@ -34,7 +33,7 @@ class DrawPage extends Component {
     //  this.handleClose = this.handleClose.bind(this);
     //  this.handleSelectGraph = this.handleSelectGraph.bind(this);
   }
-  
+
   componentDidMount() {
     this.draw();
   }
@@ -43,6 +42,7 @@ class DrawPage extends Component {
   * Functions to draw graphs;
   */
   draw(){
+    removeAll();
     setWidthHeight(this.state.graph.nodes, true);
     drawGraph(this.state.graph, true);
   }
@@ -90,7 +90,6 @@ class DrawPage extends Component {
       loadedGraph: graph,
       selectedGraph: null
     });
-    removeAll();
     this.draw();
     this.handleClose();
   }
@@ -191,9 +190,9 @@ class DrawPage extends Component {
         <div className="sub_text">
           <h2>
             Click on empty space to draw a vertex. Drag from vertex to
-            vertex to create an edge.
+            vertex to create an edge. 
           </h2>
-          <h2>Click on a vertex or an edge to delete.</h2>
+          <h2>Right click on a vertex or an edge to delete.</h2>
         </div>
         <center>
           <div className="canvas">
@@ -240,19 +239,13 @@ class DrawPage extends Component {
             ></InputDialog>
 
             <button onClick={() => this.save()}>Save</button>
-            <button onClick={() => this.delete()}>Delete</button>
             <button onClick={() => this.clearAll()}>CLear</button>
           </div>
         </center>
       </div>
     );
   }
-  /**
-   * Delete selected node or edge
-   */
-  delete() {
-    handleDelete(data);
-  }
+
   /**
    * Clear graph
    */

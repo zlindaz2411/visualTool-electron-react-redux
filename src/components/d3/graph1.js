@@ -139,7 +139,7 @@ export function drawGraph(data, draw) {
         : d3.rgb("#94979D");
     })
     .on("contextmenu", function(d){
-      if(draw) handleSelectEdge(d)
+      if(draw) handleDeleteEdge(d, data)
     } );
 
     let weightX =  0;
@@ -242,7 +242,7 @@ export function drawGraph(data, draw) {
     .style("stroke-width", "3px")
     .style("cursor", "pointer") 
     .on("contextmenu", function(d){
-      if(draw) handleSelectNode(d)
+      if(draw) handleDeleteNode(d, data)
     })
     // .on("click", function(d){
     //   if(draw) handleSelectNode(d)
@@ -371,111 +371,39 @@ function calculateWeight(source, destination) {
   );
 }
 
-let selected = false;
-let nodeToDelete = null;
-let edgeToDelete = null;
 
 /**
- * When node is selected, fill with colour green, no more than 2 nodes can be selected
- * @param {*} node
- * @param {*} nodeList
- */
-function handleSelectNode(node) {
-  if (d3.event.defaultPrevented === false) {
-  if (!edgeToDelete) {
-    if (!selected) {
-      selected = true;
-      d3.select("#circle" + node.id).attr("stroke", "#84C262");
-      nodeToDelete = node;
-    } else {
-      selected = false;
-      d3.selectAll("circle").attr("stroke", d3.rgb("#94979D"));
-      nodeToDelete = null;
-    }
-  } else {
-    confirmAlert({
-      title: `Warning!`,
-      message: `You already selected an edge`,
-      buttons: [
-        {
-          label: "Cancel"
-        }
-      ]
-    });
-  }
-}
-}
-
-/**
- * When edge is selected, fill with colour green, no more than 2 edges can be selected
- * @param {*} edge
- * @param {*} edgeList
- */
-function handleSelectEdge(edge) {
-  d3.event.preventDefault();
-
-  if (!nodeToDelete) {
-    if (!selected) {
-      selected = true;
-      d3.select("#edge" + edge.source + edge.target).style("stroke", "#84C262");
-      edgeToDelete = edge;
-    } else {
-      selected = false;
-      d3.selectAll("line").style("stroke", d3.rgb("#94979D"));
-      edgeToDelete = null;
-    }
-  } else {
-    confirmAlert({
-      title: `Warning!`,
-      message: `You already selected a vertex`,
-      buttons: [
-        {
-          label: "Cancel"
-        }
-      ]
-    });
-  }
-}
-
-/**
- * Delete the selected node or selected edge;
+ * Delete the selected node
  * Cascade action for node: delete all the connected edges.
+ * @param {*} element
  * @param {*} data
  */
-export function handleDelete(data) {
-  if (nodeToDelete) {
-    data.nodes.splice(data.nodes.indexOf(nodeToDelete), 1);
+function handleDeleteNode(element, data) {
+    d3.event.preventDefault();
+    data.nodes.splice(data.nodes.indexOf(element), 1);
     for (let i = 0; i < data.edges.length; i++) {
-      if (data.edges[i].source == nodeToDelete.id) {
+      if (data.edges[i].source == element.id) {
         data.edges.splice(i, 1);
         i--;
       }
-      if (data.edges[i].target == nodeToDelete.id) {
+      if (data.edges[i].target == element.id) {
         data.edges.splice(i, 1);
         i--;
       }
     }
-    selected = false;
-    nodeToDelete = null;
     removeAll();
     drawGraph(data, true);
   } 
-  else if(edgeToDelete){
-    data.edges.splice(data.edges.indexOf(edgeToDelete), 1);
-    selected = false;
-    edgeToDelete = null;
-    removeAll();
-    drawGraph(data, true);
-  }
-  else {
-    confirmAlert({
-      title: `Warning!`,
-      message: `You must select at least one element`,
-      buttons: [
-        {
-          label: "Cancel"
-        }
-      ]
-    });
-  }
+
+/**
+ * Delete the selected edge
+ * @param {*} element
+ * @param {*} data
+ */
+function handleDeleteEdge(element, data) {
+  d3.event.preventDefault();
+  data.edges.splice(data.edges.indexOf(element), 1);
+  removeAll();
+  drawGraph(data, true);
 }
+
