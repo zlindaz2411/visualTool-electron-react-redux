@@ -67,7 +67,7 @@ export function drawGraph(data, draw) {
   let id = nodeList.length + 1;
 
   const svg = d3
-    .select(".canvas")
+    .select(".drawing")
     .append("svg")
     .attr("width", w)
     .attr("height", h)

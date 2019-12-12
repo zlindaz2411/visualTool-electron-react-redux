@@ -52,15 +52,9 @@ class ParallelPage extends Component {
           <center>
             <div className="grid">
               <div className="column column_7_12">
-                <div className="canvas">
-                  {/* <Graph
-                    id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
-                    data={data}
-                    config={myConfig}
-                    _setNodeHighlightedValue={1,true}
-
-                  /> */}
-                </div>
+              <div className="canvas">
+                <div className="drawing"></div>
+              </div>
               </div>
 
               <div className="column column_5_12">

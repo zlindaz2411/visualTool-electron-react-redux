@@ -18,7 +18,6 @@ class HomePage extends Component {
                 </div>
                 <center>
                     <div className= "img_wrap">
-
                         <img src ={SpanTree} />
                     </div>
                 </center>

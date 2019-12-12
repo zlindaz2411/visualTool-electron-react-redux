@@ -28,10 +28,14 @@ app.on('ready', () => {
 });
 
 // Database (NeDB)
-var userData = app.getPath('userData');
-let db_graphs = new Datastore({ filename: userData +'/db/graphs.db', timestampData: true });
+
+// var userData = app.getPath('userData');
+let db_graphs = new Datastore({ filename: './graphs/graphs.db', timestampData: true });
 db_graphs.loadDatabase();
 
+// db.remove({}, { multi: true }, function (err, numRemoved) {
+
+// });
 // db_notes = new Datastore({ filename: userData +'/db/notes.db', timestampData: true });
 // db_notes.loadDatabase();
 

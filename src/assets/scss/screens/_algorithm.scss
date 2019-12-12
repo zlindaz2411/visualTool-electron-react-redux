@@ -20,6 +20,11 @@
         height:38rem;
         border-spacing: 2rem;
         background-color: $white;
+        
+        .drawing{
+            border-radius: 2rem;
+            background-color: $white;
+        }
     }
 
     .second_column{
