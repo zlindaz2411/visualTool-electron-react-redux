@@ -13,6 +13,7 @@ import { kruskals } from "../functions/algorithms";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
+import {ErrMessage} from '../constants/errorMessage';
 
 const initialState = {
   edgeList: [],
@@ -35,14 +36,12 @@ class KruskalPage extends Component {
     super(props);
     this.state = {
       ...initialState,
-      speed : SPEED,
-      automatic:false,
+      speed: SPEED,
+      automatic: false,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null
     };
-
-    
   }
 
   componentDidMount() {
@@ -50,6 +49,39 @@ class KruskalPage extends Component {
     this.resetTree();
     setWidthHeight(data.nodes, false);
     drawGraph(data, false);
+  }
+
+  /**
+   * When start is pressed, check if the graph is correct.
+   * If not, alert an error dialog. Otherwise, star the visualization
+   */
+  handleStart(isManual) {
+    const res = kruskals(this.state.data.nodes, this.state.data.edges);
+    if (res != ErrMessage.MST_NOT_FOUND) {
+      this.setState({
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        states: res
+      });
+      if (isManual) {
+        this.setState({
+          manual: true
+        });
+      } else {
+        this.setState({
+          automatic: true
+        });
+      }
+    } else {
+      confirmAlert({
+        title: `Warning!`,
+        message: `There is an error in the drawn graph: it must be a connected graph`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }
   }
 
   render() {
@@ -60,9 +92,9 @@ class KruskalPage extends Component {
           <center>
             <div className="grid">
               <div className="column column_7_12">
-              <div className="canvas">
-                <div className="drawing"></div>
-              </div>
+                <div className="canvas">
+                  <div className="drawing"></div>
+                </div>
               </div>
 
               <div className="column column_5_12">
@@ -94,61 +126,71 @@ class KruskalPage extends Component {
               </div>
             ) : this.state.automatic ? (
               <div className="action_buttons">
-                <button onClick={() =>this.setState({
-                  speed : SPEED /2
-                })}>0.5x</button>
-                <button onClick={() => this.setState({
-                  speed : SPEED})}>1.0x</button>
-                <button onClick={() => this.setState({
-                  speed : SPEED *2})}>2.0x</button>
-              </div>):(
-                <div className="action_buttons">
-              <button
-                onClick={() =>
-                  this.setState({
-                    manual: true,
-                    pseudoMap: setUpPseudocodeMap(pageName, 0),
-                    states: kruskals(this.state.data.nodes, this.state.data.edges)
-                  })
-                }
-              >
-                Manual
-              </button>
-               <button
-               onClick={() =>{
-                 this.setState({
-                   automatic:true,
-                   pseudoMap: setUpPseudocodeMap(pageName, 0),
-                   states: kruskals(this.state.data.nodes, this.state.data.edges)
-                 });
-                 let timer = setInterval(() => {
-                   if(this.state.index < this.state.states.length-1){
-                    this.next();
-                    console.log(this.state.index);
-                    console.log(this.state.states.length);
-                   }else{
-                    console.log(this.state.speed);
-                    clearInterval(timer);
-                   }
-                 }, this.state.speed);
-               }
-              }
-             >
-               Automatic
-             </button>
-            
-        </div>
-          )}
+                <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED / 2
+                    })
+                  }
+                >
+                  0.5x
+                </button>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED
+                    })
+                  }
+                >
+                  1.0x
+                </button>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED * 2
+                    })
+                  }
+                >
+                  2.0x
+                </button>
+              </div>
+            ) : (
+              <div className="action_buttons">
+                <button
+                  onClick={() => {
+                    this.handleStart(true);
+                  }}
+                >
+                  Manual
+                </button>
+                <button
+                  onClick={() => {
+                    {
+                      this.handleStart(false);
+                      let timer = setInterval(() => {
+                        if (this.state.index < this.state.states.length - 1) {
+                          this.next();
+                        } else {
+                          clearInterval(timer);
+                        }
+                      }, this.state.speed);
+                    }
+                  }}
+                >
+                  Automatic
+                </button>
+              </div>
+            )}
           </center>
         </div>
       </div>
     );
   }
 
-    /**
+  /**
    * Update graph: update which edge needs to be highlighted
-   * @param {*} array 
-   * @param {*} tree 
+   * @param {*} array
+   * @param {*} tree
    */
   updateGraph(array, tree) {
     for (let i = 0; i < array.length; i++) {
@@ -172,7 +214,7 @@ class KruskalPage extends Component {
   /**
    * Reset data ui to original value (tree = false)
    */
-  resetTree(){
+  resetTree() {
     for (let i = 0; i < this.state.data.edges.length; i++) {
       this.state.data.edges[i].tree = false;
     }
@@ -181,29 +223,25 @@ class KruskalPage extends Component {
   /**
    * Reset data ui to original value (highlight = false)
    */
-  resetHighlight(){
+  resetHighlight() {
     for (let i = 0; i < this.state.data.edges.length; i++) {
       this.state.data.edges[i].highlight = false;
     }
   }
-  
-  
- /**
+
+  /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
     this.setState({
-      index:  this.state.index -= 1,
+      index: (this.state.index -= 1)
     });
     if (this.state.index < 0) {
       this.setState({
-        index: this.state.index+=1,
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          0,
-        )
-      })
+        index: (this.state.index += 1),
+        pseudoMap: setUpPseudocodeMap(pageName, 0)
+      });
       confirmAlert({
         title: `Warning!`,
         message: `Nothing before the start of the algorithm`,
@@ -213,7 +251,7 @@ class KruskalPage extends Component {
           }
         ]
       });
-    } 
+    }
     this.setState({
       pseudoMap: setUpPseudocodeMap(
         pageName,
@@ -226,21 +264,22 @@ class KruskalPage extends Component {
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
 
-/**
- * When next button is clicked: if it's at the end, display error message
- * Else display the next state of the algorithm
- */
-next() {
+  /**
+   * When next button is clicked: if it's at the end, display error message
+   * Else display the next state of the algorithm
+   */
+  next() {
     this.setState({
-      index: this.state.index += 1,
+      index: (this.state.index += 1)
     });
     if (this.state.index >= this.state.states.length) {
       this.setState({
-        index: this.state.index-=1,
+        index: (this.state.index -= 1),
         pseudoMap: setUpPseudocodeMap(
           pageName,
-          this.state.pseudocode.length-1,
-        )})
+          this.state.pseudocode.length - 1
+        )
+      });
       confirmAlert({
         title: `Warning!`,
         message: `End of the algorithm`,
@@ -250,17 +289,17 @@ next() {
           }
         ]
       });
+    }
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      )
+    });
+    this.resetHighlight();
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
-  this.setState({
-    pseudoMap: setUpPseudocodeMap(
-      pageName,
-      this.state.states[this.state.index].status
-    ),
-  });
-  this.resetHighlight();
-  this.updateGraph(this.state.states[this.state.index].tree, true);
-  this.updateGraph(this.state.states[this.state.index].highlighted, false);
-}
 }
 
 function mapStateToProps(state) {

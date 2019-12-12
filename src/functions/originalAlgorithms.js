@@ -1,5 +1,6 @@
 import {UnionFind} from '../functions/lib/unionFind'
 import {PriorityQueue} from '../functions/lib/priorityQueue'
+import {ErrMessage} from'../constants/errorMessage'
 
  /**
  * Kruskals algorithm
@@ -7,11 +8,13 @@ import {PriorityQueue} from '../functions/lib/priorityQueue'
  * @param {*} nodes 
  */
 export function kruskals(nodes, edges) {
+    try{
     //Sort the edges 
     edges = edges.sort((a,b) => {return a.weight - b.weight;});
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let uf = new UnionFind(nodes);
+    let check = new Set();
     // Add all edges to the Queue:
     for(let i =0;i<edges.length;i++){
         let u = edges[i].source;
@@ -19,12 +22,23 @@ export function kruskals(nodes, edges) {
         //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
            MST.add(edges[i])
-           
+           check.add(u);
+           check.add(v);
            uf.union(u,v)
         }
     }
+    
+    //check if is a minimum spanning tree
+    if(check.size != nodes.length){
+        throw ErrMessage.MST_NOT_FOUND
+    }
     return MST;
+    }
+    catch(error){
+        return error.toString();
+    }
  }
+ 
 
 
 
@@ -34,10 +48,12 @@ export function kruskals(nodes, edges) {
   * @param {*} nodes 
   */
  export function prims(nodes, edges) {
+    try{
     // Initialize graph that'll contain the MST
     let MST = new Set();
     // Select first node as starting node
     let s = nodes[0];
+    let check = new Set();
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();
@@ -63,6 +79,8 @@ export function kruskals(nodes, edges) {
        if(!explored.has(v)){
         if(!uf.connected(u,v)){
             explored.add(v);
+            check.add(u);
+            check.add(v);
             MST.add([u,v,currentMinEdge.priority]);
             uf.union(u,v)
         }
@@ -77,7 +95,16 @@ export function kruskals(nodes, edges) {
        };
         
     }
+
+    //check if is a minimum spanning tree
+    if(check.size != nodes.length){
+        throw ErrMessage.MST_NOT_FOUND
+    }
     return MST;
+    }
+    catch(error){
+        return error.toString();
+    }
  }
 
   /**

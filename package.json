@@ -28,7 +28,7 @@
     "electron:dev": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mw",
-    "test": "mocha --require @babel/register ./tests/ ",
+    "test": "mocha --require @babel/register ./tests/**/*.js",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {

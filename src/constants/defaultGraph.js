@@ -9,6 +9,7 @@ export let data= {
         { id: 7, x: 200, y: 300,highlight:false  },
         { id: 8, x: 80, y: 300,highlight:false  },
         { id: 9, x: 150, y: 200,highlight:false   },
+       // {id:10, x:10, y:100, highlight:false},
     ],
 
     edges: [

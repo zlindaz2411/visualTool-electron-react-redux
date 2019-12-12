@@ -13,6 +13,7 @@ import { prims } from "../functions/algorithms";
 
 import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
+import {ErrMessage} from '../constants/errorMessage';
 
 const initialState = {
   edgeList: [],
@@ -45,6 +46,33 @@ class PrimPage extends Component {
     setWidthHeight(data.nodes, false);
     drawGraph(data, false);
   }
+
+  /**
+   * When start is pressed, check if the graph is correct. 
+   * If not, alert an error dialog. Otherwise, star the visualization
+   */
+  handleStart(){
+    const res = prims(this.state.data.nodes, this.state.data.edges);
+    if(res != ErrMessage.MST_NOT_FOUND){
+      this.setState({
+        start: true,
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        states: res,
+      })
+    }
+    else{
+      confirmAlert({
+        title: `Warning!`,
+        message: `There is an error in the drawn graph: it must be a connected graph`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }
+  }
+
 
   render() {
     return (
@@ -89,11 +117,7 @@ class PrimPage extends Component {
             ) : (
               <button
                 onClick={() =>
-                  this.setState({
-                    start: true,
-                    pseudoMap: setUpPseudocodeMap(pageName, 0),
-                    states: prims(this.state.data.nodes, this.state.data.edges)
-                  })
+                  this.handleStart()
                 }
               >
                 Start
