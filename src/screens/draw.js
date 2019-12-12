@@ -3,18 +3,14 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import htmlToImage from "html-to-image";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
 import { data } from "../constants/defaultGraph";
-import Graph from "../components/d3/graph";
-import {
-  removeAll,
-  drawGraph,
-  setWidthHeight,
-} from "../components/d3/graph1";
+
+import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { saveGraph, fetchGraphs, deleteGraph, addGraph } from "../actions/draw";
 
 class DrawPage extends Component {
@@ -39,9 +35,9 @@ class DrawPage extends Component {
   }
 
   /**
-  * Functions to draw graphs;
-  */
-  draw(){
+   * Functions to draw graphs;
+   */
+  draw() {
     removeAll();
     setWidthHeight(this.state.graph.nodes, true);
     drawGraph(this.state.graph, true);
@@ -85,13 +81,17 @@ class DrawPage extends Component {
    * @param {*} graph
    */
   handleLoadGraph(graph) {
-    this.setState({
-      graph:graph,
-      loadedGraph: graph,
-      selectedGraph: null
-    });
-    this.draw();
-    this.handleClose();
+    this.setState(
+      {
+        graph: graph,
+        loadedGraph: graph,
+        selectedGraph: null
+      },
+      () => {
+        this.draw();
+        this.handleClose();
+      }
+    );
   }
 
   /**
@@ -140,19 +140,18 @@ class DrawPage extends Component {
     }
   }
 
-
   /**
    * Convert html to image
    */
-  async convertToImg(clone){
+  async convertToImg(clone) {
     const img = this.imgRef.current;
-    await Promise.resolve(htmlToImage.toPng(img).then(function(dataUrl) {
+    await Promise.resolve(
+      htmlToImage.toPng(img).then(function(dataUrl) {
         clone["image"] = dataUrl;
-      })).then(() => {
-        this.props.addGraph(clone)
-      }
-      );
-    
+      })
+    ).then(() => {
+      this.props.addGraph(clone);
+    });
   }
 
   /**
@@ -173,7 +172,7 @@ class DrawPage extends Component {
       });
     } else {
       clone["name"] = this.state.name;
-      this.convertToImg(clone)
+      this.convertToImg(clone);
       this.setState({
         name: ""
       });
@@ -189,15 +188,15 @@ class DrawPage extends Component {
         </div>
         <div className="sub_text">
           <h2>
-            Click on empty space to draw a vertex. Drag from vertex to
-            vertex to create an edge. 
+            Click on empty space to draw a vertex. Drag from vertex to vertex to
+            create an edge.
           </h2>
           <h2>Right click on a vertex or an edge to delete.</h2>
         </div>
         <center>
           <div className="canvas">
-            <div ref={this.imgRef}  className="drawing"></div>
-            </div>
+            <div ref={this.imgRef} className="drawing"></div>
+          </div>
           <div className="action_buttons">
             <button onClick={() => this.openModal()}>Load</button>
             <Dialog
@@ -206,12 +205,15 @@ class DrawPage extends Component {
               handleClose={() => this.handleClose()}
             >
               <div className="load">
-                  {this.props.graphs.map((graph, index) => (
-                    <button onClick={() => this.handleSelectGraph(graph)} className="cardBtn">
-                       <img className="graph" src={graph.image}></img>
-                      {graph.name}
-                    </button>
-                  ))}
+                {this.props.graphs.map((graph, index) => (
+                  <button
+                    onClick={() => this.handleSelectGraph(graph)}
+                    className="cardBtn"
+                  >
+                    <img className="graph" src={graph.image}></img>
+                    {graph.name}
+                  </button>
+                ))}
               </div>
               <div className="action_buttons">
                 <button
@@ -239,7 +241,7 @@ class DrawPage extends Component {
             ></InputDialog>
 
             <button onClick={() => this.save()}>Save</button>
-            <button onClick={() => this.clearAll()}>CLear</button>
+            <button onClick={() => this.clearAll()}>Clear</button>
           </div>
         </center>
       </div>
@@ -250,9 +252,14 @@ class DrawPage extends Component {
    * Clear graph
    */
   clearAll() {
-    //   data = {};
-    //need to clear
-    removeAll();
+    this.setState(
+      {
+        graph: {}
+      },
+      () => {
+        removeAll();
+      }
+    );
   }
 }
 
