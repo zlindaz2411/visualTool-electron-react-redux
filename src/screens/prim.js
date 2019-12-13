@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
+import Dialog from "../components/dialog";
 
-// import { Graph } from "react-d3-graph";
-import { emptyGraph} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
+import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import {prims, test} from "../functions/algorithms";
 
+
+import { emptyGraph} from "../constants/defaultGraph";
 import { Algorithm } from "../constants/algorithms";
 import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
-
 
 
 const colors = ["#84C262", "#50525E", "#B22222"];
@@ -23,6 +24,7 @@ class PrimPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDialogOpen: false,
       index:0,
       pseudocode: getPseudocode(pageName),
       start: false,
@@ -36,13 +38,14 @@ class PrimPage extends Component {
       emptyGraphMessage();
     }
     else{
+      if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
       resetHighlight(this.state.data.edges);
       resetTree(this.state.data.edges);
       setWidthHeight(this.state.data, false);
-      drawGraph(this.state.data, false);
+      drawGraph(this.state.data, "");
+      }
     }
   }
-
 
   /**
    * When start is pressed, check if the graph is correct. 
@@ -51,16 +54,50 @@ class PrimPage extends Component {
   handleStart(){
     if(Object.keys(this.props.latestGraph).length == 0){
       emptyGraphMessage();
-    }else{
+    }else{   
       this.setState({
-        start: true,
-        pseudoMap: setUpPseudocodeMap(pageName, 0),
-        states: prims(this.state.data.nodes, this.state.data.edges),
+        isDialogOpen:true,
+      },
+      () => {
+        removeAll();
+        setWidthHeight(this.state.data, false);
+        drawGraph(this.state.data, "prim");
       })
     }
     }
 
+  /**
+   * 
+   */
+  handleClose(){
+      if(Object.keys(this.state.data.root).length == 0){
+        confirmAlert({
+          title: `Warning!`,
+          message: `You must select a root node`,
+          buttons: [
+            {
+              label: "Cancel"
+            }
+          ]
+        });
+      }
+      else{
+        this.setState({
+          isDialogOpen:false,
+        })
+      }
+  }
 
+  /**
+   *  Submit the root node selection
+   */
+  handleSubmit(){
+    this.setState({
+      start: true,
+      pseudoMap: setUpPseudocodeMap(pageName, 0),
+      states: prims(this.state.data.root, this.state.data.nodes, this.state.data.edges),
+    })
+  }
 
   render() {
     return (
@@ -68,12 +105,30 @@ class PrimPage extends Component {
         <div className="title">
           <h1>{pageName}</h1>
           <center>
-            <div className="grid">
+            <center className="grid">
               <div className="column column_7_12">
                 <div className="canvas">
                   <div className="drawing"></div>
                 </div>
               </div>
+              <Dialog
+              title="Select a root node"
+              isOpen={this.state.isDialogOpen}
+              handleClose={() => this.handleClose()}
+            >
+              <div className="load">
+                <div className="canvas">
+                  <div className="drawing"></div>
+                </div>
+              </div>
+              <center>
+                <button
+                  onClick={() => this.handleSubmit()}
+                >
+                 Submit
+                </button>
+              </center>
+    </Dialog>
 
               <div className="column column_5_12">
                 <div id="pseudo_canvas" className="second_column">
@@ -94,7 +149,6 @@ class PrimPage extends Component {
                   ))}
                 </div>
               </div>
-            </div>
           </center>
           <center>
             {this.state.start ? (
@@ -112,6 +166,7 @@ class PrimPage extends Component {
                 Start
               </button>
             )}
+            </center>
           </center>
         </div>
       </div>
@@ -141,24 +196,6 @@ class PrimPage extends Component {
       }
     }
   }
-
-  /**
-   * Reset data ui to original value (tree = false)
-   */
-  resetTree(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].tree = false;
-    }
-  }
-
-  /**
-   * Reset data ui to original value (highlight = false)
-   */
-  resetHighlight(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
-    }
-  }
   
   
  /**
@@ -185,8 +222,8 @@ class PrimPage extends Component {
         this.state.states[this.state.index].status
       )
     });
-    this.resetTree();
-    this.resetHighlight();
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
@@ -214,7 +251,7 @@ next() {
       this.state.states[this.state.index].status
     ),
   });
-  this.resetHighlight();
+  resetHighlight(this.state.data.edges);
   this.updateGraph(this.state.states[this.state.index].tree, true);
   this.updateGraph(this.state.states[this.state.index].highlighted, false);
 }

@@ -71,14 +71,14 @@ export function kruskals(nodes, edges) {
  * @param {*} edges
  * @param {*} nodes
  */
-export function prims(nodes, edges) {
+export function prims(root, nodes, edges) {
   try {
     let states = [{ highlighted: [], tree: [], status: 0 }];
     // Initialize graph that'll contain the MST
     let MST = new Set();
     states.push({ highlighted: [], tree: [], status: 1 });
     // Select first node as starting node
-    let s = nodes[0];
+    let s = root;
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueue();
     let explored = new Set();

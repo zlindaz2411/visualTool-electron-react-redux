@@ -36,10 +36,12 @@ class BoruvkaPage extends Component {
       emptyGraphMessage();
     }
     else{
-      resetHighlight(this.state.data.edges);
-      resetTree(this.state.data.edges);
-      setWidthHeight(this.state.data, false);
-      drawGraph(this.state.data, false);
+      if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
+        resetHighlight(this.state.data.edges);
+        resetTree(this.state.data.edges);
+        setWidthHeight(this.state.data, false);
+        drawGraph(this.state.data, "");
+        }
     }
   }
 
@@ -157,30 +159,12 @@ class BoruvkaPage extends Component {
     }
   }
 
-    /**
+  /**
    * Reset data ui to original value (tree = false)
    */
   resetNodes(){
     for (let i = 0; i < this.state.data.nodes.length; i++) {
       this.state.data.nodes[i].highlight = false;
-    }
-  }
-
-    /**
-   * Reset data ui to original value (tree = false)
-   */
-  resetTree(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].tree = false;
-    }
-  }
-
-  /**
-   * Reset data ui to original value (highlight = false)
-   */
-  resetHighlight(){
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
     }
   }
 
@@ -208,8 +192,8 @@ class BoruvkaPage extends Component {
         this.state.states[this.state.index].status
       )
     });
-    this.resetTree();
-    this.resetHighlight();
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
@@ -239,7 +223,7 @@ next() {
       this.state.states[this.state.index].status
     ),
   });
-  this.resetHighlight();
+  resetHighlight(this.state.data.edges);
   this.resetNodes();
   this.updateGraph(this.state.states[this.state.index].tree, true);
   this.updateGraph(this.state.states[this.state.index].highlighted, false);

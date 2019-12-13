@@ -35,14 +35,17 @@ class KruskalPage extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.latestGraph)
     if(Object.keys(this.props.latestGraph).length == 0){
       emptyGraphMessage();
     }
     else{
-      resetHighlight(this.state.data.edges);
-      resetTree(this.state.data.edges);
-      setWidthHeight(this.state.data, false);
-      drawGraph(this.state.data, false);
+      if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
+        resetHighlight(this.state.data.edges);
+        resetTree(this.state.data.edges);
+        setWidthHeight(this.state.data, false);
+        drawGraph(this.state.data, "");
+        }
     }
   }
   

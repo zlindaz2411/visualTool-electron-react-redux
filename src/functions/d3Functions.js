@@ -81,7 +81,7 @@ export function createSVG(data, draw){
   .attr("width", w)
   .attr("height", h)
   .on("dblclick", () => {
-    if (draw) {
+    if (draw == "draw") {
       let x = document.querySelector(".canvas").getBoundingClientRect().left;
       let y = document.querySelector(".canvas").getBoundingClientRect().top;
       nodeList.push({
@@ -157,7 +157,7 @@ function createEdges(svg, data, draw){
         : d3.rgb("#94979D");
     })
     .on("contextmenu", function(d){
-      if(draw) handleDeleteEdge(d, data)
+      if(draw == "draw") handleDeleteEdge(d, data)
     } );
 
     let weightX =  0;
@@ -208,7 +208,7 @@ function createEdges(svg, data, draw){
     .text(d => d.weight)
     .attr("contentEditable", true)
     .on("click", function(d) {
-      if(draw){
+      if(draw == "draw"){
         var form = svg.append("form");
         form.append("input").attr("x", weightX).attr("y", weightY)
 
@@ -248,20 +248,23 @@ function createNodes(svg,data,draw){
   .style("stroke-width", "3px")
   .style("cursor", "pointer") 
   .on("contextmenu", function(d){
-    if(draw) handleDeleteNode(d, data)
+    if(draw == "draw") handleDeleteNode(d, data)
+  })
+  .on("click", function(d) {
+    if(draw == "prim") handleSelectRoot(d, data)
   })
   .call(
     d3
       .drag()
       .clickDistance(10)
       .on("start", function(d){
-        if(draw)  dragStarted(d)
+        if(draw == "draw")  dragStarted(d)
       })
       .on("drag", function(d) {
-        if(draw) dragged(d, nodeList);
+        if(draw == "draw") dragged(d, nodeList);
       })
       .on("end", function(d) {
-        if(draw) dragEnded(d, data, draw);
+        if(draw == "draw") dragEnded(d, data, draw);
       })
   )
 }
@@ -280,6 +283,18 @@ export function drawGraph(data, draw) {
  
 }
 
+/**
+ * Select root node for prim's algorithm
+ * @param {*} node 
+ * @param {*} data 
+ */
+function handleSelectRoot(node, data){
+        d3.selectAll("circle")
+            .attr("stroke", d3.rgb("#94979D"));
+        d3.select("#circle" + node.id)
+            .attr("stroke", "#84C262");
+        data.root = node;
+  };
 
 let line;
 let destination;
@@ -293,7 +308,6 @@ let selectedNode;
 function dragStarted(d) {
   selectedNode = d;
   selectedCircle = d3.select("#circle" +d.id);
-
 
   selectedCircle.attr("stroke", d3.rgb("#84C262"));
   line = d3

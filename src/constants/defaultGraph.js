@@ -38,6 +38,7 @@ export let data = {
  * Empty graph data
  */
 export let emptyGraph = {
+  root: {}, 
   nodes: [],
   edges: []
 };

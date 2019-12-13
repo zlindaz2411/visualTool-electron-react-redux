@@ -22,8 +22,7 @@ class DrawPage extends Component {
       selectedGraph: null,
       isSaveDialogOpen: false,
       graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :this.props.latestGraph,
-      name: "",
-      
+      name: "", 
     };
   }
 
@@ -41,7 +40,7 @@ class DrawPage extends Component {
   draw() {
     removeAll();
     setWidthHeight(this.state.graph, true);
-    drawGraph(this.state.graph, true);
+    drawGraph(this.state.graph, "draw");
   }
 
   /**
@@ -88,7 +87,6 @@ class DrawPage extends Component {
         selectedGraph: null
       },
       () => {
-        this.props.passGraph(this.state.graph);
         this.draw();
         this.handleClose();
       }
@@ -282,7 +280,7 @@ class DrawPage extends Component {
         graph: emptyGraph,
       },
       () => {
-        createBlankCanvas(this.state.graph, true)
+        createBlankCanvas(this.state.graph, "draw")
       }
     );
   }
