@@ -1,27 +1,19 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
 
 // import { Graph } from "react-d3-graph";
-import { data } from "../constants/defaultGraph";
+import { data, emptyGraph} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
+
 import { boruvkas } from "../functions/algorithms";
 
 import { Algorithm } from "../constants/algorithms";
+import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
 
-const initialState = {
-  edgeList: [],
-  nodeList: [],
-  start: false,
-  highlightedEdges: [],
-  highlightedNodes: [],
-  data: data,
-  index: 0
-};
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
@@ -31,19 +23,26 @@ class BoruvkaPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...initialState,
+      index: 0,
       pseudocode: getPseudocode(pageName),
       start: false,
-      pseudoMap: null
+      pseudoMap: null,
+      data: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
     };
   }
 
   componentDidMount() {
-    this.resetHighlight();
-    this.resetTree();
-    setWidthHeight(data, false);
-    drawGraph(data, false);
+    if(Object.keys(this.props.latestGraph).length == 0){
+      emptyGraphMessage();
+    }
+    else{
+      resetHighlight(this.state.data.edges);
+      resetTree(this.state.data.edges);
+      setWidthHeight(this.state.data, false);
+      drawGraph(this.state.data, false);
+    }
   }
+
 
   render() {
     return (
@@ -87,13 +86,18 @@ class BoruvkaPage extends Component {
               </div>
             ) : (
               <button
-                onClick={() =>
+                onClick={() =>{
+                  if(Object.keys(this.props.latestGraph).length == 0){
+                    emptyGraphMessage();
+                  }else{
                   this.setState({
                     start: true,
                     pseudoMap: setUpPseudocodeMap(pageName, 0),
                     states: boruvkas(this.state.data.nodes, this.state.data.edges)
                   })
                 }
+                }
+              }
               >
                 Start
               </button>
@@ -196,15 +200,7 @@ class BoruvkaPage extends Component {
           0,
         )
       })
-      confirmAlert({
-        title: `Warning!`,
-        message: `Nothing before the start of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+      startOfAlgorithmMessage();
     } 
     this.setState({
       pseudoMap: setUpPseudocodeMap(
@@ -233,15 +229,7 @@ next() {
           pageName,
           this.state.pseudocode.length-1,
         )})
-      confirmAlert({
-        title: `Warning!`,
-        message: `End of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+     endOfAlgorithmMessage();
   }
  
   
@@ -262,6 +250,7 @@ next() {
 
 function mapStateToProps(state) {
   return {
+    latestGraph: state.graph.latestGraph
   };
 }
 

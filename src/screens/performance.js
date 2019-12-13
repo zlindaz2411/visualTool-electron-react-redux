@@ -2,13 +2,13 @@ import React, { Component, Fragment, formSubmitEvent } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
-import { comparePerformance } from "../functions/performance";
-import { data } from "../constants/defaultGraph";
-
 import { Line } from "react-chartjs-2";
 
+import { comparePerformance } from "../functions/performance";
 
 import { Algorithm } from "../constants/algorithms";
+import { emptyGraph} from "../constants/defaultGraph";
+import { emptyGraphMessage } from "../constants/errorMessage";
 
 
 class PerformancePage extends Component {
@@ -22,8 +22,15 @@ class PerformancePage extends Component {
         Algorithm.BORUVKA,
         Algorithm.PARALLEL
       ],
-      data: {}
+      data:{},
+      graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
     };
+  }
+
+  componentDidMount() {
+    if(Object.keys(this.props.latestGraph).length == 0){
+      emptyGraphMessage();
+    }
   }
 
   /**
@@ -43,6 +50,10 @@ class PerformancePage extends Component {
    */
   handleFormSubmit(e) {
     e.preventDefault();
+    if(Object.keys(this.props.latestGraph).length == 0){
+      emptyGraphMessage();
+    }
+    else{
     const selected = Array.from(this.state.selectedCheckboxes)
     if(selected.length == 0){
       confirmAlert({
@@ -65,11 +76,12 @@ class PerformancePage extends Component {
             pointBorderColor: "#50535D",
             pointRadius: 3,
             pointBackgroundColor: "#50535D",
-            data: comparePerformance(selected, data)
+            data: comparePerformance(selected, this.state.graph)
           }
         ]
       }
     });
+    }
   }
 
   render() {
@@ -131,6 +143,7 @@ class PerformancePage extends Component {
 
 function mapStateToProps(state) {
   return {
+    latestGraph: state.graph.latestGraph
   };
 }
 

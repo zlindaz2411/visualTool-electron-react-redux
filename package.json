@@ -68,6 +68,7 @@
     "html-to-image": "^0.1.1",
     "mocha": "^6.2.2",
     "nedb": "1.8.0",
+    "paralleljs": "^0.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-chartjs-2": "^2.8.0",

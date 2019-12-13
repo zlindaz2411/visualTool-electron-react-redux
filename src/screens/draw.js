@@ -22,7 +22,8 @@ class DrawPage extends Component {
       selectedGraph: null,
       isSaveDialogOpen: false,
       graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :this.props.latestGraph,
-      name: ""
+      name: "",
+      
     };
   }
 

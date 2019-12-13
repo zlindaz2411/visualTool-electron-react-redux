@@ -1,7 +1,7 @@
 import { UnionFind } from "../functions/lib/unionFind";
 import { PriorityQueue } from "../functions/lib/priorityQueue";
 import {ErrMessage} from'../constants/errorMessage';
-// import * as Parallel from 'paralleljs'
+
 
 /**
  * Kruskals algorithm
@@ -354,6 +354,8 @@ export function boruvkas(nodes, edges) {
 }
 
 // export function test() {
+//   const Parallel = require('paralleljs');
+
 //   var p = new Parallel([0, 1, 2, 3, 4, 5, 6]),
 //                                 log = function () { console.log(arguments); };
 //                                 // One gotcha: anonymous functions cannot be serialzed

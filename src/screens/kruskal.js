@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { confirmAlert } from "react-confirm-alert";
-import classNames from "classnames";
 
-// import { Graph } from "react-d3-graph";
-import { data, emptyGraph} from "../constants/defaultGraph";
+import {emptyGraph} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
@@ -13,15 +10,8 @@ import { kruskals } from "../functions/algorithms";
 import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
+import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
 
-const initialState = {
-  edgeList: [],
-  nodeList: [],
-  manual: false,
-  highlightedEdges: [],
-  highlightedNodes: [],
-  index: 0
-};
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
@@ -33,7 +23,8 @@ class KruskalPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...initialState,
+      manual: false,
+      index:0,
       speed: SPEED,
       automatic: false,
       pseudocode: getPseudocode(pageName),
@@ -45,15 +36,7 @@ class KruskalPage extends Component {
 
   componentDidMount() {
     if(Object.keys(this.props.latestGraph).length == 0){
-      confirmAlert({
-        title: `Warning!`,
-        message: `There isn't a submitted graph, please go to "Draw Graph" and submit one`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+      emptyGraphMessage();
     }
     else{
       resetHighlight(this.state.data.edges);
@@ -62,7 +45,6 @@ class KruskalPage extends Component {
       drawGraph(this.state.data, false);
     }
   }
-
   
 
   /**
@@ -70,6 +52,10 @@ class KruskalPage extends Component {
    * If not, alert an error dialog. Otherwise, star the visualization
    */
   handleStart(isManual) {
+    if(Object.keys(this.props.latestGraph).length == 0){
+      emptyGraphMessage();
+    }
+    else{
     const res = kruskals(this.state.data.nodes, this.state.data.edges);
       this.setState({
         pseudoMap: setUpPseudocodeMap(pageName, 0),
@@ -83,7 +69,15 @@ class KruskalPage extends Component {
         this.setState({
           automatic: true
         });
+        let timer = setInterval(() => {
+          if (this.state.index < this.state.states.length - 1) {
+            this.next();
+          } else {
+            clearInterval(timer);
+          }
+        }, this.state.speed);
       }
+    }
   }
 
   render() {
@@ -169,13 +163,7 @@ class KruskalPage extends Component {
                   onClick={() => {
                     {
                       this.handleStart(false);
-                      let timer = setInterval(() => {
-                        if (this.state.index < this.state.states.length - 1) {
-                          this.next();
-                        } else {
-                          clearInterval(timer);
-                        }
-                      }, this.state.speed);
+                      
                     }
                   }}
                 >
@@ -230,15 +218,7 @@ class KruskalPage extends Component {
         index: (this.state.index += 1),
         pseudoMap: setUpPseudocodeMap(pageName, 0)
       });
-      confirmAlert({
-        title: `Warning!`,
-        message: `Nothing before the start of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+      startOfAlgorithmMessage();
     }
     this.setState({
       pseudoMap: setUpPseudocodeMap(
@@ -266,15 +246,7 @@ class KruskalPage extends Component {
           this.state.pseudocode.length - 1
         )
       });
-      confirmAlert({
-        title: `Warning!`,
-        message: `End of the algorithm`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+      endOfAlgorithmMessage();
     }
     this.setState({
       pseudoMap: setUpPseudocodeMap(
