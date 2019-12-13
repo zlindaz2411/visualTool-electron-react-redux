@@ -10,7 +10,7 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 
 import { boruvkas } from "../functions/algorithms";
-
+import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
 

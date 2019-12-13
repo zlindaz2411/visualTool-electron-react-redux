@@ -988,6 +988,13 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .algorithm_wrap .grid {
     padding-top: 5rem;
     max-width: 85%; }
+  .algorithm_wrap .canvasDialog {
+    margin-top: 2rem;
+    overflow: auto;
+    height: 35rem;
+    background: #F9F9F9; }
+    .algorithm_wrap .canvasDialog .drawingDialog {
+      background: #F9F9F9; }
   .algorithm_wrap .canvas {
     margin-right: 2rem;
     border-radius: 2rem;

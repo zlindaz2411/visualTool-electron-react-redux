@@ -53,3 +53,18 @@ export function startOfAlgorithmMessage(){
         ]
       });
   }
+
+/**
+ * When user has not selected the root and tries to do else, display message
+ */
+export function noRootSelectedMessage(){
+  confirmAlert({
+    title: `Warning!`,
+    message: `You must select a root node`,
+    buttons: [
+      {
+        label: "Cancel"
+      }
+    ]
+  });
+}

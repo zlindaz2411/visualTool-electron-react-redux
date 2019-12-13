@@ -196,7 +196,19 @@ class DrawPage extends Component {
           }
         ]
       });
-    }else{
+    }else if(this.state.graph.nodes.length== 0 && this.state.graph.edges.length ==0){
+      confirmAlert({
+        title: `Warning!`,
+        message: `You can't submit an empty graph`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }
+    else
+    {
     this.props.passGraph(this.state.graph)
     }
   }

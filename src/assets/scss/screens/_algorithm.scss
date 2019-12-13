@@ -12,6 +12,18 @@
         padding-top: 5rem;
         max-width: 100% - 15%;
     }
+
+    .canvasDialog{
+        margin-top:2rem;
+        overflow:auto;
+        height:35rem;
+        background: $whiteSmoke;
+        
+    .drawingDialog{
+       
+        background: $whiteSmoke;
+    }
+    }
     
     .canvas{
         margin-right:2rem;

@@ -8,13 +8,16 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
-import {prims, test} from "../functions/algorithms";
+import { prims, test } from "../functions/algorithms";
 
-
-import { emptyGraph} from "../constants/defaultGraph";
+import { emptyGraph } from "../constants/defaultGraph";
 import { Algorithm } from "../constants/algorithms";
-import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
-
+import {
+  emptyGraphMessage,
+  startOfAlgorithmMessage,
+  endOfAlgorithmMessage,
+  noRootSelectedMessage
+} from "../constants/errorMessage";
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
@@ -24,79 +27,88 @@ class PrimPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDialogOpen: false,
-      index:0,
+      isDialogOpen: true,
+      index: 0,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null,
-      data: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
+      data:
+        Object.keys(this.props.latestGraph).length == 0
+          ? emptyGraph
+          : this.props.latestGraph
     };
   }
 
   componentDidMount() {
-    if(Object.keys(this.props.latestGraph).length == 0){
+    if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
+      this.setState({
+        isDialogOpen : false,
+      })
+    } 
+    else {
+        resetHighlight(this.state.data.edges);
+        resetTree(this.state.data.edges);
+        setWidthHeight(this.state.data, false);
+        drawGraph(this.state.data, "prim");
+      }
     }
-    else{
-      if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
-      resetHighlight(this.state.data.edges);
-      resetTree(this.state.data.edges);
+
+
+  /**
+   * Draw graph in the algorithm page canvas
+   */
+  draw(){     
       setWidthHeight(this.state.data, false);
       drawGraph(this.state.data, "");
-      }
+    }
+
+
+
+  /**
+   * When start is pressed, check if the graph is correct.
+   * If not, alert an error dialog. Otherwise, start the visualization
+   */
+  handleStart() {
+    if (Object.keys(this.props.latestGraph).length == 0) {
+      emptyGraphMessage();
+    } else {
+      this.setState(
+        {
+          start: true,
+          pseudoMap: setUpPseudocodeMap(pageName, 0),
+          states: prims(
+            this.state.data.root,
+            this.state.data.nodes,
+            this.state.data.edges
+          )});
     }
   }
 
   /**
-   * When start is pressed, check if the graph is correct. 
-   * If not, alert an error dialog. Otherwise, star the visualization
+   * Handle close dialog. If not selected root node pop up error message, else close.
    */
-  handleStart(){
-    if(Object.keys(this.props.latestGraph).length == 0){
-      emptyGraphMessage();
-    }else{   
+  handleClose() {
+    if (!this.state.data.root && Object.keys(this.props.latestGraph).length != 0) {
+      noRootSelectedMessage();
+    } 
+    else {
       this.setState({
-        isDialogOpen:true,
-      },
-      () => {
-        removeAll();
-        setWidthHeight(this.state.data, false);
-        drawGraph(this.state.data, "prim");
-      })
+        isDialogOpen: false
+      });
     }
-    }
-
-  /**
-   * 
-   */
-  handleClose(){
-      if(Object.keys(this.state.data.root).length == 0){
-        confirmAlert({
-          title: `Warning!`,
-          message: `You must select a root node`,
-          buttons: [
-            {
-              label: "Cancel"
-            }
-          ]
-        });
-      }
-      else{
-        this.setState({
-          isDialogOpen:false,
-        })
-      }
   }
 
   /**
    *  Submit the root node selection
    */
-  handleSubmit(){
-    this.setState({
-      start: true,
-      pseudoMap: setUpPseudocodeMap(pageName, 0),
-      states: prims(this.state.data.root, this.state.data.nodes, this.state.data.edges),
-    })
+  handleSubmit() {
+    if (!this.state.data.root && Object.keys(this.props.latestGraph).length == 0) {
+      noRootSelectedMessage();
+    } else { 
+      if (this.state.data.root && Object.keys(this.props.latestGraph).length != 0) this.draw();
+      this.handleClose();
+    }
   }
 
   render() {
@@ -112,24 +124,17 @@ class PrimPage extends Component {
                 </div>
               </div>
               <Dialog
-              title="Select a root node"
-              isOpen={this.state.isDialogOpen}
-              handleClose={() => this.handleClose()}
-            >
-              <div className="load">
-                <div className="canvas">
-                  <div className="drawing"></div>
+                title="Select a root node"
+                isOpen={this.state.isDialogOpen}
+                handleClose={() => this.handleClose()}
+              >
+                <div className="canvasDialog">
+                  <div className="drawingDialog"></div>
                 </div>
-              </div>
-              <center>
-                <button
-                  onClick={() => this.handleSubmit()}
-                >
-                 Submit
-                </button>
-              </center>
-    </Dialog>
-
+                <center>
+                  <button onClick={() => this.handleSubmit()}>Submit</button>
+                </center>
+              </Dialog>
               <div className="column column_5_12">
                 <div id="pseudo_canvas" className="second_column">
                   {this.state.pseudocode.map((pseudo, i) => (
@@ -149,23 +154,17 @@ class PrimPage extends Component {
                   ))}
                 </div>
               </div>
-          </center>
-          <center>
-            {this.state.start ? (
-              <div className="action_buttons">
-                <button onClick={() => this.previous()}>Previous</button>
-                <button onClick={() => test()}>ts</button>
-                <button onClick={() => this.next()}>Next</button>
-              </div>
-            ) : (
-              <button
-                onClick={() =>
-                  this.handleStart()
-                }
-              >
-                Start
-              </button>
-            )}
+            </center>
+            <center>
+              {this.state.start ? (
+                <div className="action_buttons">
+                  <button onClick={() => this.previous()}>Previous</button>
+                  <button onClick={() => test()}>ts</button>
+                  <button onClick={() => this.next()}>Next</button>
+                </div>
+              ) : (
+                <button onClick={() => this.handleStart()}>Start</button>
+              )}
             </center>
           </center>
         </div>
@@ -173,10 +172,10 @@ class PrimPage extends Component {
     );
   }
 
-    /**
+  /**
    * Update graph: update which edge needs to be highlighted
-   * @param {*} array 
-   * @param {*} tree 
+   * @param {*} array
+   * @param {*} tree
    */
   updateGraph(array, tree) {
     for (let i = 0; i < array.length; i++) {
@@ -196,26 +195,22 @@ class PrimPage extends Component {
       }
     }
   }
-  
-  
- /**
+
+  /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
     this.setState({
-      index:  this.state.index -= 1,
+      index: (this.state.index -= 1)
     });
     if (this.state.index < 0) {
       this.setState({
-        index: this.state.index+=1,
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          0,
-        )
-      })
-     startOfAlgorithmMessage();
-    } 
+        index: (this.state.index += 1),
+        pseudoMap: setUpPseudocodeMap(pageName, 0)
+      });
+      startOfAlgorithmMessage();
+    }
     this.setState({
       pseudoMap: setUpPseudocodeMap(
         pageName,
@@ -228,33 +223,34 @@ class PrimPage extends Component {
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
 
-/**
- * When next button is clicked: if it's at the end, display error message
- * Else display the next state of the algorithm
- */
-next() {
+  /**
+   * When next button is clicked: if it's at the end, display error message
+   * Else display the next state of the algorithm
+   */
+  next() {
     this.setState({
-      index: this.state.index += 1,
+      index: (this.state.index += 1)
     });
     if (this.state.index >= this.state.states.length) {
       this.setState({
-        index: this.state.index-=1,
+        index: (this.state.index -= 1),
         pseudoMap: setUpPseudocodeMap(
           pageName,
-          this.state.pseudocode.length-1,
-        )})
+          this.state.pseudocode.length - 1
+        )
+      });
       endOfAlgorithmMessage();
+    }
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      )
+    });
+    resetHighlight(this.state.data.edges);
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
-  this.setState({
-    pseudoMap: setUpPseudocodeMap(
-      pageName,
-      this.state.states[this.state.index].status
-    ),
-  });
-  resetHighlight(this.state.data.edges);
-  this.updateGraph(this.state.states[this.state.index].tree, true);
-  this.updateGraph(this.state.states[this.state.index].highlighted, false);
-}
 }
 
 function mapStateToProps(state) {
@@ -263,8 +259,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, {})(
-    PrimPage
-  )
-);
+export default withRouter(connect(mapStateToProps, {})(PrimPage));

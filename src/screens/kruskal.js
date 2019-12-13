@@ -35,7 +35,6 @@ class KruskalPage extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.latestGraph)
     if(Object.keys(this.props.latestGraph).length == 0){
       emptyGraphMessage();
     }

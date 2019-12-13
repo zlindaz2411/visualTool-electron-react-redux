@@ -17,7 +17,6 @@ let yScale = 0;
 export function setWidthHeight(graph, draw) {
   w = document.querySelector(".canvas").getBoundingClientRect().width;
   h = document.querySelector(".canvas").getBoundingClientRect().height;
-
   setScales(graph.nodes, draw);
 
 }
@@ -71,19 +70,21 @@ export function createBlankCanvas(empty, draw) {
  * @param {*} draw 
  */
 export function createSVG(data, draw){
+  const drawing = draw == "prim" ? ".drawingDialog" : ".drawing"
+  const canvas = draw == "prim" ? ".canvasDialog" : ".canvas"
   const nodeList = data.nodes
   const edgeList = data.edges
   let id = nodeList.length + 1;
 
   const svg = d3
-  .select(".drawing")
+  .select(drawing)
   .append("svg")
   .attr("width", w)
   .attr("height", h)
   .on("dblclick", () => {
     if (draw == "draw") {
-      let x = document.querySelector(".canvas").getBoundingClientRect().left;
-      let y = document.querySelector(".canvas").getBoundingClientRect().top;
+      let x = document.querySelector(canvas).getBoundingClientRect().left;
+      let y = document.querySelector(canvas).getBoundingClientRect().top;
       nodeList.push({
         id: id,
         x: Math.round(xScale(d3.event.x - x)),
@@ -157,7 +158,7 @@ function createEdges(svg, data, draw){
         : d3.rgb("#94979D");
     })
     .on("contextmenu", function(d){
-      if(draw == "draw") handleDeleteEdge(d, data)
+      if(draw == "draw") handleDeleteEdge(d, data, draw)
     } );
 
     let weightX =  0;
@@ -248,10 +249,10 @@ function createNodes(svg,data,draw){
   .style("stroke-width", "3px")
   .style("cursor", "pointer") 
   .on("contextmenu", function(d){
-    if(draw == "draw") handleDeleteNode(d, data)
+    if(draw == "draw") handleDeleteNode(d, data, draw)
   })
   .on("click", function(d) {
-    if(draw == "prim") handleSelectRoot(d, data)
+    if(draw == "prim") handleSelectRoot(d, data, draw)
   })
   .call(
     d3
@@ -288,12 +289,15 @@ export function drawGraph(data, draw) {
  * @param {*} node 
  * @param {*} data 
  */
-function handleSelectRoot(node, data){
-        d3.selectAll("circle")
-            .attr("stroke", d3.rgb("#94979D"));
-        d3.select("#circle" + node.id)
-            .attr("stroke", "#84C262");
-        data.root = node;
+function handleSelectRoot(node, data, draw){
+    console.log(node);
+    d3.selectAll("circle")
+        .attr("stroke", d3.rgb("#94979D"));
+    d3.select("#circle" + node.id)
+        .attr("stroke", "#84C262");
+    data.root = node;
+    removeAll();
+    drawGraph(data, draw);
   };
 
 let line;
@@ -408,7 +412,7 @@ function calculateWeight(source, destination) {
  * @param {*} element
  * @param {*} data
  */
-function handleDeleteNode(element, data) {
+function handleDeleteNode(element, data, draw) {
     d3.event.preventDefault();
     data.nodes.splice(data.nodes.indexOf(element), 1);
     for (let i = 0; i < data.edges.length; i++) {
@@ -422,7 +426,7 @@ function handleDeleteNode(element, data) {
       }
     }
     removeAll();
-    drawGraph(data, true);
+    drawGraph(data, draw);
   } 
 
 /**
@@ -430,10 +434,10 @@ function handleDeleteNode(element, data) {
  * @param {*} element
  * @param {*} data
  */
-function handleDeleteEdge(element, data) {
+function handleDeleteEdge(element, data, draw) {
   d3.event.preventDefault();
   data.edges.splice(data.edges.indexOf(element), 1);
   removeAll();
-  drawGraph(data, true);
+  drawGraph(data, draw);
 }
 
