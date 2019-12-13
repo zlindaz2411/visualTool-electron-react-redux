@@ -2,6 +2,13 @@ import {Algorithm} from '../constants/algorithms';
 import {kruskals, prims, boruvkas, parallel} from '../functions/originalAlgorithms'
 import {performance} from 'perf_hooks'
 
+
+/**
+ * Compare performance based on a given list of algorithms
+ * Return a list of times of given algorithms
+ * @param {*} list 
+ * @param {*} graph 
+ */
 export function comparePerformance(list, graph){
     let result = [];
     for(let i =0;i<list.length;i++){
@@ -21,6 +28,10 @@ export function comparePerformance(list, graph){
     return result;
 }
 
+/**
+ * Calculate time from start time to end time
+ * @param {*} func 
+ */
 function calculateTime(func){
     let startTime = performance.now();
     func();

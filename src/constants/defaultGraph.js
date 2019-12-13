@@ -1,3 +1,6 @@
+/**
+ * Example of graph
+ */
 export let data = {
   root: 1,
   nodes: [
@@ -31,11 +34,17 @@ export let data = {
   ]
 };
 
+/**
+ * Empty graph data
+ */
 export let emptyGraph = {
   nodes: [],
   edges: []
 };
 
+/**
+ * Reset graph data to be empty again
+ */
 export function resetEmptyGraph() {
   emptyGraph = {
     nodes: [],

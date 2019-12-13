@@ -178,7 +178,8 @@ export function prims(nodes, edges) {
 }
 
 /**
- * Boruvka algorithm
+ * Boruvka's algorithm
+ * Get all the states that are each step of the algorithm
  * @param {*} edges
  * @param {*} nodes
  */
