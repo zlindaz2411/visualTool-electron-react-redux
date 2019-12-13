@@ -10,7 +10,7 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 
 import { boruvkas } from "../functions/algorithms";
-import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
+import { resetTree, resetHighlight, resetRoot} from "../functions/graphAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
 
@@ -37,6 +37,7 @@ class BoruvkaPage extends Component {
     }
     else{
       if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
+        resetRoot(this.state.data);
         resetHighlight(this.state.data.edges);
         resetTree(this.state.data.edges);
         setWidthHeight(this.state.data, false);

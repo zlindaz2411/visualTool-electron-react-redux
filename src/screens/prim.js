@@ -70,6 +70,7 @@ class PrimPage extends Component {
    * If not, alert an error dialog. Otherwise, start the visualization
    */
   handleStart() {
+    console.log(this.state.data.root);
     if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
     } else {
@@ -89,7 +90,7 @@ class PrimPage extends Component {
    * Handle close dialog. If not selected root node pop up error message, else close.
    */
   handleClose() {
-    if (!this.state.data.root && Object.keys(this.props.latestGraph).length != 0) {
+    if (!this.state.data.root) {
       noRootSelectedMessage();
     } 
     else {
@@ -103,10 +104,11 @@ class PrimPage extends Component {
    *  Submit the root node selection
    */
   handleSubmit() {
-    if (!this.state.data.root && Object.keys(this.props.latestGraph).length == 0) {
+    console.log(this.state.data)
+    if (!this.state.data.root) {
       noRootSelectedMessage();
     } else { 
-      if (this.state.data.root && Object.keys(this.props.latestGraph).length != 0) this.draw();
+      if (this.state.data.root) this.draw();
       this.handleClose();
     }
   }

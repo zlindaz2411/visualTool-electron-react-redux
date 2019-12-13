@@ -11,7 +11,7 @@ import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
 
 import { removeAll, drawGraph, setWidthHeight, createBlankCanvas} from "../functions/d3Functions";
 import { fetchGraphs, deleteGraph, addGraph, passGraph} from "../actions/draw";
-import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
+import { resetTree, resetHighlight, resetRoot} from "../functions/graphAlgorithms";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class DrawPage extends Component {
   componentDidMount() {
        resetHighlight(this.state.graph.edges);
        resetTree(this.state.graph.edges);
+       resetRoot(this.state.graph);
        this.draw();
   }
 

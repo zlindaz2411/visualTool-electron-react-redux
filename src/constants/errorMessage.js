@@ -14,7 +14,7 @@ export const ErrMessage ={
 export function emptyGraphMessage(){
         confirmAlert({
           title: `Warning!`,
-          message: `There isn't a submitted graph, please go to "Draw Graph" and submit one`,
+          message: `You haven't submitted a graph yet. Please go to "Draw Graph" and submit one`,
           buttons: [
             {
               label: "Cancel"

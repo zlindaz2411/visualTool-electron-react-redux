@@ -72,9 +72,8 @@ export function createBlankCanvas(empty, draw) {
 export function createSVG(data, draw){
   const drawing = draw == "prim" ? ".drawingDialog" : ".drawing"
   const canvas = draw == "prim" ? ".canvasDialog" : ".canvas"
-  const nodeList = data.nodes
-  const edgeList = data.edges
-  let id = nodeList.length + 1;
+
+  let id = data.nodes.length + 1;
 
   const svg = d3
   .select(drawing)
@@ -85,7 +84,7 @@ export function createSVG(data, draw){
     if (draw == "draw") {
       let x = document.querySelector(canvas).getBoundingClientRect().left;
       let y = document.querySelector(canvas).getBoundingClientRect().top;
-      nodeList.push({
+      data.nodes.push({
         id: id,
         x: Math.round(xScale(d3.event.x - x)),
         y: Math.round(yScale(d3.event.y - y))
@@ -225,11 +224,9 @@ function createEdges(svg, data, draw){
  * @param {*} draw 
  */
 function createNodes(svg,data,draw){
-  const nodeList = data.nodes
-  const edgeList = data.edges
   svg
   .selectAll("circle")
-  .data(data ? data.nodes : [])
+  .data(data.nodes)
   .enter()
   .append("circle")
   .attr("id", function(d) {
@@ -244,7 +241,12 @@ function createNodes(svg,data,draw){
   .attr("r", radius)
   .attr("fill", "white")
   .attr("stroke", function(d){
-    return d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D")
+    if(data.root){
+        if(d.id == data.root.id){
+            return d3.rgb("#84C262") 
+        }
+    }
+    return d.highlight == true ? d3.rgb("#B22222")  :d3.rgb("#94979D")
   })
   .style("stroke-width", "3px")
   .style("cursor", "pointer") 
@@ -262,7 +264,7 @@ function createNodes(svg,data,draw){
         if(draw == "draw")  dragStarted(d)
       })
       .on("drag", function(d) {
-        if(draw == "draw") dragged(d, nodeList);
+        if(draw == "draw") dragged(d, data.nodes);
       })
       .on("end", function(d) {
         if(draw == "draw") dragEnded(d, data, draw);
@@ -290,11 +292,6 @@ export function drawGraph(data, draw) {
  * @param {*} data 
  */
 function handleSelectRoot(node, data, draw){
-    console.log(node);
-    d3.selectAll("circle")
-        .attr("stroke", d3.rgb("#94979D"));
-    d3.select("#circle" + node.id)
-        .attr("stroke", "#84C262");
     data.root = node;
     removeAll();
     drawGraph(data, draw);

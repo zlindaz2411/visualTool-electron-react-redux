@@ -91,7 +91,7 @@ export function prims(root, nodes, edges) {
       if (edges[i].source == s.id) {
         edgeQueue.enqueue([s.id, edges[i].target], edges[i].weight);
       }
-      if (edges[i].target == s) {
+      if (edges[i].target == s.id) {
         edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
       }
     }

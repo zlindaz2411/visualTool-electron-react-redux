@@ -16,6 +16,13 @@
     }
   }
 
+  /**
+   * Reset data ui to original value (highlight = false)
+   */
+ export function resetRoot(data){
+    data.root = {}
+}
+
 /**
    * Update graph: update which edge needs to be highlighted
    * @param {*} array 
