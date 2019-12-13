@@ -1,18 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
-import { Prompt } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import htmlToImage from "html-to-image";
-import parse from "html-react-parser";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
-import { data } from "../constants/defaultGraph";
+import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
 
-import { removeAll, drawGraph, setWidthHeight, clear} from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight, createBlankCanvas} from "../functions/d3Functions";
 import { fetchGraphs, deleteGraph, addGraph, passGraph} from "../actions/draw";
+import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
+import { reset } from "ansi-colors";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -22,14 +22,16 @@ class DrawPage extends Component {
       isDialogOpen: false,
       selectedGraph: null,
       isSaveDialogOpen: false,
-      graph: data,
+      graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :this.props.latestGraph,
       name: ""
     };
   }
 
 
   componentDidMount() {
-    this.draw();
+       resetHighlight(this.state.graph.edges);
+       resetTree(this.state.graph.edges);
+       this.draw();
   }
 
 
@@ -38,7 +40,7 @@ class DrawPage extends Component {
    */
   draw() {
     removeAll();
-    setWidthHeight(this.state.graph.nodes, true);
+    setWidthHeight(this.state.graph, true);
     drawGraph(this.state.graph, true);
   }
 
@@ -86,6 +88,7 @@ class DrawPage extends Component {
         selectedGraph: null
       },
       () => {
+        this.props.passGraph(this.state.graph);
         this.draw();
         this.handleClose();
       }
@@ -154,7 +157,7 @@ class DrawPage extends Component {
    */
   saveNewGraph(e){
     e.preventDefault();
-    let clone = Object.assign({}, data);
+    let clone = Object.assign({}, this.state.graph);
     if (!this.state.name) {
       confirmAlert({
         title: `Warning!`,
@@ -175,6 +178,31 @@ class DrawPage extends Component {
     }
   }
 
+  /**
+   * When submit check if is a valid graph.
+   */
+  handleSubmit(){
+    let edges = this.state.graph.edges;
+    let check = new Set();
+    for(let i =0;i<edges.length; i++){
+      check.add(edges[i].source);
+      check.add(edges[i].target);
+    }
+    if(check.size != this.state.graph.nodes.length){
+      confirmAlert({
+        title: `Warning!`,
+        message: `There is an error in the drawn graph: it must be a connected graph`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }else{
+    this.props.passGraph(this.state.graph)
+    }
+  }
+
   render() {
     return (
       <div className="about_wrap">
@@ -187,6 +215,7 @@ class DrawPage extends Component {
             create an edge.
           </h2>
           <h2>Right click on a vertex or an edge to delete.</h2>
+          <h2>Submit the graph to be used for visualization and performance comparison</h2>
         </div>
         <center>
           <div className="canvas">
@@ -234,10 +263,9 @@ class DrawPage extends Component {
               handleChange={e => this.handleChange(e)}
               buttonName="Save"
             ></InputDialog>
-
-            <button onClick={() => this.save()}>Save</button>
-            <button onClick={() => this.props.passGraph(this.state.graph)}>Pass</button>
+            <button onClick={() => this.save()}>Save</button>        
             <button onClick={() => this.clearAll()}>Clear</button>
+            <button onClick={() => this.handleSubmit()}>Submit</button>
           </div>
         </center>
       </div>
@@ -248,13 +276,13 @@ class DrawPage extends Component {
    * Clear graph
    */
   clearAll() {
+    resetEmptyGraph();
     this.setState(
       {
-        graph: {}
+        graph: emptyGraph,
       },
       () => {
-        console.log(this.state.graph)
-        clear();
+        createBlankCanvas(this.state.graph, true)
       }
     );
   }

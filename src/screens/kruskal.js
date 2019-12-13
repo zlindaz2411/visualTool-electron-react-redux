@@ -5,14 +5,14 @@ import { confirmAlert } from "react-confirm-alert";
 import classNames from "classnames";
 
 // import { Graph } from "react-d3-graph";
-import { data } from "../constants/defaultGraph";
+import { data, emptyGraph} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
-import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { kruskals } from "../functions/algorithms";
+import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
-import {ErrMessage} from '../constants/errorMessage';
 
 const initialState = {
   edgeList: [],
@@ -39,16 +39,31 @@ class KruskalPage extends Component {
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null,
-      data:this.props.latestGraph,
+      data: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
     };
   }
 
   componentDidMount() {
-    this.resetHighlight();
-    this.resetTree();
-    setWidthHeight(this.state.data.nodes, false);
-    drawGraph(this.state.data, false);
+    if(Object.keys(this.props.latestGraph).length == 0){
+      confirmAlert({
+        title: `Warning!`,
+        message: `There isn't a submitted graph, please go to "Draw Graph" and submit one`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
+    }
+    else{
+      resetHighlight(this.state.data.edges);
+      resetTree(this.state.data.edges);
+      setWidthHeight(this.state.data, false);
+      drawGraph(this.state.data, false);
+    }
   }
+
+  
 
   /**
    * When start is pressed, check if the graph is correct.
@@ -56,7 +71,6 @@ class KruskalPage extends Component {
    */
   handleStart(isManual) {
     const res = kruskals(this.state.data.nodes, this.state.data.edges);
-    if (res != ErrMessage.MST_NOT_FOUND) {
       this.setState({
         pseudoMap: setUpPseudocodeMap(pageName, 0),
         states: res
@@ -70,17 +84,6 @@ class KruskalPage extends Component {
           automatic: true
         });
       }
-    } else {
-      confirmAlert({
-        title: `Warning!`,
-        message: `There is an error in the drawn graph: it must be a connected graph`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
-    }
   }
 
   render() {
@@ -210,29 +213,15 @@ class KruskalPage extends Component {
     }
   }
 
-  /**
-   * Reset data ui to original value (tree = false)
-   */
-  resetTree() {
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].tree = false;
-    }
-  }
 
-  /**
-   * Reset data ui to original value (highlight = false)
-   */
-  resetHighlight() {
-    for (let i = 0; i < this.state.data.edges.length; i++) {
-      this.state.data.edges[i].highlight = false;
-    }
-  }
 
   /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
   previous() {
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
     this.setState({
       index: (this.state.index -= 1)
     });
@@ -257,8 +246,6 @@ class KruskalPage extends Component {
         this.state.states[this.state.index].status
       )
     });
-    this.resetTree();
-    this.resetHighlight();
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }
@@ -295,7 +282,7 @@ class KruskalPage extends Component {
         this.state.states[this.state.index].status
       )
     });
-    this.resetHighlight();
+    resetHighlight(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
   }

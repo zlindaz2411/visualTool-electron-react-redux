@@ -10,12 +10,10 @@ export default (state = INITIAL_STATE, action) => {
 
     switch(action.type){
         case ADD_GRAPH:
-            console.log("graph adding")
             return {...state, arr: action.payload.graphs}
         case FETCH_GRAPHS:
             return {...state, arr: action.payload}
         case PASS_GRAPH:
-            console.log("graph passing")
             return {...state, latestGraph: action.latestGraph}
         default: 
             return state;

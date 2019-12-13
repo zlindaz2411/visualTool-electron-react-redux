@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
-import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { kruskals } from "../functions/algorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -39,7 +39,7 @@ class ParallelPage extends Component {
   }
 
   componentDidMount() {
-    setWidthHeight(data.nodes, false);
+    setWidthHeight(data, false);
     drawGraph(data, false);
   }
 

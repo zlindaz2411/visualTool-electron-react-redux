@@ -1,7 +1,4 @@
 import * as d3 from "d3";
-import { confirmAlert } from "react-confirm-alert";
-let contextMenuFactory = require('d3-context-menu')
-
 
 const radius = 10;
 const margin = 15;
@@ -11,11 +8,11 @@ let h = 0;
 let xScale = 0;
 let yScale = 0;
 
-export function setWidthHeight(nodes, draw) {
+export function setWidthHeight(graph, draw) {
   w = document.querySelector(".canvas").getBoundingClientRect().width;
   h = document.querySelector(".canvas").getBoundingClientRect().height;
 
-  setScales(nodes, draw);
+  setScales(graph.nodes, draw);
 
 }
 
@@ -57,51 +54,57 @@ export function removeAll() {
 /**
  * Remove all the elements
  */
-export function clear() {
-  d3.selectAll("circle").remove();
-  d3.selectAll("line").remove();
-  d3.selectAll("text").remove();
+export function createBlankCanvas(empty, draw) {
+  d3.select("svg").remove();
+  createSVG(empty, draw)
 }
 
 /**
- * Draw the graph based on a given data
- * Draw nodes, edges, weights
- * @param {*} data
- * @param {*} draw
+ * Create an svg
+ * @param {*} data 
+ * @param {*} draw 
  */
-export function drawGraph(data, draw) {
-  const nodeList = data.nodes;
-  const edgeList = data.edges;
-
+export function createSVG(data, draw){
+  const nodeList = data.nodes
+  const edgeList = data.edges
   let id = nodeList.length + 1;
 
   const svg = d3
-    .select(".drawing")
-    .append("svg")
-    .attr("width", w)
-    .attr("height", h)
-    .on("click", () => {
-      if (draw) {
-        let x = document.querySelector(".canvas").getBoundingClientRect().left;
-        let y = document.querySelector(".canvas").getBoundingClientRect().top;
-        nodeList.push({
-          id: id,
-          x: Math.round(xScale(d3.event.x - x)),
-          y: Math.round(yScale(d3.event.y - y))
-        });
-        removeAll();
-        drawGraph(data, draw);
-      }
-    });
+  .select(".drawing")
+  .append("svg")
+  .attr("width", w)
+  .attr("height", h)
+  .on("click", () => {
+    if (draw) {
+      let x = document.querySelector(".canvas").getBoundingClientRect().left;
+      let y = document.querySelector(".canvas").getBoundingClientRect().top;
+      nodeList.push({
+        id: id,
+        x: Math.round(xScale(d3.event.x - x)),
+        y: Math.round(yScale(d3.event.y - y))
+      });
+      removeAll();
+      drawGraph(data, draw);
+    }
+   });
 
-  const rect = d3
-    .select("svg")
-    .append("rect")
-    .attr("width", w)
-    .attr("height", h)
-    .style("fill", "none");
+    const rect = d3
+      .select("svg")
+      .append("rect")
+      .attr("width", w)
+      .attr("height", h)
+      .style("fill", "none");
+}
 
-  
+/**
+ * Create edges for the graph
+ * @param {*} svg 
+ * @param {*} data 
+ * @param {*} draw 
+ */
+function createEdges(svg, data, draw){
+  const nodeList = data.nodes
+  const edgeList = data.edges
   svg
     .selectAll("line")
     .data(edgeList)
@@ -211,64 +214,69 @@ export function drawGraph(data, draw) {
           drawGraph(data, draw);
       }
     })
+}
 
-    var menu = [
-      {
-          title: 'Header',
-      },
-      {
-          title: 'Normal item',
-          action: function() {}
-      },
-      {
-          divider: true
-      },
-      {
-          title: 'Last item',
-          action: function() {}
-      }
-  ];
-  
-
+/**
+ * Create nodes for the graph
+ * @param {*} svg 
+ * @param {*} data 
+ * @param {*} draw 
+ */
+function createNodes(svg,data,draw){
+  const nodeList = data.nodes
+  const edgeList = data.edges
   svg
-    .selectAll("circle")
-    .data(nodeList)
-    .enter()
-    .append("circle")
-    .attr("id", function(d) {
-      return "circle" + d.id;
-    })
-    .attr("cx", function(d) {
-      return xScale(d.x);
-    })
-    .attr("cy", function(d) {
-      return yScale(d.y);
-    })
-    .attr("r", radius)
-    .attr("fill", "white")
-    .attr("stroke", function(d){
-      return d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D")
-    })
-    .style("stroke-width", "3px")
-    .style("cursor", "pointer") 
-    .on("contextmenu", function(d){
-      if(draw) handleDeleteNode(d, data)
-    })
-    .call(
-      d3
-        .drag()
-        .clickDistance(10)
-        .on("start", function(d){
-          if(draw)  dragStarted(d)
-        })
-        .on("drag", function(d) {
-          if(draw) dragged(d, nodeList);
-        })
-        .on("end", function(d) {
-          if(draw) dragEnded(d, data, draw);
-        })
-    )
+  .selectAll("circle")
+  .data(data ? data.nodes : [])
+  .enter()
+  .append("circle")
+  .attr("id", function(d) {
+    return "circle" + d.id;
+  })
+  .attr("cx", function(d) {
+    return xScale(d.x);
+  })
+  .attr("cy", function(d) {
+    return yScale(d.y);
+  })
+  .attr("r", radius)
+  .attr("fill", "white")
+  .attr("stroke", function(d){
+    return d.highlight == true ? d3.rgb("#B22222") : d3.rgb("#94979D")
+  })
+  .style("stroke-width", "3px")
+  .style("cursor", "pointer") 
+  .on("contextmenu", function(d){
+    if(draw) handleDeleteNode(d, data)
+  })
+  .call(
+    d3
+      .drag()
+      .clickDistance(10)
+      .on("start", function(d){
+        if(draw)  dragStarted(d)
+      })
+      .on("drag", function(d) {
+        if(draw) dragged(d, nodeList);
+      })
+      .on("end", function(d) {
+        if(draw) dragEnded(d, data, draw);
+      })
+  )
+}
 
+/**
+ * Draw the graph based on a given data
+ * Draw nodes, edges, weights
+ * @param {*} data
+ * @param {*} draw
+ */
+export function drawGraph(data, draw) {
+  createSVG(data, draw);
+  const svg = d3.select("svg");
+  createEdges(svg, data, draw);
+  createNodes(svg, data, draw)
+ 
 }
 
 

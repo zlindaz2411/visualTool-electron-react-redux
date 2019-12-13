@@ -22,9 +22,9 @@ class HomePage extends Component {
                     </div>
                 </center>
                 <div className ="sub_text">
-                    <h3>Choose an algorithm and see the visualization on a default graph </h3>
+                    <h3>You must submit a graph in order to see the visualization of the algorithm</h3>
                     <br></br>
-                    <h3>Otherwise, you can draw your own graph. </h3>
+                    <h3>You can load a graph or draw your own graph.</h3>
                 </div>
             </div>
         )

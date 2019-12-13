@@ -8,7 +8,7 @@ import classNames from "classnames";
 import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
-import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
+import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { prims } from "../functions/algorithms";
 
 
@@ -43,7 +43,7 @@ class PrimPage extends Component {
   componentDidMount() {
     this.resetHighlight();
     this.resetTree();
-    setWidthHeight(data.nodes, false);
+    setWidthHeight(data, false);
     drawGraph(data, false);
   }
 
@@ -52,26 +52,13 @@ class PrimPage extends Component {
    * If not, alert an error dialog. Otherwise, star the visualization
    */
   handleStart(){
-    const res = prims(this.state.data.nodes, this.state.data.edges);
-    if(res != ErrMessage.MST_NOT_FOUND){
       this.setState({
         start: true,
         pseudoMap: setUpPseudocodeMap(pageName, 0),
         states: res,
       })
     }
-    else{
-      confirmAlert({
-        title: `Warning!`,
-        message: `There is an error in the drawn graph: it must be a connected graph`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
-    }
-  }
+
 
 
   render() {
