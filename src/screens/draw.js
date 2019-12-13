@@ -12,7 +12,6 @@ import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
 import { removeAll, drawGraph, setWidthHeight, createBlankCanvas} from "../functions/d3Functions";
 import { fetchGraphs, deleteGraph, addGraph, passGraph} from "../actions/draw";
 import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
-import { reset } from "ansi-colors";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -211,7 +210,7 @@ class DrawPage extends Component {
         </div>
         <div className="sub_text">
           <h2>
-            Click on empty space to draw a vertex. Drag from vertex to vertex to
+            Double click on empty space to draw a vertex. Drag from vertex to vertex to
             create an edge.
           </h2>
           <h2>Right click on a vertex or an edge to delete.</h2>

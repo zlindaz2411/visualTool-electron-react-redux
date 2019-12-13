@@ -8,6 +8,12 @@ let h = 0;
 let xScale = 0;
 let yScale = 0;
 
+
+/**
+ * Get width and height of canvas
+ * @param {*} graph 
+ * @param {*} draw 
+ */
 export function setWidthHeight(graph, draw) {
   w = document.querySelector(".canvas").getBoundingClientRect().width;
   h = document.querySelector(".canvas").getBoundingClientRect().height;
@@ -74,7 +80,7 @@ export function createSVG(data, draw){
   .append("svg")
   .attr("width", w)
   .attr("height", h)
-  .on("click", () => {
+  .on("dblclick", () => {
     if (draw) {
       let x = document.querySelector(".canvas").getBoundingClientRect().left;
       let y = document.querySelector(".canvas").getBoundingClientRect().top;
@@ -200,19 +206,14 @@ function createEdges(svg, data, draw){
     .style("fill", d3.rgb("#50525E"))
     .attr("class", "weight")
     .text(d => d.weight)
+    .attr("contentEditable", true)
     .on("click", function(d) {
       if(draw){
-      d.weight = 10;
-      svg
-          .append("foreignObject")
-          .attr("x", weightX)
-          .attr("y", weightY)
-          .attr("width", 140)
-          .attr("height", 20)
-          .html('<input type="text" value="Text goes here" />')
-          removeAll();
-          drawGraph(data, draw);
-      }
+        var form = svg.append("form");
+        form.append("input").attr("x", weightX).attr("y", weightY)
+
+        form.append("button").attr('type', 'submit').text('Save');
+    }
     })
 }
 
@@ -401,7 +402,7 @@ function handleDeleteNode(element, data) {
         data.edges.splice(i, 1);
         i--;
       }
-      if (data.edges[i].target == element.id) {
+      else if (data.edges[i].target == element.id) {
         data.edges.splice(i, 1);
         i--;
       }

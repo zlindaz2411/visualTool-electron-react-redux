@@ -1046,6 +1046,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding-top: 7.5rem;
     text-align: center; }
   .about_wrap .txt_area {
+    background-color: #FCFCFF;
     padding-top: 3rem; }
 
 .about_wrap {
@@ -1087,14 +1088,14 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     height: 35rem;
     background: #F9F9F9; }
     .about_wrap .load .cardBtn {
-      height: 12rem;
+      height: 13rem;
       width: 14rem;
       background-color: #ffffff;
       border-color: transparent;
       color: #50525E;
       border-radius: 5px;
       box-shadow: 0 2px 6px #888888;
-      margin-top: 3rem;
+      margin-top: 1.5rem;
       text-align: center;
       font-weight: bold;
       text-decoration: none;

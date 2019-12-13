@@ -9,11 +9,11 @@ import { data } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
-import { prims } from "../functions/algorithms";
+import {prims} from "../functions/algorithms";
 
 
 import { Algorithm } from "../constants/algorithms";
-import {ErrMessage} from '../constants/errorMessage';
+
 
 const initialState = {
   edgeList: [],
@@ -52,10 +52,11 @@ class PrimPage extends Component {
    * If not, alert an error dialog. Otherwise, star the visualization
    */
   handleStart(){
+    
       this.setState({
         start: true,
         pseudoMap: setUpPseudocodeMap(pageName, 0),
-        states: res,
+        states: prims(this.state.data.nodes, this.state.data.edges),
       })
     }
 
@@ -99,6 +100,7 @@ class PrimPage extends Component {
             {this.state.start ? (
               <div className="action_buttons">
                 <button onClick={() => this.previous()}>Previous</button>
+                <button onClick={() => test()}>ts</button>
                 <button onClick={() => this.next()}>Next</button>
               </div>
             ) : (
