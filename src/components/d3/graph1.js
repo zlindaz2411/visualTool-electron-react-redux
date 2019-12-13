@@ -48,10 +48,19 @@ function setScales(nodes, draw) {
 }
 
 /**
- * Remove all the elements
+ * Remove all the elements together with svg
  */
 export function removeAll() {
   d3.select("svg").remove();
+}
+
+/**
+ * Remove all the elements
+ */
+export function clear() {
+  d3.selectAll("circle").remove();
+  d3.selectAll("line").remove();
+  d3.selectAll("text").remove();
 }
 
 /**
@@ -144,7 +153,8 @@ export function drawGraph(data, draw) {
 
     let weightX =  0;
     let weightY = 0;
-  svg
+   
+    svg
     .selectAll("text.weight")
     .data(edgeList)
     .enter()
@@ -244,9 +254,6 @@ export function drawGraph(data, draw) {
     .on("contextmenu", function(d){
       if(draw) handleDeleteNode(d, data)
     })
-    // .on("click", function(d){
-    //   if(draw) handleSelectNode(d)
-    // })
     .call(
       d3
         .drag()

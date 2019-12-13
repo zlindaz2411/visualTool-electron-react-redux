@@ -1,9 +1,13 @@
-import { ADD_GRAPH, FETCH_GRAPHS, SAVE_GRAPH, DELETE_GRAPH } from './types';
-import { ADD_NOTE, FETCH_NOTES, SAVE_NOTE, DELETE_NOTE } from './types';
+import { ADD_GRAPH, FETCH_GRAPHS, SAVE_GRAPH, DELETE_GRAPH, PASS_GRAPH} from './types';
 
 import electron from 'electron';
 const { ipcRenderer } = electron;
 
+
+/**
+ * Add new graph to nedb
+ * @param {*} graph 
+ */
 export const addGraph = graph => dispatch => {
     ipcRenderer.send('addGraph', graph);
     ipcRenderer.on('graph:added', (event, graphs, newGraph) => {
@@ -19,12 +23,14 @@ export const addGraph = graph => dispatch => {
     });
 };
 
+/**
+ * Fetch all the graphs from nedb
+ */
 export function fetchGraphs() {
 
     return dispatch => {
         ipcRenderer.send('fetchGraphs');
         ipcRenderer.on('graphs:fetched', (event, graphs) => {
-            console.log(graphs);
             dispatch({
                 type: FETCH_GRAPHS,
                 payload: graphs,
@@ -33,19 +39,10 @@ export function fetchGraphs() {
     }
 }
 
-
-export function saveGraph(graph) {
-    return dispatch => {
-        ipcRenderer.send('saveGraph', graph);
-        ipcRenderer.on('graph:saved', (event, graphs) => {
-            dispatch({
-                type: FETCH_GRAPHS,
-                payload: graphs
-            });
-        });
-    }
-}
-
+/**
+ * Delete graph from dedb
+ * @param {*} id 
+ */
 export function deleteGraph(id){
     return dispatch => {
         ipcRenderer.send('deleteGraph', id);
@@ -55,5 +52,18 @@ export function deleteGraph(id){
                 payload: graphs
             });
         });
+    }
+}
+
+/**
+ * Pass graph from page to page
+ * @param {*} id 
+ */
+export function passGraph(graph){
+    return dispatch => {
+            dispatch({
+                type: PASS_GRAPH,
+                latestGraph : graph,
+        })
     }
 }

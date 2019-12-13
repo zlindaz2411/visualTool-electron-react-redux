@@ -11,7 +11,6 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { kruskals } from "../functions/algorithms";
 
-import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
 import {ErrMessage} from '../constants/errorMessage';
 
@@ -21,7 +20,6 @@ const initialState = {
   manual: false,
   highlightedEdges: [],
   highlightedNodes: [],
-  data: data,
   index: 0
 };
 
@@ -40,15 +38,16 @@ class KruskalPage extends Component {
       automatic: false,
       pseudocode: getPseudocode(pageName),
       start: false,
-      pseudoMap: null
+      pseudoMap: null,
+      data:this.props.latestGraph,
     };
   }
 
   componentDidMount() {
     this.resetHighlight();
     this.resetTree();
-    setWidthHeight(data.nodes, false);
-    drawGraph(data, false);
+    setWidthHeight(this.state.data.nodes, false);
+    drawGraph(this.state.data, false);
   }
 
   /**
@@ -304,13 +303,12 @@ class KruskalPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    notes: state.notes.arr,
-    latestNote: state.notes.latestNote
+    latestGraph: state.graph.latestGraph
   };
 }
 
 export default withRouter(
-  connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(
+  connect(mapStateToProps, {})(
     KruskalPage
   )
 );

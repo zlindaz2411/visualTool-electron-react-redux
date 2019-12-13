@@ -5,7 +5,6 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import MainLayout from './layouts/mainLayout';
 
 // routes/screens
-import Notes from './screens/notes';
 import KruskalPage from './screens/kruskal';
 import PrimPage from './screens/prim';
 import BoruvkaPage from './screens/boruvka';
@@ -55,11 +54,6 @@ class App extends Component {
                       <Route path="/performance" render={props => (
                         <MainLayout>
                              <PerformancePage {...props} />
-                        </MainLayout>
-                    )} />
-                     <Route path="/notes" render={props => (
-                        <MainLayout>
-                             <Notes {...props} />
                         </MainLayout>
                     )} />
                        <Route path="/" render={props => (

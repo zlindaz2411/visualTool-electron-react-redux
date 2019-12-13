@@ -7,7 +7,7 @@ import { data } from "../constants/defaultGraph";
 
 import { Line } from "react-chartjs-2";
 
-import { saveNote, addNote, fetchNotes, deleteNote } from "./../actions/index";
+
 import { Algorithm } from "../constants/algorithms";
 
 
@@ -131,13 +131,11 @@ class PerformancePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    notes: state.notes.arr,
-    latestNote: state.notes.latestNote
   };
 }
 
 export default withRouter(
-  connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(
+  connect(mapStateToProps, {  })(
     PerformancePage
   )
 );

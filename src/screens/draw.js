@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
+import { Prompt } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import htmlToImage from "html-to-image";
@@ -10,8 +11,8 @@ import InputDialog from "../components/inputDialog";
 
 import { data } from "../constants/defaultGraph";
 
-import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
-import { saveGraph, fetchGraphs, deleteGraph, addGraph } from "../actions/draw";
+import { removeAll, drawGraph, setWidthHeight, clear} from "../components/d3/graph1";
+import { fetchGraphs, deleteGraph, addGraph, passGraph} from "../actions/draw";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -21,18 +22,16 @@ class DrawPage extends Component {
       isDialogOpen: false,
       selectedGraph: null,
       isSaveDialogOpen: false,
-      loadedGraph: null,
       graph: data,
       name: ""
     };
-    //  this.openModal = this.openModal.bind(this);
-    //  this.handleClose = this.handleClose.bind(this);
-    //  this.handleSelectGraph = this.handleSelectGraph.bind(this);
   }
+
 
   componentDidMount() {
     this.draw();
   }
+
 
   /**
    * Functions to draw graphs;
@@ -84,7 +83,6 @@ class DrawPage extends Component {
     this.setState(
       {
         graph: graph,
-        loadedGraph: graph,
         selectedGraph: null
       },
       () => {
@@ -132,12 +130,9 @@ class DrawPage extends Component {
    * Save graph
    */
   save() {
-    if (this.state.loadedGraph) this.props.saveGraph(this.state.loadedGraph);
-    else {
-      this.setState({
-        isSaveDialogOpen: true
-      });
-    }
+    this.setState({
+      isSaveDialogOpen: true
+    });
   }
 
   /**
@@ -157,7 +152,7 @@ class DrawPage extends Component {
   /**
    * Save the new graph with new name
    */
-  saveNewGraph(e) {
+  saveNewGraph(e){
     e.preventDefault();
     let clone = Object.assign({}, data);
     if (!this.state.name) {
@@ -241,6 +236,7 @@ class DrawPage extends Component {
             ></InputDialog>
 
             <button onClick={() => this.save()}>Save</button>
+            <button onClick={() => this.props.passGraph(this.state.graph)}>Pass</button>
             <button onClick={() => this.clearAll()}>Clear</button>
           </div>
         </center>
@@ -257,7 +253,8 @@ class DrawPage extends Component {
         graph: {}
       },
       () => {
-        removeAll();
+        console.log(this.state.graph)
+        clear();
       }
     );
   }
@@ -271,7 +268,7 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, { saveGraph, fetchGraphs, deleteGraph, addGraph })(
+  connect(mapStateToProps, { fetchGraphs, deleteGraph, addGraph, passGraph})(
     DrawPage
   )
 );

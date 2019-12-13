@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { withRouter } from "react-router";
 import {test} from '../functions/algorithms';
 
 
@@ -70,11 +71,6 @@ class Sidebar extends Component {
                              <h5>About</h5>
                             </NavLink> 
                         </li>
-                        <li>   
-                            <NavLink  className = "inactive" activeClassName="active" to="/notes" alt="Notes" replace>
-                             <h5>Documentation</h5>
-                            </NavLink> 
-                        </li>
 
                     </ul>
                 </nav>
@@ -86,4 +82,4 @@ class Sidebar extends Component {
     // }
 }
 
-export default Sidebar;
+export default withRouter(Sidebar);

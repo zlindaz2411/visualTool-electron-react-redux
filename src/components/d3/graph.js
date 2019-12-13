@@ -67,7 +67,6 @@ class Graph extends React.Component {
         });
         this.removeAll();
         this.drawGraph();
-       // console.log(this.props.data.nodes);
       });
 
     const rect = d3

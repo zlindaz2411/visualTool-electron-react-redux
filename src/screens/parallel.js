@@ -11,7 +11,6 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { removeAll, drawGraph, setWidthHeight } from "../components/d3/graph1";
 import { kruskals } from "../functions/algorithms";
 
-import { saveNote, addNote, fetchNotes, deleteNote } from "../actions/index";
 import { Algorithm } from "../constants/algorithms";
 
 const initialState = {
@@ -202,13 +201,11 @@ class ParallelPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    notes: state.notes.arr,
-    latestNote: state.notes.latestNote
   };
 }
 
 export default withRouter(
-  connect(mapStateToProps, { addNote, saveNote, fetchNotes, deleteNote })(
+  connect(mapStateToProps, {})(
     ParallelPage
   )
 );

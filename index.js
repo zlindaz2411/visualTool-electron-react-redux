@@ -4,7 +4,6 @@ const isDev = require('electron-is-dev');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 let mainWindow;
-let db_notes;
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
@@ -29,15 +28,8 @@ app.on('ready', () => {
 
 // Database (NeDB)
 
-// var userData = app.getPath('userData');
 let db_graphs = new Datastore({ filename: './graphs/graphs.db', timestampData: true });
 db_graphs.loadDatabase();
-
-// db.remove({}, { multi: true }, function (err, numRemoved) {
-
-// });
-// db_notes = new Datastore({ filename: userData +'/db/notes.db', timestampData: true });
-// db_notes.loadDatabase();
 
 let data= {
     root: 1,
@@ -71,57 +63,6 @@ let data= {
 };
 
 
-// ipcMain.on('addNote', (event, note) => {
-    
-//     db_notes.insert(note, function (err, newNote) {
-//         if (!err) {
-//             db_graphs.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {                
-//                 if (!err) {
-//                     mainWindow.webContents.send('note:added', notes, newNote);
-//                 }
-//             });
-//         }
-//     });
-// });
-
-// ipcMain.on('fetchNotes', (event) => {
-//     db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
-//         if (!err) {
-//             mainWindow.webContents.send('fetched:notes', notes);
-//         }
-//     });
-// });
-
-// ipcMain.on('saveNote', (event, note) => {
-//     db_notes.update({ _id: note._id }, { $set: { content: note.content } }, {}, function (err, numReplaced) {
-//         if (!err) {
-//             db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
-//                 if (!err) {
-//                     mainWindow.webContents.send('note:saved', notes);
-//                 }
-//             });
-//         }
-//     });
-
-// });
-
-// ipcMain.on('deleteNote', (event, ID) => {
-
-//     db_notes.remove({ _id: ID }, {}, function (err, numRemoved) {
-//         if (!err) {
-//             db_notes.find({}).sort({ updatedAt: -1 }).exec(function (err, notes) {
-//                 if (!err) {
-//                     mainWindow.webContents.send('note:deleted', notes);
-//                 }
-//             });
-//         }
-//     });
-
-// });
-
-
-
-
 ipcMain.on('addGraph', (event, graph) => {
     db_graphs.insert(graph, function (err, newGraph) {
         if (!err) {
@@ -142,19 +83,6 @@ ipcMain.on('fetchGraphs', (event) => {
     });
 });
 
-ipcMain.on('saveGraph', (event, graph) => {
-
-    db_graphs.update({ _id: graph._id }, { $set: { content: graph.content } }, {}, function (err, numReplaced) {
-        if (!err) {
-            db_graphs.find({}).sort({ updatedAt: -1 }).exec(function (err, graphs) {
-                if (!err) {
-                    mainWindow.webContents.send('graph:saved', graphs);
-                }
-            });
-        }
-    });
-
-});
 
 ipcMain.on('deleteGraph', (event, ID) => {
 
