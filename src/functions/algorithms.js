@@ -184,6 +184,7 @@ export function prims(root, nodes, edges) {
  * @param {*} nodes
  */
 export function boruvkas(nodes, edges) {
+  try{
   let states = [
     {
       highlighted: [],
@@ -204,8 +205,11 @@ export function boruvkas(nodes, edges) {
   let num = nodes.length;
   // Initialize graph that'll contain the MST
   let MST = new Set();
+  let previous = 0;
+  let current = num;
   let cheapest = [];
   while (num > 1) {
+    previous = current;
     let hedge = states[states.length - 1].highlighted.slice(); //a copy of highlighted
     let tedge = states[states.length - 1].tree.slice();
     let hnode = states[states.length - 1].highlightedNodes.slice(); //a copy of highlighted
@@ -342,6 +346,9 @@ export function boruvkas(nodes, edges) {
         }
       }
     }
+    current = num;
+    if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+
   }
   states.push({
     highlighted: states[states.length - 1].highlighted,
@@ -350,7 +357,14 @@ export function boruvkas(nodes, edges) {
     treeNodes: states[states.length - 1].treeNodes,
     status: 16
   });
+
+
+
   return states;
+}
+catch(error){
+  return error.toString();
+}
 }
 
 // export function test() {

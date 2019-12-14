@@ -113,12 +113,16 @@ export function kruskals(nodes, edges) {
   * @param {*} nodes 
   */
  export function boruvkas(nodes,edges) {
+     try{
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let cheapest = [];
+    let previous = 0;
+    let current = num;
     while(num>1){
+        previous = current;
         for(let v=0;v<nodes.length;v++){
               cheapest[nodes[v].id]= -1;
         }
@@ -144,8 +148,13 @@ export function kruskals(nodes, edges) {
             }
         }
     }
+    current = num;
+    if(current == previous) throw ErrMessage.MST_NOT_FOUND;
 }
     return MST  
+}catch(error){
+    return error.toString();
+}
 
 }
 
