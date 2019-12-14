@@ -210,6 +210,8 @@ class BoruvkaPage extends Component {
     resetTree(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.updateNodes(this.state.states[this.state.index].highlightedNodes);
+
   }
 
 /**

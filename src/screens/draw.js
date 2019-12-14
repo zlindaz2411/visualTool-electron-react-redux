@@ -225,7 +225,7 @@ class DrawPage extends Component {
             Double click on empty space to draw a vertex. Drag from vertex to vertex to
             create an edge.
           </h2>
-          <h2>Right click on a vertex or an edge to delete.</h2>
+          <h2>Right click on a vertex or an edge to delete. Click on the weight and input a new value and press Enter to change.</h2>
           <h2>Submit the graph to be used for visualization and performance comparison</h2>
         </div>
         <center>

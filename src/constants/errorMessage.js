@@ -24,6 +24,21 @@ export function emptyGraphMessage(){
       }
 
 /**
+ * When the input is not only digit display;
+ */
+export function onlyNumberErrorMessage(){
+  confirmAlert({
+    title: `Warning!`,
+    message: `You must enter a number`,
+    buttons: [
+      {
+        label: "Cancel"
+      }
+    ]
+  });
+}
+
+/**
  * When there isn't a graph, display error message
  */
 export function algorithmErrorMessage(){
