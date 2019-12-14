@@ -23,6 +23,15 @@
     data.root = {}
 }
 
+  /**
+   * Reset data ui to original value (highlight = false)
+   */
+  export function resetNodes(nodes){
+    for (let i = 0; i < nodes.length; i++) {
+      nodes[i].highlight = false;
+    }
+  }
+
 /**
    * Update graph: update which edge needs to be highlighted
    * @param {*} array 

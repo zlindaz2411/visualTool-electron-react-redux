@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import Dialog from "../components/dialog";
 
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
-import { resetTree, resetHighlight } from "../functions/graphAlgorithms";
+import { resetTree, resetHighlight, resetNodes} from "../functions/graphAlgorithms";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { prims, test } from "../functions/algorithms";
@@ -48,6 +48,7 @@ class PrimPage extends Component {
         isDialogOpen: false
       });
     } else {
+      resetNodes(this.state.data.nodes);
       resetHighlight(this.state.data.edges);
       resetTree(this.state.data.edges);
       setWidthHeight(this.state.data, false);

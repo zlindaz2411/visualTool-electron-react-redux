@@ -10,7 +10,8 @@ import { kruskals } from "../functions/algorithms";
 import {
   resetTree,
   resetHighlight,
-  resetRoot
+  resetRoot,
+  resetNodes
 } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -54,6 +55,7 @@ class KruskalPage extends Component {
         this.props.latestGraph.nodes.length != 0 &&
         this.props.latestGraph.edges.length != 0
       ) {
+        resetNodes(this.state.data.nodes);
         resetRoot(this.state.data);
         resetHighlight(this.state.data.edges);
         resetTree(this.state.data.edges);
