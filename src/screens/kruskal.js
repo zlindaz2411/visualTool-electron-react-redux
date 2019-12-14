@@ -195,11 +195,11 @@ class KruskalPage extends Component {
           (this.state.data.edges[j].source == array[i].target &&
             this.state.data.edges[j].target == array[i].source)
         ) {
-          if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-          removeAll();
-          drawGraph(this.state.data, false);
+          if(tree) this.state.data.edges[j].tree = true;
+          else this.state.data.edges[j].highlight = true;    
         }
+        removeAll();
+        drawGraph(this.state.data, "");
       }
     }
   }

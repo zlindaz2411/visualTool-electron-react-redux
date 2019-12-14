@@ -129,11 +129,11 @@ class BoruvkaPage extends Component {
           if (tree) this.state.data.edges[j].tree = true;
           else this.state.data.edges[j].highlight = true;
           removeAll();
-          drawGraph(this.state.data, false);
+          drawGraph(this.state.data, '');
         } else {
           this.state.data.edges[j].highlight = false;
           removeAll();
-          drawGraph(this.state.data, false);
+          drawGraph(this.state.data, "");
         }
       }
     }

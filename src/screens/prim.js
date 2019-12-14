@@ -93,6 +93,9 @@ class PrimPage extends Component {
     if (!this.state.data.root) {
       noRootSelectedMessage();
     } 
+    else if(Object.keys(this.state.data.root).length == 0){
+      noRootSelectedMessage();
+    }
     else {
       this.setState({
         isDialogOpen: false
@@ -104,10 +107,13 @@ class PrimPage extends Component {
    *  Submit the root node selection
    */
   handleSubmit() {
-    console.log(this.state.data)
     if (!this.state.data.root) {
       noRootSelectedMessage();
-    } else { 
+    }
+    else if(Object.keys(this.state.data.root).length == 0){
+      noRootSelectedMessage();
+    }
+    else { 
       if (this.state.data.root) this.draw();
       this.handleClose();
     }
@@ -190,10 +196,10 @@ class PrimPage extends Component {
             this.state.data.edges[j].target == array[i].source)
         ) {
           if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-          removeAll();
-          drawGraph(this.state.data, false);
+          else this.state.data.edges[j].highlight = true;     
         }
+        removeAll();
+        drawGraph(this.state.data, "");
       }
     }
   }
