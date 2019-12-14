@@ -16,7 +16,9 @@ import {
   emptyGraphMessage,
   startOfAlgorithmMessage,
   endOfAlgorithmMessage,
-  noRootSelectedMessage
+  noRootSelectedMessage,
+  ErrMessage,
+  algorithmErrorMessage
 } from "../constants/errorMessage";
 
 const colors = ["#84C262", "#50525E", "#B22222"];
@@ -43,46 +45,45 @@ class PrimPage extends Component {
     if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
       this.setState({
-        isDialogOpen : false,
-      })
-    } 
-    else {
-        resetHighlight(this.state.data.edges);
-        resetTree(this.state.data.edges);
-        setWidthHeight(this.state.data, false);
-        drawGraph(this.state.data, "prim");
-      }
+        isDialogOpen: false
+      });
+    } else {
+      resetHighlight(this.state.data.edges);
+      resetTree(this.state.data.edges);
+      setWidthHeight(this.state.data, false);
+      drawGraph(this.state.data, "prim");
     }
-
+  }
 
   /**
    * Draw graph in the algorithm page canvas
    */
-  draw(){     
-      setWidthHeight(this.state.data, false);
-      drawGraph(this.state.data, "");
-    }
-
-
+  draw() {
+    setWidthHeight(this.state.data, false);
+    drawGraph(this.state.data, "");
+  }
 
   /**
    * When start is pressed, check if the graph is correct.
    * If not, alert an error dialog. Otherwise, start the visualization
    */
   handleStart() {
-    console.log(this.state.data.root);
     if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
     } else {
-      this.setState(
-        {
-          start: true,
-          pseudoMap: setUpPseudocodeMap(pageName, 0),
-          states: prims(
-            this.state.data.root,
-            this.state.data.nodes,
-            this.state.data.edges
-          )});
+      const res = prims(
+        this.state.data.root,
+        this.state.data.nodes,
+        this.state.data.edges
+      );
+      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
+      else{
+      this.setState({
+        start: true,
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        states: res
+      });
+    }
     }
   }
 
@@ -92,11 +93,9 @@ class PrimPage extends Component {
   handleClose() {
     if (!this.state.data.root) {
       noRootSelectedMessage();
-    } 
-    else if(Object.keys(this.state.data.root).length == 0){
+    } else if (Object.keys(this.state.data.root).length == 0) {
       noRootSelectedMessage();
-    }
-    else {
+    } else {
       this.setState({
         isDialogOpen: false
       });
@@ -109,11 +108,9 @@ class PrimPage extends Component {
   handleSubmit() {
     if (!this.state.data.root) {
       noRootSelectedMessage();
-    }
-    else if(Object.keys(this.state.data.root).length == 0){
+    } else if (Object.keys(this.state.data.root).length == 0) {
       noRootSelectedMessage();
-    }
-    else { 
+    } else {
       if (this.state.data.root) this.draw();
       this.handleClose();
     }
@@ -196,7 +193,7 @@ class PrimPage extends Component {
             this.state.data.edges[j].target == array[i].source)
         ) {
           if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;     
+          else this.state.data.edges[j].highlight = true;
         }
         removeAll();
         drawGraph(this.state.data, "");

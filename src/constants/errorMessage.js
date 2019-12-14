@@ -23,6 +23,21 @@ export function emptyGraphMessage(){
         });
       }
 
+/**
+ * When there isn't a graph, display error message
+ */
+export function algorithmErrorMessage(){
+  confirmAlert({
+    title: `Warning!`,
+    message: `An error occurred. Please check if your graph is valid`,
+    buttons: [
+      {
+        label: "Cancel"
+      }
+    ]
+  });
+}
+
 
 /**
  * At the end of the algorithm, when user try to go further, display message

@@ -2,16 +2,25 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import {emptyGraph} from "../constants/defaultGraph";
+import { emptyGraph } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { kruskals } from "../functions/algorithms";
-import { resetTree, resetHighlight,resetRoot} from "../functions/graphAlgorithms";
+import {
+  resetTree,
+  resetHighlight,
+  resetRoot
+} from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
-import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
-
+import {
+  emptyGraphMessage,
+  startOfAlgorithmMessage,
+  endOfAlgorithmMessage,
+  algorithmErrorMessage,
+  ErrMessage
+} from "../constants/errorMessage";
 
 const colors = ["#84C262", "#50525E", "#B22222"];
 
@@ -24,61 +33,67 @@ class KruskalPage extends Component {
     super(props);
     this.state = {
       manual: false,
-      index:0,
+      index: 0,
       speed: SPEED,
       automatic: false,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null,
-      data: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
+      data:
+        Object.keys(this.props.latestGraph).length == 0
+          ? emptyGraph
+          : this.props.latestGraph
     };
   }
 
   componentDidMount() {
-    if(Object.keys(this.props.latestGraph).length == 0){
+    if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
-    }
-    else{
-      if(this.props.latestGraph.nodes.length != 0 && this.props.latestGraph.edges.length!=0){
-        resetRoot(this.state.data)
+    } else {
+      if (
+        this.props.latestGraph.nodes.length != 0 &&
+        this.props.latestGraph.edges.length != 0
+      ) {
+        resetRoot(this.state.data);
         resetHighlight(this.state.data.edges);
         resetTree(this.state.data.edges);
         setWidthHeight(this.state.data, false);
         drawGraph(this.state.data, "");
-        }
+      }
     }
   }
-  
 
   /**
    * When start is pressed, check if the graph is correct.
    * If not, alert an error dialog. Otherwise, star the visualization
    */
   handleStart(isManual) {
-    if(Object.keys(this.props.latestGraph).length == 0){
+    if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
-    }
-    else{
-    const res = kruskals(this.state.data.nodes, this.state.data.edges);
-      this.setState({
-        pseudoMap: setUpPseudocodeMap(pageName, 0),
-        states: res
-      });
-      if (isManual) {
+    } else {
+      const res = kruskals(this.state.data.nodes, this.state.data.edges);
+      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
+      else {
         this.setState({
-          manual: true
+          pseudoMap: setUpPseudocodeMap(pageName, 0),
+          states: res
         });
-      } else {
-        this.setState({
-          automatic: true
-        });
-        let timer = setInterval(() => {
-          if (this.state.index < this.state.states.length - 1) {
-            this.next();
-          } else {
-            clearInterval(timer);
-          }
-        }, this.state.speed);
+        if (isManual) {
+          this.setState({
+            manual: true
+          });
+        } else {
+          this.setState({
+            automatic: true
+          });
+          let timer = setInterval(() => {
+            if (this.state.index < this.state.states.length - 1) {
+              this.next();
+            } else {
+              clearInterval(timer);
+            }
+          }, this.state.speed);
+        }
       }
     }
   }
@@ -166,7 +181,6 @@ class KruskalPage extends Component {
                   onClick={() => {
                     {
                       this.handleStart(false);
-                      
                     }
                   }}
                 >
@@ -195,16 +209,14 @@ class KruskalPage extends Component {
           (this.state.data.edges[j].source == array[i].target &&
             this.state.data.edges[j].target == array[i].source)
         ) {
-          if(tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;    
+          if (tree) this.state.data.edges[j].tree = true;
+          else this.state.data.edges[j].highlight = true;
         }
         removeAll();
         drawGraph(this.state.data, "");
       }
     }
   }
-
-
 
   /**
    * When previous button is clicked: if it's at the start, display error message
@@ -269,8 +281,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, {})(
-    KruskalPage
-  )
-);
+export default withRouter(connect(mapStateToProps, {})(KruskalPage));

@@ -12,7 +12,7 @@ import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { boruvkas } from "../functions/algorithms";
 import { resetTree, resetHighlight, resetRoot} from "../functions/graphAlgorithms";
 import { Algorithm } from "../constants/algorithms";
-import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage} from "../constants/errorMessage";
+import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage, algorithmErrorMessage, ErrMessage} from "../constants/errorMessage";
 
 
 const colors = ["#84C262", "#50525E", "#B22222"];
@@ -46,6 +46,28 @@ class BoruvkaPage extends Component {
     }
   }
 
+    /**
+   * When start is pressed, check if the graph is correct.
+   * If not, alert an error dialog. Otherwise, start the visualization
+   */
+  handleStart() {
+    if (Object.keys(this.props.latestGraph).length == 0) {
+      emptyGraphMessage();
+    } else {
+      const res = boruvkas(
+        this.state.data.nodes,
+        this.state.data.edges
+      );
+      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
+      else{
+      this.setState({
+        start: true,
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        states: res
+      });
+    }
+  }
+  }
 
   render() {
     return (
@@ -89,17 +111,7 @@ class BoruvkaPage extends Component {
               </div>
             ) : (
               <button
-                onClick={() =>{
-                  if(Object.keys(this.props.latestGraph).length == 0){
-                    emptyGraphMessage();
-                  }else{
-                  this.setState({
-                    start: true,
-                    pseudoMap: setUpPseudocodeMap(pageName, 0),
-                    states: boruvkas(this.state.data.nodes, this.state.data.edges)
-                  })
-                }
-                }
+                onClick={() =>this.handleStart()
               }
               >
                 Start
