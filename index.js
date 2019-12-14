@@ -12,7 +12,7 @@ app.on('ready', () => {
         // frame: false,
         backgroundColor: '#FCFCFF',
     fullscreen:false,
-    
+   // resizable:false,
         webPreferences: { 
             backgroundThrottling: true,
         }
