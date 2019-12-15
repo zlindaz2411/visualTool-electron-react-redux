@@ -39,6 +39,7 @@ class PrimPage extends Component {
       isDialogOpen: true,
       index: 0,
       maxValue: 0,
+      timer : null,
       value: 0,
       speed: SPEED,
       play: false,
@@ -100,6 +101,35 @@ class PrimPage extends Component {
     }
   }
 
+    /**
+   * Toggle start: if is true set icon to be pause, else play
+   */
+  togglePlay() {
+    this.setState(
+      {
+        play: !this.state.play
+      },
+      () => {
+        let timer;
+        if(this.state.play) {
+          timer = setInterval(() => {
+            if (this.state.index < this.state.states.length - 1) {
+              this.next();
+            } else {
+              clearInterval(timer);
+            }
+          }, this.state.speed);
+          this.setState({
+            timer : timer
+          })
+        }
+        else{
+          clearInterval(this.state.timer);
+        }
+      }
+    );
+  }
+
   /**
    * Move slider
    */
@@ -107,14 +137,15 @@ class PrimPage extends Component {
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
     var input = this.sliderRef;
-    var currentVal = input.current.value;
+    var currentVal = parseInt(input.current.value);
     this.setState(
       {
         value: this.sliderRef.current.value,
         pseudoMap: setUpPseudocodeMap(
           pageName,
           this.state.states[currentVal].status
-        )
+        ),
+        index: currentVal,
       },
       () => {
         this.updateGraph(this.state.states[currentVal].tree, true);
@@ -287,7 +318,8 @@ class PrimPage extends Component {
     this.setState({
       pseudoMap: setUpPseudocodeMap(
         pageName,
-        this.state.states[this.state.index].status,   
+        this.state.states[this.state.index].status,
+        
       ),
       value: this.state.index
     });

@@ -1115,14 +1115,45 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   padding: 0; }
   .about_wrap .title {
     padding-top: 7.5rem;
-    text-align: center; }
+    text-align: center;
+    /* Tooltip text */
+    /* Show the tooltip text when you mouse over the tooltip container */ }
+    .about_wrap .title .tooltip {
+      position: relative;
+      display: inline-block;
+      color: #50525E; }
+    .about_wrap .title .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 15rem;
+      background-color: #D9E9D6;
+      color: #50525E;
+      font-weight: bold;
+      font-size: 1.2rem;
+      word-spacing: 0.1rem;
+      text-align: center;
+      padding: 5px 0;
+      border-radius: 6px;
+      /* Position the tooltip text - see examples below! */
+      position: absolute;
+      z-index: 1; }
+    .about_wrap .title .tooltip:hover .tooltiptext {
+      visibility: visible; }
+    .about_wrap .title .tooltip .tooltiptext::after {
+      content: " ";
+      position: absolute;
+      bottom: 100%;
+      /* At the top of the tooltip */
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent transparent; }
   .about_wrap .sub_text {
     padding-top: 1rem;
     text-align: center; }
   .about_wrap .canvas {
-    padding-top: 1rem;
+    margin-top: 3rem;
     border-radius: 2rem;
-    padding-top: 0em;
     box-shadow: 0 3px 8px #888888;
     height: 38rem;
     width: 60rem;

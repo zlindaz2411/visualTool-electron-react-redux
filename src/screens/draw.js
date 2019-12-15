@@ -2,16 +2,27 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
+
+import { MdInfoOutline } from "react-icons/md";
 import htmlToImage from "html-to-image";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
-import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
+import { data, emptyGraph, resetEmptyGraph } from "../constants/defaultGraph";
 
-import { removeAll, drawGraph, setWidthHeight, createBlankCanvas} from "../functions/d3Functions";
-import { fetchGraphs, deleteGraph, addGraph, passGraph} from "../actions/draw";
-import { resetTree, resetHighlight, resetRoot} from "../functions/graphAlgorithms";
+import {
+  removeAll,
+  drawGraph,
+  setWidthHeight,
+  createBlankCanvas
+} from "../functions/d3Functions";
+import { fetchGraphs, deleteGraph, addGraph, passGraph } from "../actions/draw";
+import {
+  resetTree,
+  resetHighlight,
+  resetRoot
+} from "../functions/graphAlgorithms";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -21,19 +32,20 @@ class DrawPage extends Component {
       isDialogOpen: false,
       selectedGraph: null,
       isSaveDialogOpen: false,
-      graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :this.props.latestGraph,
-      name: "", 
+      graph:
+        Object.keys(this.props.latestGraph).length == 0
+          ? emptyGraph
+          : this.props.latestGraph,
+      name: ""
     };
   }
 
-
   componentDidMount() {
-       resetHighlight(this.state.graph.edges);
-       resetTree(this.state.graph.edges);
-       resetRoot(this.state.graph);
-       this.draw();
+    resetHighlight(this.state.graph.edges);
+    resetTree(this.state.graph.edges);
+    resetRoot(this.state.graph);
+    this.draw();
   }
-
 
   /**
    * Functions to draw graphs;
@@ -154,7 +166,7 @@ class DrawPage extends Component {
   /**
    * Save the new graph with new name
    */
-  saveNewGraph(e){
+  saveNewGraph(e) {
     e.preventDefault();
     let clone = Object.assign({}, this.state.graph);
     if (!this.state.name) {
@@ -180,14 +192,14 @@ class DrawPage extends Component {
   /**
    * When submit check if is a valid graph.
    */
-  handleSubmit(){
+  handleSubmit() {
     let edges = this.state.graph.edges;
     let check = new Set();
-    for(let i =0;i<edges.length; i++){
+    for (let i = 0; i < edges.length; i++) {
       check.add(edges[i].source);
       check.add(edges[i].target);
     }
-    if(check.size != this.state.graph.nodes.length){
+    if (check.size != this.state.graph.nodes.length) {
       confirmAlert({
         title: `Warning!`,
         message: `There is an error in the drawn graph: it must be a connected graph`,
@@ -197,7 +209,10 @@ class DrawPage extends Component {
           }
         ]
       });
-    }else if(this.state.graph.nodes.length== 0 && this.state.graph.edges.length ==0){
+    } else if (
+      this.state.graph.nodes.length == 0 &&
+      this.state.graph.edges.length == 0
+    ) {
       confirmAlert({
         title: `Warning!`,
         message: `You can't submit an empty graph`,
@@ -207,10 +222,8 @@ class DrawPage extends Component {
           }
         ]
       });
-    }
-    else
-    {
-    this.props.passGraph(this.state.graph)
+    } else {
+      this.props.passGraph(this.state.graph);
     }
   }
 
@@ -218,16 +231,18 @@ class DrawPage extends Component {
     return (
       <div className="about_wrap">
         <div className="title">
-          <h1>Draw</h1>
+          <h1>Draw <div className ="tooltip">&#9432;</div><span className ="tooltiptext"> Double click on empty space to draw a vertex. Drag from vertex to
+              vertex to create an edge. Right click on a vertex or an edge to
+              delete. Click on the weight and input a new value and press Enter
+              to change.</span></h1>  
         </div>
         <div className="sub_text">
           <h2>
-            Double click on empty space to draw a vertex. Drag from vertex to vertex to
-            create an edge.
-          </h2>
-          <h2>Right click on a vertex or an edge to delete. Click on the weight and input a new value and press Enter to change.</h2>
-          <h2>Submit the graph to be used for visualization and performance comparison</h2>
+            Submit the graph to be used for visualization and performance
+            comparison
+          </h2>     
         </div>
+
         <center>
           <div className="canvas">
             <div ref={this.imgRef} className="drawing"></div>
@@ -274,7 +289,7 @@ class DrawPage extends Component {
               handleChange={e => this.handleChange(e)}
               buttonName="Save"
             ></InputDialog>
-            <button onClick={() => this.save()}>Save</button>        
+            <button onClick={() => this.save()}>Save</button>
             <button onClick={() => this.clearAll()}>Clear</button>
             <button onClick={() => this.handleSubmit()}>Submit</button>
           </div>
@@ -290,10 +305,10 @@ class DrawPage extends Component {
     resetEmptyGraph();
     this.setState(
       {
-        graph: emptyGraph,
+        graph: emptyGraph
       },
       () => {
-        createBlankCanvas(this.state.graph, "draw")
+        createBlankCanvas(this.state.graph, "draw");
       }
     );
   }
@@ -307,7 +322,7 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, { fetchGraphs, deleteGraph, addGraph, passGraph})(
+  connect(mapStateToProps, { fetchGraphs, deleteGraph, addGraph, passGraph })(
     DrawPage
   )
 );

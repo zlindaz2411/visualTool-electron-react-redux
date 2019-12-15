@@ -40,6 +40,7 @@ class KruskalPage extends Component {
     this.state = {
       start: false,
       index: 0,
+      timer:null,
       maxValue: 0,
       value: 0,
       speed: SPEED,
@@ -52,6 +53,7 @@ class KruskalPage extends Component {
           : this.props.latestGraph
     };
   }
+
 
   componentDidMount() {
     if (Object.keys(this.props.latestGraph).length == 0) {
@@ -120,9 +122,12 @@ class KruskalPage extends Component {
               clearInterval(timer);
             }
           }, this.state.speed);
+          this.setState({
+            timer : timer
+          })
         }
         else{
-          clearInterval(timer);
+          clearInterval(this.state.timer);
         }
       }
     );
@@ -135,14 +140,15 @@ class KruskalPage extends Component {
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
     var input = this.sliderRef;
-    var currentVal = input.current.value;
+    var currentVal = parseInt(input.current.value);
     this.setState(
       {
-        value: this.sliderRef.current.value,
+        value: currentVal,
         pseudoMap: setUpPseudocodeMap(
           pageName,
           this.state.states[currentVal].status
-        )
+        ),
+        index: currentVal,
       },
       () => {
         this.updateGraph(this.state.states[currentVal].tree, true);

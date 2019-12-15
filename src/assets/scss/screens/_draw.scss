@@ -7,6 +7,45 @@
     .title{
         padding-top: 7.5rem;
         text-align: center;
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            color: $txtCol;
+          }
+          
+          /* Tooltip text */
+          .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 15rem;
+            background-color: $mainGreen;
+            color: $txtCol;
+            font-weight: bold;
+            font-size: 1.2rem;
+            word-spacing: 0.1rem;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+          }
+          
+          /* Show the tooltip text when you mouse over the tooltip container */
+          .tooltip:hover .tooltiptext {
+            visibility: visible;
+          }
+
+        .tooltip .tooltiptext::after {
+            content: " ";
+            position: absolute;
+            bottom: 100%;  /* At the top of the tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent transparent;
+          }
     }
 
     .sub_text{
@@ -15,9 +54,8 @@
     }
 
     .canvas{
-        padding-top:1rem;
+        margin-top:3rem;
         border-radius: 2rem;
-        padding-top: 0em;
         box-shadow: 0 3px 8px #888888;
         height:38rem;
         width: 60rem;
