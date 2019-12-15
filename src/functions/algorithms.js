@@ -196,7 +196,7 @@ export function boruvkas(nodes, edges) {
       }
     ];
 
-    addStates([], [], [], [],1)
+    addStates(states, [], [], [],1)
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
@@ -209,8 +209,8 @@ export function boruvkas(nodes, edges) {
         let tedge = states[states.length - 1].tree.slice();
         let hnode = states[states.length - 1].highlightedNodes.slice(); //a copy of highlighted
 
-        if(hedge.length == 0)  addStates([], [], [], [],2)
-        else addStates(states,hedge, tedge, hnode,2)
+        if(hedge.length == 0)  addStates(states, [], [], [],2)
+        else addStates(states, hedge, tedge, hnode,2)
 
         previous = current;
         for(let v=0;v<nodes.length;v++){

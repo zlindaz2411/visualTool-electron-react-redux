@@ -223,8 +223,6 @@ next() {
         )})
      endOfAlgorithmMessage();
   }
- 
-  
   this.setState({
     pseudoMap: setUpPseudocodeMap(
       pageName,
