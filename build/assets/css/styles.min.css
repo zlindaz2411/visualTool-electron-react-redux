@@ -1017,11 +1017,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       float: left;
       font-size: 1rem;
       padding: 0.5rem; }
-  .algorithm_wrap .action_buttons button {
-    margin: 3rem;
-    display: inline-block; }
   .algorithm_wrap .player {
-    margin: 3rem;
     display: inline-block;
     /* Mouse-over effects */ }
     .algorithm_wrap .player .player-controls {
@@ -1044,16 +1040,20 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     .algorithm_wrap .player .player-controls:focus, .algorithm_wrap .player .player-controls:active, .algorithm_wrap .player .player-controls.active, .algorithm_wrap .player :focus:active {
       border: 2px solid #FCFCFF; }
     .algorithm_wrap .player .slider {
+      position: relative;
+      top: -8px;
+      margin-bottom: 2rem;
       -webkit-appearance: none;
       width: 25rem;
-      margin-bottom: 2rem;
       height: 10px;
+      position: relative;
       border-radius: 5px;
       background: #d3d3d3;
       outline: none;
       opacity: 0.7;
       -webkit-transition: .2s;
-      transition: opacity .2s; }
+      transition: opacity .2s;
+      border-color: #FCFCFF; }
     .algorithm_wrap .player .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -1064,7 +1064,8 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       cursor: pointer; }
     .algorithm_wrap .player .slider:hover {
       opacity: 1;
-      /* Fully shown on mouse-over */ }
+      /* Fully shown on mouse-over */
+      border-color: #FCFCFF; }
     .algorithm_wrap .player .slider::-moz-range-thumb {
       width: 15px;
       height: 15px;
@@ -1119,7 +1120,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding-top: 1rem;
     text-align: center; }
   .about_wrap .canvas {
-    margin: 2rem;
+    padding-top: 1rem;
     border-radius: 2rem;
     padding-top: 0em;
     box-shadow: 0 3px 8px #888888;

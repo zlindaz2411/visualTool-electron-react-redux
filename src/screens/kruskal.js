@@ -31,7 +31,6 @@ import {
 
 import { SPEED,COLORS } from "../constants/visualizationConstants";
 
-
 const pageName = Algorithm.KRUSKAL;
 
 class KruskalPage extends Component {

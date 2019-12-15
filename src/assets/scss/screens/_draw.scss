@@ -15,7 +15,7 @@
     }
 
     .canvas{
-        margin:2rem;
+        padding-top:1rem;
         border-radius: 2rem;
         padding-top: 0em;
         box-shadow: 0 3px 8px #888888;
@@ -41,6 +41,7 @@
     }
     
     .action_buttons button{
+        margin:3rem;
         display: inline-block;
      //   justify-content: space-between;
     }
