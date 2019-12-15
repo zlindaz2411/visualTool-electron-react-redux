@@ -29,6 +29,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mw",
     "test": "mocha --require @babel/register ./tests/**/*.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
@@ -68,6 +69,7 @@
     "html-to-image": "^0.1.1",
     "mocha": "^6.2.2",
     "nedb": "1.8.0",
+    "nyc": "^14.1.1",
     "paralleljs": "^0.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",

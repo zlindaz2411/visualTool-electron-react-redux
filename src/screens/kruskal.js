@@ -11,7 +11,8 @@ import {
   resetTree,
   resetHighlight,
   resetRoot,
-  resetNodes
+  resetNodes,
+  updateGraph
 } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -206,28 +207,6 @@ class KruskalPage extends Component {
   }
 
   /**
-   * Update graph: update which edge needs to be highlighted
-   * @param {*} array
-   * @param {*} tree
-   */
-  updateGraph(array, tree) {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < this.state.data.edges.length; j++) {
-        //check if there is a matching non-highlighted edge
-        if (
-          (this.state.data.edges[j].source == array[i].source &&
-            this.state.data.edges[j].target == array[i].target) ||
-          (this.state.data.edges[j].source == array[i].target &&
-            this.state.data.edges[j].target == array[i].source)
-        ) {
-          if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-        }
-      }
-    }
-  }
-
-  /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
@@ -250,8 +229,8 @@ class KruskalPage extends Component {
         this.state.states[this.state.index].status
       )
     });
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
+    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
     this.draw();
   }
 
@@ -280,8 +259,8 @@ class KruskalPage extends Component {
       )
     });
     resetHighlight(this.state.data.edges);
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
+    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
     this.draw();
   }
 }

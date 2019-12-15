@@ -7,7 +7,6 @@ export const ErrMessage ={
     MST_NOT_FOUND : "MST not found"
 }
 
-
 /**
  * When there isn't a graph, display error message
  */

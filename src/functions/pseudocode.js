@@ -18,13 +18,13 @@ export function getPseudocode(name) {
         prim.push("Initialize the set T = empty set");
         prim.push("Add the edges connected of r to a priority queue Q");
         prim.push("while (!Q.isEmpty)");
-        prim.push("\xa0 \xa0Dequeue the shortest edge (u,v) from the queue ");
+        prim.push("\xa0 \xa0Dequeue the shortest edge (u,v) from the queue");
         prim.push("\xa0 \xa0 \xa0 \xa0 \xa0if(u and v are disconnected in T)");
         prim.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add (u,v) to T");
         prim.push(
           "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add to Q new edges connected to u or v"
         );
-        prim.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing;");
+        prim.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         prim.push("return T");
         return prim;
       case "Boruvka": //Borvska's
@@ -48,7 +48,8 @@ export function getPseudocode(name) {
         boruvkaParallel.push("Initialize the set T = empty set");
 
         return boruvkaParallel;
-        break;
+      default:
+        return [];
     }
   }
 

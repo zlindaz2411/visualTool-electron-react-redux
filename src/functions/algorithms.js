@@ -11,7 +11,6 @@ import { ErrMessage } from "../constants/errorMessage";
  * @param {*} status 
  */
 function addStates(states, hedge, tedge, hnode, status){
-  console.log(status)
     states.push({
       highlighted:hedge.slice(),
       tree: tedge.slice(),

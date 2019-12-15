@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import Dialog from "../components/dialog";
 
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
-import { resetTree, resetHighlight, resetNodes} from "../functions/graphAlgorithms";
+import { resetTree, resetHighlight, resetNodes, updateGraph} from "../functions/graphAlgorithms";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 import { prims, test } from "../functions/algorithms";
@@ -179,28 +179,6 @@ class PrimPage extends Component {
   }
 
   /**
-   * Update graph: update which edge needs to be highlighted
-   * @param {*} array
-   * @param {*} tree
-   */
-  updateGraph(array, tree) {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < this.state.data.edges.length; j++) {
-        //check if there is a matching non-highlighted edge
-        if (
-          (this.state.data.edges[j].source == array[i].source &&
-            this.state.data.edges[j].target == array[i].target) ||
-          (this.state.data.edges[j].source == array[i].target &&
-            this.state.data.edges[j].target == array[i].source)
-        ) {
-          if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-        }
-      }
-    }
-  }
-
-  /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
@@ -223,8 +201,8 @@ class PrimPage extends Component {
     });
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
+    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
     this.draw();
   }
 
@@ -253,8 +231,8 @@ class PrimPage extends Component {
       )
     });
     resetHighlight(this.state.data.edges);
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
+    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
     this.draw();
   }
 }
