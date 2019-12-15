@@ -10,7 +10,7 @@ import { ErrMessage } from "../constants/errorMessage";
  * @param {*} hnode 
  * @param {*} status 
  */
-function addStates(states, hedge, tedge, hnode, status){
+export function addStates(states, hedge, tedge, hnode, status){
     states.push({
       highlighted:hedge.slice(),
       tree: tedge.slice(),
@@ -40,7 +40,7 @@ export function kruskals(nodes, edges) {
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
     for (let i = 0; i < edges.length; i++) {
-      let arr = [states[states.length - 1].highlighted.slice()]; //a copy of highlighted
+      let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
       if (arr.length == 0)  addStates(states, [], [],[], 2)
       else  addStates(states, arr, t, [],2)
@@ -87,7 +87,7 @@ export function prims(root, nodes, edges) {
     let states = [{ highlighted: [], tree: [], status: 0 }];
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    addStates([], [], [], [],1)
+    addStates(states, [], [], [],1)
     // Select first node as starting node
     let s = root;
     // Create a Priority Queue and explored set
@@ -107,15 +107,15 @@ export function prims(root, nodes, edges) {
       }
     }
 
-    addStates([], [], [], [],2)
+    addStates(states, [], [], [],2)
 
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
       // Continue removing edges till we get an edge with an unexplored node
 
-      let arr = [states[states.length - 1].highlighted.slice()]; //a copy of highlighted
+      let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
-      if (arr.length == 0)   addStates([], [], [], [],3)
+      if (arr.length == 0)   addStates(states, [], [], [],3)
       else  addStates(states, arr, t, [],3)
 
       let currentMinEdge = edgeQueue.dequeue();
@@ -204,9 +204,9 @@ export function boruvkas(nodes, edges) {
     let current = num;
     let cheapest = [];
       while(num>1){
-        let hedge = states[states.length - 1].highlighted.slice(); //a copy of highlighted
+        let hedge = [];//a copy of highlighted
         let tedge = states[states.length - 1].tree.slice();
-        let hnode = states[states.length - 1].highlightedNodes.slice(); //a copy of highlighted
+        let hnode = [] //a copy of highlighted
 
         if(hedge.length == 0)  addStates(states, [], [], [],2)
         else addStates(states, hedge, tedge, hnode,2)
@@ -225,7 +225,7 @@ export function boruvkas(nodes, edges) {
             }
         }
         //Get all the componenets
-        let parent = subset.getParents();
+        let parent = subset.parent;
         let set = new Set();
         let map = new Map();
         for(let i =0;i<nodes.length;i++){

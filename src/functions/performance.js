@@ -32,7 +32,7 @@ export function comparePerformance(list, graph){
  * Calculate time from start time to end time
  * @param {*} func 
  */
-function calculateTime(func){
+export function calculateTime(func){
     let startTime = performance.now();
     func();
     let endTime = performance.now();

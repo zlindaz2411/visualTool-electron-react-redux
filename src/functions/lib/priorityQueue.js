@@ -1,5 +1,5 @@
 
-class QElement { 
+export class QElement { 
     constructor(element, priority) 
     { 
         this.element = element; 
