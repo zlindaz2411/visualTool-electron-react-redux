@@ -1,12 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import {
-  MdPlayArrow,
-  MdSkipPrevious,
-  MdSkipNext,
-  MdPause
-} from "react-icons/md";
+import {MdPlayArrow, MdSkipPrevious, MdSkipNext, MdPause} from "react-icons/md";
 
 import { emptyGraph } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
@@ -17,7 +12,7 @@ import {
   resetTree,
   resetHighlight,
   resetRoot,
-  resetNodes
+  resetNodes,
 } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -40,13 +35,14 @@ class KruskalPage extends Component {
     super(props);
     this.sliderRef = React.createRef();
     this.state = {
-      start: false,
+      manual: false,
       index: 0,
       maxValue: 0,
-      value: 0,
+      value:0,
       speed: SPEED,
+      automatic: false,
       pseudocode: getPseudocode(pageName),
-      play: false,
+      start: false,
       pseudoMap: null,
       data:
         Object.keys(this.props.latestGraph).length == 0
@@ -107,27 +103,10 @@ class KruskalPage extends Component {
   /**
    * Toggle start: if is true set icon to be pause, else play
    */
-  togglePlay() {
-    this.setState(
-      {
-        play: !this.state.play
-      },
-      () => {
-        let timer;
-        if(this.state.play) {
-          timer = setInterval(() => {
-            if (this.state.index < this.state.states.length - 1) {
-              this.next();
-            } else {
-              clearInterval(timer);
-            }
-          }, this.state.speed);
-        }
-        else{
-          clearInterval(timer);
-        }
-      }
-    );
+  toggleStart(){
+    this.setState({
+      start: !this.state.start
+    })
   }
 
   /**
@@ -136,43 +115,56 @@ class KruskalPage extends Component {
   onInput() {
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
-    var input = this.sliderRef;
+    var input = this.sliderRef
     var currentVal = input.current.value;
-    this.setState(
-      {
-        value: this.sliderRef.current.value,
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          this.state.states[currentVal].status
-        )
-      },
-      () => {
-        this.updateGraph(this.state.states[currentVal].tree, true);
-        this.updateGraph(this.state.states[currentVal].highlighted, false);
-        console.log(this.state.data.edges);
-      }
+    this.setState({
+      value: currentVal,
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[currentVal].status
+      )
+    },
+    () => {
+      this.updateGraph(this.state.states[currentVal].tree, true);
+      this.updateGraph(this.state.states[currentVal].highlighted, false);
+      console.log(this.state.data.edges);
+    }
     );
+    
   }
 
   /**
    * When start is pressed, check if the graph is correct.
-   * If not, alert an error dialog. Otherwise, start the visualization
+   * If not, alert an error dialog. Otherwise, star the visualization
    */
-  handleStart() {
+  handleStart(isManual) {
     if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
     } else {
-      const res = kruskals(
-        this.state.data.nodes,
-        this.state.data.edges
-      );
+      const res = kruskals(this.state.data.nodes, this.state.data.edges);
       if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
       else {
         this.setState({
-          start: true,
           pseudoMap: setUpPseudocodeMap(pageName, 0),
           states: res
         });
+        if (isManual) {
+          this.setState({
+            manual: true
+          });
+        } else {
+          this.setState({
+            automatic: true,
+            maxValue: res.length-1
+          });
+          // let timer = setInterval(() => {
+          //   if (this.state.index < this.state.states.length - 1) {
+          //     this.next();
+          //   } else {
+          //     clearInterval(timer);
+          //   }
+          // }, this.state.speed);
+        }
       }
     }
   }
@@ -212,44 +204,66 @@ class KruskalPage extends Component {
             </div>
           </center>
           <center>
-            {this.state.start ? (
+
+            {this.state.manual ? (
+              <div className="action_buttons">
+                <button onClick={() => this.previous()}>Previous</button>
+                <button onClick={() => this.next()}>Next</button>
+              </div>
+            ) : this.state.automatic ? (
               <div className="player">
-                <button
-                  onClick={() => this.previous()}
-                  className="player-controls"
+                <button onClick={()=>this.previous()} className="player-controls"><MdSkipPrevious></MdSkipPrevious></button>
+                {!this.state.start && <button onClick={()=>this.toggleStart()} className="player-controls"><MdPlayArrow></MdPlayArrow></button>}
+                {this.state.start  && <button onClick={()=>this.toggleStart()} className="player-controls"><MdPause></MdPause></button>}
+                <button onClick={()=>this.next()} className="player-controls"><MdSkipNext></MdSkipNext></button>
+                <input type="range" max={this.state.maxValue} value={this.state.value} className="slider" ref={this.sliderRef} onInput={this.onInput.bind(this)}></input>
+                {/* <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED / 2
+                    })
+                  }
                 >
-                  <MdSkipPrevious></MdSkipPrevious>
+                  0.5x
                 </button>
-                {!this.state.play && (
-                  <button
-                    onClick={() => this.togglePlay()}
-                    className="player-controls"
-                  >
-                    <MdPlayArrow></MdPlayArrow>
-                  </button>
-                )}
-                {this.state.play && (
-                  <button
-                    onClick={() => this.togglePlay()}
-                    className="player-controls"
-                  >
-                    <MdPause></MdPause>
-                  </button>
-                )}
-                <button onClick={() => this.next()} className="player-controls">
-                  <MdSkipNext></MdSkipNext>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED
+                    })
+                  }
+                >
+                  1.0x
                 </button>
-                <input
-                  type="range"
-                  max={this.state.maxValue}
-                  value={this.state.value}
-                  className="slider"
-                  ref={this.sliderRef}
-                  onInput={() => this.onInput()}
-                ></input>
+                <button
+                  onClick={() =>
+                    this.setState({
+                      speed: SPEED * 2
+                    })
+                  }
+                >
+                  2.0x
+                </button> */}
               </div>
             ) : (
-              <button onClick={() => this.handleStart()}>Start</button>
+              <div className="action_buttons">
+                <button
+                  onClick={() => {
+                    this.handleStart(true);
+                  }}
+                >
+                  Manual
+                </button>
+                <button
+                  onClick={() => {
+                    {
+                      this.handleStart(false);
+                    }
+                  }}
+                >
+                  Automatic
+                </button>
+              </div>
             )}
           </center>
         </div>
@@ -329,33 +343,3 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(connect(mapStateToProps, {})(KruskalPage));
-
-{
-  /* <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED / 2
-                    })
-                  }
-                >
-                  0.5x
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED
-                    })
-                  }
-                >
-                  1.0x
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED * 2
-                    })
-                  }
-                >
-                  2.0x
-                </button> */
-}
