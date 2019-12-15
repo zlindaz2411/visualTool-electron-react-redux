@@ -58,20 +58,21 @@ const input= {
 
 
 });
-// describe('calculate time', function() {
-//     let startTime = performance.now();
-//     for(let i=0;i<10;i++){
-//         //do nothing
-//     }
-//     let endTime = performance.now();
-//     const result = endTime - startTime;
-//     const funcRes = calculateTime(function(){for(let i=0;i<10;i++){
-//         //do nothing
-//     }});
-//     console.log(funcRes);
-//     it('should return a minimum spanning tree', function() {
-//       assert.equal(result, funcRes);
-//     });
+
+describe('calculate time', function() {
+    let startTime = performance.now();
+    for(let i=0;i<10;i++){
+        //do nothing
+    }
+    let endTime = performance.now();
+    const result = endTime - startTime;
+    const funcRes = calculateTime(function(){for(let i=0;i<10;i++){
+        //do nothing
+    }});
+    console.log(funcRes);
+    it('should return a minimum spanning tree', function() {
+      assert.equal(Math.round(result), Math.round(funcRes));
+    });
 
 
-// });
+});

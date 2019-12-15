@@ -29,7 +29,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mw",
     "test": "mocha --require @babel/register ./tests/**/*.js",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc --reporter html --reporter text npm test",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
@@ -70,19 +70,17 @@
     "mocha": "^6.2.2",
     "nedb": "1.8.0",
     "nyc": "^14.1.1",
-    "paralleljs": "^0.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-chartjs-2": "^2.8.0",
     "react-d3-graph": "^2.3.0",
     "react-dom": "^16.11.0",
-    "react-modal": "^3.11.1",
+    "react-icons": "^3.8.0",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
-    "styled-components": "^4.4.1",
     "webpack-cli": "^3.3.10",
     "workerjs": "^0.1.1"
   }

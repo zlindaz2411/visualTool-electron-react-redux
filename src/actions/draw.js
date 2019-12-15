@@ -26,7 +26,6 @@ export const addGraph = graph => dispatch => {
  * Fetch all the graphs from nedb
  */
 export function fetchGraphs() {
-
     return dispatch => {
         ipcRenderer.send('fetchGraphs');
         ipcRenderer.on('graphs:fetched', (event, graphs) => {

@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import {
+  MdPlayArrow,
+  MdSkipPrevious,
+  MdSkipNext,
+  MdPause
+} from "react-icons/md";
 
 import { emptyGraph } from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
@@ -11,8 +17,7 @@ import {
   resetTree,
   resetHighlight,
   resetRoot,
-  resetNodes,
-  updateGraph
+  resetNodes
 } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -33,13 +38,15 @@ const SPEED = 1000;
 class KruskalPage extends Component {
   constructor(props) {
     super(props);
+    this.sliderRef = React.createRef();
     this.state = {
-      manual: false,
-      index: 0,
-      speed: SPEED,
-      automatic: false,
-      pseudocode: getPseudocode(pageName),
       start: false,
+      index: 0,
+      maxValue: 0,
+      value: 0,
+      speed: SPEED,
+      pseudocode: getPseudocode(pageName),
+      play: false,
       pseudoMap: null,
       data:
         Object.keys(this.props.latestGraph).length == 0
@@ -74,31 +81,41 @@ class KruskalPage extends Component {
     drawGraph(this.state.data, "");
   }
 
+  /**
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array
+   * @param {*} tree
+   */
+  updateGraph(array, tree) {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < this.state.data.edges.length; j++) {
+        //check if there is a matching non-highlighted edge
+        if (
+          (this.state.data.edges[j].source == array[i].source &&
+            this.state.data.edges[j].target == array[i].target) ||
+          (this.state.data.edges[j].source == array[i].target &&
+            this.state.data.edges[j].target == array[i].source)
+        ) {
+          if (tree) this.state.data.edges[j].tree = true;
+          else this.state.data.edges[j].highlight = true;
+        }
+        this.draw();
+      }
+    }
+  }
 
   /**
-   * When start is pressed, check if the graph is correct.
-   * If not, alert an error dialog. Otherwise, star the visualization
+   * Toggle start: if is true set icon to be pause, else play
    */
-  handleStart(isManual) {
-    if (Object.keys(this.props.latestGraph).length == 0) {
-      emptyGraphMessage();
-    } else {
-      const res = kruskals(this.state.data.nodes, this.state.data.edges);
-      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
-      else {
-        this.setState({
-          pseudoMap: setUpPseudocodeMap(pageName, 0),
-          states: res
-        });
-        if (isManual) {
-          this.setState({
-            manual: true
-          });
-        } else {
-          this.setState({
-            automatic: true
-          });
-          let timer = setInterval(() => {
+  togglePlay() {
+    this.setState(
+      {
+        play: !this.state.play
+      },
+      () => {
+        let timer;
+        if(this.state.play) {
+          timer = setInterval(() => {
             if (this.state.index < this.state.states.length - 1) {
               this.next();
             } else {
@@ -106,6 +123,56 @@ class KruskalPage extends Component {
             }
           }, this.state.speed);
         }
+        else{
+          clearInterval(timer);
+        }
+      }
+    );
+  }
+
+  /**
+   * Move slider
+   */
+  onInput() {
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
+    var input = this.sliderRef;
+    var currentVal = input.current.value;
+    this.setState(
+      {
+        value: this.sliderRef.current.value,
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          this.state.states[currentVal].status
+        )
+      },
+      () => {
+        this.updateGraph(this.state.states[currentVal].tree, true);
+        this.updateGraph(this.state.states[currentVal].highlighted, false);
+        console.log(this.state.data.edges);
+      }
+    );
+  }
+
+  /**
+   * When start is pressed, check if the graph is correct.
+   * If not, alert an error dialog. Otherwise, start the visualization
+   */
+  handleStart() {
+    if (Object.keys(this.props.latestGraph).length == 0) {
+      emptyGraphMessage();
+    } else {
+      const res = kruskals(
+        this.state.data.nodes,
+        this.state.data.edges
+      );
+      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
+      else {
+        this.setState({
+          start: true,
+          pseudoMap: setUpPseudocodeMap(pageName, 0),
+          states: res
+        });
       }
     }
   }
@@ -145,14 +212,126 @@ class KruskalPage extends Component {
             </div>
           </center>
           <center>
-            {this.state.manual ? (
-              <div className="action_buttons">
-                <button onClick={() => this.previous()}>Previous</button>
-                <button onClick={() => this.next()}>Next</button>
-              </div>
-            ) : this.state.automatic ? (
-              <div className="action_buttons">
+            {this.state.start ? (
+              <div className="player">
                 <button
+                  onClick={() => this.previous()}
+                  className="player-controls"
+                >
+                  <MdSkipPrevious></MdSkipPrevious>
+                </button>
+                {!this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPlayArrow></MdPlayArrow>
+                  </button>
+                )}
+                {this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPause></MdPause>
+                  </button>
+                )}
+                <button onClick={() => this.next()} className="player-controls">
+                  <MdSkipNext></MdSkipNext>
+                </button>
+                <input
+                  type="range"
+                  max={this.state.maxValue}
+                  value={this.state.value}
+                  className="slider"
+                  ref={this.sliderRef}
+                  onInput={() => this.onInput()}
+                ></input>
+              </div>
+            ) : (
+              <button onClick={() => this.handleStart()}>Start</button>
+            )}
+          </center>
+        </div>
+      </div>
+    );
+  }
+
+  /**
+   * When previous button is clicked: if it's at the start, display error message
+   * Else display the previous state of the algorithm
+   */
+  previous() {
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
+    this.setState({
+      index: (this.state.index -= 1),
+      value: this.state.index
+    });
+    if (this.state.index < 0) {
+      this.setState({
+        index: (this.state.index += 1),
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        value: this.state.index
+      });
+      startOfAlgorithmMessage();
+    }
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      ),
+      value: this.state.index
+    });
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    //this.draw();
+  }
+
+  /**
+   * When next button is clicked: if it's at the end, display error message
+   * Else display the next state of the algorithm
+   */
+  next() {
+    this.setState({
+      index: (this.state.index += 1),
+      value: this.state.index
+    });
+    if (this.state.index >= this.state.states.length) {
+      this.setState({
+        index: (this.state.index -= 1),
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          this.state.pseudocode.length - 1
+        ),
+        value: this.state.index
+      });
+      endOfAlgorithmMessage();
+    }
+    this.setState({
+      pseudoMap: setUpPseudocodeMap(
+        pageName,
+        this.state.states[this.state.index].status
+      ),
+      value: this.state.index
+    });
+    resetHighlight(this.state.data.edges);
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    //this.draw();
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    latestGraph: state.graph.latestGraph
+  };
+}
+
+export default withRouter(connect(mapStateToProps, {})(KruskalPage));
+
+{
+  /* <button
                   onClick={() =>
                     this.setState({
                       speed: SPEED / 2
@@ -178,97 +357,5 @@ class KruskalPage extends Component {
                   }
                 >
                   2.0x
-                </button>
-              </div>
-            ) : (
-              <div className="action_buttons">
-                <button
-                  onClick={() => {
-                    this.handleStart(true);
-                  }}
-                >
-                  Manual
-                </button>
-                <button
-                  onClick={() => {
-                    {
-                      this.handleStart(false);
-                    }
-                  }}
-                >
-                  Automatic
-                </button>
-              </div>
-            )}
-          </center>
-        </div>
-      </div>
-    );
-  }
-
-  /**
-   * When previous button is clicked: if it's at the start, display error message
-   * Else display the previous state of the algorithm
-   */
-  previous() {
-    resetHighlight(this.state.data.edges);
-    resetTree(this.state.data.edges);
-    this.setState({
-      index: (this.state.index -= 1)
-    });
-    if (this.state.index < 0) {
-      this.setState({
-        index: (this.state.index += 1),
-        pseudoMap: setUpPseudocodeMap(pageName, 0)
-      });
-      startOfAlgorithmMessage();
-    }
-    this.setState({
-      pseudoMap: setUpPseudocodeMap(
-        pageName,
-        this.state.states[this.state.index].status
-      )
-    });
-    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
-    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
-    this.draw();
-  }
-
-  /**
-   * When next button is clicked: if it's at the end, display error message
-   * Else display the next state of the algorithm
-   */
-  next() {
-    this.setState({
-      index: (this.state.index += 1)
-    });
-    if (this.state.index >= this.state.states.length) {
-      this.setState({
-        index: (this.state.index -= 1),
-        pseudoMap: setUpPseudocodeMap(
-          pageName,
-          this.state.pseudocode.length - 1
-        )
-      });
-      endOfAlgorithmMessage();
-    }
-    this.setState({
-      pseudoMap: setUpPseudocodeMap(
-        pageName,
-        this.state.states[this.state.index].status
-      )
-    });
-    resetHighlight(this.state.data.edges);
-    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
-    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
-    this.draw();
-  }
+                </button> */
 }
-
-function mapStateToProps(state) {
-  return {
-    latestGraph: state.graph.latestGraph
-  };
-}
-
-export default withRouter(connect(mapStateToProps, {})(KruskalPage));
