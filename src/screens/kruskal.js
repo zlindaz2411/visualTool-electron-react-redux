@@ -171,7 +171,8 @@ class KruskalPage extends Component {
         this.setState({
           start: true,
           pseudoMap: setUpPseudocodeMap(pageName, 0),
-          states: res
+          states: res,
+          maxValue:res.length-1
         });
       }
     }
