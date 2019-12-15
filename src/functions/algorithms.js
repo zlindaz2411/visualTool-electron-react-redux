@@ -239,6 +239,7 @@ export function boruvkas(nodes, edges) {
         //for each component find the smallest edge
         for(let i =0;i<components.length;i++){ 
           hnode = [];
+          hedge = [];
           addStates(states,hedge, tedge, hnode,3)
             for (let it = components[i].values(), val= null; val=it.next().value; ) {
                hnode.push(val.id);
@@ -269,7 +270,7 @@ export function boruvkas(nodes, edges) {
       current = num;
       if (current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    addStates(states,states[states.length - 1].highlighted, states[states.length - 1].tree, [],9)
+    addStates(states,[], states[states.length - 1].tree, [],9)
 
     return states;
   } catch (error) {

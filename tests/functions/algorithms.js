@@ -255,21 +255,20 @@ describe("Add States", function() {
             status: 7
           },
           {
-            highlighted: [ { source: 1, target: 2, weight: 4, highlight: false } ],
+            highlighted: [  ],
             tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
             highlightedNodes: [  ],
             status: 3
           },
           {
-            highlighted: [ { source: 1, target: 2, weight: 4, highlight: false } ],
+            highlighted: [ ],
             tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
             highlightedNodes: [ 2 ],
             status: 4
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false }
+                { source: 1, target: 2, weight: 4, highlight: false }
             ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
             highlightedNodes: [ 2 ],
@@ -277,8 +276,7 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false }
+             
             ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
             highlightedNodes: [],
@@ -286,8 +284,7 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false }
+              
             ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
             highlightedNodes: [ 3 ],
@@ -295,9 +292,7 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 3, target: 1, weight: 7, highlight: false }
+                { source: 3, target: 1, weight: 7, highlight: false }
             ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
             highlightedNodes: [ 3 ],
@@ -305,9 +300,7 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 3, target: 1, weight: 7, highlight: false }
+                { source: 3, target: 1, weight: 7, highlight: false }
             ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
             highlightedNodes: [ 3 ],
@@ -315,9 +308,7 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 3, target: 1, weight: 7, highlight: false }
+                { source: 3, target: 1, weight: 7, highlight: false }
             ],
             tree: [
               { source: 1, target: 2, weight: 4, highlight: false },
@@ -328,9 +319,6 @@ describe("Add States", function() {
           },
           {
             highlighted: [
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 1, target: 2, weight: 4, highlight: false },
-              { source: 3, target: 1, weight: 7, highlight: false }
             ],
             tree: [
               { source: 1, target: 2, weight: 4, highlight: false },
