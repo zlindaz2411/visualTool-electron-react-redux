@@ -7,50 +7,37 @@
     .title{
         padding-top: 7.5rem;
         text-align: center;
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            color: $txtCol;
-          }
-          
-          /* Tooltip text */
-          .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 15rem;
-            background-color: $mainGreen;
-            color: $txtCol;
-            font-weight: bold;
-            font-size: 1.2rem;
-            word-spacing: 0.1rem;
-            text-align: center;
-            padding: 5px 0;
-            border-radius: 6px;
-            /* Position the tooltip text - see examples below! */
-            position: absolute;
-            z-index: 1;
-          }
-          
-          /* Show the tooltip text when you mouse over the tooltip container */
-          .tooltip:hover .tooltiptext {
-            visibility: visible;
-          }
-
-        .tooltip .tooltiptext::after {
-            content: " ";
-            position: absolute;
-            bottom: 100%;  /* At the top of the tooltip */
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent transparent transparent;
-          }
+            
     }
 
     .sub_text{
         padding-top: 1rem;
         text-align: center;
+
+        .tooltip{
+            display:inline;
+            position:relative;  
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: $txtCol;
+        }
+
+     .tooltip:hover:after {
+        width: 15rem;
+        padding: 0.5rem;
+        top: 100%;
+        border-color: $txtCol;
+        border-radius: 5px;
+        left: 50%; 
+        margin-left: -60px; 
+        content: attr(title);
+        font-size: 1.2rem;
+        position: absolute;
+        background-color: $white;
+        border-width: 2px;
+        border-style: solid;
+      }
     }
 
     .canvas{

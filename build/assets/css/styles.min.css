@@ -1115,42 +1115,31 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   padding: 0; }
   .about_wrap .title {
     padding-top: 7.5rem;
-    text-align: center;
-    /* Tooltip text */
-    /* Show the tooltip text when you mouse over the tooltip container */ }
-    .about_wrap .title .tooltip {
-      position: relative;
-      display: inline-block;
-      color: #50525E; }
-    .about_wrap .title .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 15rem;
-      background-color: #D9E9D6;
-      color: #50525E;
-      font-weight: bold;
-      font-size: 1.2rem;
-      word-spacing: 0.1rem;
-      text-align: center;
-      padding: 5px 0;
-      border-radius: 6px;
-      /* Position the tooltip text - see examples below! */
-      position: absolute;
-      z-index: 1; }
-    .about_wrap .title .tooltip:hover .tooltiptext {
-      visibility: visible; }
-    .about_wrap .title .tooltip .tooltiptext::after {
-      content: " ";
-      position: absolute;
-      bottom: 100%;
-      /* At the top of the tooltip */
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: transparent transparent transparent transparent; }
+    text-align: center; }
   .about_wrap .sub_text {
     padding-top: 1rem;
     text-align: center; }
+    .about_wrap .sub_text .tooltip {
+      display: inline;
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #50525E; }
+    .about_wrap .sub_text .tooltip:hover:after {
+      width: 15rem;
+      padding: 0.5rem;
+      top: 100%;
+      border-color: #50525E;
+      border-radius: 5px;
+      left: 50%;
+      margin-left: -60px;
+      content: attr(title);
+      font-size: 1.2rem;
+      position: absolute;
+      background-color: #ffffff;
+      border-width: 2px;
+      border-style: solid; }
   .about_wrap .canvas {
     margin-top: 3rem;
     border-radius: 2rem;
