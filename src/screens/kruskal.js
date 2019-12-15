@@ -29,11 +29,10 @@ import {
   ErrMessage
 } from "../constants/errorMessage";
 
-const colors = ["#84C262", "#50525E", "#B22222"];
+import { SPEED,COLORS } from "../constants/visualizationConstants";
+
 
 const pageName = Algorithm.KRUSKAL;
-
-const SPEED = 1000;
 
 class KruskalPage extends Component {
   constructor(props) {
@@ -45,8 +44,8 @@ class KruskalPage extends Component {
       maxValue: 0,
       value: 0,
       speed: SPEED,
-      pseudocode: getPseudocode(pageName),
       play: false,
+      pseudocode: getPseudocode(pageName),
       pseudoMap: null,
       data:
         Object.keys(this.props.latestGraph).length == 0
@@ -149,7 +148,6 @@ class KruskalPage extends Component {
       () => {
         this.updateGraph(this.state.states[currentVal].tree, true);
         this.updateGraph(this.state.states[currentVal].highlighted, false);
-        console.log(this.state.data.edges);
       }
     );
   }
@@ -198,9 +196,9 @@ class KruskalPage extends Component {
                       style={
                         this.state.pseudoMap != null
                           ? this.state.pseudoMap.get(pseudo) == false
-                            ? { color: colors[1] }
-                            : { color: colors[0] }
-                          : { color: colors[1] }
+                            ? { color: COLORS[1] }
+                            : { color: COLORS[0] }
+                          : { color: COLORS[1] }
                       }
                       key={i}
                     >
@@ -331,32 +329,3 @@ function mapStateToProps(state) {
 
 export default withRouter(connect(mapStateToProps, {})(KruskalPage));
 
-{
-  /* <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED / 2
-                    })
-                  }
-                >
-                  0.5x
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED
-                    })
-                  }
-                >
-                  1.0x
-                </button>
-                <button
-                  onClick={() =>
-                    this.setState({
-                      speed: SPEED * 2
-                    })
-                  }
-                >
-                  2.0x
-                </button> */
-}

@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import {
+  MdPlayArrow,
+  MdSkipPrevious,
+  MdSkipNext,
+  MdPause
+} from "react-icons/md";
 
 import { emptyGraph} from "../constants/defaultGraph";
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
@@ -12,15 +18,19 @@ import { resetTree, resetHighlight, resetRoot, resetNodes, updateGraph} from "..
 import { Algorithm } from "../constants/algorithms";
 import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage, algorithmErrorMessage, ErrMessage} from "../constants/errorMessage";
 
-const colors = ["#84C262", "#50525E", "#B22222"];
+import { SPEED,COLORS } from "../constants/visualizationConstants";
 
-const pageName = Algorithm.BORUVKA;
-
+const pageName = Algorithm.BORUVKA
 class BoruvkaPage extends Component {
   constructor(props) {
     super(props);
+    this.sliderRef = React.createRef();
     this.state = {
       index: 0,
+      maxValue: 0,
+      value: 0,
+      speed: SPEED,
+      play: false,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null,
@@ -70,11 +80,37 @@ class BoruvkaPage extends Component {
       this.setState({
         start: true,
         pseudoMap: setUpPseudocodeMap(pageName, 0),
-        states: res
+        states: res,
+        maxValue:res.length-1
       });
     }
   }
   }
+
+  /**
+   * Move slider
+   */
+  onInput() {
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
+    var input = this.sliderRef;
+    var currentVal = input.current.value;
+    this.setState(
+      {
+        value: this.sliderRef.current.value,
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          this.state.states[currentVal].status
+        )
+      },
+      () => {
+        this.updateGraph(this.state.states[currentVal].tree, true);
+        this.updateGraph(this.state.states[currentVal].highlighted, false);
+        this.updateNodes(this.state.states[this.state.index].highlightedNodes);
+      }
+    );
+  }
+
 
   render() {
     return (
@@ -96,9 +132,9 @@ class BoruvkaPage extends Component {
                       style={
                         this.state.pseudoMap != null
                           ? this.state.pseudoMap.get(pseudo) == false
-                            ? { color: colors[1] }
-                            : { color: colors[0] }
-                          : { color: colors[1] }
+                            ? { color: COLORS[1] }
+                            : { color: COLORS[0] }
+                          : { color: COLORS[1] }
                       }
                       key={i}
                     >
@@ -112,17 +148,43 @@ class BoruvkaPage extends Component {
           </center>
           <center>
             {this.state.start ? (
-              <div className="action_buttons">
-                <button onClick={() => this.previous()}>Previous</button>
-                <button onClick={() => this.next()}>Next</button>
+              <div className="player">
+                <button
+                  onClick={() => this.previous()}
+                  className="player-controls"
+                >
+                  <MdSkipPrevious></MdSkipPrevious>
+                </button>
+                {!this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPlayArrow></MdPlayArrow>
+                  </button>
+                )}
+                {this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPause></MdPause>
+                  </button>
+                )}
+                <button onClick={() => this.next()} className="player-controls">
+                  <MdSkipNext></MdSkipNext>
+                </button>
+                <input
+                  type="range"
+                  max={this.state.maxValue}
+                  value={this.state.value}
+                  className="slider"
+                  ref={this.sliderRef}
+                  onInput={() => this.onInput()}
+                ></input>
               </div>
             ) : (
-              <button
-                onClick={() =>this.handleStart()
-              }
-              >
-                Start
-              </button>
+              <button onClick={() => this.handleStart()}>Start</button>
             )}
           </center>
         </div>
@@ -144,9 +206,33 @@ class BoruvkaPage extends Component {
           (this.state.data.nodes[j].id == array[i]) {
           this.state.data.nodes[j].highlight = true;
         } 
+        this.draw();
       }
     }
   }
+    /**
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array
+   * @param {*} tree
+   */
+  updateGraph(array, tree) {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < this.state.data.edges.length; j++) {
+        //check if there is a matching non-highlighted edge
+        if (
+          (this.state.data.edges[j].source == array[i].source &&
+            this.state.data.edges[j].target == array[i].target) ||
+          (this.state.data.edges[j].source == array[i].target &&
+            this.state.data.edges[j].target == array[i].source)
+        ) {
+          if (tree) this.state.data.edges[j].tree = true;
+          else this.state.data.edges[j].highlight = true;
+        }
+        this.draw();
+      }
+    }
+  }
+
 
 
   /**
@@ -156,6 +242,7 @@ class BoruvkaPage extends Component {
   previous() {
     this.setState({
       index:  this.state.index -= 1,
+      value: this.state.index
     });
     if (this.state.index < 0) {
       this.setState({
@@ -163,7 +250,8 @@ class BoruvkaPage extends Component {
         pseudoMap: setUpPseudocodeMap(
           pageName,
           0,
-        )
+        ),
+        value: this.state.index
       })
       startOfAlgorithmMessage();
     } 
@@ -171,15 +259,15 @@ class BoruvkaPage extends Component {
       pseudoMap: setUpPseudocodeMap(
         pageName,
         this.state.states[this.state.index].status
-      )
+      ),
+      value: this.state.index
     });
     resetNodes(this.state.data.nodes);
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
-    updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
-    updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
+    this.updateGraph(this.state.states[this.state.index].tree, true);
+    this.updateGraph(this.state.states[this.state.index].highlighted, false);
     this.updateNodes(this.state.states[this.state.index].highlightedNodes);
-    this.draw();
   }
 
 /**
@@ -189,6 +277,7 @@ class BoruvkaPage extends Component {
 next() {
     this.setState({
       index: this.state.index += 1,
+      value: this.state.index
     });
     if (this.state.index >= this.state.states.length) {
       this.setState({
@@ -196,7 +285,9 @@ next() {
         pseudoMap: setUpPseudocodeMap(
           pageName,
           this.state.pseudocode.length-1,
-        )})
+        ),
+        value: this.state.index
+      })
      endOfAlgorithmMessage();
   }
   this.setState({
@@ -204,13 +295,13 @@ next() {
       pageName,
       this.state.states[this.state.index].status
     ),
+    value: this.state.index
   });
   resetHighlight(this.state.data.edges);
   resetNodes(this.state.data.nodes);
-  updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
-  updateGraph(this.state.states[this.state.index].highlighted, this.state.data.edges,false);
+  this.updateGraph(this.state.states[this.state.index].tree, true);
+  this.updateGraph(this.state.states[this.state.index].highlighted, false);
   this.updateNodes(this.state.states[this.state.index].highlightedNodes);
-  this.draw();
 }
 }
 

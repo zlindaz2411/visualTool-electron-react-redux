@@ -3,6 +3,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Dialog from "../components/dialog";
+import {
+  MdPlayArrow,
+  MdSkipPrevious,
+  MdSkipNext,
+  MdPause
+} from "react-icons/md";
+
 
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 import { resetTree, resetHighlight, resetNodes, updateGraph} from "../functions/graphAlgorithms";
@@ -20,17 +27,21 @@ import {
   ErrMessage,
   algorithmErrorMessage
 } from "../constants/errorMessage";
-
-const colors = ["#84C262", "#50525E", "#B22222"];
+import { SPEED,COLORS } from "../constants/visualizationConstants";
 
 const pageName = Algorithm.PRIM;
 
 class PrimPage extends Component {
   constructor(props) {
     super(props);
+    this.sliderRef = React.createRef();
     this.state = {
       isDialogOpen: true,
       index: 0,
+      maxValue: 0,
+      value: 0,
+      speed: SPEED,
+      play: false,
       pseudocode: getPseudocode(pageName),
       start: false,
       pseudoMap: null,
@@ -82,11 +93,36 @@ class PrimPage extends Component {
       this.setState({
         start: true,
         pseudoMap: setUpPseudocodeMap(pageName, 0),
-        states: res
+        states: res,
+        maxValue:res.length-1
       });
     }
     }
   }
+
+  /**
+   * Move slider
+   */
+  onInput() {
+    resetHighlight(this.state.data.edges);
+    resetTree(this.state.data.edges);
+    var input = this.sliderRef;
+    var currentVal = input.current.value;
+    this.setState(
+      {
+        value: this.sliderRef.current.value,
+        pseudoMap: setUpPseudocodeMap(
+          pageName,
+          this.state.states[currentVal].status
+        )
+      },
+      () => {
+        this.updateGraph(this.state.states[currentVal].tree, true);
+        this.updateGraph(this.state.states[currentVal].highlighted, false);
+      }
+    );
+  }
+
 
   /**
    * Handle close dialog. If not selected root node pop up error message, else close.
@@ -148,9 +184,9 @@ class PrimPage extends Component {
                       style={
                         this.state.pseudoMap != null
                           ? this.state.pseudoMap.get(pseudo) == false
-                            ? { color: colors[1] }
-                            : { color: colors[0] }
-                          : { color: colors[1] }
+                            ? { color: COLORS[1] }
+                            : { color: COLORS[0] }
+                          : { color: COLORS[1] }
                       }
                       key={i}
                     >
@@ -162,20 +198,73 @@ class PrimPage extends Component {
               </div>
             </center>
             <center>
-              {this.state.start ? (
-                <div className="action_buttons">
-                  <button onClick={() => this.previous()}>Previous</button>
-                  <button onClick={() => test()}>ts</button>
-                  <button onClick={() => this.next()}>Next</button>
-                </div>
-              ) : (
-                <button onClick={() => this.handleStart()}>Start</button>
-              )}
-            </center>
+            {this.state.start ? (
+              <div className="player">
+                <button
+                  onClick={() => this.previous()}
+                  className="player-controls"
+                >
+                  <MdSkipPrevious></MdSkipPrevious>
+                </button>
+                {!this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPlayArrow></MdPlayArrow>
+                  </button>
+                )}
+                {this.state.play && (
+                  <button
+                    onClick={() => this.togglePlay()}
+                    className="player-controls"
+                  >
+                    <MdPause></MdPause>
+                  </button>
+                )}
+                <button onClick={() => this.next()} className="player-controls">
+                  <MdSkipNext></MdSkipNext>
+                </button>
+                <input
+                  type="range"
+                  max={this.state.maxValue}
+                  value={this.state.value}
+                  className="slider"
+                  ref={this.sliderRef}
+                  onInput={() => this.onInput()}
+                ></input>
+              </div>
+            ) : (
+              <button onClick={() => this.handleStart()}>Start</button>
+            )}
+          </center>
           </center>
         </div>
       </div>
     );
+  }
+
+  /**
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array
+   * @param {*} tree
+   */
+  updateGraph(array, tree) {
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < this.state.data.edges.length; j++) {
+        //check if there is a matching non-highlighted edge
+        if (
+          (this.state.data.edges[j].source == array[i].source &&
+            this.state.data.edges[j].target == array[i].target) ||
+          (this.state.data.edges[j].source == array[i].target &&
+            this.state.data.edges[j].target == array[i].source)
+        ) {
+          if (tree) this.state.data.edges[j].tree = true;
+          else this.state.data.edges[j].highlight = true;
+        }
+        this.draw();
+      }
+    }
   }
 
   /**
@@ -184,20 +273,23 @@ class PrimPage extends Component {
    */
   previous() {
     this.setState({
-      index: (this.state.index -= 1)
+      index: (this.state.index -= 1),
+      value: this.state.index
     });
     if (this.state.index < 0) {
       this.setState({
         index: (this.state.index += 1),
-        pseudoMap: setUpPseudocodeMap(pageName, 0)
+        pseudoMap: setUpPseudocodeMap(pageName, 0),
+        value: this.state.index
       });
       startOfAlgorithmMessage();
     }
     this.setState({
       pseudoMap: setUpPseudocodeMap(
         pageName,
-        this.state.states[this.state.index].status
-      )
+        this.state.states[this.state.index].status,   
+      ),
+      value: this.state.index
     });
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
@@ -212,7 +304,8 @@ class PrimPage extends Component {
    */
   next() {
     this.setState({
-      index: (this.state.index += 1)
+      index: (this.state.index += 1),
+      value: this.state.index
     });
     if (this.state.index >= this.state.states.length) {
       this.setState({
@@ -220,7 +313,8 @@ class PrimPage extends Component {
         pseudoMap: setUpPseudocodeMap(
           pageName,
           this.state.pseudocode.length - 1
-        )
+        ),
+        value: this.state.index
       });
       endOfAlgorithmMessage();
     }
@@ -228,7 +322,8 @@ class PrimPage extends Component {
       pseudoMap: setUpPseudocodeMap(
         pageName,
         this.state.states[this.state.index].status
-      )
+      ),
+      value: this.state.index
     });
     resetHighlight(this.state.data.edges);
     updateGraph(this.state.states[this.state.index].tree,this.state.data.edges, true);
