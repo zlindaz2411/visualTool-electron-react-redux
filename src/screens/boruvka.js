@@ -47,6 +47,15 @@ class BoruvkaPage extends Component {
     }
   }
 
+  /**
+   * Draw graph in the algorithm page canvas
+   */
+  draw() {
+    removeAll();
+    drawGraph(this.state.data, "");
+  }
+
+
     /**
    * When start is pressed, check if the graph is correct.
    * If not, alert an error dialog. Otherwise, start the visualization
@@ -140,14 +149,8 @@ class BoruvkaPage extends Component {
             this.state.data.edges[j].target == array[i].source)
         ) {
           if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-          removeAll();
-          drawGraph(this.state.data, '');
-        } else {
-          this.state.data.edges[j].highlight = false;
-          removeAll();
-          drawGraph(this.state.data, "");
-        }
+          else this.state.data.edges[j].highlight = true;  
+        } 
       }
     }
   }
@@ -158,31 +161,19 @@ class BoruvkaPage extends Component {
    * @param {*} tree 
    */
   updateNodes(array) {
-    console.log(array)
-    console.log(this.state.data.nodes)
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < this.state.data.nodes.length; j++) {
         //check if there is a matching non-highlighted edge
         if 
           (this.state.data.nodes[j].id == array[i]) {
           this.state.data.nodes[j].highlight = true;
-          removeAll();
-          drawGraph(this.state.data, false);
         } 
       }
     }
   }
 
-  /**
-   * Reset data ui to original value (tree = false)
-   */
-  resetNodes(){
-    for (let i = 0; i < this.state.data.nodes.length; i++) {
-      this.state.data.nodes[i].highlight = false;
-    }
-  }
 
-    /**
+  /**
    * When previous button is clicked: if it's at the start, display error message
    * Else display the previous state of the algorithm
    */
@@ -206,12 +197,13 @@ class BoruvkaPage extends Component {
         this.state.states[this.state.index].status
       )
     });
+    resetNodes(this.state.data.nodes);
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
     this.updateNodes(this.state.states[this.state.index].highlightedNodes);
-
+    this.draw();
   }
 
 /**
@@ -240,10 +232,11 @@ next() {
     ),
   });
   resetHighlight(this.state.data.edges);
-  this.resetNodes();
+  resetNodes(this.state.data.nodes);
   this.updateGraph(this.state.states[this.state.index].tree, true);
   this.updateGraph(this.state.states[this.state.index].highlighted, false);
   this.updateNodes(this.state.states[this.state.index].highlightedNodes);
+  this.draw();
 }
 }
 

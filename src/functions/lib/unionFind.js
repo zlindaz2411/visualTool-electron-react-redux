@@ -10,6 +10,10 @@ export class UnionFind {
        // elements have themselves as parents
        elements.forEach(e => (this.parent[e.id] = e.id));
     }
+
+    getParents(){
+       return this.parent;
+    }
  
     union(a, b) {
        let rootA = this.find(a);

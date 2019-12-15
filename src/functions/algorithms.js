@@ -1,7 +1,24 @@
 import { UnionFind } from "../functions/lib/unionFind";
 import { PriorityQueue } from "../functions/lib/priorityQueue";
-import {ErrMessage} from'../constants/errorMessage';
+import { ErrMessage } from "../constants/errorMessage";
 
+/**
+ * Add highlighted elements and status in the state list.
+ * @param {*} states 
+ * @param {*} hedge 
+ * @param {*} tedge 
+ * @param {*} hnode 
+ * @param {*} status 
+ */
+function addStates(states, hedge, tedge, hnode, status){
+  console.log(status)
+    states.push({
+      highlighted:hedge.slice(),
+      tree: tedge.slice(),
+      highlightedNodes : hnode.slice(),
+      status: status,
+    });
+}
 
 /**
  * Kruskals algorithm
@@ -19,45 +36,40 @@ export function kruskals(nodes, edges) {
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let check = new Set();
-    states.push({ highlighted: [], tree: [], status: 1 });
+    addStates(states,[],[],[], 1)
 
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
     for (let i = 0; i < edges.length; i++) {
       let arr = [states[states.length - 1].highlighted.slice()]; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
-      if (arr.length == 0)
-        states.push({ highlighted: [], tree: [], status: 2 });
-      else
-        states.push({ highlighted: arr.slice(), tree: t.slice(), status: 2 });
+      if (arr.length == 0)  addStates(states, [], [],[], 2)
+      else  addStates(states, arr, t, [],2)
+
       let u = edges[i].source;
       let v = edges[i].target;
 
       arr.push(edges[i]);
-      states.push({ highlighted: arr.slice(), tree: t.slice(), status: 3 });
+      addStates(states, arr, t,[], 3)
       //if edges[i] in MST is not acyclic
-      states.push({ highlighted: arr.slice(), tree: t.slice(), status: 4 });
+      addStates(states, arr, t, [],4)
       if (!uf.connected(u, v)) {
         MST.add(edges[i]);
         uf.union(u, v);
         check.add(u);
         check.add(v);
         t.push(edges[i]);
-        states.push({ highlighted: arr.slice(), tree: t.slice(), status: 5 });
+        addStates(states, arr, t, [],5)
       } else {
         arr.pop();
-        states.push({ highlighted: arr.slice(), tree: t.slice(), status: 6 });
+        addStates(states, arr, t, [],6)
       }
     }
 
-    states.push({
-      highlighted: states[states.length - 1].highlighted,
-      tree: states[states.length - 1].tree,
-      status: 7
-    });
+    addStates(states, states[states.length - 1].highlighted, states[states.length - 1].tree, [],7)
 
     if (check.size != nodes.length) {
-        throw ErrMessage.MST_NOT_FOUND
+      throw ErrMessage.MST_NOT_FOUND;
     }
     return states;
   } catch (error) {
@@ -76,7 +88,7 @@ export function prims(root, nodes, edges) {
     let states = [{ highlighted: [], tree: [], status: 0 }];
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    states.push({ highlighted: [], tree: [], status: 1 });
+    addStates([], [], [], [],1)
     // Select first node as starting node
     let s = root;
     // Create a Priority Queue and explored set
@@ -96,7 +108,7 @@ export function prims(root, nodes, edges) {
       }
     }
 
-    states.push({ highlighted: [], tree: [], status: 2 });
+    addStates([], [], [], [],2)
 
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
@@ -104,10 +116,8 @@ export function prims(root, nodes, edges) {
 
       let arr = [states[states.length - 1].highlighted.slice()]; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
-      if (arr.length == 0)
-        states.push({ highlighted: [], tree: [], status: 3 });
-      else
-        states.push({ highlighted: arr.slice(), tree: t.slice(), status: 3 });
+      if (arr.length == 0)   addStates([], [], [], [],3)
+      else  addStates(states, arr, t, [],3)
 
       let currentMinEdge = edgeQueue.dequeue();
 
@@ -115,8 +125,8 @@ export function prims(root, nodes, edges) {
       let v = currentMinEdge.element[1];
 
       arr.push({ source: u, target: v });
-      states.push({ highlighted: arr.slice(), tree: t.slice(), status: 4 });
-      states.push({ highlighted: arr.slice(), tree: t.slice(), status: 5 });
+      addStates(states, arr, t, [],4)
+      addStates(states, arr, t, [],5)
 
       if (!explored.has(v)) {
         if (!uf.connected(u, v)) {
@@ -126,7 +136,7 @@ export function prims(root, nodes, edges) {
           check.add(v);
           uf.union(u, v);
           t.push({ source: u, target: v });
-          states.push({ highlighted: arr.slice(), tree: t.slice(), status: 6 });
+          addStates(states, arr, t, [],6)
           let temp = arr.slice();
           for (let i = 0; i < edges.length; i++) {
             if (edges[i].source == v) {
@@ -148,28 +158,20 @@ export function prims(root, nodes, edges) {
               }
             }
           }
-          states.push({
-            highlighted: temp.slice(),
-            tree: t.slice(),
-            status: 7
-          });
+          addStates(states, temp, t, [],7)
         } else {
           arr.pop();
-          states.push({ highlighted: arr.slice(), tree: t.slice(), status: 8 });
+          addStates(states, arr, t, [],8)
         }
       } else {
         arr.pop();
-        states.push({ highlighted: arr.slice(), tree: t.slice(), status: 8 });
+        addStates(states, arr, t, [],8)
       }
     }
+    addStates(states, states[states.length - 1].highlighted, states[states.length - 1].tree, [],9)
 
-    states.push({
-      highlighted: states[states.length - 1].highlighted,
-      tree: states[states.length - 1].tree,
-      status: 9
-    });
     if (check.size != nodes.length) {
-        throw ErrMessage.MST_NOT_FOUND
+      throw ErrMessage.MST_NOT_FOUND;
     }
     return states;
   } catch (error) {
@@ -184,187 +186,96 @@ export function prims(root, nodes, edges) {
  * @param {*} nodes
  */
 export function boruvkas(nodes, edges) {
-  try{
-  let states = [
-    {
-      highlighted: [],
-      tree: [],
-      highlightedNodes: [],
-      treeNodes: [],
-      status: 0
-    }
-  ];
-  states.push({
-    highlighted: [],
-    tree: [],
-    highlightedNodes: [],
-    treeNodes: [],
-    status: 1
-  });
-  let subset = new UnionFind(nodes);
-  let num = nodes.length;
-  // Initialize graph that'll contain the MST
-  let MST = new Set();
-  let previous = 0;
-  let current = num;
-  let cheapest = [];
-  while (num > 1) {
-    previous = current;
-    let hedge = states[states.length - 1].highlighted.slice(); //a copy of highlighted
-    let tedge = states[states.length - 1].tree.slice();
-    let hnode = states[states.length - 1].highlightedNodes.slice(); //a copy of highlighted
-
-    if (hedge.length == 0)
-      states.push({ highlighted: [], tree: [], highlightedNodes: [] });
-    else
-      states.push({
-        highlighted: hedge.slice(),
-        tree: tedge.slice(),
-        highlightedNodes: hnode.slice(),
-        status: 3
-      });
-
-    for (let v = 0; v < nodes.length; v++) {
-      cheapest[nodes[v].id] = -1;
-    }
-
-    for (let i = 0; i < edges.length; i++) {
-      states.push({
-        highlighted: hedge.slice(),
-        tree: tedge.slice(),
-        highlightedNodes: hnode.slice(),
-        status: 4
-      });
-
-      let u = subset.find(edges[i].source);
-      let v = subset.find(edges[i].target);
-      let node = [];
-      node.push(u);
-      node.push(v);
-      states.push({
-        highlighted: hedge.slice(),
-        tree: tedge.slice(),
-        highlightedNodes: node.slice(),
-        status: 5
-      });
-
-      if (u == v) {
-        states.push({
-          highlighted: hedge.slice(),
-          tree: tedge.slice(),
-          highlightedNodes: [],
-          status: 5
-        });
-        continue;
-      } else {
-        hedge.push(edges[i]);
-        states.push({
-          highlighted: hedge.slice(),
-          tree: tedge.slice(),
-          highlightedNodes: hnode.slice(),
-          status: 6
-        });
-        if (cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) {
-          hedge.pop();
-          states.push({
-            highlighted: hedge.slice(),
-            tree: tedge.slice(),
-            highlightedNodes: hnode.slice(),
-            status: 7
-          });
-          cheapest[u] = edges[i];
-        }
-        hedge.push(edges[i]);
-        states.push({
-          highlighted: hedge.slice(),
-          tree: tedge.slice(),
-          highlightedNodes: hnode.slice(),
-          status: 8
-        });
-        if (cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) {
-          hedge.pop();
-          states.push({
-            highlighted: hedge.slice(),
-            tree: tedge.slice(),
-            highlightedNodes: hnode.slice(),
-            status: 9
-          });
-          cheapest[v] = edges[i];
-        }
+  try {
+    let states = [
+      {
+        highlighted: [],
+        tree: [],
+        highlightedNodes: [],
+        status: 0
       }
-    }
-    for (let i = 0; i < nodes.length; i++) {
-      states.push({
-        highlighted: hedge.slice(),
-        tree: tedge.slice(),
-        highlightedNodes: hnode.slice(),
-        status: 10
-      });
-      let e = cheapest[nodes[i].id];
-      states.push({
-        highlighted: hedge.slice(),
-        tree: tedge.slice(),
-        highlightedNodes: hnode.slice(),
-        status: 11
-      });
-      if (e != -1) {
-        let u = subset.find(e.source);
-        let v = subset.find(e.target);
-        if (u == v) continue;
-        hedge.push(e);
-        states.push({
-          highlighted: hedge.slice(),
-          tree: tedge.slice(),
-          highlightedNodes: hnode.slice(),
-          status: 12
-        });
-        if (!subset.connected(u, v)) {
-          MST.add(e);
-          subset.union(u, v);
-          tedge.push(e);
-          states.push({
-            highlighted: hedge.slice(),
-            tree: tedge.slice(),
-            highlightedNodes: hnode.slice(),
-            status: 13
-          });
-          num--;
-          states.push({
-            highlighted: hedge.slice(),
-            tree: tedge.slice(),
-            highlightedNodes: hnode.slice(),
-            status: 14
-          });
-        } else {
-          hedge.pop();
-          states.push({
-            highlighted: hedge.slice(),
-            tree: tedge.slice(),
-            highlightedNodes: hnode.slice(),
-            status: 15
-          });
-        }
-      }
-    }
-    current = num;
-    if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+    ];
 
+    addStates([], [], [], [],1)
+    let subset = new UnionFind(nodes);
+    let num = nodes.length;
+    // Initialize graph that'll contain the MST
+    let MST = new Set();
+    let previous = 0;
+    let current = num;
+    let cheapest = [];
+      while(num>1){
+        let hedge = states[states.length - 1].highlighted.slice(); //a copy of highlighted
+        let tedge = states[states.length - 1].tree.slice();
+        let hnode = states[states.length - 1].highlightedNodes.slice(); //a copy of highlighted
+
+        if(hedge.length == 0)  addStates([], [], [], [],2)
+        else addStates(states,hedge, tedge, hnode,2)
+
+        previous = current;
+        for(let v=0;v<nodes.length;v++){
+              cheapest[nodes[v].id]= -1;
+        }
+        for(let i =0;i<edges.length;i++){
+            let u = subset.find(edges[i].source);
+            let v = subset.find(edges[i].target);
+            if(u==v) continue; 
+            else{
+                if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
+                if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
+            }
+        }
+        //Get all the componenets
+        let parent = subset.getParents();
+        let set = new Set();
+        let map = new Map();
+        for(let i =0;i<nodes.length;i++){
+            map.set(parent[nodes[i].id], new Set());
+        }
+        for(let i =0;i<nodes.length;i++){         
+            map.set(parent[nodes[i].id], map.get(parent[nodes[i].id]).add(nodes[i]));
+            set.add(map.get(parent[nodes[i].id]));
+        }
+        let components = Array.from(set)
+        //for each component find the smallest edge
+        for(let i =0;i<components.length;i++){ 
+          hnode = [];
+          addStates(states,hedge, tedge, hnode,3)
+            for (let it = components[i].values(), val= null; val=it.next().value; ) {
+               hnode.push(val.id);
+            }
+            addStates(states,hedge, tedge, hnode,4)
+            for (let it = components[i].values(), val= null; val=it.next().value; ) {
+                let e = cheapest[val.id];  
+                if(e!=-1){
+                  hedge.push(e);
+                  addStates(states,hedge, tedge, hnode,5)
+                    let u = subset.find(e.source);
+                    let v = subset.find(e.target);
+                    if(u==v) continue;
+                    if(!subset.connected(u,v)){
+                      addStates(states,hedge, tedge, hnode,6)
+                        MST.add(e);
+                        subset.union(u,v);
+                        tedge.push(e);
+                        addStates(states,hedge, tedge, hnode,7)
+                        num--;
+                    }else{
+                      hedge.pop();
+                      addStates(states,hedge, tedge, hnode,8)
+                    } 
+                }
+            }
+        }
+      current = num;
+      if (current == previous) throw ErrMessage.MST_NOT_FOUND;
+    }
+    addStates(states,states[states.length - 1].highlighted, states[states.length - 1].tree, [],9)
+
+    return states;
+  } catch (error) {
+    return error.toString();
   }
-  states.push({
-    highlighted: states[states.length - 1].highlighted,
-    tree: states[states.length - 1].tree,
-    highlightedNodes: states[states.length - 1].highlightedNodes,
-    treeNodes: states[states.length - 1].treeNodes,
-    status: 16
-  });
-
-
-
-  return states;
-}
-catch(error){
-  return error.toString();
-}
 }
 
 // export function test() {

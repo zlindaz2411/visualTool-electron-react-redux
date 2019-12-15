@@ -66,6 +66,15 @@ class KruskalPage extends Component {
   }
 
   /**
+   * Draw graph in the algorithm page canvas
+   */
+  draw() {
+    removeAll();
+    drawGraph(this.state.data, "");
+  }
+
+
+  /**
    * When start is pressed, check if the graph is correct.
    * If not, alert an error dialog. Otherwise, star the visualization
    */
@@ -214,8 +223,6 @@ class KruskalPage extends Component {
           if (tree) this.state.data.edges[j].tree = true;
           else this.state.data.edges[j].highlight = true;
         }
-        removeAll();
-        drawGraph(this.state.data, "");
       }
     }
   }
@@ -245,6 +252,7 @@ class KruskalPage extends Component {
     });
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.draw();
   }
 
   /**
@@ -274,6 +282,7 @@ class KruskalPage extends Component {
     resetHighlight(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.draw();
   }
 }
 

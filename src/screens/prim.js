@@ -60,7 +60,7 @@ class PrimPage extends Component {
    * Draw graph in the algorithm page canvas
    */
   draw() {
-    setWidthHeight(this.state.data, false);
+    removeAll();
     drawGraph(this.state.data, "");
   }
 
@@ -196,8 +196,6 @@ class PrimPage extends Component {
           if (tree) this.state.data.edges[j].tree = true;
           else this.state.data.edges[j].highlight = true;
         }
-        removeAll();
-        drawGraph(this.state.data, "");
       }
     }
   }
@@ -227,6 +225,7 @@ class PrimPage extends Component {
     resetTree(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.draw();
   }
 
   /**
@@ -256,6 +255,7 @@ class PrimPage extends Component {
     resetHighlight(this.state.data.edges);
     this.updateGraph(this.state.states[this.state.index].tree, true);
     this.updateGraph(this.state.states[this.state.index].highlighted, false);
+    this.draw();
   }
 }
 
