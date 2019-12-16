@@ -68,7 +68,7 @@ describe("Add States", function() {
             highlightedNodes: [],
             status: 5
           },
-        { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
+        { highlighted: [], tree: [{ source: 1, target: 2, weight: 4, highlight: false }], highlightedNodes: [], status: 2 },
         {
             highlighted: [ { source: 3, target: 1, weight: 7, highlight: false } ],
             tree: [ { source: 1, target: 2, weight: 4, highlight: false } ],
@@ -87,7 +87,8 @@ describe("Add States", function() {
             highlightedNodes: [],
             status: 5
           },
-        { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
+        { highlighted: [], tree: [ { source: 1, target: 2, weight: 4, highlight: false },
+          { source: 3, target: 1, weight: 7, highlight: false }], highlightedNodes: [], status: 2 },
         {
             highlighted: [ { source: 2, target: 3, weight: 8, highlight: false } ],
             tree: [
@@ -168,7 +169,7 @@ describe("Add States", function() {
             highlightedNodes: [],
             status: 7
           },
-        { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
+        { highlighted: [], tree: [{ source: 1, target: 2 } ], highlightedNodes: [], status: 3 },
         {
             highlighted: [ { source: 1, target: 3 } ],
             tree: [ { source: 1, target: 2 } ],
@@ -193,7 +194,7 @@ describe("Add States", function() {
             highlightedNodes: [],
             status: 7
           },
-        { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
+        { highlighted: [], tree: [{ source: 1, target: 2 }, { source: 1, target: 3 }], highlightedNodes: [], status: 3 },
         {
             highlighted: [ { source: 2, target: 3 } ],
             tree: [ { source: 1, target: 2 }, { source: 1, target: 3 } ],
