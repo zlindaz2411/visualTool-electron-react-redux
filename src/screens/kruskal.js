@@ -17,7 +17,8 @@ import {
   resetTree,
   resetHighlight,
   resetRoot,
-  resetNodes
+  resetNodes,
+  updateGraph
 } from "../functions/graphAlgorithms";
 
 import { Algorithm } from "../constants/algorithms";
@@ -82,29 +83,6 @@ class KruskalPage extends Component {
   }
 
   /**
-   * Update graph: update which edge needs to be highlighted
-   * @param {*} array
-   * @param {*} tree
-   */
-  updateGraph(array, tree) {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < this.state.data.edges.length; j++) {
-        //check if there is a matching non-highlighted edge
-        if (
-          (this.state.data.edges[j].source == array[i].source &&
-            this.state.data.edges[j].target == array[i].target) ||
-          (this.state.data.edges[j].source == array[i].target &&
-            this.state.data.edges[j].target == array[i].source)
-        ) {
-          if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-        }
-        this.draw();
-      }
-    }
-  }
-
-  /**
    * Toggle start: if is true set icon to be pause, else play
    */
   togglePlay() {
@@ -151,8 +129,9 @@ class KruskalPage extends Component {
         index: currentVal,
       },
       () => {
-        this.updateGraph(this.state.states[currentVal].tree, true);
-        this.updateGraph(this.state.states[currentVal].highlighted, false);
+        updateGraph(this.state.states[currentVal].tree,this.state.data.edges, true);
+        updateGraph(this.state.states[currentVal].highlighted, this.state.data.edges,false);
+        this.draw();
       }
     );
   }
@@ -287,9 +266,9 @@ class KruskalPage extends Component {
       ),
       value: this.state.index
     });
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
-    //this.draw();
+    updateGraph(this.state.states[this.state.index].tree, this.state.data.edges,true);
+    updateGraph(this.state.states[this.state.index].highlighted,  this.state.data.edges,false);
+    this.draw();
   }
 
   /**
@@ -320,9 +299,9 @@ class KruskalPage extends Component {
       value: this.state.index
     });
     resetHighlight(this.state.data.edges);
-    this.updateGraph(this.state.states[this.state.index].tree, true);
-    this.updateGraph(this.state.states[this.state.index].highlighted, false);
-    //this.draw();
+    updateGraph(this.state.states[this.state.index].tree,  this.state.data.edges,true);
+    updateGraph(this.state.states[this.state.index].highlighted,  this.state.data.edges,false);
+    this.draw();
   }
 }
 

@@ -148,8 +148,9 @@ class PrimPage extends Component {
         index: currentVal,
       },
       () => {
-        this.updateGraph(this.state.states[currentVal].tree, true);
-        this.updateGraph(this.state.states[currentVal].highlighted, false);
+        updateGraph(this.state.states[currentVal].tree, this.state.data.edges, true);
+        updateGraph(this.state.states[currentVal].highlighted, this.state.data.edges, false);
+        this.draw();
       }
     );
   }
@@ -275,28 +276,6 @@ class PrimPage extends Component {
     );
   }
 
-  /**
-   * Update graph: update which edge needs to be highlighted
-   * @param {*} array
-   * @param {*} tree
-   */
-  updateGraph(array, tree) {
-    for (let i = 0; i < array.length; i++) {
-      for (let j = 0; j < this.state.data.edges.length; j++) {
-        //check if there is a matching non-highlighted edge
-        if (
-          (this.state.data.edges[j].source == array[i].source &&
-            this.state.data.edges[j].target == array[i].target) ||
-          (this.state.data.edges[j].source == array[i].target &&
-            this.state.data.edges[j].target == array[i].source)
-        ) {
-          if (tree) this.state.data.edges[j].tree = true;
-          else this.state.data.edges[j].highlight = true;
-        }
-        this.draw();
-      }
-    }
-  }
 
   /**
    * When previous button is clicked: if it's at the start, display error message

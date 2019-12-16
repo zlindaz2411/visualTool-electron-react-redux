@@ -42,8 +42,8 @@ export function kruskals(nodes, edges) {
     for (let i = 0; i < edges.length; i++) {
       let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
-      if (arr.length == 0)  addStates(states, [], [],[], 2)
-      else  addStates(states, arr, t, [],2)
+      
+      addStates(states, arr, t, [],2)
 
       let u = edges[i].source;
       let v = edges[i].target;
@@ -115,8 +115,8 @@ export function prims(root, nodes, edges) {
 
       let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
-      if (arr.length == 0)   addStates(states, [], [], [],3)
-      else  addStates(states, arr, t, [],3)
+      
+      addStates(states, arr, t, [],3)
 
       let currentMinEdge = edgeQueue.dequeue();
 
@@ -208,8 +208,7 @@ export function boruvkas(nodes, edges) {
         let tedge = states[states.length - 1].tree.slice();
         let hnode = [] //a copy of highlighted
 
-        if(hedge.length == 0)  addStates(states, [], [], [],2)
-        else addStates(states, hedge, tedge, hnode,2)
+        addStates(states, hedge, tedge, hnode,2)
 
         previous = current;
         for(let v=0;v<nodes.length;v++){
