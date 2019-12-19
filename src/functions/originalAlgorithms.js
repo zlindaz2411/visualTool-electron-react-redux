@@ -148,7 +148,8 @@ export function kruskals(nodes, edges) {
     }
     current = num;
     if(current == previous) throw ErrMessage.MST_NOT_FOUND;
-}
+    }
+    console.log("boruvkas" + MST);
     return MST  
 }catch(error){
     return error.toString();
@@ -156,51 +157,65 @@ export function kruskals(nodes, edges) {
 }
 
   /**
-  * Boruvka Parallel algorithm
+  * Boruvka algorithm
   * @param {*} edges 
   * @param {*} nodes 
   */
- export function parallel(nodes,edges) {
+ export async function parallel(nodes,edges) {
     try{
-   let subset = new UnionFind(nodes);
-   let num = nodes.length;
-   // Initialize graph that'll contain the MST
-   let MST = new Set();
-   let cheapest = [];
-   let previous = 0;
-   let current = num;
-   while(num>1){
-       previous = current;
-       for(let v=0;v<nodes.length;v++){
-             cheapest[nodes[v].id]= -1;
-       }
-   for(let i =0;i<edges.length;i++){
-       let u = subset.find(edges[i].source);
-       let v = subset.find(edges[i].target);
-       if(u==v) continue; 
-       else{
-           if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
-           if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
-       }
-   }
-   for(let i =0;i<nodes.length;i++){
-       let e = cheapest[nodes[i].id];
-       if(e!=-1){
-           let u = subset.find(e.source);
-           let v = subset.find(e.target);
-           if(u==v) continue;
-           if(!subset.connected(u,v)){
-               MST.add(e);
-               subset.union(u,v);
-               num--;
-           }
-       }
-   }
-   current = num;
-   if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+        let subset = new UnionFind(nodes);
+        let num = nodes.length;
+        // Initialize graph that'll contain the MST
+        let MST = new Set();
+        let cheapest = [];
+        let previous = 0;
+        let current = num;
+        while(num>1){
+            previous = current;
+            for(let v=0;v<nodes.length;v++){
+                    cheapest[nodes[v].id]= -1;
+            }
+            for(let i =0;i<edges.length;i++){
+             //   findCheapest(edges[i], subset, cheapest);
+            }
+           
+        for(let i =0;i<nodes.length;i++){
+            let e = cheapest[nodes[i].id];
+            if(e!=-1){
+                let u = subset.find(e.source);
+                let v = subset.find(e.target);
+                if(u==v) continue;
+                if(!subset.connected(u,v)){
+                    MST.add(e);
+                    subset.union(u,v);
+                    num--;
+                }
+            }
+        }
+        current = num;
+        if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+        }
+        console.log(MST)
+        return MST  
+        }catch(error){
+        return error.toString();
+        }
 }
-   return MST  
-}catch(error){
-   return error.toString();
-}
-}
+// /**
+//  * Find cheapest edge of the vertex. 
+//  * @param {*} edge 
+//  * @param {*} subset 
+//  * @param {*} cheapest 
+//  */
+function findCheapest(edge, subset, cheapest){
+    return new Promise(resolve => {
+     let u = subset.find(edge.source);
+     let v = subset.find(edge.target);
+     if(u!=v) {
+         if(cheapest[u] == -1 || edge.weight < cheapest[u].weight) cheapest[u]=edge
+         if(cheapest[v] == -1 || edge.weight < cheapest[v].weight) cheapest[v]=edge
+     }
+     resolve(edge);
+     // console.log(cheapest)
+     })
+ }

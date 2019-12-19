@@ -9,7 +9,7 @@ import htmlToImage from "html-to-image";
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
-import { data, emptyGraph, resetEmptyGraph } from "../constants/defaultGraph";
+import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
 
 import {
   removeAll,
@@ -21,6 +21,7 @@ import { fetchGraphs, deleteGraph, addGraph, passGraph } from "../actions/draw";
 import {
   resetTree,
   resetHighlight,
+  resetNodes,
   resetRoot
 } from "../functions/graphAlgorithms";
 
@@ -41,6 +42,7 @@ class DrawPage extends Component {
   }
 
   componentDidMount() {
+    resetNodes(this.state.data.nodes);
     resetHighlight(this.state.graph.edges);
     resetTree(this.state.graph.edges);
     resetRoot(this.state.graph);

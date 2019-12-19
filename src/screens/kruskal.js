@@ -74,6 +74,9 @@ class KruskalPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
   /**
    * Draw graph in the algorithm page canvas
    */
