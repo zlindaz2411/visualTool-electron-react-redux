@@ -10,7 +10,7 @@ export default (state = INITIAL_STATE, action) => {
 
     switch(action.type){
         case ADD_GRAPH:
-            return {...state, arr: action.payload.graphs}
+            return {...state}
         case FETCH_GRAPHS:
             return {...state, arr: action.payload}
         case PASS_GRAPH:

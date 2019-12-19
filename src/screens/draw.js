@@ -42,7 +42,7 @@ class DrawPage extends Component {
   }
 
   componentDidMount() {
-    resetNodes(this.state.data.nodes);
+    resetNodes(this.state.graph.nodes);
     resetHighlight(this.state.graph.edges);
     resetTree(this.state.graph.edges);
     resetRoot(this.state.graph);
@@ -79,7 +79,8 @@ class DrawPage extends Component {
   handleClose() {
     this.setState({
       isDialogOpen: false,
-      isSaveDialogOpen: false
+      isSaveDialogOpen: false,
+      name:"",
     });
   }
 
@@ -171,6 +172,7 @@ class DrawPage extends Component {
   saveNewGraph(e) {
     e.preventDefault();
     let clone = Object.assign({}, this.state.graph);
+    if(clone._id) delete clone._id;
     if (!this.state.name) {
       confirmAlert({
         title: `Warning!`,
@@ -184,9 +186,6 @@ class DrawPage extends Component {
     } else {
       clone["name"] = this.state.name;
       this.convertToImg(clone);
-      this.setState({
-        name: ""
-      });
       this.handleClose();
     }
   }

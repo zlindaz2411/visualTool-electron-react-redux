@@ -149,7 +149,6 @@ export function kruskals(nodes, edges) {
     current = num;
     if(current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    console.log("boruvkas" + MST);
     return MST  
 }catch(error){
     return error.toString();

@@ -10,9 +10,8 @@ const { ipcRenderer } = electron;
  */
 export const addGraph = graph => dispatch => {
     ipcRenderer.send('addGraph', graph);
-    ipcRenderer.on('graph:added', (event, graphs, newGraph) => {
+    ipcRenderer.on('graph:added', (event, newGraph) => {
         var tempObj = {
-            graphs,
             newGraph,
         }
         dispatch({

@@ -21,6 +21,8 @@ import {
   updateGraph
 } from "../functions/graphAlgorithms";
 
+import FadeLoader from 'react-spinners/FadeLoader';
+
 import { Algorithm } from "../constants/algorithms";
 import {
   emptyGraphMessage,
@@ -40,6 +42,7 @@ class KruskalPage extends Component {
     this.sliderRef = React.createRef();
     this.state = {
       start: false,
+      loading: false,
       index: 0,
       timer:null,
       maxValue: 0,
@@ -175,6 +178,12 @@ class KruskalPage extends Component {
                   <div className="drawing"></div>
                 </div>
               </div>
+              {/* <FadeLoader
+          sizeUnit={"px"}
+          size={150}
+          color={COLORS[1]}
+          loading={this.state.loading}
+           /> */}
 
               <div className="column column_5_12">
                 <div id="pseudo_canvas" className="second_column">
