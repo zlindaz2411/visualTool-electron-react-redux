@@ -19,8 +19,7 @@ The application is an educational tool which allows user: to draw a graph (udire
 ## Prerequisite
 You must have the following software installed on your computer.
 
-* Node
-* Yarn (optional but recommended)
+* Node or Yarn 
 * Git command line tools
 
 ## How to run the app
