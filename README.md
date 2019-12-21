@@ -72,5 +72,4 @@ Once complete the system will output a 'dist' folder with your packaged app.
 
 Please note that you must have installed project dependencies and run a build before attempting to package your app.
 
-#### :warning: 
 
