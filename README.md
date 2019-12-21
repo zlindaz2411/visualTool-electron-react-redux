@@ -1,7 +1,5 @@
 # VisualMinSpanningTree
 
-* Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
-
 A desktop application using Electron, React and Redux. 
 The application is an educational tool which allows user: to draw a graph (udirected weighted graph), to visualize the minimum spanning tree algorithms (Prim, Boruvka, Kruskal, Parallel) applied to the given graph and to compare the performance of different algorithms.
 
@@ -25,6 +23,7 @@ You must have the following software installed on your computer.
 * Yarn (optional but recommended)
 * Git command line tools
 
+## How to run the app
 ### Download & Install Dependencies on your machine 
 1) Clone the repo
 ```
