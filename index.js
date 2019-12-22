@@ -27,8 +27,8 @@ app.on('ready', () => {
 });
 
 // Database (NeDB)
-
-let db_graphs = new Datastore({ filename: './graphs/graphs.db', timestampData: true });
+var userData = app.getAppPath('userData');
+let db_graphs = new Datastore({ filename: userData+'/db/graphs.db', timestampData: true });
 db_graphs.loadDatabase();
 
 let data= {
@@ -62,6 +62,7 @@ let data= {
     ],
 };
 
+db_graphs.insert(data);
 
 ipcMain.on('addGraph', (event, graph) => {
     db_graphs.insert(graph, function (err, newGraph) {

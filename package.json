@@ -27,7 +27,7 @@
     "webpack:watch": "webpack --config webpack.js --watch",
     "electron:dev": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -mw",
+    "dist": "electron-builder",
     "test": "mocha --require @babel/register ./tests/**/*.js",
     "coverage": "nyc --reporter html --reporter text npm test",
     "postinstall": "electron-builder install-app-deps"
@@ -38,7 +38,7 @@
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "1.0.0",
     "electron": "2.0.8",
-    "electron-builder": "20.28.3",
+    "electron-builder": "^21.2.0",
     "extract-loader": "2.0.1",
     "file-loader": "2.0.0",
     "node-sass": "^4.13.0",

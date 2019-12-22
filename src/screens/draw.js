@@ -24,6 +24,7 @@ import {
   resetNodes,
   resetRoot
 } from "../functions/graphAlgorithms";
+import { graphNotSelectedMessage } from "../constants/errorMessage";
 
 class DrawPage extends Component {
   constructor(props) {
@@ -97,6 +98,9 @@ class DrawPage extends Component {
    * @param {*} graph
    */
   handleLoadGraph(graph) {
+    if (!graph) {
+      graphNotSelectedMessage();
+    } else {
     this.setState(
       {
         graph: graph,
@@ -107,6 +111,7 @@ class DrawPage extends Component {
         this.handleClose();
       }
     );
+    }
   }
 
   /**
@@ -115,15 +120,7 @@ class DrawPage extends Component {
    */
   handleDeleteGraph(graph) {
     if (!graph) {
-      confirmAlert({
-        title: `Warning!`,
-        message: `You have not selected a graph`,
-        buttons: [
-          {
-            label: "Cancel"
-          }
-        ]
-      });
+      graphNotSelectedMessage();
     } else {
       confirmAlert({
         title: `Warning!`,

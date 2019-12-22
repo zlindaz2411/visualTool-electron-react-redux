@@ -97,3 +97,18 @@ export function noRootSelectedMessage(){
     ]
   });
 }
+
+/**
+ * When the graph is not selected and the user wants to do somthing with the graph, display message
+ */
+export function graphNotSelectedMessage(){
+  confirmAlert({
+    title: `Warning!`,
+    message: `You have not selected a graph`,
+    buttons: [
+      {
+        label: "Cancel"
+      }
+    ]
+  });
+}
