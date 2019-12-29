@@ -222,6 +222,15 @@ class DrawPage extends Component {
       });
     } else {
       this.props.passGraph(this.state.graph);
+      confirmAlert({
+        title: `Success!`,
+        message: `Graph submitted`,
+        buttons: [
+          {
+            label: "Cancel"
+          }
+        ]
+      });
     }
   }
 
