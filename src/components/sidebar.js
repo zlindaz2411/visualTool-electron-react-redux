@@ -68,7 +68,7 @@ class Sidebar extends Component {
                         <br></br>
                         <li>   
                             <NavLink  className = "inactive" activeClassName="active" to="/about" alt="AboutPage" replace>
-                             <h5>About</h5>
+                             <h5>Instruction</h5>
                             </NavLink> 
                         </li>
 

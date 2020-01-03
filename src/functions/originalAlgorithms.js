@@ -156,7 +156,7 @@ export function kruskals(nodes, edges) {
 }
 
   /**
-  * Boruvka algorithm
+  * Boruvka Parallel algorithm
   * @param {*} edges 
   * @param {*} nodes 
   */
@@ -174,9 +174,12 @@ export function kruskals(nodes, edges) {
             for(let v=0;v<nodes.length;v++){
                     cheapest[nodes[v].id]= -1;
             }
-            for(let i =0;i<edges.length;i++){
-             //   findCheapest(edges[i], subset, cheapest);
-            }
+        
+        for(let i =0;i<edges.length;i++){
+            await findCheapest(edges[i], subset, cheapest)
+        }
+        let promises = edges.map((edge) =>  {findCheapest(edge, subset, cheapest)})
+        let result = await Promise.all(promises)
            
         for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
@@ -192,29 +195,29 @@ export function kruskals(nodes, edges) {
             }
         }
         current = num;
-        if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+        if(current == previous) throw "MST not found";
         }
-        console.log(MST)
         return MST  
         }catch(error){
         return error.toString();
         }
 }
-// /**
-//  * Find cheapest edge of the vertex. 
-//  * @param {*} edge 
-//  * @param {*} subset 
-//  * @param {*} cheapest 
-//  */
+/**
+ * Find cheapest edge of the vertex. 
+ * @param {*} edge 
+ * @param {*} subset 
+ * @param {*} cheapest 
+ */
 function findCheapest(edge, subset, cheapest){
     return new Promise(resolve => {
-     let u = subset.find(edge.source);
-     let v = subset.find(edge.target);
-     if(u!=v) {
-         if(cheapest[u] == -1 || edge.weight < cheapest[u].weight) cheapest[u]=edge
-         if(cheapest[v] == -1 || edge.weight < cheapest[v].weight) cheapest[v]=edge
-     }
-     resolve(edge);
-     // console.log(cheapest)
-     })
- }
+    setTimeout(() => {
+           let u = subset.find(edge.source);
+           let v = subset.find(edge.target);
+           if(u!=v) {
+               if(cheapest[u] == -1 || edge.weight < cheapest[u].weight) cheapest[u]=edge
+               if(cheapest[v] == -1 || edge.weight < cheapest[v].weight) cheapest[v]=edge
+           }
+           resolve(edge);
+       },);    
+   })
+}
