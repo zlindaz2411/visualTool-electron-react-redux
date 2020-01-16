@@ -10,7 +10,6 @@ import PrimPage from './screens/prim';
 import BoruvkaPage from './screens/boruvka';
 import ParallelPage from './screens/parallel';
 import HomePage from './screens/home';
-import AboutPage from './screens/about';
 import PerformancePage from './screens/performance';
 import DrawPage from './screens/draw';
 
@@ -41,11 +40,6 @@ class App extends Component {
                              <ParallelPage{...props} />
                         </MainLayout>
                     )}/>
-                    <Route path="/about" render={props => (
-                        <MainLayout>
-                             <AboutPage {...props} />
-                        </MainLayout>
-                    )} />
                      <Route path="/draw" render={props => (
                         <MainLayout>
                              <DrawPage {...props} />

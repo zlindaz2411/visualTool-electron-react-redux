@@ -69,7 +69,6 @@ describe('calculate time', function() {
     const funcRes = calculateTime(function(){for(let i=0;i<10;i++){
         //do nothing
     }});
-    console.log(funcRes);
     it('should return a minimum spanning tree', function() {
       assert.equal(Math.round(result), Math.round(funcRes));
     });

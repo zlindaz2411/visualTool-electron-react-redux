@@ -1106,18 +1106,6 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .about_wrap .title {
     padding-top: 7.5rem;
     text-align: center; }
-  .about_wrap .txt_area {
-    background-color: #FCFCFF;
-    padding-top: 3rem; }
-
-.about_wrap {
-  position: fixed;
-  margin-left: 15rem;
-  width: 85%;
-  padding: 0; }
-  .about_wrap .title {
-    padding-top: 7.5rem;
-    text-align: center; }
   .about_wrap .sub_text {
     padding-top: 1rem;
     text-align: center; }

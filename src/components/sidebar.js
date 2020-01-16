@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router";
 import {test} from '../functions/algorithms';
+import pdf from '../assets/instruction.pdf';
 
 
 class Sidebar extends Component {
@@ -67,9 +68,7 @@ class Sidebar extends Component {
                         <br></br>
                         <br></br>
                         <li>   
-                            <NavLink  className = "inactive" activeClassName="active" to="/about" alt="AboutPage" replace>
-                             <h5>Instruction</h5>
-                            </NavLink> 
+                             <a href={pdf} download><h5>Instruction</h5></a>
                         </li>
 
                     </ul>
