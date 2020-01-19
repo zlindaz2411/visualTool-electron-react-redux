@@ -242,10 +242,6 @@ class ParallelPage extends Component {
         if 
           (this.state.data.nodes[j].id == array[i]) {
           this.state.data.nodes[j].highlight = true;
-          if(this.state.states[this.state.index].status == 5){
-            console.log(this.state.states[this.state.index].highlightedNodes);
-            console.log(this.state.data.nodes[j].highlight)
-          }
         }    
       }
     }

@@ -56,9 +56,26 @@ describe("Get pseudocode based on different input", function() {
     assert.deepEqual(boruvka, getPseudocode(Algorithm.BORUVKA));
   });
 
-  // it('should return the pseudocode of kruskal algorithm', function() {
-  //     assert.deepEqual(kruskal,getPseudocode(Algorithm.KRUSKAL));
-  //   });
+
+  const parallel = [
+    "Initialize the set T = empty set",
+    "Initialize the F = map of one-vertex trees to its component",
+    "while(T is not MST)",
+    "\xa0 \xa0foreach (component in F)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component",
+    "\xa0 \xa0(Concurrent Thread Execution",
+    "\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)",
+    "\xa0 \xa0foreach (smallest edge of each component)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T",
+    "\xa0 \xa0 \xa0 \xa0 \xa0else do nothing",
+    "return T"
+  ];
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(parallel, getPseudocode(Algorithm.PARALLEL));
+  });
+
 
   it("should return an empty with wrong input", function() {
     assert.deepEqual([], getPseudocode("error"));
@@ -128,6 +145,44 @@ describe("Set up pseucodoe map based on different input", function() {
   );
   boruvkaMap.set("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing", false);
   boruvkaMap.set("return T", false);
+
+  it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka", function() {
+    assert.deepEqual(boruvkaMap, setUpPseudocodeMap(Algorithm.BORUVKA, index));
+  });
+
+
+  it("should return an empty with wrong input", function() {
+    assert.deepEqual(new Map(), setUpPseudocodeMap("error", index));
+  });
+
+    
+  
+  const parallelMap = new Map();
+  parallelMap.set("Initialize the set T = empty set", true);
+  parallelMap.set(
+    "Initialize the F = map of one-vertex trees to its component",
+    false
+  );
+  parallelMap.set("while(T is not MST)", false);
+  parallelMap.set("\xa0 \xa0foreach (component in F)", false);
+  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component", false);
+  parallelMap.set(
+    "\xa0 \xa0(Concurrent Thread Execution",
+    false
+  );
+  parallelMap.set(
+   "\xa0 \xa0foreach (smallest edge of each component)",
+    false
+  );
+  parallelMap.set(
+    "\xa0 \xa0foreach (smallest edge of each component)",
+    false
+  );
+  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)", false);
+  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T", false);
+  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing", false);
+  
+  parallelMap.set("return T", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka", function() {
     assert.deepEqual(boruvkaMap, setUpPseudocodeMap(Algorithm.BORUVKA, index));
