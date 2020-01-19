@@ -344,25 +344,29 @@ export function boruvkas(nodes, edges) {
             }
             addStates(states,hedge, tedge, hnode,4)
           }
-          addStates(states, hedge, tedge, nodes ,5);
+          hnode = [];
+          nodes.map(x=> hnode.push(x.id));
+          addStates(states, hedge, tedge, hnode ,5);
+          let temp = new Set();
           for(let i =0;i<components.length;i++){
               
               for (let it = components[i].values(), val= null; val=it.next().value;) {
                   let e = cheapest[val.id];  
                   if(e!=-1){
-                  hedge.push(e);
+                  temp.add(e);
                   }
                   }
           }
-          addStates(states, hedge, tedge, nodes, 6);
-          let copy = hedge.slice();
-          hedge = [];
-          hnode = [];
+          hedge = Array.from(temp);
+          addStates(states, hedge, tedge, hnode, 6);
+          let copy = hedge.slice();    
           for(let i= 0;i<copy.length;i++){
               let e = copy[i];  
-              addStates(states,hedge, tedge, hnode, 7)
-              if(e!=-1){
+              hedge = [];
+              hnode = [];
+              if(e!=-1){  
                     hedge.push(e);
+                    addStates(states,hedge, tedge, hnode, 7)
                       let u = subset.find(e.source);
                       let v = subset.find(e.target);
                       if(u==v) continue;
@@ -380,7 +384,7 @@ export function boruvkas(nodes, edges) {
           }
         }
       current = num;
-      if (current == previous) throw "Not found";
+      if (current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
     addStates(states,[], states[states.length - 1].tree, [],11)
 
