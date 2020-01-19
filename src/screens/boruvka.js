@@ -240,7 +240,7 @@ class BoruvkaPage extends Component {
       for (let j = 0; j < this.state.data.nodes.length; j++) {
         //check if there is a matching non-highlighted edge
         if 
-          (this.state.data.nodes[j].id == array[i]) {
+          (this.state.data.nodes[j].id == array[i].id) {
           this.state.data.nodes[j].highlight = true;
         }    
       }

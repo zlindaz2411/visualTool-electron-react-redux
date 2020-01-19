@@ -271,89 +271,121 @@ export function boruvkas(nodes, edges) {
     }
     addStates(states,[], states[states.length - 1].tree, [],9)
 
+  
     return states;
   } catch (error) {
     return error.toString();
   }
 }
 
-// export function test() {
-//   const Parallel = require('paralleljs');
-
-//   var p = new Parallel([0, 1, 2, 3, 4, 5, 6]),
-//                                 log = function () { console.log(arguments); };
-//                                 // One gotcha: anonymous functions cannot be serialzed
-//                                 // If you want to do recursion, make sure the function
-//                                 // is named appropriately
-//                                 function fib(n) {
-//                                     return n < 2 ? 1 : fib(n - 1) + fib(n - 2);
-//                                 };
-//                                 p.map(fib).then(log);
-// }
-
   /**
   * Boruvka Parallel algorithm
   * @param {*} edges 
   * @param {*} nodes 
   */
- export async function parallel(nodes,edges) {
-  try{
-      let subset = new UnionFind(nodes);
-      let num = nodes.length;
-      // Initialize graph that'll contain the MST
-      let MST = new Set();
-      let cheapest = [];
-      let previous = 0;
-      let current = num;
+ export function parallel(nodes, edges) {
+  try {
+    let states = [
+      {
+        highlighted: [],
+        tree: [],
+        highlightedNodes: [],
+        status: 0
+      }
+    ];
+
+    addStates(states, [], [], [],1)
+    let subset = new UnionFind(nodes);
+    let num = nodes.length;
+    // Initialize graph that'll contain the MST
+    let MST = new Set();
+    let previous = 0;
+    let current = num;
+    let cheapest = [];
       while(num>1){
-          previous = current;
-          for(let v=0;v<nodes.length;v++){
-                  cheapest[nodes[v].id]= -1;
+        let hedge = [];//a copy of highlighted
+        let tedge = states[states.length - 1].tree.slice();
+        let hnode = [] //a copy of highlighted
+
+        addStates(states, hedge, tedge, hnode,2)
+
+        previous = current;
+        for(let v=0;v<nodes.length;v++){
+              cheapest[nodes[v].id]= -1;
+        }
+        for(let i =0;i<edges.length;i++){
+            let u = subset.find(edges[i].source);
+            let v = subset.find(edges[i].target);
+            if(u==v) continue; 
+            else{
+                if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
+                if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
+            }
+        }
+        //Get all the componenets
+        let parent = subset.parent;
+        let set = new Set();
+        let map = new Map();
+        for(let i =0;i<nodes.length;i++){
+            map.set(parent[nodes[i].id], new Set());
+        }
+        for(let i =0;i<nodes.length;i++){         
+            map.set(parent[nodes[i].id], map.get(parent[nodes[i].id]).add(nodes[i]));
+            set.add(map.get(parent[nodes[i].id]));
+        }
+        let components = Array.from(set)
+        //for each component find the smallest edge
+        for(let i =0;i<components.length;i++){ 
+          hnode = [];
+          hedge = [];
+          addStates(states,hedge, tedge, hnode,3)
+            for (let it = components[i].values(), val= null; val=it.next().value; ) {
+               hnode.push(val.id);
+            }
+            addStates(states,hedge, tedge, hnode,4)
           }
-      
-      for(let i =0;i<edges.length;i++){
-          await findCheapest(edges[i], subset, cheapest)
-      }
-      let promises = edges.map((edge) =>  {findCheapest(edge, subset, cheapest)})
-      let result = await Promise.all(promises)
-         
-      for(let i =0;i<nodes.length;i++){
-          let e = cheapest[nodes[i].id];
-          if(e!=-1){
-              let u = subset.find(e.source);
-              let v = subset.find(e.target);
-              if(u==v) continue;
-              if(!subset.connected(u,v)){
-                  MST.add(e);
-                  subset.union(u,v);
-                  num--;
-              }
+          addStates(states, hedge, tedge, nodes ,5);
+          for(let i =0;i<components.length;i++){
+              
+              for (let it = components[i].values(), val= null; val=it.next().value;) {
+                  let e = cheapest[val.id];  
+                  if(e!=-1){
+                  hedge.push(e);
+                  }
+                  }
           }
-      }
+          addStates(states, hedge, tedge, nodes, 6);
+          let copy = hedge.slice();
+          hedge = [];
+          hnode = [];
+          for(let i= 0;i<copy.length;i++){
+              let e = copy[i];  
+              addStates(states,hedge, tedge, hnode, 7)
+              if(e!=-1){
+                    hedge.push(e);
+                      let u = subset.find(e.source);
+                      let v = subset.find(e.target);
+                      if(u==v) continue;
+                      if(!subset.connected(u,v)){
+                      addStates(states,hedge, tedge, hnode,8)
+                          MST.add(e);
+                          subset.union(u,v);
+                          tedge.push(e);
+                          addStates(states,hedge, tedge, hnode,9)
+                          num--;
+                      }else{
+                      hedge.pop();
+                      addStates(states,hedge, tedge, hnode,10)
+                      } 
+          }
+        }
       current = num;
-      if(current == previous) throw "MST not found";
-      }
-      return MST  
-      }catch(error){
-      return error.toString();
-      }
-}
-/**
-* Find cheapest edge of the vertex. 
-* @param {*} edge 
-* @param {*} subset 
-* @param {*} cheapest 
-*/
-function findCheapest(edge, subset, cheapest){
-  return new Promise(resolve => {
-  setTimeout(() => {
-         let u = subset.find(edge.source);
-         let v = subset.find(edge.target);
-         if(u!=v) {
-             if(cheapest[u] == -1 || edge.weight < cheapest[u].weight) cheapest[u]=edge
-             if(cheapest[v] == -1 || edge.weight < cheapest[v].weight) cheapest[v]=edge
-         }
-         resolve(edge);
-     },);    
- })
+      if (current == previous) throw "Not found";
+    }
+    addStates(states,[], states[states.length - 1].tree, [],11)
+
+    return states;
+  } catch (error) {
+    return error.toString();
+  }
 }

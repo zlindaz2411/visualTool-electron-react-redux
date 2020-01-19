@@ -13,7 +13,7 @@ import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
 
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
 
-import { boruvkas } from "../functions/algorithms";
+import { parallel } from "../functions/algorithms";
 import { resetTree, resetHighlight, resetRoot, resetNodes, updateGraph} from "../functions/graphAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import { emptyGraphMessage, startOfAlgorithmMessage, endOfAlgorithmMessage, algorithmErrorMessage, ErrMessage} from "../constants/errorMessage";
@@ -76,7 +76,7 @@ class ParallelPage extends Component {
     if (Object.keys(this.props.latestGraph).length == 0) {
       emptyGraphMessage();
     } else {
-      const res = boruvkas(
+      const res = parallel(
         this.state.data.nodes,
         this.state.data.edges
       );
@@ -240,8 +240,12 @@ class ParallelPage extends Component {
       for (let j = 0; j < this.state.data.nodes.length; j++) {
         //check if there is a matching non-highlighted edge
         if 
-          (this.state.data.nodes[j].id == array[i]) {
+          (this.state.data.nodes[j].id == array[i].id) {
           this.state.data.nodes[j].highlight = true;
+          if(this.state.states[this.state.index].status == 5){
+            console.log(this.state.states[this.state.index].highlightedNodes);
+            console.log(this.state.data.nodes[j].highlight)
+          }
         }    
       }
     }
@@ -318,6 +322,7 @@ next() {
   updateGraph(this.state.states[this.state.index].highlighted,  this.state.data.edges,false);
   this.updateNodes(this.state.states[this.state.index].highlightedNodes);
   this.draw();
+
 }
 }
 

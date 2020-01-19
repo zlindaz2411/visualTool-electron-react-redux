@@ -44,8 +44,20 @@ export function getPseudocode(name) {
         return boruvka;
       case "Boruvka Parallel": // Parallel Boruvska
         let boruvkaParallel = [];
-        boruvkaParallel.push("Initialize the set V = vertices");
         boruvkaParallel.push("Initialize the set T = empty set");
+        boruvkaParallel.push("Initialize the F = map of one-vertex trees to its component");
+        boruvkaParallel.push("while(T is not MST)");
+        boruvkaParallel.push(
+          "\xa0 \xa0foreach (component in F)"
+        );
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component");
+        boruvkaParallel.push("\xa0 \xa0(Concurrent Thread Execution");
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)");
+        boruvkaParallel.push("\xa0 \xa0foreach (smallest edge of each component)");
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)");
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T");
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
+        boruvkaParallel.push("return T");
 
         return boruvkaParallel;
       default:
