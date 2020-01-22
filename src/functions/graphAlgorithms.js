@@ -38,6 +38,7 @@
  * @param {*} tree 
  */
 export function updateGraph(array, edges, tree) {
+  if(array){
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < edges.length; j++) {
         //check if there is a matching non-highlighted edge
@@ -52,6 +53,7 @@ export function updateGraph(array, edges, tree) {
         }
       }
     }
+  }
   }
   
 

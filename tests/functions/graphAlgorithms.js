@@ -3,7 +3,8 @@ import {
   resetNodes,
   resetRoot,
   resetTree,
-  updateGraph
+  updateGraph,
+  updateNodes
 } from "../../src/functions/graphAlgorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
 
@@ -136,3 +137,27 @@ describe("Update graph:update which edge needs to be highlighted or is a tree", 
         assert.deepEqual(resultE, edgesE);
       });
   });
+
+
+describe("Update matching nodes to be highlighted", function() {
+  const array = [ 1, 2 ];
+  const nodes = [
+    { id: 1, x: 20, y: 200, highlight: false },
+    { id: 2, x: 80, y: 100, highlight: false },
+    { id: 3, x: 200, y: 100, highlight: false },
+    { id: 4, x: 320, y: 100, highlight: false },
+  ];
+  const result = [
+    { id: 1, x: 20, y: 200, highlight: true },
+    { id: 2, x: 80, y: 100, highlight: true },
+    { id: 3, x: 200, y: 100, highlight: false },
+    { id: 4, x: 320, y: 100, highlight: false },
+    ];
+
+  updateNodes(array, nodes, true)
+
+  it("should set the matching nodes attribute to be true", function() {
+    assert.deepEqual(nodes, result);
+  });
+});
+  
