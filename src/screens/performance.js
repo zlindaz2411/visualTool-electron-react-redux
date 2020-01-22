@@ -1,4 +1,4 @@
-import React, { Component, Fragment, formSubmitEvent } from "react";
+import React, { Component} from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
@@ -7,7 +7,7 @@ import { Line } from "react-chartjs-2";
 import { comparePerformance } from "../functions/performance";
 
 import { Algorithm } from "../constants/algorithms";
-import { emptyGraph} from "../constants/defaultGraph";
+import { data} from "../constants/defaultGraph";
 import { emptyGraphMessage } from "../constants/errorMessage";
 
 
@@ -23,12 +23,12 @@ class PerformancePage extends Component {
         Algorithm.PARALLEL
       ],
       data:{},
-      graph: Object.keys(this.props.latestGraph).length ==0 ? emptyGraph :  this.props.latestGraph,
+      graph: Object.keys(this.props.latestGraph).length ==0 ? data :  this.props.latestGraph,
     };
   }
 
   componentDidMount() {
-    if(Object.keys(this.props.latestGraph).length == 0){
+    if(Object.keys(this.state.data).length == 0){
       emptyGraphMessage();
     }
   }
@@ -50,7 +50,7 @@ class PerformancePage extends Component {
    */
   handleFormSubmit(e) {
     e.preventDefault();
-    if(Object.keys(this.props.latestGraph).length == 0){
+    if(Object.keys(this.state.data).length == 0){
       emptyGraphMessage();
     }
     else{
