@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
+import {Algorithm} from"../constants/algorithms";
 
 
 const radius = 10;
@@ -73,8 +74,8 @@ export function createBlankCanvas(empty, draw) {
  * @param {*} draw
  */
 export function createSVG(data, draw) {
-  const drawing = draw == "prim" ? ".drawingDialog" : ".drawing";
-  const canvas = draw == "prim" ? ".canvasDialog" : ".canvas";
+  const drawing = draw == Algorithm.PRIM ? ".drawingDialog" : ".drawing";
+  const canvas = draw == Algorithm.PRIM ? ".canvasDialog" : ".canvas";
 
   let id = data.nodes.length + 1;
 
@@ -286,7 +287,7 @@ function createNodes(svg, data, draw) {
       if (draw == "draw") handleDeleteNode(d, data, draw);
     })
     .on("click", function(d) {
-      if (draw == "prim") handleSelectRoot(d, data, draw);
+      if (draw == Algorithm.PRIM) handleSelectRoot(d, data, draw);
     })
     .call(
       d3

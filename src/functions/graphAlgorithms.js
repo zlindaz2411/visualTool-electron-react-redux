@@ -53,5 +53,25 @@ export function updateGraph(array, edges, tree) {
       }
     }
   }
+  
 
+
+    /**
+   * Update graph: update which edge needs to be highlighted
+   * @param {*} array 
+   * @param {*} tree 
+   */
+ export function updateNodes(array, nodes) {
+   if(array){
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < nodes.length; j++) {
+        //check if there is a matching non-highlighted edge
+        if 
+          (nodes[j].id == array[i]) {
+          nodes[j].highlight = true;
+        }    
+      }
+      }
+    }
+  }
 

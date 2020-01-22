@@ -981,20 +981,14 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   position: fixed;
   margin-left: 15rem;
   width: 85%;
-  padding: 0; }
+  padding: 0;
+  /* Mouse-over effects */ }
   .algorithm_wrap .title {
     padding-top: 7.5rem;
     text-align: center; }
   .algorithm_wrap .grid {
     padding-top: 5rem;
     max-width: 85%; }
-  .algorithm_wrap .canvasDialog {
-    margin-top: 2rem;
-    overflow: auto;
-    height: 35rem;
-    background: #F9F9F9; }
-    .algorithm_wrap .canvasDialog .drawingDialog {
-      background: #F9F9F9; }
   .algorithm_wrap .canvas {
     margin-right: 2rem;
     border-radius: 2rem;
@@ -1020,8 +1014,20 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       clear: both;
       float: left; }
   .algorithm_wrap .player {
-    display: inline-block;
     /* Mouse-over effects */ }
+    .algorithm_wrap .player .speedDiv {
+      position: relative;
+      top: -8px;
+      display: inline-block;
+      margin-right: 2rem;
+      margin-bottom: 2rem; }
+      .algorithm_wrap .player .speedDiv label {
+        color: #50525E;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0;
+        margin-left: 1rem;
+        margin-right: 1rem; }
     .algorithm_wrap .player .player-controls {
       background-color: #FCFCFF;
       border-color: #FCFCFF;
@@ -1074,6 +1080,50 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       border-radius: 50%;
       background: #84C262;
       cursor: pointer; }
+  .algorithm_wrap .speed {
+    position: relative;
+    margin-bottom: 2rem;
+    -webkit-appearance: none;
+    width: 8rem;
+    height: 10px;
+    position: relative;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border-color: #FCFCFF; }
+  .algorithm_wrap .speed::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #84C262;
+    cursor: pointer; }
+  .algorithm_wrap .speed:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+    border-color: #FCFCFF; }
+  .algorithm_wrap .speed::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #84C262;
+    cursor: pointer; }
+
+h6 {
+  padding: 0;
+  margin: 0; }
+
+.canvasDialog {
+  margin-top: 2rem;
+  overflow: auto;
+  height: 35rem;
+  background: #F9F9F9; }
+  .canvasDialog .drawingDialog {
+    background: #F9F9F9; }
 
 .home_wrap {
   position: fixed;

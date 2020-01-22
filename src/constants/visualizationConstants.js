@@ -1,7 +1,7 @@
 /**
- * Speed constants = 1 second
+ * Speed constants 0.5, 1, 2 seconds.
  */
-export const SPEED = 1000;
+export const SPEEDS = [2000, 1000, 500];
 
 /**
  * Colors for the pseucodode

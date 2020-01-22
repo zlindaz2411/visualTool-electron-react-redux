@@ -12,17 +12,6 @@
         padding-top: 5rem;
         max-width: 100% - 15%;
     }
-
-    .canvasDialog{
-        margin-top:2rem;
-        overflow:auto;
-        height:35rem;
-        background: $whiteSmoke;
-        
-    .drawingDialog{
-        background: $whiteSmoke;
-    }
-    }
     
     .canvas{
         margin-right:2rem;
@@ -56,9 +45,24 @@
     }
 
       .player{
-        // margin-left:1.5rem;
-        display: inline-block;
-     //   justify-content: space-between;
+
+     .speedDiv{
+      position: relative;
+      top: -8px;
+      display:inline-block; 
+      margin-right: 2rem;
+      margin-bottom:2rem;
+
+      label{
+        color: $txtCol;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding:0;
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+
+     }
 
      .player-controls{
         background-color: $background;
@@ -126,4 +130,51 @@
 
     }
 
+    .speed {
+      position: relative;
+      margin-bottom: 2rem;
+      -webkit-appearance: none;
+      width: 8rem;
+      height: 10px;
+      position: relative;
+      border-radius: 5px;   
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+      border-color: $background;
+    }
+    
+    .speed::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%; 
+      background: $logoGreen;
+      cursor: pointer;
+    }
+
+            /* Mouse-over effects */
+  .speed:hover {
+      opacity: 1; /* Fully shown on mouse-over */
+      border-color: $background;
+  }
+    
+    .speed::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: $logoGreen;
+      cursor: pointer;
+    }
+
+
+
+}
+
+h6{
+  padding: 0;
+  margin: 0;
 }
