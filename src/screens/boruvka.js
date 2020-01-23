@@ -8,6 +8,9 @@ import { boruvkas } from "../functions/algorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from '../screens/algorithm';
 
+/**
+ * Boruvka page which uses AlgorithmPage and pass the states produced by the boruvka function
+ */
 class BoruvkaPage extends Component {
   constructor(props) {
     super(props);

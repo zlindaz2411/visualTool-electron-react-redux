@@ -2,10 +2,11 @@ import React, { Component, Fragment } from 'react';
 import SpanTree from './../assets/images/graph.png';
 
 
+/**
+ * The welcome page
+ */
 class HomePage extends Component {
 
-    componentDidMount() {
-    }
 
     render(){
         return(

@@ -26,6 +26,9 @@ import {
 } from "../functions/graphAlgorithms";
 import { graphNotSelectedMessage } from "../constants/errorMessage";
 
+/**
+ * Draw page that handles the drawing, load and save graph functionalities.
+ */
 class DrawPage extends Component {
   constructor(props) {
     super(props);

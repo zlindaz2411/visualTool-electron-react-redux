@@ -4,7 +4,9 @@ import { withRouter } from "react-router";
 import {test} from '../functions/algorithms';
 import pdf from '../assets/instruction.pdf';
 
-
+/**
+ * Sidebar component with the main menu of the system.
+ */
 class Sidebar extends Component {
 
     render() {

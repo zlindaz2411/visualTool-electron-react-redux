@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+/**
+ * Pop up window component
+ */
 class Dialog extends Component{
 
         /**

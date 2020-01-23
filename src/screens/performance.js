@@ -10,7 +10,10 @@ import { Algorithm } from "../constants/algorithms";
 import { data} from "../constants/defaultGraph";
 import { emptyGraphMessage } from "../constants/errorMessage";
 
-
+/**
+ * Performance page where the function of performance comparison resides. 
+ * A graph will be displayed.
+ */
 class PerformancePage extends Component {
   constructor(props) {
     super(props);

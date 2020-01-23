@@ -8,6 +8,9 @@ import { parallel } from "../functions/algorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 
+/**
+ * Parallel page which uses AlgorithmPage and pass the states produced by the parallel function
+ */
 class ParallelPage extends Component {
   constructor(props) {
     super(props);

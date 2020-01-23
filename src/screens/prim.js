@@ -13,6 +13,10 @@ import { prims } from "../functions/algorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 
+/**
+ * Prim page which uses AlgorithmPage and pass the states produced by the prim function.
+ * When the prim page is opened, a dialog asking for the selection of root node will be displayed.
+ */
 class PrimPage extends Component {
   constructor(props) {
     super(props);

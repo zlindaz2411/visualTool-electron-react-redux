@@ -31,6 +31,10 @@ import {
 
 import { SPEEDS,COLORS } from "../constants/visualizationConstants";
 
+/**
+ * The main algorithm component that has the pseudocode, graph and handles the logic of visualization.
+ * It can be used by any other different algorithm pages, by passing the corresponding pageName, algorithm function states.
+ */
 class AlgorithmPage extends Component {
   constructor(props) {
     super(props);
@@ -329,7 +333,7 @@ changeSpeed(){
                 
               </div>
             ) : (
-              <button onClick={() => this.handleStart()}>Start</button>
+              <button onClick={() => this.handleStart()}>Visualize</button>
             )}
           </center>
         </div>
