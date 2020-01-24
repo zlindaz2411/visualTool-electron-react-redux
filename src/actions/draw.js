@@ -1,4 +1,4 @@
-import { ADD_GRAPH, FETCH_GRAPHS, SAVE_GRAPH, DELETE_GRAPH, PASS_GRAPH} from './types';
+import { ADD_GRAPH, FETCH_GRAPHS, PASS_GRAPH} from './types';
 
 import electron from 'electron';
 const { ipcRenderer } = electron;
