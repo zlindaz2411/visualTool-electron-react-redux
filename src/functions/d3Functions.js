@@ -77,8 +77,8 @@ export function createSVG(data, draw) {
   const drawing = draw == Algorithm.PRIM ? ".drawingDialog" : ".drawing";
   const canvas = draw == Algorithm.PRIM ? ".canvasDialog" : ".canvas";
 
-  let id = data.nodes.length + 1;
-
+  let id = data.nodes.length!=0 ? data.nodes[data.nodes.length-1].id+1 : 0;
+  
   const svg = d3
     .select(drawing)
     .append("svg")

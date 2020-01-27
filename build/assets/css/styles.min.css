@@ -1052,7 +1052,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       top: -8px;
       margin-bottom: 2rem;
       -webkit-appearance: none;
-      width: 25rem;
+      width: 30rem;
       height: 10px;
       position: relative;
       border-radius: 5px;
