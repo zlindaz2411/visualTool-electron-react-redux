@@ -63,7 +63,6 @@ export function kruskals(nodes, edges) {
         addStates(states, arr, t, [],6)
       }
     }
-    console.log(MST);
 
     addStates(states, states[states.length - 1].highlighted, states[states.length - 1].tree, [],7)
 

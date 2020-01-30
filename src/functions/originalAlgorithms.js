@@ -113,7 +113,7 @@ export function kruskals(nodes, edges) {
     let current = num;
     while(num>1){
         previous = current;
-        for(let v=0;v<num;v++){
+        for(let v=0;v<nodes.length;v++){
               cheapest[nodes[v].id]= -1;
         }
         for(let i =0;i<edges.length;i++){
@@ -125,7 +125,7 @@ export function kruskals(nodes, edges) {
                 if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
             }
         }
-        for(let i =0;i<num;i++){
+        for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
             if(e!=-1){
                 let u = subset.find(e.source);
@@ -163,13 +163,13 @@ export function kruskals(nodes, edges) {
         let current = num;
         while(num>1){
             previous = current;
-            for(let v=0;v<num;v++){
+            for(let v=0;v<nodes.length;v++){
                     cheapest[nodes[v].id]= -1;
             }
         let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
         let result = await Promise.all(promises)
            
-        for(let i =0;i<num;i++){
+        for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
             if(e!=-1){
                 let u = subset.find(e.source);
