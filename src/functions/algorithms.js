@@ -201,7 +201,7 @@ export function boruvkas(nodes, edges) {
         addStates(states, hedge, tedge, hnode,2)
 
         previous = current;
-        for(let v=0;v<nodes.length;v++){
+        for(let v=0;v<num;v++){
               cheapest[nodes[v].id]= -1;
         }
         for(let i =0;i<edges.length;i++){
@@ -233,11 +233,13 @@ export function boruvkas(nodes, edges) {
             for (let it = components[i].values(), val= null; val=it.next().value; ) {
                hnode.push(val.id);
             }
+            //Highlight the component nodes
             addStates(states,hedge, tedge, hnode,4)
             for (let it = components[i].values(), val= null; val=it.next().value; ) {
                 let e = cheapest[val.id];  
                 if(e!=-1){
                   hedge.push(e);
+                  //Highlight the cheapest edge of the component
                   addStates(states,hedge, tedge, hnode,5)
                     let u = subset.find(e.source);
                     let v = subset.find(e.target);
@@ -332,14 +334,15 @@ export function boruvkas(nodes, edges) {
             for (let it = components[i].values(), val= null; val=it.next().value; ) {
                hnode.push(val.id);
             }
+            
             addStates(states,hedge, tedge, hnode,4)
           }
           hnode = [];
           nodes.map(x=> hnode.push(x.id));
+          //Highlight all the component nodes
           addStates(states, hedge, tedge, hnode ,5);
           let temp = new Set();
-          for(let i =0;i<components.length;i++){
-              
+          for(let i =0;i<components.length;i++){         
               for (let it = components[i].values(), val= null; val=it.next().value;) {
                   let e = cheapest[val.id];  
                   if(e!=-1){
@@ -347,6 +350,7 @@ export function boruvkas(nodes, edges) {
                   }
                   }
           }
+          //Highlight all the components' cheapest edges
           hedge = Array.from(temp);
           addStates(states, hedge, tedge, hnode, 6);
           let copy = hedge.slice();    

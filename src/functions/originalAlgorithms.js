@@ -75,14 +75,14 @@ export function kruskals(nodes, edges) {
        if(!explored.has(v)){
             explored.add(v);
             MST.add([u,v,currentMinEdge.priority]);
-        for(let i=0;i<edges.length;i++){
-          if(edges[i].source== v){
-                if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.insert([v, edges[i].target], edges[i].weight);
+            for(let i=0;i<edges.length;i++){
+            if(edges[i].source== v){
+                    if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.insert([v, edges[i].target], edges[i].weight);
+                }
+                if(edges[i].target == v ){
+                    if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.insert([v, edges[i].source], edges[i].weight);
+                }
             }
-            if(edges[i].target == v ){
-               if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.insert([v, edges[i].source], edges[i].weight);
-            }
-        }
        };
     }
 
@@ -113,30 +113,30 @@ export function kruskals(nodes, edges) {
     let current = num;
     while(num>1){
         previous = current;
-        for(let v=0;v<nodes.length;v++){
+        for(let v=0;v<num;v++){
               cheapest[nodes[v].id]= -1;
         }
-    for(let i =0;i<edges.length;i++){
-        let u = subset.find(edges[i].source);
-        let v = subset.find(edges[i].target);
-        if(u==v) continue; 
-        else{
-            if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
-            if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
-        }
-    }
-    for(let i =0;i<nodes.length;i++){
-        let e = cheapest[nodes[i].id];
-        if(e!=-1){
-            let u = subset.find(e.source);
-            let v = subset.find(e.target);
-            if(u==v) continue;
-            if(!subset.connected(u,v)){
-                MST.add(e);
-                subset.union(u,v);
-                num--;
+        for(let i =0;i<edges.length;i++){
+            let u = subset.find(edges[i].source);
+            let v = subset.find(edges[i].target);
+            if(u==v) continue; 
+            else{
+                if(cheapest[u] == -1 || edges[i].weight < cheapest[u].weight) cheapest[u]=edges[i]
+                if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
             }
         }
+        for(let i =0;i<num;i++){
+            let e = cheapest[nodes[i].id];
+            if(e!=-1){
+                let u = subset.find(e.source);
+                let v = subset.find(e.target);
+                if(u==v) continue;
+                if(!subset.connected(u,v)){
+                    MST.add(e);
+                    subset.union(u,v);
+                    num--;
+                }
+            }
     }
     current = num;
     if(current == previous) throw ErrMessage.MST_NOT_FOUND;
@@ -163,13 +163,13 @@ export function kruskals(nodes, edges) {
         let current = num;
         while(num>1){
             previous = current;
-            for(let v=0;v<nodes.length;v++){
+            for(let v=0;v<num;v++){
                     cheapest[nodes[v].id]= -1;
             }
         let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
         let result = await Promise.all(promises)
            
-        for(let i =0;i<nodes.length;i++){
+        for(let i =0;i<num;i++){
             let e = cheapest[nodes[i].id];
             if(e!=-1){
                 let u = subset.find(e.source);
