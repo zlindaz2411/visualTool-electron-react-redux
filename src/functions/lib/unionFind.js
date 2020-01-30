@@ -11,29 +11,21 @@ export class UnionFind {
        elements.forEach(e => (this.parent[e.id] = e.id));
     }
 
+    /**
+     * Merge two elements
+     * @param {*} a 
+     * @param {*} b 
+     */
     union(a, b) {
        let rootA = this.find(a);
        let rootB = this.find(b);
- 
-       // Roots are same so these are already connected.
-       if (rootA === rootB) return;
- 
-       // Always make the element with smaller root the parent.
-       if (rootA < rootB) {
-          if (this.parent[b] != b) this.union(this.parent[b], a);
-          this.parent[b] = this.parent[a];
-       } else {
-          if (this.parent[a] != a) this.union(this.parent[a], b);
-          this.parent[a] = this.parent[b];
-       }
+       this.parent[rootA] = rootB
     }
 
      // Returns final parent of a node
      find(a) {
-      if(this.parent[a] && a){
       while (this.parent[a] !== a) {
          a = this.parent[a];
-      }
       }
       return a;
       
