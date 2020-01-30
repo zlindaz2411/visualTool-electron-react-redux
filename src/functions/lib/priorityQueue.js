@@ -27,7 +27,7 @@ export class PriorityQueueHeap {
    * @param {*} currentIndex 
    */
   bubbleUp(currentIndex) {
-    while (currentIndex > 1) {
+    while (currentIndex > 0) {
       let parentIndex = Math.floor(currentIndex / 2);
       if (
         this.items[parentIndex].priority > this.items[currentIndex].priority
@@ -46,6 +46,8 @@ export class PriorityQueueHeap {
    * Extract the minimum element which is at root
    */
   extractMin() {
+    try{
+    if(this.isEmpty()) throw "No element"
     let result = this.items[0];
     let leaf = this.items.pop();
 
@@ -54,6 +56,9 @@ export class PriorityQueueHeap {
       this.bubbleDown(0);
     }
     return result;
+  }catch(e){
+    return e.toString()
+  }
   }
 
   /**

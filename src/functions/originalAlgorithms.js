@@ -141,7 +141,6 @@ export function kruskals(nodes, edges) {
     current = num;
     if(current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    console.log(MST);
     return MST  
 }catch(error){
     return error.toString();
@@ -167,7 +166,7 @@ export function kruskals(nodes, edges) {
             for(let v=0;v<nodes.length;v++){
                     cheapest[nodes[v].id]= -1;
             }
-        let promises = edges.map((edge) =>  {findCheapest(edge, subset, cheapest)})
+        let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
         let result = await Promise.all(promises)
            
         for(let i =0;i<nodes.length;i++){
@@ -186,7 +185,6 @@ export function kruskals(nodes, edges) {
         current = num;
         if(current == previous) throw "MST not found";
         }
-        console.log(MST);
         return MST  
         }catch(error){
         return error.toString();

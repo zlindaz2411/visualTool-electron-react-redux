@@ -7249,11 +7249,6 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
-workerjs@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/workerjs/-/workerjs-0.1.1.tgz#b7939ed54400937c1c1ef35b74b37dd9bbcbdde6"
-  integrity sha1-t5Oe1UQAk3wcHvNbdLN92bvL3eY=
-
 wrap-ansi@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-2.1.0.tgz#d8fc3d284dd05794fe84973caecdd1cf824fdd85"
