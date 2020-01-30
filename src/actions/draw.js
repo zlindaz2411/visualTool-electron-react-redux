@@ -26,6 +26,7 @@ export const addGraph = graph => dispatch => {
  */
 export function fetchGraphs() {
     return dispatch => {
+        console.log("fetching");
         ipcRenderer.send('fetchGraphs');
         ipcRenderer.on('graphs:fetched', (event, graphs) => {
             dispatch({

@@ -1,80 +1,101 @@
+export class QElement {
+  constructor(element, priority) {
+    this.element = element;
+    this.priority = priority;
+  }
+}
 
-export class QElement { 
-    constructor(element, priority) 
-    { 
-        this.element = element; 
-        this.priority = priority; 
-    } 
-} 
-  
-// PriorityQueue class 
-export class PriorityQueue { 
-  
-    // An array is used to implement priority 
-    constructor() 
-    { 
-        this.items = []; 
-    } 
-  
-    // functions to be implemented 
-    enqueue(element, priority) 
-{ 
-    // creating object from queue element 
-    let qElement = new QElement(element, priority); 
-    let contain = false; 
-  
-    // iterating through the entire 
-    // item array to add element at the 
-    // correct location of the Queue 
-    for (let i = 0; i < this.items.length; i++) { 
-        if (this.items[i].priority > qElement.priority) { 
-            // Once the correct location is found it is 
-            // enqueued 
-            this.items.splice(i, 0, qElement); 
-            contain = true; 
-            break; 
-        } 
-    } 
-  
-    // if the element have the highest priority 
-    // it is added at the end of the queue 
-    if (!contain) { 
-        this.items.push(qElement); 
-    } 
-} 
-    // dequeue() 
-    dequeue() 
-{ 
-    // return the dequeued element 
-    // and remove it. 
-    // if the queue is empty 
-    // returns Underflow 
-    if (this.isEmpty()) 
-        return "Underflow"; 
-    return this.items.shift(); 
-} 
-    // front() 
-    front() 
-{ 
-    // returns the highest priority element 
-    // in the Priority queue without removing it. 
-    if (this.isEmpty()) 
-        return "No elements in Queue"; 
-    return this.items[0]; 
-} 
-rear() 
-{ 
-    // returns the lowest priorty 
-    // element of the queue 
-    if (this.isEmpty()) 
-        return "No elements in Queue"; 
-    return this.items[this.items.length - 1]; 
-} 
-    // isEmpty() 
-    isEmpty() 
-{ 
-    // return true if the queue is empty. 
-    return this.items.length == 0; 
-} 
-    // printPQueue() 
-} 
+export class PriorityQueueHeap {
+  // An array is used to implement priority
+  constructor() {
+    this.items = [];
+  }
+
+  /**
+   * Insert element in the heap given priority
+   * @param {*} element 
+   * @param {*} priority 
+   */
+  insert(element, priority) {
+    // creating object from queue element
+    let qElement = new QElement(element, priority);
+    this.items.push(qElement);
+    this.bubbleUp(this.items.length - 1);
+  }
+  /**
+   * Restore the heap order after adding element to the heap
+   * @param {*} currentIndex 
+   */
+  bubbleUp(currentIndex) {
+    while (currentIndex > 1) {
+      let parentIndex = Math.floor(currentIndex / 2);
+      if (
+        this.items[parentIndex].priority > this.items[currentIndex].priority
+      ) {
+        let temp = this.items[parentIndex];
+        this.items[parentIndex] = this.items[currentIndex];
+        this.items[currentIndex] = temp;
+        currentIndex = parentIndex;
+      } else {
+        break;
+      }
+    }
+  }
+
+  /**
+   * Extract the minimum element which is at root
+   */
+  extractMin() {
+    let result = this.items[0];
+    let leaf = this.items.pop();
+
+    if (this.items.length > 0) {
+      this.items[0] = leaf;
+      this.bubbleDown(0);
+    }
+    return result;
+  }
+
+  /**
+   * Restore the order after delete the minimum element;
+   * @param {*} currentIndex 
+   */
+  bubbleDown(currentIndex) {
+    while (true) {
+      let child2Index = (currentIndex + 1) * 2;
+      let child1Index = child2Index - 1;
+      let swap = null;
+      if (child1Index < this.items.length) {
+        let child1 = this.items[child1Index];
+        if (this.items[currentIndex].priority > child1.priority) {
+          swap = child1Index;
+        }
+      }
+
+      if (child2Index < this.items.length) {
+        let child2 = this.items[child2Index];
+        if (
+          swap == null
+            ? this.items[currentIndex].priority
+            : this.items[child1Index].priority > child2.priority
+        ) {
+          swap = child2Index;
+        }
+      }
+
+      if (swap == null) break;
+
+      let temp = this.items[currentIndex];
+      this.items[currentIndex] = this.items[swap];
+      this.items[swap] = temp;
+      currentIndex = swap;
+    }
+  }
+
+  /**
+   * Check if heap is ermpty
+   */
+  isEmpty() {
+    return this.items.length == 0;
+  }
+}

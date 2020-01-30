@@ -1,8 +1,8 @@
 {
   "name": "visual-tool",
-  "productName": "Visual Spanning Tree",
+  "productName": "Visual Minimum Spanning Tree",
   "version": "1.13.0",
-  "description": "Visual Spanning Tree is an algorithm visualization app developed by Linda Zhou",
+  "description": "Visual Minimum Spanning Tree is an algorithm visualization app developed by Linda Zhou",
   "main": "index.js",
   "author": "Linda Zhou",
   "license": "",
@@ -15,19 +15,26 @@
       "target": "nsis",
       "icon": "build/static_assets/win/icon.png"
     },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ],
+      "icon": "build/static_assets/linux/icon.png"
+    },
     "files": [
       "node_modules/",
       "build/",
-      "static_assets/",
+      "static_assets/",    
       "*"
     ]
   },
   "scripts": {
     "webpack:build": "webpack --config webpack.js",
     "webpack:watch": "webpack --config webpack.js --watch",
-    "electron:dev": "electron .",
+    "electron:dev": "NODE_ENV=dev electron --disable-gpu .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "NODE_ENV=prod electron-builder",
     "test": "mocha --require @babel/register ./tests/**/*.js",
     "coverage": "nyc --reporter html --reporter text npm test",
     "postinstall": "electron-builder install-app-deps"
@@ -37,7 +44,7 @@
     "classnames": "2.2.6",
     "copy-webpack-plugin": "4.5.2",
     "css-loader": "1.0.0",
-    "electron": "2.0.8",
+    "electron": "^7.1.10",
     "electron-builder": "^21.2.0",
     "extract-loader": "2.0.1",
     "file-loader": "2.0.0",
@@ -68,6 +75,7 @@
     "html-to-image": "^0.1.1",
     "mocha": "^6.2.2",
     "nedb": "1.8.0",
+    "nedb-promises": "^4.0.1",
     "nyc": "^14.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
@@ -81,7 +89,6 @@
     "react-spinners": "^0.6.1",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
-    "webpack-cli": "^3.3.10",
-    "workerjs": "^0.1.1"
+    "webpack-cli": "^3.3.10"
   }
 }

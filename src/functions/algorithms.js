@@ -1,5 +1,5 @@
 import { UnionFind } from "../functions/lib/unionFind";
-import { PriorityQueue } from "../functions/lib/priorityQueue";
+import { PriorityQueueHeap } from "../functions/lib/priorityQueue";
 import { ErrMessage } from "../constants/errorMessage";
 
 /**
@@ -91,19 +91,17 @@ export function prims(root, nodes, edges) {
     // Select first node as starting node
     let s = root;
     // Create a Priority Queue and explored set
-    let edgeQueue = new PriorityQueue();
+    let edgeQueue = new PriorityQueueHeap();
     let explored = new Set();
     explored.add(s.id);
-    let check = new Set();
-    let uf = new UnionFind(nodes);
 
     // Add all edges from this starting node to the PQ taking weights as priority
     for (let i = 0; i < edges.length; i++) {
       if (edges[i].source == s.id) {
-        edgeQueue.enqueue([s.id, edges[i].target], edges[i].weight);
+        edgeQueue.insert([s.id, edges[i].target], edges[i].weight);
       }
       if (edges[i].target == s.id) {
-        edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
+        edgeQueue.insert([s.id, edges[i].source], edges[i].weight);
       }
     }
 
@@ -118,7 +116,7 @@ export function prims(root, nodes, edges) {
       
       addStates(states, arr, t, [],3)
 
-      let currentMinEdge = edgeQueue.dequeue();
+      let currentMinEdge = edgeQueue.extractMin();
 
       let u = currentMinEdge.element[0];
       let v = currentMinEdge.element[1];
@@ -128,12 +126,8 @@ export function prims(root, nodes, edges) {
       addStates(states, arr, t, [],5)
 
       if (!explored.has(v)) {
-        if (!uf.connected(u, v)) {
           explored.add(v);
           MST.add([u, v, currentMinEdge.priority]);
-          check.add(u);
-          check.add(v);
-          uf.union(u, v);
           t.push({ source: u, target: v });
           addStates(states, arr, t, [],6)
           let temp = arr.slice();
@@ -143,7 +137,7 @@ export function prims(root, nodes, edges) {
                 !explored.has(edges[i].target) &&
                 !explored.has(edges[i].target)
               ) {
-                edgeQueue.enqueue([v, edges[i].target], edges[i].weight);
+                edgeQueue.insert([v, edges[i].target], edges[i].weight);
                 temp.push(edges[i]);
               }
             }
@@ -152,7 +146,7 @@ export function prims(root, nodes, edges) {
                 !explored.has(edges[i].source) &&
                 !explored.has(edges[i].source)
               ) {
-                edgeQueue.enqueue([v, edges[i].source], edges[i].weight);
+                edgeQueue.insert([v, edges[i].source], edges[i].weight);
                 temp.push(edges[i]);
               }
             }
@@ -162,14 +156,10 @@ export function prims(root, nodes, edges) {
           arr.pop();
           addStates(states, arr, t, [],8)
         }
-      } else {
-        arr.pop();
-        addStates(states, arr, t, [],8)
-      }
     }
     addStates(states, states[states.length - 1].highlighted, states[states.length - 1].tree, [],9)
 
-    if (check.size != nodes.length) {
+    if (explored.size != nodes.length) {
       throw ErrMessage.MST_NOT_FOUND;
     }
     return states;

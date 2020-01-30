@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router";
 import {test} from '../functions/algorithms';
-import pdf from '../assets/instruction.pdf';
+import pdf from '../assets/static_assets/instruction.pdf';
 
 /**
  * Sidebar component with the main menu of the system.

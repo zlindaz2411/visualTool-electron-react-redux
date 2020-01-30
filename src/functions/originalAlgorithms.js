@@ -1,5 +1,5 @@
 import {UnionFind} from '../functions/lib/unionFind'
-import {PriorityQueue} from '../functions/lib/priorityQueue'
+import {PriorityQueueHeap} from '../functions/lib/priorityQueue'
 import {ErrMessage} from'../constants/errorMessage'
 
  /**
@@ -51,51 +51,43 @@ export function kruskals(nodes, edges) {
     let MST = new Set();
     // Select first node as starting node
     let s = nodes[0];
-    let check = new Set();
     // Create a Priority Queue and explored set
-    let edgeQueue = new PriorityQueue();
+    let edgeQueue = new PriorityQueueHeap();
     let explored = new Set();
     explored.add(s.id);
-    let uf = new UnionFind(nodes);
  
     // Add all edges from this starting node to the PQ taking weights as priority
     for(let i=0;i<edges.length;i++){
         if(edges[i].source == s.id){
-            edgeQueue.enqueue([s.id, edges[i].target], edges[i].weight)
+            edgeQueue.insert([s.id, edges[i].target], edges[i].weight)
         }
         if(edges[i].target == s.id){
-            edgeQueue.enqueue([s.id, edges[i].source], edges[i].weight);
+            edgeQueue.insert([s.id, edges[i].source], edges[i].weight);
         }
     }
    
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
        // Continue removing edges till we get an edge with an unexplored node
-       let currentMinEdge = edgeQueue.dequeue();
+       let currentMinEdge = edgeQueue.extractMin();
        let u = currentMinEdge.element[0]
        let v =  currentMinEdge.element[1]
        if(!explored.has(v)){
-        if(!uf.connected(u,v)){
             explored.add(v);
-            check.add(u);
-            check.add(v);
             MST.add([u,v,currentMinEdge.priority]);
-            uf.union(u,v)
-        }
         for(let i=0;i<edges.length;i++){
           if(edges[i].source== v){
-                if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.enqueue([v, edges[i].target], edges[i].weight);
+                if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.insert([v, edges[i].target], edges[i].weight);
             }
             if(edges[i].target == v ){
-               if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.enqueue([v, edges[i].source], edges[i].weight);
+               if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.insert([v, edges[i].source], edges[i].weight);
             }
         }
        };
-        
     }
 
     //check if is a minimum spanning tree
-    if(check.size != nodes.length){
+    if(explored.size != nodes.length){
         throw ErrMessage.MST_NOT_FOUND
     }
     return MST;
