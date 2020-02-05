@@ -91,6 +91,12 @@ class PerformancePage extends Component {
       <div className="performance_wrap">
         <div className="title">
           <h1>Compare Performance</h1>
+          </div>
+          <div className="sub_text">
+          <h2>
+           Select algorithms that you want to compare the performance and click "Compare".&ensp;&ensp;
+            <span title ="Note that the parallel algorithm is implemented in parallel, due to the software problem (being single threaded), its performance is sequential" className ="tooltip">&#9432;</span>
+          </h2>  
         </div>
         <center>
           <div className="grid">
@@ -102,6 +108,8 @@ class PerformancePage extends Component {
                 height={325}
                 data={this.state.data}
                 options={{
+                  responsive: false,
+                  maintainAspectRatio: false,
                   title:{
                     display:false,
                   },
