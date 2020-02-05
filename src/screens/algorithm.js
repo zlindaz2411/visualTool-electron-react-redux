@@ -55,6 +55,7 @@ class AlgorithmPage extends Component {
       data: this.props.data,
     };
   }
+  
 
 
   componentDidMount() {

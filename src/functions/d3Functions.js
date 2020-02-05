@@ -17,8 +17,13 @@ let yScale = 0;
  * @param {*} draw
  */
 export function setWidthHeight(graph, draw) {
+  if(draw){
   w = document.querySelector(".canvas").getBoundingClientRect().width;
   h = document.querySelector(".canvas").getBoundingClientRect().height;
+  }else{
+    w = 400
+    h = 380
+  }
   setScales(graph.nodes, draw);
 }
 
