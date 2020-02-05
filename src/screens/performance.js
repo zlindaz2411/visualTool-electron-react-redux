@@ -25,13 +25,12 @@ class PerformancePage extends Component {
         Algorithm.BORUVKA,
         Algorithm.PARALLEL
       ],
-      data:{},
-      graph: Object.keys(this.props.latestGraph).length ==0 ? data :  this.props.latestGraph,
+      graph: this.props.latestGraph == null ? data :  this.props.latestGraph,
     };
   }
 
   componentDidMount() {
-    if(Object.keys(this.state.data).length == 0){
+    if(this.state.graph == null){
       emptyGraphMessage();
     }
   }
@@ -53,7 +52,7 @@ class PerformancePage extends Component {
    */
   handleFormSubmit(e) {
     e.preventDefault();
-    if(Object.keys(this.state.data).length == 0){
+    if(this.state.graph  == null){
       emptyGraphMessage();
     }
     else{

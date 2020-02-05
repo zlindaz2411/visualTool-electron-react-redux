@@ -7,10 +7,11 @@ import {ErrMessage} from'../constants/errorMessage'
  * @param {*} edges 
  * @param {*} nodes 
  */
-export function kruskals(nodes, edges) {
+export function kruskals(graph) {
     try{
     //Sort the edges 
-    edges = edges.sort((a,b) => {return a.weight - b.weight;});
+    let nodes = graph.nodes
+    let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let uf = new UnionFind(nodes);
@@ -45,9 +46,11 @@ export function kruskals(nodes, edges) {
   * @param {*} edges 
   * @param {*} nodes 
   */
- export function prims(nodes, edges) {
+ export function prims(graph) {
     try{
     // Initialize graph that'll contain the MST
+    let nodes = graph.nodes
+    let edges = graph.edges
     let MST = new Set();
     // Select first node as starting node
     let s = nodes[0];
@@ -57,15 +60,14 @@ export function kruskals(nodes, edges) {
     explored.add(s.id);
  
     // Add all edges from this starting node to the PQ taking weights as priority
-    for(let i=0;i<edges.length;i++){
-        if(edges[i].source == s.id){
-            edgeQueue.insert([s.id, edges[i].target], edges[i].weight)
-        }
-        if(edges[i].target == s.id){
-            edgeQueue.insert([s.id, edges[i].source], edges[i].weight);
-        }
+    let adjacents = graph.getAdjacentsOfNode(s.id);
+    for (let i = 0; i < adjacents.length; i++) {
+      if (adjacents[i].source != s.id)
+        edgeQueue.insert([s.id, adjacents[i].source], adjacents[i].weight);
+      if (adjacents[i].target != s.id)
+        edgeQueue.insert([s.id, adjacents[i].target], adjacents[i].weight);
     }
-   
+
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
        // Continue removing edges till we get an edge with an unexplored node
@@ -75,14 +77,25 @@ export function kruskals(nodes, edges) {
        if(!explored.has(v)){
             explored.add(v);
             MST.add([u,v,currentMinEdge.priority]);
-            for(let i=0;i<edges.length;i++){
-            if(edges[i].source== v){
-                    if(!explored.has(edges[i].target) && !explored.has(edges[i].target)) edgeQueue.insert([v, edges[i].target], edges[i].weight);
-                }
-                if(edges[i].target == v ){
-                    if(!explored.has(edges[i].source) && !explored.has(edges[i].source)) edgeQueue.insert([v, edges[i].source], edges[i].weight);
-                }
+            let adjacents = graph.getAdjacentsOfNode(v)
+        for (let i = 0; i < adjacents.length; i++) {
+          if (adjacents[i].source != v) {
+            if (!explored.has(adjacents[i].source)) {
+              edgeQueue.insert(
+                [v, adjacents[i].source],
+                adjacents[i].weight
+              );
             }
+          }
+          if (adjacents[i].target != v) {
+            if (!explored.has(adjacents[i].target)) {
+              edgeQueue.insert(
+                [v, adjacents[i].target],
+                adjacents[i].weight
+              );
+            }
+          }
+        }
        };
     }
 
@@ -102,8 +115,10 @@ export function kruskals(nodes, edges) {
   * @param {*} edges 
   * @param {*} nodes 
   */
- export function boruvkas(nodes,edges) {
+ export function boruvkas(graph) {
      try{
+        let nodes = graph.nodes
+        let edges = graph.edges
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
@@ -152,8 +167,10 @@ export function kruskals(nodes, edges) {
   * @param {*} edges 
   * @param {*} nodes 
   */
- export async function parallel(nodes,edges) {
+ export async function parallel(graph) {
     try{
+        let nodes = graph.nodes
+         let edges = graph.edges
         let subset = new UnionFind(nodes);
         let num = nodes.length;
         // Initialize graph that'll contain the MST

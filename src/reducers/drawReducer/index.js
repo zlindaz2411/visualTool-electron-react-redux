@@ -2,7 +2,7 @@ import { FETCH_GRAPHS, ADD_GRAPH, PASS_GRAPH} from '../../actions/types';
 
 const INITIAL_STATE = {
     arr: [],
-    latestGraph: {},
+    latestGraph: null,
     error: null,
 };
 

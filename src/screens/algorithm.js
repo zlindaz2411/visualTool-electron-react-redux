@@ -58,7 +58,7 @@ class AlgorithmPage extends Component {
 
 
   componentDidMount() {
-    if(Object.keys(this.state.data).length == 0) {
+    if(this.state.data == null) {
       emptyGraphMessage();
     } else {
       if (
@@ -220,7 +220,7 @@ changeSpeed(){
    * If not, alert an error dialog. Otherwise, start the visualization
    */
   handleStart() {
-    if (Object.keys(this.state.data).length == 0) {
+    if(this.state.data == null) {
       emptyGraphMessage();
     } else {
       const res = this.props.states;

@@ -12,6 +12,7 @@ import { drawGraph} from "../functions/d3Functions";
 import { prims } from "../functions/algorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
+import { Graph } from "../functions/lib/graph";
 
 /**
  * Prim page which uses AlgorithmPage and pass the states produced by the prim function.
@@ -24,14 +25,15 @@ class PrimPage extends Component {
       isDialogOpen: true,
       states: [],
       data:
-        Object.keys(this.props.latestGraph).length == 0
+       this.props.latestGraph == null
           ? data
           : this.props.latestGraph
     }
 }
 
 componentDidMount() {
-  if (Object.keys(this.state.data).length == 0) {
+  console.log(this.props.latestGraph)
+  if (this.state.data== null) {
     emptyGraphMessage();
     this.setState({
       isDialogOpen: false
@@ -53,8 +55,9 @@ componentDidMount() {
     } else {
       this.setState({
         isDialogOpen: false,
-        states: prims(this.state.data.root, this.state.data.nodes, this.state.data.edges)
+        states: prims(this.state.data)
       });
+      console.log(this.state.states)
     }
   }
 

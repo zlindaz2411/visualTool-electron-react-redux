@@ -16,7 +16,7 @@ class ParallelPage extends Component {
     super(props);
     this.state = {
       data:
-        Object.keys(this.props.latestGraph).length == 0
+       this.props.latestGraph == null
           ? data
           : this.props.latestGraph
     }
@@ -24,7 +24,7 @@ class ParallelPage extends Component {
 
 render() {
   return (
-    <AlgorithmPage pageName={Algorithm.PARALLEL} data={this.state.data} states={parallel(this.state.data.nodes, this.state.data.edges)}></AlgorithmPage>
+    <AlgorithmPage pageName={Algorithm.PARALLEL} data={this.state.data} states={parallel(this.state.data)}></AlgorithmPage>
   );
 }
 }

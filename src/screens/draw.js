@@ -2,14 +2,13 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-
-import { MdInfoOutline } from "react-icons/md";
+import {Prompt} from "react-router-dom";
 import htmlToImage from "html-to-image";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
-import { data, emptyGraph, resetEmptyGraph} from "../constants/defaultGraph";
+import {resetEmptyGraph} from "../constants/defaultGraph";
 
 import {
   removeAll,
@@ -25,6 +24,7 @@ import {
   resetRoot
 } from "../functions/graphAlgorithms";
 import { graphNotSelectedMessage } from "../constants/errorMessage";
+import { Graph } from "../functions/lib/graph";
 
 /**
  * Draw page that handles the drawing, load and save graph functionalities.
@@ -37,11 +37,8 @@ class DrawPage extends Component {
       isDialogOpen: false,
       selectedGraph: null,
       isSaveDialogOpen: false,
-      graph:
-        Object.keys(this.props.latestGraph).length == 0
-          ? emptyGraph
-          : this.props.latestGraph,
-      name: ""
+      graph: new Graph(),
+      name: "",
     };
   }
 
@@ -107,7 +104,7 @@ class DrawPage extends Component {
     this.setState(
       {
         graph: graph,
-        selectedGraph: null
+        selectedGraph: null,
       },
       () => {
         this.draw();
@@ -258,6 +255,10 @@ class DrawPage extends Component {
           <div className="canvas">
             <div ref={this.imgRef} className="drawing"></div>
           </div>
+          {/* <Prompt
+            when={JSON.stringify(this.state.graph) !== JSON.stringify(this.state.initalGraph)}
+            message={'Unsaved changes'}
+          /> */}
           <div className="action_buttons">
             <button onClick={() => this.openModal()}>Load</button>
             <Dialog
@@ -316,7 +317,7 @@ class DrawPage extends Component {
     resetEmptyGraph();
     this.setState(
       {
-        graph: emptyGraph
+        graph: new Graph()
       },
       () => {
         createBlankCanvas(this.state.graph, "draw");

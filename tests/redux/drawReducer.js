@@ -25,7 +25,7 @@ describe('add graph reducer', () => {
     assert.deepEqual(reducer(undefined, {}),
       {
         arr: [],
-        latestGraph: {},
+        latestGraph: null,
         error: null,
       }
     )
@@ -36,7 +36,7 @@ describe('add graph reducer', () => {
     }),
       {
         arr: [],
-        latestGraph: {},
+        latestGraph: null,
         error: null,
       }
     )
@@ -50,7 +50,7 @@ describe('fetch graphs reducer', () => {
       assert.deepEqual(reducer(undefined, {}),
         {
           arr: [],
-          latestGraph: {},
+          latestGraph: null,
           error:null,
         }
       )
@@ -62,7 +62,7 @@ describe('fetch graphs reducer', () => {
        }),
         {
           arr: input,
-          latestGraph: {},
+          latestGraph:null,
           error: null,
         }
       )
@@ -74,7 +74,7 @@ describe('fetch graphs reducer', () => {
       assert.deepEqual(reducer(undefined, {}),
         {
           arr: [],
-          latestGraph: {},
+          latestGraph: null,
           error: null,
         }
       )

@@ -16,7 +16,7 @@ class BoruvkaPage extends Component {
     super(props);
     this.state = {
       data:
-        Object.keys(this.props.latestGraph).length == 0
+        this.props.latestGraph == null
           ? data
           : this.props.latestGraph
     }
@@ -24,7 +24,7 @@ class BoruvkaPage extends Component {
 
 render() {
   return (
-    <AlgorithmPage pageName={Algorithm.BORUVKA} data={this.state.data} states={boruvkas(this.state.data.nodes, this.state.data.edges)}></AlgorithmPage>
+    <AlgorithmPage pageName={Algorithm.BORUVKA} data={this.state.data} states={boruvkas(this.state.data)}></AlgorithmPage>
   );
 }
 }

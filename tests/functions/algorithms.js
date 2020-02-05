@@ -6,41 +6,35 @@ import {
   parallel
 } from "../../src/functions/algorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
+import { Graph } from "../../src/functions/lib/graph";
 
 const assert = require("assert");
 
 /**
- * Correct input: connected graph
+ * valid Input graph
  */
-const input = {
-  nodes: [
-    { id: 1, x: 20, y: 200 },
-    { id: 2, x: 80, y: 100 },
-    { id: 3, x: 200, y: 100 }
-  ],
-  edges: [
-    { source: 1, target: 2, weight: 4, highlight: false },
-    { source: 2, target: 3, weight: 8, highlight: false },
-    { source: 3, target: 1, weight: 7, highlight: false }
-  ]
-};
+let graph = new Graph()
+graph.root = { id: 1, x: 20, y: 200 }
+graph.addNode({ id: 1, x: 20, y: 200 })
+graph.addNode({ id: 2, x: 80, y: 100 })
+graph.addNode( { id: 3, x: 200, y: 100 })
+graph.addEdge({ source: 1, target: 2, weight: 4, highlight: false })
+graph.addEdge( { source: 2, target: 3, weight: 8, highlight: false })
+graph.addEdge( { source: 3, target: 1, weight: 7, highlight: false })
+  
 
 /**
  * Error graph, with isolated vertex
  */
-const errorInput = {
-  nodes: [
-    { id: 1, x: 20, y: 200 },
-    { id: 2, x: 80, y: 100 },
-    { id: 3, x: 200, y: 100 },
-    { id: 4, x: 320, y: 100 }
-  ],
-  edges: [
-    { source: 1, target: 2, weight: 4, highlight: false },
-    { source: 2, target: 3, weight: 8, highlight: false },
-    { source: 3, target: 1, weight: 8, highlight: false }
-  ]
-};
+let errorInput = new Graph()
+errorInput.root = { id: 1, x: 20, y: 200 }
+errorInput.addNode({ id: 1, x: 20, y: 200 })
+errorInput.addNode({ id: 2, x: 80, y: 100 })
+errorInput.addNode( { id: 3, x: 200, y: 100 })
+errorInput.addNode({ id: 4, x: 320, y: 100 })
+errorInput.addEdge({ source: 1, target: 2, weight: 4, highlight: false })
+errorInput.addEdge( { source: 2, target: 3, weight: 8, highlight: false })
+errorInput.addEdge( { source: 3, target: 1, weight: 7, highlight: false })
 
 describe("Add States", function() {
   let states = [{ highlighted: [], tree: [], highlightedNodes: [], status: 0 }];
@@ -152,13 +146,13 @@ describe("Kruskal's algorithm States", function() {
     }
   ];
   it("should return a list of kruskal's algorithm states", function() {
-    assert.deepEqual(res, kruskals(input.nodes, input.edges));
+    assert.deepEqual(res, kruskals(graph));
   });
 
   it("should return an error message when the input is invalid", function() {
     assert.equal(
       ErrMessage.MST_NOT_FOUND,
-      kruskals(errorInput.nodes, errorInput.edges)
+      kruskals(errorInput)
     );
   });
 });
@@ -190,7 +184,6 @@ describe("Prim's algorithm States", function() {
     {
       highlighted: [
         { source: 1, target: 2 },
-        { source: 2, target: 3, weight: 8, highlight: false }
       ],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
@@ -279,13 +272,13 @@ describe("Prim's algorithm States", function() {
     }
   ];
   it("should return a list of prim's algorithm states", function() {
-    assert.deepEqual(res, prims(input.nodes[0], input.nodes, input.edges));
+    assert.deepEqual(res, prims(graph));
   });
 
   it("should return an error message when the input is invalid", function() {
     assert.equal(
       ErrMessage.MST_NOT_FOUND,
-      prims(input.nodes[0], errorInput.nodes, errorInput.edges)
+      prims(errorInput)
     );
   });
 });
@@ -377,13 +370,13 @@ describe("Boruvka's algorithm States", function() {
     }
   ];
   it("should return a list of boruvka's algorithm states", function() {
-    assert.deepEqual(res, boruvkas(input.nodes, input.edges));
+    assert.deepEqual(res, boruvkas(graph));
   });
 
   it("should return an error message when the input is invalid", function() {
     assert.equal(
       ErrMessage.MST_NOT_FOUND,
-      boruvkas(errorInput.nodes, errorInput.edges)
+      boruvkas(errorInput)
     );
   });
 });
@@ -464,13 +457,13 @@ describe("Boruvka Parallel Algorithm States", function() {
     }
   ];
   it("should return a list of boruvka's algorithm states", function() {
-    assert.deepEqual(res, parallel(input.nodes, input.edges));
+    assert.deepEqual(res, parallel(graph));
   });
 
   it("should return an error message when the input is invalid", function() {
     assert.equal(
       ErrMessage.MST_NOT_FOUND,
-      parallel(errorInput.nodes, errorInput.edges)
+      parallel(errorInput)
     );
   });
 });

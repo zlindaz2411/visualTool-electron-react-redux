@@ -15,7 +15,7 @@ class KruskalPage extends Component {
     super(props);
     this.state = {
       data:
-        Object.keys(this.props.latestGraph).length == 0
+        this.props.latestGraph == null
           ? data
           : this.props.latestGraph
     }
@@ -23,7 +23,7 @@ class KruskalPage extends Component {
 
   render() {
     return (
-      <AlgorithmPage pageName={Algorithm.KRUSKAL} data={this.state.data} states={kruskals(this.state.data.nodes, this.state.data.edges)}></AlgorithmPage>
+      <AlgorithmPage pageName={Algorithm.KRUSKAL} data={this.state.data} states={kruskals(this.state.data)}></AlgorithmPage>
     );
   }
 }
