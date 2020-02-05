@@ -2,11 +2,11 @@
  * Graph class that stores nodes, edges and the adjacent edges to the nodes
  */
 export class Graph{
-    constructor() {
-        this.root =1
-        this.nodes = []
-        this.edges = []
-        this.adjacents =new Map()
+    constructor(root = 1, nodes = [], edges = [], adjacents = {}) {
+        this.root =root
+        this.nodes = nodes;
+        this.edges = edges;
+        this.adjacents = adjacents;
     }
 
     /**
@@ -14,7 +14,7 @@ export class Graph{
      * @param {*} id 
      */
     getAdjacentsOfNode(id){
-        return this.adjacents.get(id)
+        return this.adjacents[id]
     }
 
     /**
@@ -33,7 +33,7 @@ export class Graph{
                 i--
             }
         }
-        this.adjacents.delete(this.nodes[index].id);
+        delete this.adjacents[this.nodes[index].id];
         this.nodes.splice(index, 1)
     }
 
@@ -42,10 +42,10 @@ export class Graph{
      * @param {*} id 
      */
     removeEdge(edgeIndex){ 
-        let source = this.adjacents.get(this.edges[edgeIndex].source)
-        this.adjacents.set(this.edges[edgeIndex].source, this.removeAdjacent(source, edgeIndex));
-        let target = this.adjacents.get(this.edges[edgeIndex].target)
-        this.adjacents.set(this.edges[edgeIndex].target, this.removeAdjacent(target, edgeIndex));
+        let source = this.adjacents[this.edges[edgeIndex].source]
+        this.adjacents[this.edges[edgeIndex].source] =  this.removeAdjacent(source, edgeIndex)
+        let target = this.adjacents[this.edges[edgeIndex].target]
+        this.adjacents[this.edges[edgeIndex].target] =  this.removeAdjacent(target, edgeIndex);
         this.edges.splice(edgeIndex, 1)
     }
 
@@ -73,7 +73,7 @@ export class Graph{
       */
      addNode(node){
         this.nodes.push(node);
-        if(!this.adjacents.has(node.id)) this.adjacents.set(node.id, []);
+        this.adjacents[node.id] =  [];
      }
 
      /**
@@ -82,11 +82,11 @@ export class Graph{
       */
      addEdge(edge){
         this.edges.push(edge);
-        let source = this.adjacents.get(edge.source)
+        let source = this.adjacents[edge.source]
         source.push(edge)
-        let target = this.adjacents.get(edge.target)
+        let target = this.adjacents[edge.target]
         target.push(edge)
-        this.adjacents.set(edge.source, source)
-        this.adjacents.set(edge.target, target)
+        this.adjacents[edge.source] = source
+        this.adjacents[edge.target] = target
      }
 }

@@ -18,10 +18,42 @@ describe("Graph class default constructor", function() {
     assert.deepEqual(1, graph.root);
     });
     it("should return an empty map for the adjacent map", function() {
-    assert.deepEqual(new Map(), graph.adjacents);
+    assert.deepEqual({}, graph.adjacents);
     });
 
+    let nodes= [{ id: 1, x: 20, y: 200 },
+        { id: 2, x: 80, y: 100 },
+        { id: 3, x: 200, y: 100 },
+    ]
+    let edges= [
+        {source:1, target:2, weight:4, highlight:false},
+        {source:2, target:3, weight:8,highlight:false},
+        {source:3, target:1, weight:7,highlight:false}]
+
+    let map = {
+        1 : [edges[0], edges[2]],
+        2: [edges[0], edges[1]],
+        3: [edges[1], edges[2]]
+    }
+
+    const graph1 = new Graph(nodes[0], nodes, edges, map);
+    it("should return true if the graph nodes have the correct values", function() {
+        assert.deepEqual(nodes, graph1.nodes);
+      });
+  
+      it("should return true if the graph edges have the correct values", function() {
+      assert.deepEqual(edges, graph1.edges);
+      });
+      it("should return true if the graph root has the correct value", function() {
+      assert.deepEqual(nodes[0], graph1.root);
+      });
+      it("should return true if the graph adjacents have the correct values", function() {
+      assert.deepEqual(map, graph1.adjacents);
+      });
+
 });
+
+
 
 describe("Add node; add edge; get adjacents functions ", function() {
 
@@ -34,11 +66,12 @@ describe("Add node; add edge; get adjacents functions ", function() {
             {source:2, target:3, weight:8,highlight:false},
             {source:3, target:1, weight:7,highlight:false}]
     
-    let map = new Map();
-    map.set(nodes[0].id, [edges[0], edges[2]])
-    map.set(nodes[1].id, [edges[0], edges[1]])
-    map.set(nodes[2].id, [edges[1], edges[2]])
-    
+    let map = {
+        1 : [edges[0], edges[2]],
+        2: [edges[0], edges[1]],
+        3: [edges[1], edges[2]]
+    }
+
     let graph = new Graph();
     graph.addNode({ id: 1, x: 20, y: 200 })
     graph.addNode({id: 2, x: 80, y: 100 })
@@ -75,10 +108,11 @@ describe("Add node; add edge; get adjacents functions ", function() {
         {source:2, target:3, weight:8,highlight:false},
         {source:3, target:1, weight:7,highlight:false}]
 
-    let map = new Map();
-    map.set(nodes[0].id, [edges[0], edges[2]])
-    map.set(nodes[1].id, [edges[0], edges[1]])
-    map.set(nodes[2].id, [edges[1], edges[2]])
+    let map = {
+        1 : [edges[0], edges[2]],
+        2: [edges[0], edges[1]],
+        3: [edges[1], edges[2]]
+    }
 
     let graph = new Graph();
     graph.addNode({ id: 1, x: 20, y: 200 })
@@ -90,11 +124,11 @@ describe("Add node; add edge; get adjacents functions ", function() {
 
     //Remove node
     graph.removeNode(0)
-    map.delete(nodes[0].id)
+    delete map[nodes[0].id]
     nodes = [{ id: 2, x: 80, y: 100 }, { id: 3, x: 200, y: 100 }]
     edges= [ {source:2, target:3, weight:8,highlight:false}]
-    map.set(nodes[0].id, [{source:2, target:3, weight:8,highlight:false}])
-    map.set(nodes[1].id, [{source:2, target:3, weight:8,highlight:false}])
+    map[nodes[0].id]  = [{source:2, target:3, weight:8,highlight:false}]
+    map[nodes[1].id]= [{source:2, target:3, weight:8,highlight:false}]
     
     it("should return true if the graph nodes have the correct value after remove operation", function() {
     assert.deepEqual(nodes, graph.nodes);
@@ -109,8 +143,8 @@ describe("Add node; add edge; get adjacents functions ", function() {
     //Remove edge
     graph.removeEdge(0);
     edges = [];
-    map.set(nodes[0].id, [])
-    map.set(nodes[1].id, [])
+    map[nodes[0].id] = []
+    map[nodes[1].id]= []
     it("should return true the graph edges have the correct values after remove operation", function() {
         assert.deepEqual(edges, graph.edges);
     });

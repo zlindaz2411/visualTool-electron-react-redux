@@ -103,7 +103,7 @@ class DrawPage extends Component {
     } else {
     this.setState(
       {
-        graph: graph,
+        graph: new Graph(graph.root, graph.nodes, graph.edges, graph.adjacents),
         selectedGraph: null,
       },
       () => {
