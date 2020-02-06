@@ -5,7 +5,7 @@ import {
   resetTree,
   updateGraph,
   updateNodes
-} from "../../src/functions/graphAlgorithms";
+} from "../../src/functions/graphFunctions";
 import { ErrMessage } from "../../src/constants/errorMessage";
 
 const assert = require("assert");

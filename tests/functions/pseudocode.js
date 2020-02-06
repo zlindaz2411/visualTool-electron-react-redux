@@ -46,7 +46,7 @@ describe("Get pseudocode based on different input", function() {
     "\xa0 \xa0foreach (component in F)",
     "\xa0 \xa0 \xa0 \xa0 \xa0c = component",
     "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0e = smallest edge for c",
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)",
     "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T",
     "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing",
     "return T"
@@ -66,7 +66,7 @@ describe("Get pseudocode based on different input", function() {
     "\xa0 \xa0(Concurrent Thread Execution",
     "\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)",
     "\xa0 \xa0foreach (smallest edge of each component)",
-    "\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)",
     "\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T",
     "\xa0 \xa0 \xa0 \xa0 \xa0else do nothing",
     "return T"
@@ -136,7 +136,7 @@ describe("Set up pseucodoe map based on different input", function() {
     false
   );
   boruvkaMap.set(
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)",
     false
   );
   boruvkaMap.set(
@@ -178,7 +178,7 @@ describe("Set up pseucodoe map based on different input", function() {
     "\xa0 \xa0foreach (smallest edge of each component)",
     false
   );
-  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)", false);
+  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)", false);
   parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T", false);
   parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing", false);
   

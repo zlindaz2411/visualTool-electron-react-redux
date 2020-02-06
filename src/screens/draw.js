@@ -22,7 +22,7 @@ import {
   resetHighlight,
   resetNodes,
   resetRoot
-} from "../functions/graphAlgorithms";
+} from "../functions/graphFunctions";
 import { graphNotSelectedMessage } from "../constants/errorMessage";
 import { Graph } from "../functions/lib/graph";
 

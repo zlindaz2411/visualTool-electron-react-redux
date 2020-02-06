@@ -1,6 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 import {
   MdPlayArrow,
   MdSkipPrevious,
@@ -19,7 +17,7 @@ import {
   resetNodes,
   updateGraph,
   updateNodes
-} from "../functions/graphAlgorithms";
+} from "../functions/graphFunctions";
 import { Algorithm } from "../constants/algorithms";
 import {
   emptyGraphMessage,

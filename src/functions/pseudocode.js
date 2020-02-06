@@ -37,7 +37,7 @@ export function getPseudocode(name) {
         );
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0c = component");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0e = smallest edge for c");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(adding e to T is acyclic)");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T");
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         boruvka.push("return T");
@@ -54,7 +54,7 @@ export function getPseudocode(name) {
         boruvkaParallel.push("\xa0 \xa0(Concurrent Thread Execution");
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)");
         boruvkaParallel.push("\xa0 \xa0foreach (smallest edge of each component)");
-        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0if(adding smallest edge to T is acyclic)");
+        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)");
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T");
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         boruvkaParallel.push("return T");
