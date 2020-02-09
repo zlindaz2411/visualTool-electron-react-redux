@@ -3,12 +3,26 @@ import {
   resetNodes,
   resetRoot,
   resetTree,
+  addStates,
   updateGraph,
   updateNodes
-} from "../../src/functions/graphFunctions";
-import { ErrMessage } from "../../src/constants/errorMessage";
+} from "../../src/functions/stateFunctions";
 
 const assert = require("assert");
+
+describe("Add States", function() {
+  let states = [{ highlighted: [], tree: [], highlightedNodes: [], status: 0 }];
+  addStates(states, [], [], [], 1);
+  let res = [
+    { highlighted: [], tree: [], highlightedNodes: [], status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [], status: 1 }
+  ];
+
+  it("should be empty priority queue at first", function() {
+    assert.deepEqual(res, states);
+  });
+});
+
 
 describe("Reset edges", function() {
   const edgesT = [

@@ -1,5 +1,5 @@
 import {Algorithm} from '../constants/algorithms';
-import {kruskals, prims, boruvkas, parallel} from '../functions/originalAlgorithms'
+import {kruskals, prims, boruvkas, parallel} from '../functions/mstAlgorithms'
 import {performance} from 'perf_hooks'
 
 

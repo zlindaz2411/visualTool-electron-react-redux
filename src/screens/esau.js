@@ -15,10 +15,10 @@ import AlgorithmPage from './algorithm';
 import { Graph } from "../functions/lib/graph";
 
 /**
- * Prim page which uses AlgorithmPage and pass the states produced by the prim function.
- * When the prim page is opened, a dialog asking for the selection of root node will be displayed.
+ * Esau William page uses AlgorithmPage and pass the states produced by the prim function.
+ * When the esau page is opened, a dialog asking for the selection of capacity constraint will be displayed.
  */
-class PrimPage extends Component {
+class EsauPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -107,6 +107,6 @@ function mapStateToProps(state) {
 
 export default withRouter(
   connect(mapStateToProps, { })(
-    PrimPage
+    EsauPage
   )
 );

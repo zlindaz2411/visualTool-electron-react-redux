@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import { data} from "../constants/defaultGraph";
 
-import { boruvkas } from "../functions/algorithms";
+import { boruvkas } from "../functions/mstStateAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from '../screens/algorithm';
 

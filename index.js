@@ -12,10 +12,8 @@ app.on('ready', () => {
         minWidth: 1000,
         width: 1000, 
         height: 700,
-        // frame: false,
         backgroundColor: '#FCFCFF',
         fullscreen:false,
-    // resizable:false,
         webPreferences: { 
             backgroundThrottling: true,
             nodeIntegration: true,
@@ -36,7 +34,9 @@ if(isDev){
     userData = app.getAppPath('userData') + '/data/graphs.db';
 }
 else{
-    userData= app.getPath("userData") + "/data/graphs.db";
+    userData = app.getPath('userData') + '/data/graphs.db';
+    //userData= path.join(process.resourcesPath, '/data/graphs.db')
+    // const dbFile = path.join(__dirname, '/appData.db').replace('/app.asar', '');
 }
 let db_graphs =  new Datastore({ filename: userData, autoload: true});
 db_graphs.loadDatabase();

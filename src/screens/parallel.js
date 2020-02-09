@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import { data} from "../constants/defaultGraph";
 
-import { parallel } from "../functions/algorithms";
+import { parallel } from "../functions/mstStateAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 

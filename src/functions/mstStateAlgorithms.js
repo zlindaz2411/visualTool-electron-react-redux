@@ -1,23 +1,8 @@
-import { UnionFind } from "../functions/lib/unionFind";
-import { PriorityQueueHeap } from "../functions/lib/priorityQueue";
+import { UnionFind } from "./lib/unionFind";
+import { PriorityQueueHeap } from "./lib/priorityQueue";
 import { ErrMessage } from "../constants/errorMessage";
+import {addStates} from './stateFunctions';
 
-/**
- * Add highlighted elements and status in the state list.
- * @param {*} states
- * @param {*} hedge
- * @param {*} tedge
- * @param {*} hnode
- * @param {*} status
- */
-export function addStates(states, hedge, tedge, hnode, status) {
-  states.push({
-    highlighted: hedge.slice(),
-    tree: tedge.slice(),
-    highlightedNodes: hnode.slice(),
-    status: status
-  });
-}
 
 /**
  * Kruskals algorithm
@@ -35,7 +20,6 @@ export function kruskals(graph) {
     });
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    let check = new Set();
     addStates(states, [], [], [], 1);
 
     let uf = new UnionFind(nodes);
@@ -55,8 +39,6 @@ export function kruskals(graph) {
       if (!uf.connected(u, v)) {
         MST.add(edges[i]);
         uf.union(u, v);
-        check.add(u);
-        check.add(v);
         t.push(edges[i]);
         addStates(states, arr, t, [], 5);
       } else {
@@ -73,7 +55,7 @@ export function kruskals(graph) {
       7
     );
 
-    if (check.size != nodes.length) {
+    if (MST.size != nodes.length-1) {
       throw ErrMessage.MST_NOT_FOUND;
     }
     return states;

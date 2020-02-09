@@ -1,5 +1,5 @@
-import {UnionFind} from '../functions/lib/unionFind'
-import {PriorityQueueHeap} from '../functions/lib/priorityQueue'
+import {UnionFind} from './lib/unionFind'
+import {PriorityQueueHeap} from './lib/priorityQueue'
 import {ErrMessage} from'../constants/errorMessage'
 
  /**
@@ -15,7 +15,6 @@ export function kruskals(graph) {
     // Initialize graph that'll contain the MST
     let MST = new Set();
     let uf = new UnionFind(nodes);
-    let check = new Set();
     // Add all edges to the Queue:
     for(let i =0;i<edges.length;i++){
         let u = edges[i].source;
@@ -23,14 +22,12 @@ export function kruskals(graph) {
         //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
            MST.add(edges[i])
-           check.add(u);
-           check.add(v);
            uf.union(u,v)
         }
     }
     
     //check if is a minimum spanning tree
-    if(check.size != nodes.length){
+    if(MST.size != nodes.length-1){
         throw ErrMessage.MST_NOT_FOUND
     }
     return MST;
@@ -79,6 +76,7 @@ export function kruskals(graph) {
             MST.add([u,v,currentMinEdge.priority]);
             let adjacents = graph.getAdjacentsOfNode(v)
         for (let i = 0; i < adjacents.length; i++) {
+            //Check if the endpoints has been explored, if not, add to MST and add to the priority queue the adjacent edges
           if (adjacents[i].source != v) {
             if (!explored.has(adjacents[i].source)) {
               edgeQueue.insert(
@@ -128,9 +126,13 @@ export function kruskals(graph) {
     let current = num;
     while(num>1){
         previous = current;
+
+        //Initialize the cheapest list to be -1
         for(let v=0;v<nodes.length;v++){
               cheapest[nodes[v].id]= -1;
         }
+        
+        //For each component find the cheapest edge
         for(let i =0;i<edges.length;i++){
             let u = subset.find(edges[i].source);
             let v = subset.find(edges[i].target);
@@ -140,6 +142,7 @@ export function kruskals(graph) {
                 if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
             }
         }
+        //For each cheapest edge, check if they belong to the same component, if yes add to the MST
         for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
             if(e!=-1){
@@ -154,6 +157,7 @@ export function kruskals(graph) {
             }
     }
     current = num;
+    //If the number of component has not changed
     if(current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
     return MST  
@@ -180,12 +184,18 @@ export function kruskals(graph) {
         let current = num;
         while(num>1){
             previous = current;
+
+            //Initialize the cheapest list to be -1
             for(let v=0;v<nodes.length;v++){
                     cheapest[nodes[v].id]= -1;
             }
+
+        //Let promises to handle the selection of hte cheapest edge(alternative of threads for Javascript)
         let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
         let result = await Promise.all(promises)
            
+    
+        //For each cheapest edge, check if they belong to the same component, if yes add to the MST
         for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
             if(e!=-1){
@@ -200,6 +210,7 @@ export function kruskals(graph) {
             }
         }
         current = num;
+        //If the number of component has not changed
         if(current == previous) throw "MST not found";
         }
         return MST  

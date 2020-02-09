@@ -17,7 +17,7 @@ import {
   resetNodes,
   updateGraph,
   updateNodes
-} from "../functions/graphFunctions";
+} from "../functions/stateFunctions";
 import { Algorithm } from "../constants/algorithms";
 import {
   emptyGraphMessage,

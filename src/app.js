@@ -6,6 +6,7 @@ import MainLayout from './layouts/mainLayout';
 
 // routes/screens
 import KruskalPage from './screens/kruskal';
+import EsauPage from './screens/esau';
 import PrimPage from './screens/prim';
 import BoruvkaPage from './screens/boruvka';
 import ParallelPage from './screens/parallel';
@@ -20,6 +21,11 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
+                <Route path="/esau" render={props => (
+                        <MainLayout>
+                            <EsauPage {...props} />
+                        </MainLayout>
+                    )}/>
                     <Route path="/kruskal" render={props => (
                         <MainLayout>
                              <KruskalPage{...props} />

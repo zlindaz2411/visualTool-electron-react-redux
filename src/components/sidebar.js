@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router";
-import {test} from '../functions/algorithms';
 import pdf from '../assets/static_assets/instruction.pdf';
 
 /**
@@ -29,8 +28,8 @@ class Sidebar extends Component {
 
                         <li>   
                         <div className = "algorithms">
-                        <h5>Algorithms &#9662;</h5>
-                            </div>                       
+                            <h5>MST Algorithms &#9662;</h5>
+                        </div>                       
                             
                         </li>
                         <li>   
@@ -63,12 +62,24 @@ class Sidebar extends Component {
                             </NavLink> 
                         </li>
                         <li>   
+                        <div className = "algorithms">
+                            <h5>CMST Algorithms &#9662;</h5>
+                        </div>                       
+                            
+                        </li>
+                        <li>   
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/esau"
+                            }
+                        }alt="EsauPage"  replace>
+                             <h4>Esau-Williams</h4>
+                            </NavLink> 
+                        </li>
+                        <li>   
                             <NavLink   className = "inactive" activeClassName="active" to="/performance" alt="PerformancePage"  replace>
                              <h5>Performance</h5>
                             </NavLink> 
                         </li>
-                        <br></br>
-                        <br></br>
                         <li>   
                              <a href={pdf} download><h5>Instruction</h5></a>
                         </li>

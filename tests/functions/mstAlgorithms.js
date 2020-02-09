@@ -3,7 +3,7 @@ import {
   prims,
   boruvkas,
   parallel
-} from "../../src/functions/originalAlgorithms";
+} from "../../src/functions/mstAlgorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
 import { Graph } from "../../src/functions/lib/graph";
 const assert = require("assert");

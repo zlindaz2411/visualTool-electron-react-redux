@@ -1,10 +1,9 @@
 import {
-  addStates,
   kruskals,
   prims,
   boruvkas,
   parallel
-} from "../../src/functions/algorithms";
+} from "../../src/functions/mstStateAlgorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
 import { Graph } from "../../src/functions/lib/graph";
 
@@ -36,18 +35,6 @@ errorInput.addEdge({ source: 1, target: 2, weight: 4, highlight: false })
 errorInput.addEdge( { source: 2, target: 3, weight: 8, highlight: false })
 errorInput.addEdge( { source: 3, target: 1, weight: 7, highlight: false })
 
-describe("Add States", function() {
-  let states = [{ highlighted: [], tree: [], highlightedNodes: [], status: 0 }];
-  addStates(states, [], [], [], 1);
-  let res = [
-    { highlighted: [], tree: [], highlightedNodes: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 }
-  ];
-
-  it("should be empty priority queue at first", function() {
-    assert.deepEqual(res, states);
-  });
-});
 
 describe("Kruskal's algorithm States", function() {
   const res = [

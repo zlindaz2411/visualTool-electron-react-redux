@@ -1,4 +1,21 @@
 /**
+ * Add highlighted elements and status in the state list.
+ * @param {*} states
+ * @param {*} hedge
+ * @param {*} tedge
+ * @param {*} hnode
+ * @param {*} status
+ */
+export function addStates(states, hedge, tedge, hnode, status) {
+  states.push({
+    highlighted: hedge.slice(),
+    tree: tedge.slice(),
+    highlightedNodes: hnode.slice(),
+    status: status
+  });
+}
+
+/**
    * Reset data ui to original value (tree = false)
    */
   export function resetTree(edges){

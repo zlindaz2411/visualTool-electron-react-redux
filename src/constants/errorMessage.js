@@ -4,7 +4,8 @@ import { confirmAlert } from "react-confirm-alert";
  * Constants of error message
  */
 export const ErrMessage ={
-    MST_NOT_FOUND : "MST not found"
+    MST_NOT_FOUND : "MST not found",
+    CMST_NOT_FOUND : "CMST not found"
 }
 
 /**

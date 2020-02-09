@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
-import { kruskals } from "../functions/algorithms";
+import { kruskals } from "../functions/mstStateAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from '../screens/algorithm';
 
