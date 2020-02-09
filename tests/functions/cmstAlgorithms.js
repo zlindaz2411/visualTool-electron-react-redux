@@ -9,30 +9,36 @@ import {
  * valid Input graph
  */
 let graph = new Graph();
-graph.root = { id: 1, x: 20, y: 200 }
-graph.addNode({ id: 1, x: 20, y: 200 });
-graph.addNode({ id: 2, x: 80, y: 100 });
-graph.addNode({ id: 3, x: 200, y: 100 });
-graph.addNode({ id: 4, x: 320, y: 100 });
-graph.addNode({ id: 5, x: 380, y: 200 });
-graph.addNode({ id: 6, x: 320, y: 300 });
-graph.addNode({ id: 7, x: 200, y: 300 });
-graph.addNode({ id: 8, x: 80, y: 300 });
-graph.addNode({ id: 9, x: 150, y: 200 });
-graph.addEdge({ source: 1, target: 2, weight: 4, highlight: false });
-graph.addEdge({ source: 2, target: 3, weight: 8, highlight: false });
-graph.addEdge({ source: 3, target: 4, weight: 7, highlight: false });
-graph.addEdge({ source: 4, target: 5, weight: 9, highlight: false });
-graph.addEdge({ source: 5, target: 6, weight: 10, highlight: false });
-graph.addEdge({ source: 6, target: 3, weight: 14, highlight: false });
-graph.addEdge({ source: 6, target: 7, weight: 2, highlight: false });
-graph.addEdge({ source: 4, target: 6, weight: 1, highlight: false });
-graph.addEdge({ source: 7, target: 8, weight: 7, highlight: false });
-graph.addEdge({ source: 7, target: 9, weight: 6, highlight: false });
-graph.addEdge({ source: 8, target: 9, weight: 7, highlight: false });
-graph.addEdge({ source: 8, target: 1, weight: 8, highlight: false });
-graph.addEdge({ source: 2, target: 8, weight: 11, highlight: false });
-graph.addEdge({ source: 9, target: 3, weight: 2, highlight: false });
+graph.root ={id: "A"};
+graph.addNode({id:"A"})
+graph.addNode({id:"B"})
+graph.addNode({id:"C"})
+graph.addNode({id:"D"})
+graph.addNode({id:"E"})
+graph.addNode({id:"F"})
+graph.addNode({id:"G"})
+graph.addEdge({source: "A", target:"B", weight:5})
+graph.addEdge({source: "A", target:"C", weight:6})
+graph.addEdge({source: "A", target:"D", weight:9})
+graph.addEdge({source: "A", target:"E", weight:10})
+graph.addEdge({source: "A", target:"F", weight:11})
+graph.addEdge({source: "A", target:"G", weight:15})
+graph.addEdge({source: "B", target:"C", weight:9})
+graph.addEdge({source: "B", target:"D", weight:6})
+graph.addEdge({source: "B", target:"E", weight:6})
+graph.addEdge({source: "B", target:"F", weight:8})
+graph.addEdge({source: "B", target:"G", weight:17})
+graph.addEdge({source: "C", target:"D", weight:7})
+graph.addEdge({source: "C", target:"E", weight:9})
+graph.addEdge({source: "C", target:"F", weight:8})
+graph.addEdge({source: "C", target:"G", weight:12})
+graph.addEdge({source: "D", target:"E", weight:10})
+graph.addEdge({source: "D", target:"F", weight:5})
+graph.addEdge({source: "D", target:"G", weight:11})
+graph.addEdge({source: "E", target:"F", weight:14})
+graph.addEdge({source: "E", target:"G", weight:9})
+graph.addEdge({source: "G", target:"F", weight:8})
+
 
 /**
  * Error graph, with isolated vertex
@@ -48,19 +54,17 @@ errorInput.addEdge({ source: 2, target: 3, weight: 8, highlight: false });
 errorInput.addEdge({ source: 3, target: 1, weight: 7, highlight: false });
 
 describe("esau williams algorithm computes a suboptimal constrained minimum spanning tree given a graph", function() {
-    // const result = new Set([
-    //   { source: 4, target: 6, weight: 1, highlight: false },
-    //   { source: 6, target: 7, weight: 2, highlight: false },
-    //   { source: 9, target: 3, weight: 2, highlight: false },
-    //   { source: 1, target: 2, weight: 4, highlight: false },
-    //   { source: 7, target: 9, weight: 6, highlight: false },
-    //   { source: 7, target: 8, weight: 7, highlight: false },
-    //   { source: 2, target: 3, weight: 8, highlight: false },
-    //   { source: 4, target: 5, weight: 9, highlight: false }
-    // ]);
-    // it("should return  a suboptimal constrained minimum spanning tree given a graph", function() {
-    //   assert.deepEqual(result, esauWilliams(3, graph));
-    // });
+    const result = new Set([
+        { source: 'G', target: 'F', weight: 8 },
+        { source: 'D', target: 'F', weight: 5 },
+        { source: 'B', target: 'E', weight: 6 },
+        { source: 'C', target: 'E', weight: 9 },
+        { source: 'A', target: 'B', weight: 5 },
+        { source: 'A', target: 'D', weight: 9 }
+    ]);
+    it("should return  a suboptimal constrained minimum spanning tree given a graph", function() {
+      assert.deepEqual(result, esauWilliams(3, graph));
+    });
 
     it("should return an error message when it's impossible to find a suboptimal constrained minimum spanning tree given a graph because of low constraint", function() {
         assert.equal(ErrMessage.CMST_NOT_FOUND, esauWilliams(2, graph));
