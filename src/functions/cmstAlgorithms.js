@@ -13,34 +13,45 @@ export function esauWilliams(capacity, graph){
     let root = graph.root;
     let nodes = graph.nodes;
     let uf = new UnionFind(nodes);
-    let gates = graph.getAdjacentsOfNode(root.id)
+    let gates = new Map();
     let CMST = new Set();
     let savings = new Map();
     let components = {};
+    let rootAdjacents = graph.getAdjacentsOfNode(root.id);
+
+    for(let i= 0;i<rootAdjacents.length; i++){
+        if(rootAdjacents[i].source != root.id) gates.set(rootAdjacents[i].source, rootAdjacents[i].weight)
+        if(rootAdjacents[i].target != root.id) gates.set(rootAdjacents[i].target, rootAdjacents[i].weight)
+    }
 
     //Initialize the components to be vertex-set
     for(let i= 0; i<nodes.length; i++){
         components[nodes[i].id] = new Set([nodes[i].id]);
     }
-
     //While the edges in the CMST is less than the nodes length -1
     while(CMST.size < nodes.length-1){
-
         //For each node, set the tradeoff cost with the closest connected node
         for(let i =0; i<nodes.length; i++){
             if(nodes[i].id == root.id) continue;
             else{
-                let closest = graph.getAdjacentsOfNode(nodes[i].id).sort((a,b) => a.weight - b.weight)[0]
-
-                //Cannot find a CMST
-                if(!closest) throw ErrMessage.CMST_NOT_FOUND
-                savings.set(nodes[i], getGateValue(nodes[i].id, gates) - closest.weight);
+                let adjacents = graph.getAdjacentsOfNode(nodes[i].id).sort((a,b) => a.weight - b.weight);
+                let min = Number.MAX_SAFE_INTEGER;
+                for(let j =0;j<adjacents.length;j++){
+                    if(adjacents[j].weight < min) min = adjacents[j].weight
+                }
+                let gateValue = gates.get(nodes[i].id) ? gates.get(nodes[i].id) : 0;
+                savings.set(nodes[i], ((min - gateValue) * 0.05));
             }
         }
         //Get the node with the biggest tradeoff
-        let max_saving = [...savings.entries()].reduce((a, e) => e[1] > a[1] ? e : a);
+        let max_saving = [...savings.entries()].reduce((a, e) => e[1] < a[1] ? e : a);
+        
         let source = max_saving[0].id
+        
         let edge =  graph.getAdjacentsOfNode(source).sort((a,b) => a.weight - b.weight)[0];
+        
+        if(!edge) throw ErrMessage.CMST_NOT_FOUND;
+        
         let target = getConnectedVertex(source, edge)
         
         let u = uf.find(source)
@@ -48,7 +59,6 @@ export function esauWilliams(capacity, graph){
         //Check if two nodes do not form a cycle
         if(u != v){
             let componentCapacity = getComponentCapacity(components[source], components[target]);
-
             //If the target of the is root, then the component Capacity should be set to less to one 
             //as the CMSTP only constrains the subtree of the root to satisfy the constraint
             let c = target == root.id ? componentCapacity -1 : componentCapacity
@@ -57,6 +67,7 @@ export function esauWilliams(capacity, graph){
                 components[source].add(target)
                 //If is not root, merge the component of source and target
                 if(target != root.id) components[target] = components[source]
+                updateGateValue(components[source], gates)
                 uf.union(source, target)
                 CMST.add(edge)
             }
@@ -99,16 +110,16 @@ function getConnectedVertex(id, edge){
 }
 
 /**
- * Return the gate value given a node id. 
- * Gate is the weight of the edge connected from root to the given node
- * @param {*} id 
+ * Update the components edge weight connected to the root to be the smallest.
+ * @param {*} component
  * @param {*} gates 
  */
-function getGateValue(id, gates){
-    for(let i= 0;i<gates.length; i++){
-        if(gates[i].source == id || gates[i].target == id){
-            return gates[i].weight
-        }
+function updateGateValue(component, gates){
+    let min = Number.MAX_SAFE_INTEGER;
+    for (let it = component.values(), val= null; val=it.next().value; ) {
+        if(gates.get(val) <min) min = gates.get(val);
     }
-    return 0;
+    for (let it = component.values(), val= null; val=it.next().value; ) {
+        gates.set(val, min)
+    }
 }

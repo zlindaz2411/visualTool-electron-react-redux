@@ -13,8 +13,8 @@
     }
     button {
         margin-left:1rem;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
         background-color: $txtCol;
         color: white;
         font-weight: bold;
@@ -51,6 +51,7 @@
       }
     
     .algorithms{
+        border-top: 1px solid $darkGreen;
         padding-top:2rem;
         padding-right:2rem;
         padding-bottom:2rem;

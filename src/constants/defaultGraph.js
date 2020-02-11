@@ -24,12 +24,34 @@ graph.addEdge( { source: 8, target: 9, weight: 8, highlight: false, tree: false 
 graph.addEdge( { source: 8, target: 1, weight: 7, highlight: false, tree: false });
 graph.addEdge( { source: 2, target: 8, weight: 6, highlight: false, tree: false });
 graph.addEdge(  { source: 9, target: 3, weight: 5, highlight: false, tree: false });
-  
+
+
+let CMSTgraph = new Graph();
+CMSTgraph.addNode({ id: 1, x: 30, y: 150, highlight: false })
+CMSTgraph.addNode({ id: 2, x: 110, y: 150, highlight: false })
+CMSTgraph.addNode({ id: 3, x: 70, y: 50, highlight: false })
+CMSTgraph.addNode({ id: 4, x: 50, y: 250, highlight: false })
+CMSTgraph.addNode({ id: 5, x: 100, y: 250, highlight: false })
+CMSTgraph.addEdge(  { source: 1, target: 2, weight: 2, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 1, target: 3, weight: 10, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 1, target: 4, weight: 12, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 1, target: 5, weight: 5, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 2, target: 3, weight: 3, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 2, target: 4, weight: 15, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 2, target: 5, weight: 8, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 3, target: 4, weight: 4, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 3, target: 5, weight: 6, highlight: false, tree: false });
+CMSTgraph.addEdge(  { source: 4, target: 5, weight: 10, highlight: false, tree: false });
 
 /**
  * Example of graph
  */
 export let data = graph;
+
+/**
+ * Example of CSMT graph
+ */
+export let CMSTdata = CMSTgraph;
 
 
 

@@ -6,4 +6,5 @@ export const Algorithm = {
     PRIM: "Prim",
     BORUVKA: "Boruvka",
     PARALLEL: "Boruvka Parallel",
+    ESAU : "Esau Williams"
 };

@@ -58,7 +58,7 @@ describe("esau williams algorithm computes a suboptimal constrained minimum span
         { source: 'G', target: 'F', weight: 8 },
         { source: 'D', target: 'F', weight: 5 },
         { source: 'B', target: 'E', weight: 6 },
-        { source: 'C', target: 'E', weight: 9 },
+        { source: 'A', target: 'C', weight: 6 },
         { source: 'A', target: 'B', weight: 5 },
         { source: 'A', target: 'D', weight: 9 }
     ]);

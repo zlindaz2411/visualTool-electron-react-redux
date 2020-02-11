@@ -926,8 +926,8 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding: 0; }
   .sidebar button {
     margin-left: 1rem;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     background-color: #50525E;
     color: white;
     font-weight: bold;
@@ -957,6 +957,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     -ms-user-select: none;
     user-select: none; }
   .sidebar .algorithms {
+    border-top: 1px solid #CFDFCC;
     padding-top: 2rem;
     padding-right: 2rem;
     padding-bottom: 2rem; }
@@ -1112,6 +1113,14 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     border-radius: 50%;
     background: #84C262;
     cursor: pointer; }
+
+.canvasDialog {
+  margin-top: 2rem;
+  overflow: auto;
+  height: 35rem;
+  background: #F9F9F9; }
+  .canvasDialog .drawingDialog {
+    background: #F9F9F9; }
 
 .canvasDialog {
   margin-top: 2rem;

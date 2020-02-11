@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Dialog from "../components/dialog";
-import { data} from "../constants/defaultGraph";
+import { CMSTdata} from "../constants/defaultGraph";
 import {
   noRootSelectedMessage,
 } from "../constants/errorMessage";
@@ -26,13 +26,13 @@ class EsauPage extends Component {
       states: [],
       data:
        this.props.latestGraph == null
-          ? data
+          ? CMSTdata
           : this.props.latestGraph
     }
 }
 
 componentDidMount() {
-  console.log(this.props.latestGraph)
+  console.log(CMSTdata)
   if (this.state.data== null) {
     emptyGraphMessage();
     this.setState({
@@ -91,7 +91,7 @@ render() {
                   <button onClick={() => this.handleSubmit()}>Submit</button>
                 </center>
               </Dialog>
-              <AlgorithmPage pageName={Algorithm.PRIM} data={this.state.data} states={this.state.states}></AlgorithmPage>
+              <AlgorithmPage pageName={Algorithm.ESAU} data={this.state.data} states={this.state.states}></AlgorithmPage>
     </div>
   
   );
