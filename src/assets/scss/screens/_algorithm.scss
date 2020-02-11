@@ -1,7 +1,7 @@
 .algorithm_wrap {
     position: fixed;
     margin-left: 15rem;
-    width: 100% - 15%;
+    width: 100% - 17%;
     padding: 0;
 
     .title{
@@ -10,7 +10,15 @@
     }
     .grid{
         padding-top: 5rem;
-        max-width: 100% - 15%;
+        max-width: 100% - 17%;
+    }
+    .actionButton{
+      margin-left:3rem;
+      margin-bottom:3rem;
+      margin-right:3rem;
+      margin-top : 7rem;
+      display: inline-block;
+   //   justify-content: space-between;
     }
     
     .canvas{
@@ -49,6 +57,7 @@
      .speedDiv{
       position: relative;
       top: -8px;
+      margin-top:7rem;
       display:inline-block; 
       margin-right: 2rem;
       margin-bottom:2rem;
@@ -60,6 +69,7 @@
         padding:0;
         margin-left: 1rem;
         margin-right: 1rem;
+        margin-top:7rem;
       }
 
      }
@@ -90,6 +100,7 @@
      .slider {
         position: relative;
         top: -8px;
+        margin-top:7rem;
         margin-bottom: 2rem;
         -webkit-appearance: none;
         width: 30rem;

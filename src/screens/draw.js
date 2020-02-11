@@ -277,7 +277,6 @@ class DrawPage extends Component {
                   </button>
                 ))}
               </div>
-              <div className="action_buttons">
                 <button
                   onClick={() =>
                     this.handleDeleteGraph(this.state.selectedGraph)
@@ -290,7 +289,6 @@ class DrawPage extends Component {
                 >
                   Load
                 </button>
-              </div>
             </Dialog>
             <InputDialog
               handleClose={() => this.handleClose()}

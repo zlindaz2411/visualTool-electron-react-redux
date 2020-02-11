@@ -138,13 +138,12 @@ class PerformancePage extends Component {
                       </label> 
                     </div>
                   ))}
-                  <div className="button">
-                    <button>Compare</button>
-                  </div>
                 </form>
               </div>
             </div>
+            <button className = "actionButton">Compare</button>
           </div>
+          
         </center>
       </div>
     );

@@ -915,7 +915,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
 
 .sidebar {
   position: fixed;
-  width: 15rem;
+  width: 17rem;
   margin: 0;
   background: #D9E9D6;
   padding: 0;
@@ -981,7 +981,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
 .algorithm_wrap {
   position: fixed;
   margin-left: 15rem;
-  width: 85%;
+  width: 83%;
   padding: 0;
   /* Mouse-over effects */ }
   .algorithm_wrap .title {
@@ -989,7 +989,13 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     text-align: center; }
   .algorithm_wrap .grid {
     padding-top: 5rem;
-    max-width: 85%; }
+    max-width: 83%; }
+  .algorithm_wrap .actionButton {
+    margin-left: 3rem;
+    margin-bottom: 3rem;
+    margin-right: 3rem;
+    margin-top: 7rem;
+    display: inline-block; }
   .algorithm_wrap .canvas {
     margin-right: 2rem;
     border-radius: 2rem;
@@ -1019,6 +1025,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     .algorithm_wrap .player .speedDiv {
       position: relative;
       top: -8px;
+      margin-top: 7rem;
       display: inline-block;
       margin-right: 2rem;
       margin-bottom: 2rem; }
@@ -1028,7 +1035,8 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
         font-weight: bold;
         padding: 0;
         margin-left: 1rem;
-        margin-right: 1rem; }
+        margin-right: 1rem;
+        margin-top: 7rem; }
     .algorithm_wrap .player .player-controls {
       background-color: #FCFCFF;
       border-color: #FCFCFF;
@@ -1051,6 +1059,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     .algorithm_wrap .player .slider {
       position: relative;
       top: -8px;
+      margin-top: 7rem;
       margin-bottom: 2rem;
       -webkit-appearance: none;
       width: 30rem;
@@ -1132,7 +1141,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
 
 .home_wrap {
   position: fixed;
-  width: 85%;
+  width: 83%;
   margin-left: 15rem;
   padding: 0; }
   .home_wrap .title {
@@ -1156,7 +1165,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
 .about_wrap {
   position: fixed;
   margin-left: 15rem;
-  width: 85%;
+  width: 83%;
   padding: 0; }
   .about_wrap .title {
     padding-top: 7.5rem;
@@ -1204,7 +1213,10 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     -ms-user-select: none;
     user-select: none; }
   .about_wrap .action_buttons button {
-    margin: 3rem;
+    margin-left: 3rem;
+    margin-bottom: 3rem;
+    margin-right: 3rem;
+    margin-top: 7rem;
     display: inline-block; }
   .about_wrap .load {
     margin-top: 2rem;
@@ -1247,7 +1259,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
 .performance_wrap {
   position: fixed;
   margin-left: 15rem;
-  width: 85%;
+  width: 83%;
   padding: 0; }
   .performance_wrap .title {
     padding-top: 7.5rem;
@@ -1278,7 +1290,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       border-style: solid; }
   .performance_wrap .grid {
     padding-top: 5rem;
-    max-width: 85%; }
+    max-width: 83%; }
   .performance_wrap .first_column {
     margin-right: 2rem;
     border-radius: 2rem;
@@ -1298,5 +1310,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       padding: 1rem;
       float: left;
       clear: left; }
-    .performance_wrap .second_column .button {
-      padding-top: 20rem; }
+  .performance_wrap .actionButtons button {
+    margin-left: 3rem;
+    margin-bottom: 3rem;
+    margin-right: 3rem;
+    margin-top: 7rem;
+    display: inline-block; }

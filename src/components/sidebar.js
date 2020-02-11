@@ -63,6 +63,20 @@ class Sidebar extends Component {
                         </li>
                         <li>   
                         <div className = "algorithms">
+                            <h5>DCMST Algorithms &#9662;</h5>
+                        </div>                       
+                            
+                        </li>
+                        <li>   
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/kruskalConstrained"
+                            }
+                        }alt="EsauPage"  replace>
+                             <h4>Kruskal Constraint</h4>
+                            </NavLink> 
+                        </li>
+                        <li>   
+                        <div className = "algorithms">
                             <h5>CMST Algorithms &#9662;</h5>
                         </div>                       
                             

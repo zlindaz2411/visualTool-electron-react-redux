@@ -6,6 +6,7 @@ import MainLayout from './layouts/mainLayout';
 
 // routes/screens
 import KruskalPage from './screens/kruskal';
+import KruskalConstrainedPage from './screens/kruskalConstrained';
 import EsauPage from './screens/esau';
 import PrimPage from './screens/prim';
 import BoruvkaPage from './screens/boruvka';
@@ -29,6 +30,11 @@ class App extends Component {
                     <Route path="/kruskal" render={props => (
                         <MainLayout>
                              <KruskalPage{...props} />
+                        </MainLayout>
+                    )}/>
+                    <Route path="/kruskalConstrained" render={props => (
+                        <MainLayout>
+                             <KruskalConstrainedPage {...props} />
                         </MainLayout>
                     )}/>
                       <Route path="/prim" render={props => (

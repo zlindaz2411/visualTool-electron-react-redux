@@ -12,6 +12,17 @@ export function getPseudocode(name) {
         kruskal.push("\xa0 \xa0else do nothing");
         kruskal.push("return T");
         return kruskal;
+      case "Kruskal with Constraint": //Kruskal for DCMST
+        let kruskalConstrained = [];
+        kruskalConstrained.push("Sort the edge list E by weight (smallest first)");
+        kruskalConstrained.push("Initialize the set T = empty set");
+        kruskalConstrained.push("for (i=0; i<edgeList.length; i++)");
+        kruskalConstrained.push("\xa0 \xa0 e = edgelist[i]");
+        kruskalConstrained.push("\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint");
+        kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0add e to T");
+        kruskalConstrained.push("\xa0 \xa0else do nothing");
+        kruskalConstrained.push("return T");
+        return kruskalConstrained;
       case "Prim": //Prim's
         let prim = [];
         prim.push("Select a root node r");
@@ -76,7 +87,7 @@ export function getPseudocode(name) {
         esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0Add cheapestEdge to CMST");
         esauWilliams.push("\xa0 \xa0else do nothing");
         esauWilliams.push("\xa0 \xa0remove cheapestEdge from L");
-        esauWilliams.push("return CMST");
+        esauWilliams.push("return CMST(suboptimal solution)");
 
         return esauWilliams;
       default:

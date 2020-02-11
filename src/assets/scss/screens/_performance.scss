@@ -1,7 +1,7 @@
 .performance_wrap {
     position: fixed;
     margin-left: 15rem;
-    width: 100% - 15%;
+    width: 100% - 17%;
     padding: 0;
 
 
@@ -42,7 +42,7 @@
 
     .grid{
         padding-top: 5rem;
-        max-width: 100% - 15%;
+        max-width: 100% - 17%;
     }
 
     .first_column{
@@ -73,10 +73,16 @@
         float: left;
         clear: left;
         }
-
-        .button{
-            padding-top:20rem;
-        }
     }
+
+    .actionButton button{
+        margin-left:3rem;
+        margin-bottom:3rem;
+        margin-right:3rem;
+        margin-top : 7rem;
+    }
+
+
+
 
 }

@@ -332,7 +332,7 @@ changeSpeed(){
                 
               </div>
             ) : (
-              <button onClick={() => this.handleStart()}>Visualize</button>
+              <button class = "actionButton" onClick={() => this.handleStart()}>Visualize</button>
             )}
           </center>
         </div>

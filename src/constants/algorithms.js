@@ -6,5 +6,6 @@ export const Algorithm = {
     PRIM: "Prim",
     BORUVKA: "Boruvka",
     PARALLEL: "Boruvka Parallel",
+    CONSTRAINED: "Kruskal with Constraint",
     ESAU : "Esau Williams"
 };
