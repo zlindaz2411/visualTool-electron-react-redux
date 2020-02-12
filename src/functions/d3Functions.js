@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
 import {Algorithm} from"../constants/algorithms";
-
+import {validateNumber, validateEmpty} from "../functions/validator";
 
 const radius = 10;
 const margin = 15;
@@ -240,7 +240,7 @@ function createEdges(svg, data, draw) {
             if (e.keyCode == 13) {
               e.preventDefault();
               let text = input.node().value;
-              if(/^\d+$/.test(text) && text.length !=0){
+              if(validateNumber(text) && !validateEmpty(text)){
                 d.weight = text;
                 removeAll();
                 drawGraph(data, draw);

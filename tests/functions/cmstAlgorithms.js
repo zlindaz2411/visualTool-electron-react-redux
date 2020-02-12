@@ -63,14 +63,14 @@ describe("esau williams algorithm computes a suboptimal constrained minimum span
         { source: 'A', target: 'D', weight: 9 }
     ]);
     it("should return  a suboptimal constrained minimum spanning tree given a graph", function() {
-      assert.deepEqual(result, esauWilliams(3, graph));
+      assert.deepEqual(result, esauWilliams(graph,3));
     });
 
     it("should return an error message when it's impossible to find a suboptimal constrained minimum spanning tree given a graph because of low constraint", function() {
-        assert.equal(ErrMessage.CMST_NOT_FOUND, esauWilliams(2, graph));
+        assert.equal(ErrMessage.CMST_NOT_FOUND, esauWilliams(graph, 2));
       });
   
     it("should return an error message when the input is invalid", function() {
-      assert.equal(ErrMessage.CMST_NOT_FOUND, esauWilliams(3, errorInput));
+      assert.equal(ErrMessage.CMST_NOT_FOUND, esauWilliams(errorInput, 3));
     });
   });

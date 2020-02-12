@@ -1,7 +1,8 @@
 
 import {UnionFind} from './lib/unionFind'
 import {ErrMessage} from'../constants/errorMessage'
-
+import {addStates} from './stateFunctions';
+import {unionSet, getConnectedVertex, updateGateValue, findCheapest} from '../functions/cmstAlgorithms';
 
 /**
  * Esau-Williams algorithm that gives a suboptimal solution to the capacitated minimum spanning tree problem.
@@ -10,7 +11,9 @@ import {ErrMessage} from'../constants/errorMessage'
  */
 export function esauWilliams(graph, capacity) {
   try {
+    // console.log("ahah")
     let edges = graph.edges.slice().sort((a,b) => a.weight - b.weight);
+    let states = [{ highlighted: [], tree: [], status: 0 }];
     let hnode = [];
     let tedge = [];
     let root = graph.root;
@@ -22,6 +25,7 @@ export function esauWilliams(graph, capacity) {
     let components = {};
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
 
+    addStates(states, [], [], tedge, 1);
 
     for (let i = 0; i < rootAdjacents.length; i++) {
       if (rootAdjacents[i].source != root.id)
@@ -38,18 +42,22 @@ export function esauWilliams(graph, capacity) {
     }
     //While the edges in the CMST is less than the nodes length -1
     while (CMST.size < nodes.length - 1) {
+      addStates(states, [], [], tedge, 2);
       hnode = [];
       //For each node, set the tradeoff cost with the closest connected node
-      for (let i = 0; i < nodes.length; i++) {
-        hnode.push(nodes[i])
+      for (let i = 0; i < nodes.length; i++) { 
         if (nodes[i].id == root.id) continue;
         else {
+          hnode.push(nodes[i].id)
+          addStates(states, [], tedge, hnode, 3);
           let cheapest = findCheapest(nodes[i].id, edges)
           
           let closest = cheapest[0]
           if (!closest) throw ErrMessage.CMST_NOT_FOUND;
           hnode.push(cheapest[1])
-
+          addStates(states, [], tedge, hnode, 4);
+          addStates(states, [], tedge, hnode, 5);
+          
           let gateValue = gates.get(nodes[i].id);
           savings.set(nodes[i], closest.weight - gateValue);
         }
@@ -82,6 +90,8 @@ export function esauWilliams(graph, capacity) {
       if (!edge) throw ErrMessage.CMST_NOT_FOUND;
       
       hedge.push(edge)
+      addStates(states, [], tedge, hnode, 6);
+      addStates(states, hedge, tedge, hnode, 7);
 
       let target = edge.target
 
@@ -99,6 +109,7 @@ export function esauWilliams(graph, capacity) {
         let c = target == root.id ? componentCapacity - 1 : componentCapacity;
         //Check if CMST U (u,v) doesn't violate capacity constraint
         if (c <= capacity) {
+          addStates(states, hedge, tedge, hnode, 8);
           tedge.push(edge)
           //Update the components
           let union = unionSet(components[source], components[target])
@@ -117,67 +128,18 @@ export function esauWilliams(graph, capacity) {
           
         }
       }
+
+      addStates(states, [], tedge, [], 9);
       edges.splice(edges.indexOf(edge), 1);
-      console.log(CMST)
+      addStates(states, [], tedge, [], 10);
     }
     
-    return CMST;
+    addStates(states, [], tedge, [], 11);
+    
+    return states;
   } catch (e) {
     return e.toString();
   }
 }
 
-/**
- * Perform union of two sets
- * @param {*} componentA 
- * @param {*} componentB 
- */
-export function unionSet(componentA, componentB){
-    let set = new Set();
-    for (let it = componentA.values(), val = null; (val = it.next().value); ) {
-      set.add(val);
-    }
-    for (let it = componentB.values(), val = null; (val = it.next().value); ) {
-      set.add(val);
-    }
-    return set;
-}
 
-/**
- * Update the components edge weight connected to the root to be the smallest.
- * @param {*} component
- * @param {*} gates 
- */
-export function updateGateValue(component, gates){
-    let min = Number.MAX_SAFE_INTEGER;
-    for (let it = component.values(), val= null; val=it.next().value; ) {
-        if(gates.get(val) <min) min = gates.get(val);
-    }
-    for (let it = component.values(), val= null; val=it.next().value; ) {
-        gates.set(val, min)
-    }
-}
-
-/**
- * Find the cheapest edge adjacent to given node id.
- * @param {*} id 
- * @param {*} edges 
- */
-export function findCheapest(id, edges){
-  let min = Number.MAX_SAFE_INTEGER;
-  let minEdge;
-  let source;
-  for(let i =0; i< edges.length; i++){
-    if(edges[i].source == id && edges[i].weight < min){
-      source = edges[i].target;
-      min = edges[i].weight
-      minEdge = edges[i]
-    }
-    else if(edges[i].target == id && edges[i].weight < min){
-      source = edges[i].source;
-      min = edges[i].weight
-      minEdge = edges[i]
-    }
-  }
-  return [minEdge, source];
-}

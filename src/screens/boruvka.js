@@ -24,7 +24,7 @@ class BoruvkaPage extends Component {
 
 render() {
   return (
-    <AlgorithmPage pageName={Algorithm.BORUVKA} data={this.state.data} states={boruvkas(this.state.data)}></AlgorithmPage>
+    <AlgorithmPage  pageName={Algorithm.BORUVKA} data={this.state.data} states={boruvkas(this.state.data)}></AlgorithmPage>
   );
 }
 }

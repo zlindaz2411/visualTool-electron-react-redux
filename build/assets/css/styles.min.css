@@ -987,6 +987,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .algorithm_wrap .title {
     padding-top: 7.5rem;
     text-align: center; }
+  .algorithm_wrap .sub_text {
+    padding-top: 1rem;
+    text-align: center; }
   .algorithm_wrap .grid {
     padding-top: 5rem;
     max-width: 83%; }
@@ -1212,6 +1215,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none; }
+  .about_wrap .dialog_buttons button {
+    margin: 3rem;
+    display: inline-block; }
   .about_wrap .action_buttons button {
     margin-left: 3rem;
     margin-bottom: 3rem;
@@ -1310,9 +1316,8 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       padding: 1rem;
       float: left;
       clear: left; }
-  .performance_wrap .actionButtons button {
+  .performance_wrap .actionButton {
     margin-left: 3rem;
     margin-bottom: 3rem;
     margin-right: 3rem;
-    margin-top: 7rem;
-    display: inline-block; }
+    margin-top: 7rem; }

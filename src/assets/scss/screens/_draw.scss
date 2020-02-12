@@ -65,6 +65,11 @@
         user-select: none;
     }
     
+    .dialog_buttons button{
+        margin:3rem;
+        display: inline-block;
+     //   justify-content: space-between;
+    }
     .action_buttons button{
         margin-left:3rem;
         margin-bottom:3rem;

@@ -3,16 +3,19 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Dialog from "../components/dialog";
+import InputDialog from "../components/inputDialog";
 import { CMSTdata} from "../constants/defaultGraph";
 import {
   noRootSelectedMessage,
 } from "../constants/errorMessage";
 
 import { drawGraph} from "../functions/d3Functions";
-import { prims } from "../functions/mstStateAlgorithms";
+import { esauWilliams } from "../functions/cmstStateAlgorithm";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
-import { Graph } from "../functions/lib/graph";
+import {validateNumber, validateEmpty} from "../functions/validator";
+import { onlyNumberErrorMessage } from "../constants/errorMessage";
+
 
 /**
  * Esau William page uses AlgorithmPage and pass the states produced by the prim function.
@@ -22,7 +25,9 @@ class EsauPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      capacity:"",
       isDialogOpen: true,
+      isInputDialogOpen: false,
       states: [],
       data:
        this.props.latestGraph == null
@@ -32,7 +37,6 @@ class EsauPage extends Component {
 }
 
 componentDidMount() {
-  console.log(CMSTdata)
   if (this.state.data== null) {
     emptyGraphMessage();
     this.setState({
@@ -55,9 +59,8 @@ componentDidMount() {
     } else {
       this.setState({
         isDialogOpen: false,
-        states: prims(this.state.data)
+        isInputDialogOpen:true,
       });
-      console.log(this.state.states)
     }
   }
 
@@ -73,6 +76,42 @@ componentDidMount() {
       if (this.state.data.root) drawGraph(this.state.data, Algorithm.PRIM);
       this.handleClose();
     }
+  }
+
+    /**
+   * Handle close dialog. If no number entered pop up error message, else close.
+   */
+  handleInputClose() {
+    if(!validateNumber(this.state.capacity) || validateEmpty(this.state.capacity)){
+       onlyNumberErrorMessage();
+    }
+    else{
+      this.setState({
+        isInputDialogOpen: false,
+        states: esauWilliams(this.state.data, this.state.capacity)
+      });
+    }
+    }
+
+  /**
+   * Submit the degree value
+   * @param {*} e 
+   */
+  handleInputSumbit(e){
+    e.preventDefault();
+    if(validateNumber(this.state.capacity) && !validateEmpty(this.state.capacity)){
+       this.handleInputClose();
+    }
+    else{
+      onlyNumberErrorMessage();
+    }
+  }
+
+  /**
+   * Each time change textfield update text;
+   */
+  handleChange(event) {
+    this.setState({ capacity: event.target.value });
   }
 
 
@@ -91,6 +130,16 @@ render() {
                   <button onClick={() => this.handleSubmit()}>Submit</button>
                 </center>
               </Dialog>
+              <InputDialog 
+                handleClose={() => this.handleInputClose()}
+                isOpen={this.state.isInputDialogOpen}
+                title="Enter a number for the capacity"
+                submitAction={e => this.handleInputSumbit(e)}
+                value={this.state.degree}
+                handleChange={e => this.handleChange(e)}
+                buttonName="Submit">
+
+              </InputDialog>
               <AlgorithmPage pageName={Algorithm.ESAU} data={this.state.data} states={this.state.states}></AlgorithmPage>
     </div>
   

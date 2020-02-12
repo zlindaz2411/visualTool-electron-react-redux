@@ -241,6 +241,11 @@ changeSpeed(){
       <div className="algorithm_wrap">
         <div className="title">
           <h1>{this.state.pageName}</h1>
+          <div className="sub_text">
+          <h2>
+           {this.props.subtext}
+          </h2>     
+        </div>
           <center>
             <div className="grid">
               <div className="column column_7_12">
@@ -406,6 +411,7 @@ changeSpeed(){
     this.resetGraph();
     this.updateGraph();
     this.draw();
+    console.log(this.state.data.nodes)
   }
 }
 

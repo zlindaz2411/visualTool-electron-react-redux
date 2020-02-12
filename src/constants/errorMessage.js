@@ -39,6 +39,21 @@ export function onlyNumberErrorMessage(){
 }
 
 /**
+ * When the input is empty; display error message
+ */
+export function emptyInputErrorMessage(){
+  confirmAlert({
+    title: `Warning!`,
+    message: `The field cannot be empty`,
+    buttons: [
+      {
+        label: "Cancel"
+      }
+    ]
+  });
+}
+
+/**
  * When there isn't a graph, display error message
  */
 export function algorithmErrorMessage(){

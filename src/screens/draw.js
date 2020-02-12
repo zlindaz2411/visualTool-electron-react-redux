@@ -259,8 +259,8 @@ class DrawPage extends Component {
             when={JSON.stringify(this.state.graph) !== JSON.stringify(this.state.initalGraph)}
             message={'Unsaved changes'}
           /> */}
-          <div className="action_buttons">
-            <button onClick={() => this.openModal()}>Load</button>
+          
+            
             <Dialog
               title="Load Graph"
               isOpen={this.state.isDialogOpen}
@@ -277,6 +277,7 @@ class DrawPage extends Component {
                   </button>
                 ))}
               </div>
+              <div className="dialog_buttons">
                 <button
                   onClick={() =>
                     this.handleDeleteGraph(this.state.selectedGraph)
@@ -289,6 +290,7 @@ class DrawPage extends Component {
                 >
                   Load
                 </button>
+              </div>
             </Dialog>
             <InputDialog
               handleClose={() => this.handleClose()}
@@ -299,6 +301,8 @@ class DrawPage extends Component {
               handleChange={e => this.handleChange(e)}
               buttonName="Save"
             ></InputDialog>
+          <div className="action_buttons">
+            <button onClick={() => this.openModal()}>Load</button>
             <button onClick={() => this.save()}>Save</button>
             <button onClick={() => this.clearAll()}>Clear</button>
             <button onClick={() => this.handleSubmit()}>Submit</button>

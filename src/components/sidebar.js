@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router";
-import pdf from '../assets/static_assets/instruction.pdf';
-
 /**
  * Sidebar component with the main menu of the system.
  */
@@ -94,18 +92,11 @@ class Sidebar extends Component {
                              <h5>Performance</h5>
                             </NavLink> 
                         </li>
-                        <li>   
-                             <a href={pdf} download><h5>Instruction</h5></a>
-                        </li>
-
                     </ul>
                 </nav>
             </aside>
         )
     }
-    // open(){
-    //     return <NavLink   to="/draw" alt="DrawPage" replace></NavLink>
-    // }
 }
 
 export default withRouter(Sidebar);

@@ -21,7 +21,7 @@ class InputDialog extends Component{
                <h4 className = "close" onClick={() => this.handleClose()}>x</h4> 
                <br></br>
                <center>
-               <h1>{this.props.title}</h1>   
+               <h3>{this.props.title}</h3>   
                </center>  
                </div>   
                     <form onSubmit={(e) => this.props.submitAction(e)}>
