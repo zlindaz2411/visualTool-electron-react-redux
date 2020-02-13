@@ -223,7 +223,7 @@ changeSpeed(){
       emptyGraphMessage();
     } else {
       const res = this.props.states;
-      if (res == ErrMessage.MST_NOT_FOUND) algorithmErrorMessage();
+      if (res == ErrMessage.MST_NOT_FOUND || res == ErrMessage.CMST_NOT_FOUND || res == ErrMessage.DCMST_NOT_FOUND) algorithmErrorMessage();
       else {
         this.setState({
           start: true,

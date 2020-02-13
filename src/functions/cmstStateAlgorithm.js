@@ -2,7 +2,7 @@
 import {UnionFind} from './lib/unionFind'
 import {ErrMessage} from'../constants/errorMessage'
 import {addStates} from './stateFunctions';
-import {unionSet, getConnectedVertex, updateGateValue, findCheapest} from '../functions/cmstAlgorithms';
+import {unionSet, getConnectedVertex, updateGateValue, findCheapest, getGatesValues} from '../functions/cmstAlgorithms';
 
 /**
  * Esau-Williams algorithm that gives a suboptimal solution to the capacitated minimum spanning tree problem.
@@ -12,27 +12,21 @@ import {unionSet, getConnectedVertex, updateGateValue, findCheapest} from '../fu
 export function esauWilliams(graph, capacity) {
   try {
     // console.log("ahah")
-    let edges = graph.edges.slice().sort((a,b) => a.weight - b.weight);
+    let edges = graph.edges.slice();
     let states = [{ highlighted: [], tree: [], status: 0 }];
     let hnode = [];
     let tedge = [];
     let root = graph.root;
-    let nodes =graph.nodes.slice();
+    let nodes = graph.nodes.slice();
     let uf = new UnionFind(nodes);
-    let gates = new Map();
+    
     let CMST = new Set();
     let savings = new Map();
     let components = {};
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
-
+    let gates = getGatesValues(rootAdjacents, root.id)
     addStates(states, [], [], tedge, 1);
 
-    for (let i = 0; i < rootAdjacents.length; i++) {
-      if (rootAdjacents[i].source != root.id)
-        gates.set(rootAdjacents[i].source, rootAdjacents[i].weight);
-      if (rootAdjacents[i].target != root.id)
-        gates.set(rootAdjacents[i].target, rootAdjacents[i].weight);
-    }
 
     //Initialize the components to be vertex-set
     for (let i = 0; i < nodes.length; i++) {
@@ -40,19 +34,16 @@ export function esauWilliams(graph, capacity) {
     }
     //While the edges in the CMST is less than the nodes length -1
     let len =  nodes.length;
-    while (CMST.size <len- 1  && edges.length > 0) {
-
-      addStates(states, [], tedge, [], 2);
+    while (CMST.size <len- 1  && edges.length >0) {
+      addStates(states, [], [], tedge, 2);
       
       //For each node, set the tradeoff cost with the closest connected node
       for (let i = 0; i < nodes.length; i++) { 
         if (nodes[i].id == root.id) continue;
         else {
           hnode = [];
-          
-          addStates(states, [], tedge, hnode, 3);
           hnode.push(nodes[i].id)
-          addStates(states, [], tedge, hnode, 4);
+          addStates(states, [], tedge, hnode, 3);
           let cheapest = findCheapest(nodes[i].id, edges)
           
           let closest = cheapest[0]
@@ -63,7 +54,7 @@ export function esauWilliams(graph, capacity) {
             continue;
           };
           hnode.push(cheapest[1])
-          
+          addStates(states, [], tedge, hnode, 4);
           addStates(states, [], tedge, hnode, 5);
           
           let gateValue = gates.get(nodes[i].id);

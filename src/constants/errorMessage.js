@@ -4,8 +4,9 @@ import { confirmAlert } from "react-confirm-alert";
  * Constants of error message
  */
 export const ErrMessage ={
-    MST_NOT_FOUND : "MST not found",
-    CMST_NOT_FOUND : "CMST not found"
+   MST_NOT_FOUND: "MST not found",
+   CMST_NOT_FOUND: "CMST not found",
+   DCMST_NOT_FOUND: "DCMST not found",
 }
 
 /**
@@ -58,8 +59,8 @@ export function emptyInputErrorMessage(){
  */
 export function algorithmErrorMessage(){
   confirmAlert({
-    title: `Warning!`,
-    message: `An error occurred. Please check if your graph is valid`,
+    title: `Error!`,
+    message: `Unable to find a solution. Please check your inputs.`,
     buttons: [
       {
         label: "Cancel"

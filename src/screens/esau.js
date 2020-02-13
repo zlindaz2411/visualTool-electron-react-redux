@@ -119,7 +119,7 @@ render() {
   return (
     <div>
             <Dialog
-                title="Select a root node"
+                title="Select a root node connected to all vertices"
                 isOpen={this.state.isDialogOpen}
                 handleClose={() => this.handleClose()}
               >

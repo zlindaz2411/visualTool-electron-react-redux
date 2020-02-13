@@ -10,22 +10,19 @@ import {ErrMessage} from'../constants/errorMessage'
  */
 export function esauWilliams(graph, capacity) {
   try {
-    let edges = graph.edges.slice()
-    let root = graph.root;
+    let edges = graph.edges.slice();
     let nodes = graph.nodes.slice();
+    let root = findRoot(nodes, edges)
+    if(root == -1) throw ErrMessage.CMST_NOT_FOUND
+
     let uf = new UnionFind(nodes);
-    let gates = new Map();
+    
     let CMST = new Set();
     let savings = new Map();
     let components = {};
-    let rootAdjacents = graph.getAdjacentsOfNode(root.id);
+    let rootAdjacents = graph.getAdjacentsOfNode(root);
 
-    for (let i = 0; i < rootAdjacents.length; i++) {
-      if (rootAdjacents[i].source != root.id)
-        gates.set(rootAdjacents[i].source, rootAdjacents[i].weight);
-      if (rootAdjacents[i].target != root.id)
-        gates.set(rootAdjacents[i].target, rootAdjacents[i].weight);
-    }
+    let gates = getGatesValues(rootAdjacents, root)
 
     //Initialize the components to be vertex-set
     for (let i = 0; i < nodes.length; i++) {
@@ -36,7 +33,7 @@ export function esauWilliams(graph, capacity) {
     while (CMST.size <len - 1  && edges.length >0) {
       //For each node, set the tradeoff cost with the closest connected node
       for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i].id == root.id) continue;
+        if (nodes[i].id == root) continue;
         else {
           let cheapest = findCheapest(nodes[i].id, edges)
           let closest = cheapest[0]
@@ -69,7 +66,7 @@ export function esauWilliams(graph, capacity) {
 
         //If the target of the is root, then the component Capacity should be set to less to one
         //as the CMSTP only constrains the subtree of the root to satisfy the constraint
-        let c = target == root.id ? componentCapacity - 1 : componentCapacity;
+        let c = target == root ? componentCapacity - 1 : componentCapacity;
         //Check if CMST U (u,v) doesn't violate capacity constraint
         if (c <= capacity) {
           let temp= unionSet(components[source], components[target])
@@ -80,7 +77,7 @@ export function esauWilliams(graph, capacity) {
                 components[val] = temp
             }
           }
-          components[root.id] = new Set([root.id])
+          components[root] = new Set([root.id])
           updateGateValue(components[source], gates);
           uf.union(source, target);
           CMST.add(edge);
@@ -98,6 +95,51 @@ export function esauWilliams(graph, capacity) {
     return e.toString();
   }
 }
+
+/**
+ * 
+ * @param {*} nodes 
+ * @param {*} edges 
+ */
+export function getGatesValues(rootAdjacents, root){
+  let gates = new Map();
+  for (let i = 0; i < rootAdjacents.length; i++) {
+    if (rootAdjacents[i].source != root)
+      gates.set(rootAdjacents[i].source, rootAdjacents[i].weight);
+    if (rootAdjacents[i].target != root)
+      gates.set(rootAdjacents[i].target, rootAdjacents[i].weight);
+  }
+  return gates;
+}
+
+/**
+ * Find the root for the CMST algorithm: the root should be connected to all other vertices
+ * @param {*} nodes 
+ * @param {*} edges 
+ */
+function findRoot(nodes, edges){
+  let nodeConnection = new Map();
+  for(let i =0;i<edges.length; i++){
+      if(!nodeConnection.has(edges[i].source)){
+        nodeConnection.set(edges[i].source, 1);
+      }
+      else{
+        nodeConnection.set(edges[i].source, nodeConnection.get(edges[i].source)+1);
+      }
+      if(!nodeConnection.has(edges[i].target)){
+        nodeConnection.set(edges[i].target, 1);
+      }
+      else{
+        nodeConnection.set(edges[i].target, nodeConnection.get(edges[i].target)+1);
+      }
+  }
+  for(const [key, value] of nodeConnection.entries()){
+    if(value==nodes.length-1) return key;
+  }
+
+  return -1;
+}
+
 /**
  * Find the other endpoint of the edge given id
  * @param {*} id 
