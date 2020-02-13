@@ -74,7 +74,6 @@ class KruskalConstrainedPage extends Component {
         value={this.state.degree}
         handleChange={e => this.handleChange(e)}
         buttonName="Submit">
-
         </InputDialog>
       
       <AlgorithmPage pageName={Algorithm.CONSTRAINED} data={this.state.data} states={this.state.states}></AlgorithmPage>

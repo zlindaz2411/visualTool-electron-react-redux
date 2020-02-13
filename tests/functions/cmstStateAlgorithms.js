@@ -44,13 +44,13 @@ describe("computation of the states of visualization of the algorithm", function
   const step16 = {
     highlighted: [{ source: "A", target: "B", weight: 2 }],
     tree: [],
-    highlightedNodes: ["A"],
+    highlightedNodes: ["B"],
     status: 7
   };
   const step30 = {
     highlighted: [],
     tree: [{ source: "A", target: "B", weight: 2 }],
-    highlightedNodes: ["D"],
+    highlightedNodes: [],
     status: 3
   };
   const step50 = {

@@ -10,18 +10,15 @@ import {ErrMessage} from'../constants/errorMessage'
  */
 export function esauWilliams(graph, capacity) {
   try {
-    let edges = graph.edges.slice().sort((a,b) => a.weight - b.weight);
-    let hnode = [];
-    let tedge = [];
+    let edges = graph.edges.slice()
     let root = graph.root;
-    let nodes = graph.nodes;
+    let nodes = graph.nodes.slice();
     let uf = new UnionFind(nodes);
     let gates = new Map();
     let CMST = new Set();
     let savings = new Map();
     let components = {};
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
-
 
     for (let i = 0; i < rootAdjacents.length; i++) {
       if (rootAdjacents[i].source != root.id)
@@ -32,63 +29,39 @@ export function esauWilliams(graph, capacity) {
 
     //Initialize the components to be vertex-set
     for (let i = 0; i < nodes.length; i++) {
-     // if(nodes[i].id != root.id) 
       components[nodes[i].id] = new Set([nodes[i].id]);
-      if (!gates.has(nodes[i].id)) gates.set(nodes[i].id, 0);
     }
     //While the edges in the CMST is less than the nodes length -1
-    while (CMST.size < nodes.length - 1) {
-      hnode = [];
+    let len =  nodes.length;
+    while (CMST.size <len - 1  && edges.length >0) {
       //For each node, set the tradeoff cost with the closest connected node
       for (let i = 0; i < nodes.length; i++) {
-        hnode.push(nodes[i])
         if (nodes[i].id == root.id) continue;
         else {
           let cheapest = findCheapest(nodes[i].id, edges)
-          
           let closest = cheapest[0]
-          if (!closest) throw ErrMessage.CMST_NOT_FOUND;
-          hnode.push(cheapest[1])
-
+          if (!closest) {
+            savings.delete(nodes[i])
+            nodes.splice(i, 1)
+            i--;
+            continue;
+          };
           let gateValue = gates.get(nodes[i].id);
           savings.set(nodes[i], closest.weight - gateValue);
         }
-        hnode = [];
       }
-      let hedge = [];
-      hnode = [];
-
-      let max_savings= [];
-      for(const [key, value] of savings.entries()){
-        if(value == Math.min(...savings.values())){
-          max_savings.push(key)
-        }
-      } 
       //Get the node with the biggest tradeoff
-      let edge;
-      let min=Number.MAX_SAFE_INTEGER;
-      for(let m =0; m<max_savings.length; m++){
-       
-           let temp= findCheapest(max_savings[m].id, edges)[0]
-           if(temp.weight<min){
-             min = temp.weight
-             edge=temp;
-           }
-        }
+      if(savings.size == 0) throw ErrMessage.CMST_NOT_FOUND
+      let max_saving = [...savings.entries()].reduce((a, e) =>
+        e[1] < a[1] ? e : a
+      );
 
-      let source = edge.source
-      hnode.push(source)
-      
-      if (!edge) throw ErrMessage.CMST_NOT_FOUND;
-      
-      hedge.push(edge)
+      let source = max_saving[0].id;
+      let edge = findCheapest(source, edges)[0]
+      let target = getConnectedVertex(source, edge);
 
-      let target = edge.target
-
-      let u = uf.find(source);
-      let v = uf.find(target);
       //Check if two nodes do not form a cycle
-      if (u != v) {
+      if(!uf.connected(source,target)){
         let componentCapacity = unionSet(
           components[source],
           components[target]
@@ -99,34 +72,43 @@ export function esauWilliams(graph, capacity) {
         let c = target == root.id ? componentCapacity - 1 : componentCapacity;
         //Check if CMST U (u,v) doesn't violate capacity constraint
         if (c <= capacity) {
-          tedge.push(edge)
-          //Update the components
-          let union = unionSet(components[source], components[target])
-          components[source] = union
-          components[target] = union
+          let temp= unionSet(components[source], components[target])
+          components[source] = temp
+          components[target] = temp
           for (let it = components[target].values(), val = null; (val = it.next().value); ) {
             if(val != source && val != target){
-                components[val] = union
+                components[val] = temp
             }
           }
           components[root.id] = new Set([root.id])
-
           updateGateValue(components[source], gates);
           uf.union(source, target);
           CMST.add(edge);
-          
         }
       }
       edges.splice(edges.indexOf(edge), 1);
-      console.log(CMST)
+    }
+    if(CMST.size != len-1){
+      throw ErrMessage.CMST_NOT_FOUND
     }
     
+
     return CMST;
   } catch (e) {
     return e.toString();
   }
 }
-
+/**
+ * Find the other endpoint of the edge given id
+ * @param {*} id 
+ * @param {*} edge 
+ */
+export function getConnectedVertex(id, edge) {
+  if (edge.source == id) {
+    return edge.target;
+  }
+  return edge.source;
+}
 /**
  * Perform union of two sets
  * @param {*} componentA 
