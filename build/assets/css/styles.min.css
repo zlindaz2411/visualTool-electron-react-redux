@@ -1312,7 +1312,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     border-spacing: 2rem;
     background-color: #ffffff; }
     .performance_wrap .first_column .chart {
-      padding: 2rem; }
+      padding-top: 2rem;
+      padding-left: 2rem;
+      padding-right: 2rem; }
   .performance_wrap .second_column {
     margin-left: 2rem;
     border-radius: 2rem;
@@ -1320,7 +1322,9 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     border-spacing: 2rem;
     display: inline-block; }
     .performance_wrap .second_column .checkbox {
-      padding: 1rem;
+      padding-top: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
       float: left;
       clear: left; }
   .performance_wrap .actionButton {

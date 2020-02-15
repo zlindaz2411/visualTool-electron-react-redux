@@ -3,6 +3,7 @@ import {kruskals, prims, boruvkas, parallel} from '../functions/mstAlgorithms'
 import {esauWilliams} from '../functions/cmstAlgorithms'
 import {kruskalConstrained} from'./dcmstAlgorithms'
 import {performance} from 'perf_hooks'
+import {ErrMessage} from'../constants/errorMessage'
 
 
 /**
@@ -27,10 +28,20 @@ export function comparePerformance(list, graph,degree, capacity){
            result.push(calculateTime(function() {parallel(graph)}))
         }
         else if((list[i] == Algorithm.ESAU)){
-            result.push(calculateTime(function() {esauWilliams(graph, capacity)}))
+            if(esauWilliams(graph, capacity) == ErrMessage.CMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
+                result.push(calculateTime(function() {esauWilliams(graph, capacity)}))
+            }
         }
         else if((list[i] == Algorithm.CONSTRAINED)){
+            if(kruskalConstrained(graph,degree) == ErrMessage.DCMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
             result.push(calculateTime(function() {kruskalConstrained(graph, degree)}))
+            }
         }
     }
     return result;
@@ -43,13 +54,7 @@ export function comparePerformance(list, graph,degree, capacity){
 export function calculateTime(func){
     
     let startTime = performance.now();
-    try{
     func();
-    }
-    catch(e){
-        console.log(e)
-        return -1;
-    }
     let endTime = performance.now();
 
     return endTime - startTime;

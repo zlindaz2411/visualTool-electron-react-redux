@@ -204,11 +204,11 @@ class PerformancePage extends Component {
                   responsive: false,
                   maintainAspectRatio: false,
                   title:{
-                    display:false,
+                    display:true,
+                    text:"-1 = solution not found"
                   },
                   legend:{
                     display:false,
-                    position:'right'
                   }
                 }}
               />
