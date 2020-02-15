@@ -3,7 +3,6 @@
  * @param {*} text 
  */
 export function validateNumber(text){
-    console.log(text)
     return !isNaN(text)
 }
 

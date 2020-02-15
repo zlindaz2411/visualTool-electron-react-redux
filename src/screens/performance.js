@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import { Line } from "react-chartjs-2";
-
+import InputDialog from "../components/inputDialog";
 import { comparePerformance } from "../functions/performance";
 
 import { Algorithm } from "../constants/algorithms";
 import { data} from "../constants/defaultGraph";
-import { emptyGraphMessage } from "../constants/errorMessage";
+import { emptyGraphMessage,onlyNumberErrorMessage} from "../constants/errorMessage";
+import {validateNumber, validateEmpty} from "../functions/validator";
 
 /**
  * Performance page where the function of performance comparison resides. 
@@ -19,15 +20,75 @@ class PerformancePage extends Component {
     super(props);
     this.state = {
       selectedCheckboxes: new Set(),
+      textDegree: "",
+      degree:"",
+      textCapacity:"",
+      capacity:"",
+      isCapacityDialogOpen: false,
+      isDegreeDialogOpen:false,
       algos: [
         Algorithm.KRUSKAL,
         Algorithm.PRIM,
         Algorithm.BORUVKA,
-        Algorithm.PARALLEL
+        Algorithm.PARALLEL,
+        Algorithm.CONSTRAINED,
+        Algorithm.ESAU
       ],
       graph: this.props.latestGraph == null ? data :  this.props.latestGraph,
     };
   }
+
+  /**
+   * Handle close dialog. If no number entered pop up error message, else close.
+   */
+  handleClose(capacity) {
+    let incorrect = capacity ? (!validateNumber(this.state.textCapacity) || validateEmpty(this.state.textCapacity)) :(!validateNumber(this.state.textDegree) || validateEmpty(this.state.textDegree))
+    if(incorrect){
+       onlyNumberErrorMessage();
+    }
+    else{
+      if(capacity){
+        this.setState({
+          isCapacityDialogOpen: false,
+          capacity:this.state.textCapacity,
+          textCapacity:""
+        });
+     
+    }else{
+      this.setState({
+        isDegreeDialogOpen: false,
+        degree:this.state.textDegree,
+        textDegree:""
+      });
+    }
+    }
+    }
+
+  /**
+   * Submit the degree value
+   * @param {*} e 
+   */
+  handleSubmit(e, capacity){
+    e.preventDefault();
+    let correct = capacity?validateNumber(this.state.textCapacity) && !validateEmpty(this.state.textCapacity):validateNumber(this.state.textDegree) && !validateEmpty(this.state.textDegree)
+    if(correct){
+       this.handleClose(capacity);
+    }
+    else{
+      onlyNumberErrorMessage();
+    }
+  }
+
+
+  /**
+   * Each time change textfield update text;
+   */
+  handleChange(event, capacity) {
+    if(capacity) this.setState({ textCapacity: event.target.value });
+    else this.setState({ textDegree: event.target.value });
+  }
+
+
 
   componentDidMount() {
     if(this.state.graph == null){
@@ -42,7 +103,19 @@ class PerformancePage extends Component {
    */
   handleCheckboxChange(e) {
     const name = e.target.name;
-    if (e.target.checked) this.state.selectedCheckboxes.add(name);
+    if(e.target.checked) {
+      if(name == Algorithm.CONSTRAINED){
+        this.setState({
+          isDegreeDialogOpen:true
+        })
+      }
+      if(name == Algorithm.ESAU){
+        this.setState({
+          isCapacityDialogOpen:true
+        })
+      }
+      this.state.selectedCheckboxes.add(name);
+    }
     else this.state.selectedCheckboxes.delete(name);
   }
 
@@ -78,7 +151,7 @@ class PerformancePage extends Component {
             pointBorderColor: "#50535D",
             pointRadius: 3,
             pointBackgroundColor: "#50535D",
-            data: comparePerformance(selected, this.state.graph)
+            data: comparePerformance(selected, this.state.graph,  this.state.degree, this.state.capacity)
           }
         ]
       }
@@ -89,6 +162,26 @@ class PerformancePage extends Component {
   render() {
     return (
       <div className="performance_wrap">
+        <InputDialog 
+        handleClose={() => this.handleClose(false)}
+        isOpen={this.state.isDegreeDialogOpen}
+        title="Enter a number for the degree"
+        submitAction={e => this.handleSubmit(e, false)}
+        value={this.state.textDegree}
+        handleChange={e => this.handleChange(e, false)}
+        buttonName="Submit">
+        </InputDialog>
+
+        <InputDialog 
+        handleClose={() => this.handleClose(true)}
+        isOpen={this.state.isCapacityDialogOpen}
+        title="Enter a number for the capacity"
+        submitAction={e => this.handleSubmit(e, true)}
+        value={this.state.textCapacity}
+        handleChange={e =>  this.handleChange(e, true)}
+        buttonName="Submit">
+        </InputDialog>
+      
         <div className="title">
           <h1>Compare Performance</h1>
           </div>
@@ -124,7 +217,7 @@ class PerformancePage extends Component {
             </div>
             <div className="column column_4_12">
               <div className="second_column">
-                <form onSubmit={this.handleFormSubmit.bind(this)}>
+                <form >
                   {this.state.algos.map((algo, i) => (
                     <div className="checkbox">
                     
@@ -141,7 +234,7 @@ class PerformancePage extends Component {
                 </form>
               </div>
             </div>
-            <button className = "actionButton">Compare</button>
+            <button onClick={this.handleFormSubmit.bind(this)} className = "actionButton">Compare</button>
           </div>
           
         </center>

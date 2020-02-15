@@ -11,7 +11,6 @@ import {unionSet, getConnectedVertex, updateGateValue, findCheapest, getGatesVal
  */
 export function esauWilliams(graph, capacity) {
   try {
-    // console.log("ahah")
     let edges = graph.edges.slice();
     let states = [{ highlighted: [], tree: [], status: 0 }];
     let hnode = [];

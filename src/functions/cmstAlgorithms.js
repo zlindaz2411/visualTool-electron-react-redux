@@ -113,7 +113,7 @@ export function getGatesValues(rootAdjacents, root){
 }
 
 /**
- * Find the root for the CMST algorithm: the root should be connected to all other vertices
+ * Find the root for the CMST algorithm: the root should be the node with the highest number of adjacent nodes
  * @param {*} nodes 
  * @param {*} edges 
  */
@@ -133,11 +133,7 @@ function findRoot(nodes, edges){
         nodeConnection.set(edges[i].target, nodeConnection.get(edges[i].target)+1);
       }
   }
-  for(const [key, value] of nodeConnection.entries()){
-    if(value==nodes.length-1) return key;
-  }
-
-  return -1;
+  return [...nodeConnection.entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[0];
 }
 
 /**

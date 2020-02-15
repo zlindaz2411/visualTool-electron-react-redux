@@ -72,7 +72,6 @@ export function kruskals(graph) {
  */
 export function prims(graph) {
   try {
-    console.log(graph.root)
     let states = [{ highlighted: [], tree: [], status: 0 }];
     // Initialize graph that'll contain the MST
     let MST = new Set();

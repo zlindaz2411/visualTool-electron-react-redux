@@ -1,11 +1,10 @@
 import { UnionFind } from "./lib/unionFind";
-import { PriorityQueueHeap } from "./lib/priorityQueue";
 import { ErrMessage } from "../constants/errorMessage";
 import {addStates} from './stateFunctions';
 
 
 /**
- * Kruskals algorithm
+ * Kruskals Constrained degree algorithm
  * Get all the states that are each step of the algorithm
  * @param {*} edges
  * @param {*} nodes

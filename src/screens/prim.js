@@ -32,7 +32,6 @@ class PrimPage extends Component {
 }
 
 componentDidMount() {
-  console.log(this.props.latestGraph)
   if (this.state.data== null) {
     emptyGraphMessage();
     this.setState({
@@ -57,7 +56,6 @@ componentDidMount() {
         isDialogOpen: false,
         states: prims(this.state.data)
       });
-      console.log(this.state.states)
     }
   }
 

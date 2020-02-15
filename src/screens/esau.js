@@ -97,7 +97,7 @@ componentDidMount() {
    * Submit the degree value
    * @param {*} e 
    */
-  handleInputSumbit(e){
+  handleInputSubmit(e){
     e.preventDefault();
     if(validateNumber(this.state.capacity) && !validateEmpty(this.state.capacity)){
        this.handleInputClose();
@@ -134,7 +134,7 @@ render() {
                 handleClose={() => this.handleInputClose()}
                 isOpen={this.state.isInputDialogOpen}
                 title="Enter a number for the capacity"
-                submitAction={e => this.handleInputSumbit(e)}
+                submitAction={e => this.handleInputSubmit(e)}
                 value={this.state.degree}
                 handleChange={e => this.handleChange(e)}
                 buttonName="Submit">

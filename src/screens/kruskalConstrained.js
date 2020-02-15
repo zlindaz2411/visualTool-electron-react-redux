@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
-import { kruskalConstrained } from "../functions/dmstStateAlgorithms";
+import { kruskalConstrained } from "../functions/dcmstStateAlgorithms";
 import { Algorithm } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import InputDialog from "../components/inputDialog";
@@ -46,7 +46,7 @@ class KruskalConstrainedPage extends Component {
    * Submit the degree value
    * @param {*} e 
    */
-  handleSumbit(e){
+  handleSubmit(e){
     e.preventDefault();
     if(validateNumber(this.state.degree) && !validateEmpty(this.state.degree)){
        this.handleClose();
@@ -70,7 +70,7 @@ class KruskalConstrainedPage extends Component {
         handleClose={() => this.handleClose()}
         isOpen={this.state.isDialogOpen}
         title="Enter a number for the degree"
-        submitAction={e => this.handleSumbit(e)}
+        submitAction={e => this.handleSubmit(e)}
         value={this.state.degree}
         handleChange={e => this.handleChange(e)}
         buttonName="Submit">

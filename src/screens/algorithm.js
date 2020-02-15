@@ -411,7 +411,6 @@ changeSpeed(){
     this.resetGraph();
     this.updateGraph();
     this.draw();
-    console.log(this.state.data.nodes)
   }
 }
 
