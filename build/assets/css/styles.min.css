@@ -705,7 +705,8 @@ h1, h2, h3, h4, h5, h6 {
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  cursor: pointer; }
 
 h1 {
   color: #50525E;
@@ -961,6 +962,12 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding-top: 2rem;
     padding-right: 2rem;
     padding-bottom: 2rem; }
+  .sidebar .MST-dropdown-container {
+    display: none; }
+  .sidebar .CMST-dropdown-container {
+    display: none; }
+  .sidebar .DMST-dropdown-container {
+    display: none; }
   .sidebar nav ul li {
     display: block;
     width: 100%;

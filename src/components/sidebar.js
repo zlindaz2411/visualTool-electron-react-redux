@@ -5,6 +5,25 @@ import { withRouter } from "react-router";
  * Sidebar component with the main menu of the system.
  */
 class Sidebar extends Component {
+    constructor(props){
+        super(props)
+        this.MSTRef = React.createRef();
+        this.CMSTRef = React.createRef();
+        this.DCMSTRef = React.createRef();
+    }
+
+    /**
+     * Drop down the sub items in the sidebar
+     * @param {*} ref 
+     */
+    handleDropSubitems(ref){
+        let dropdownContent = ref.current;
+        if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+          } else {
+            dropdownContent.style.display = "block";
+          }
+    }
 
     render() {
         return (
@@ -26,12 +45,13 @@ class Sidebar extends Component {
 
                         <li>   
                         <div className = "algorithms">
-                            <h5>MST Algorithms &#9662;</h5>
+                            <h5 onClick = {() => this.handleDropSubitems(this.MSTRef)}>MST Algorithms &#9662;</h5>
                         </div>                       
                             
                         </li>
+                        <div ref={this.MSTRef} class="MST-dropdown-container">
                         <li>   
-                            <NavLink   className = "inactive" activeClassName="active" to={{
+                            <NavLink className = "inactive" activeClassName="active" to={{
                                 pathname:"/kruskal"
                             }
                         }alt="KruskalPage"  replace>
@@ -59,12 +79,14 @@ class Sidebar extends Component {
                              <h4>Boruvka Parallel</h4>
                             </NavLink> 
                         </li>
+                        </div>
                         <li>   
                         <div className = "algorithms">
-                            <h5>DCMST Algorithms &#9662;</h5>
+                            <h5 onClick = {() => this.handleDropSubitems(this.DCMSTRef)}>DCMST Algorithms &#9662;</h5>
                         </div>                       
                             
                         </li>
+                        <div ref={this.DCMSTRef} class="DCMST-dropdown-container">
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
                                 pathname:"/kruskalConstrained"
@@ -73,12 +95,14 @@ class Sidebar extends Component {
                              <h4>Kruskal Constraint</h4>
                             </NavLink> 
                         </li>
+                        </div>
                         <li>   
                         <div className = "algorithms">
-                            <h5>CMST Algorithms &#9662;</h5>
+                            <h5 onClick = {() => this.handleDropSubitems(this.CMSTRef)}>CMST Algorithms &#9662;</h5>
                         </div>                       
                             
                         </li>
+                        <div ref={this.CMSTRef} class="CMST-dropdown-container">
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to={{
                                 pathname:"/esau"
@@ -87,6 +111,7 @@ class Sidebar extends Component {
                              <h4>Esau-Williams</h4>
                             </NavLink> 
                         </li>
+                        </div>
                         <li>   
                             <NavLink   className = "inactive" activeClassName="active" to="/performance" alt="PerformancePage"  replace>
                              <h5>Performance</h5>

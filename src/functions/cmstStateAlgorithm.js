@@ -26,8 +26,7 @@ export function esauWilliams(graph, capacity) {
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
     let gates = getGatesValues(rootAdjacents, root.id)
     addStates(states, [], [], tedge, 1);
-
-
+    
     //Initialize the components to be vertex-set
     for (let i = 0; i < nodes.length; i++) {
       components[nodes[i].id] = new Set([nodes[i].id]);

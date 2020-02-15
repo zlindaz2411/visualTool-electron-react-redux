@@ -41,6 +41,8 @@
          
       }
 
+
+
       .text {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -56,6 +58,16 @@
         padding-right:2rem;
         padding-bottom:2rem;
     }
+
+    .MST-dropdown-container {
+        display: none;
+      }
+      .CMST-dropdown-container {
+        display: none;
+      }
+      .DMST-dropdown-container {
+        display: none;
+      }
       
     nav {
         ul {
