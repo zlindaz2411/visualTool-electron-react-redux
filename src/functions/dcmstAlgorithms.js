@@ -47,3 +47,79 @@ export function kruskalConstrained(graph, degree) {
     return error.toString();
   }
 }
+
+function two_opt(mst, originalGraph){
+  let nodes = originalGraph.nodes
+  let minWeight = getWeight(mst);
+  let path = [];
+  for(let i =0;i<mst.length;i++){
+    if(path.indexOf(mst[i].source) == -1){
+        path.push(mst[i].source)
+    }
+    if(path.indexOf(mst[i].target) == -1){
+        path.push(mst[i].target)
+    }
+  }
+  while(true){
+    let startWeight = minWeight
+    for(let i=1; i<nodes.length; i++){
+      for(let j=i+2; j<nodes.length; j++){
+          let newPath = swapEdges(path, i, j)
+          let newMST = getNewMST(newPath, originalGraph)
+          let newWeight = getWeight(newMST)
+          if(newWeight < minWeight){
+            minWeight = newWeight;
+            path = newPath.slice();
+            mst = newMST.slice()
+          }
+      }
+    }
+    if(startWeight == minWeight){
+      break;
+    }
+  }
+  
+  return mst;
+}
+
+function getNewMST(path, originalGraph){
+  let newMST = [];
+  for(let i =0;i<path.length-1; i++){
+    
+    let adjacents = originalGraph.getAdjacentsOfNode(path[i])
+    for(let j =0; j<adjacents.length; j++){
+      
+      if(adjacents[j].source == path[i] && adjacents[j].target == path[i+1]){
+        newMST.push(adjacents[j]);
+        break;
+      }
+      if(adjacents[j].target == path[i] && adjacents[j].source == path[i+1]){
+        newMST.push(adjacents[j]);
+        break;
+      }
+    }
+  }
+  return newMST
+}
+
+function swapEdges(path, i, k){
+  let newPath = path.slice(0, i);
+  let reverse = path.slice(i, k).reverse();
+  return newPath.concat(reverse).concat(path.slice(k));
+}
+
+function getEdge(edges,source, target){
+  for(let i=0;i<edges.length; i++){
+    if(edges[i].source == source && edges[i].target == target) return edges[i]
+    else if(edges[i].source == target && edges[i].target == source) return edges[i]
+  }
+  //console.log("not found")
+  return null
+}
+function getWeight(path){
+  let weight = 0;
+  for(let i= 0;i<path.length; i++){
+    weight +=path[i].weight
+  }
+  return weight
+}

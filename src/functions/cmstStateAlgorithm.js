@@ -54,7 +54,7 @@ export function esauWilliams(graph, capacity) {
           hnode.push(cheapest[1])
           let gateValue = gates.get(nodes[i].id);
           addStates(states, [], tedge, hnode, "",4);
-          text = closest.weight - gateValue + " = "  + closest.weight +  " + " + gateValue;
+          text = closest.weight - gateValue + " = "  + closest.weight +  " - " + gateValue;
           addStates(states, [], tedge, hnode,text, 5);
           
           savings.set(nodes[i], closest.weight - gateValue);
