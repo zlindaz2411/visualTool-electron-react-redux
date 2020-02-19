@@ -1027,6 +1027,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     .algorithm_wrap .first_row h3 {
       font-size: 1.15rem;
       padding-left: 1rem;
+      padding-right: 1rem;
       padding-top: 0.5rem;
       clear: both;
       float: left; }
@@ -1043,6 +1044,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       font-size: 1.15rem;
       padding-left: 1rem;
       padding-top: 0.5rem;
+      padding-right: 1rem;
       clear: both;
       float: left; }
   .algorithm_wrap .player {
