@@ -254,7 +254,7 @@ changeSpeed(){
                 </div>
               </div>
               <div className="column column_5_12">
-                <div id="pseudo_canvas" className="second_column">
+                <div id="pseudo_canvas" className="first_row">
                   {this.state.pseudocode.map((pseudo, i) => (
                     <h3
                       style={
@@ -271,6 +271,10 @@ changeSpeed(){
                     </h3>
                   ))}
                 </div>
+                <div id="pseudo_canvas" className="second_row">
+                  <h3> {this.state.states && this.state.states[this.state.index].text}</h3>
+                </div>
+                
               </div>
             </div>
           </center>

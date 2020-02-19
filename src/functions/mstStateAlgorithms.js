@@ -12,7 +12,7 @@ import {addStates} from './stateFunctions';
  */
 export function kruskals(graph) {
   try {
-    let states = [{ highlighted: [], tree: [], status: 0 }];
+    let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
     //Sort the edges
     let nodes = graph.nodes;
     let edges = graph.edges.sort((a, b) => {
@@ -20,7 +20,7 @@ export function kruskals(graph) {
     });
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    addStates(states, [], [], [], 1);
+    addStates(states, [], [], [],"", 1);
 
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
@@ -28,22 +28,22 @@ export function kruskals(graph) {
       let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
 
-      addStates(states, arr, t, [], 2);
+      addStates(states, arr, t, [],"", 2);
       let u = edges[i].source;
       let v = edges[i].target;
 
       arr.push(edges[i]);
-      addStates(states, arr, t, [], 3);
+      addStates(states, arr, t, [],"", 3);
       //if edges[i] in MST is not acyclic
-      addStates(states, arr, t, [], 4);
+      addStates(states, arr, t, [],"", 4);
       if (!uf.connected(u, v)) {
         MST.add(edges[i]);
         uf.union(u, v);
         t.push(edges[i]);
-        addStates(states, arr, t, [], 5);
+        addStates(states, arr, t, [],"", 5);
       } else {
         arr.pop();
-        addStates(states, arr, t, [], 6);
+        addStates(states, arr, t, [],"", 6);
       }
     }
 
@@ -52,6 +52,7 @@ export function kruskals(graph) {
       states[states.length - 1].highlighted,
       states[states.length - 1].tree,
       [],
+      "",
       7
     );
 
@@ -72,10 +73,10 @@ export function kruskals(graph) {
  */
 export function prims(graph) {
   try {
-    let states = [{ highlighted: [], tree: [], status: 0 }];
+    let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
     // Initialize graph that'll contain the MST
     let MST = new Set();
-    addStates(states, [], [], [], 1);
+    addStates(states, [], [], [],"", 1);
     // Select first node as starting node
     let s = graph.root;
     let nodes = graph.nodes;
@@ -93,7 +94,7 @@ export function prims(graph) {
         edgeQueue.insert([s.id, adjacents[i].target], adjacents[i].weight);
     }
 
-    addStates(states, [], [], [], 2);
+    addStates(states, [], [], [], "",2);
 
     // Take the smallest edge and add that to the new graph
     while (!edgeQueue.isEmpty()) {
@@ -102,7 +103,7 @@ export function prims(graph) {
       let arr = []; //a copy of highlighted
       let t = states[states.length - 1].tree.slice();
 
-      addStates(states, arr, t, [], 3);
+      addStates(states, arr, t, [],"", 3);
 
       let currentMinEdge = edgeQueue.extractMin();
 
@@ -110,14 +111,14 @@ export function prims(graph) {
       let v = currentMinEdge.element[1];
 
       arr.push({ source: u, target: v });
-      addStates(states, arr, t, [], 4);
-      addStates(states, arr, t, [], 5);
+      addStates(states, arr, t, [], "",4);
+      addStates(states, arr, t, [], "",5);
 
       if (!explored.has(v)) {
         explored.add(v);
         MST.add([u, v, currentMinEdge.priority]);
         t.push({ source: u, target: v });
-        addStates(states, arr, t, [], 6);
+        addStates(states, arr, t, [], "",6);
         let temp = arr.slice();
         let adjacents = graph.getAdjacentsOfNode(v)
         for (let i = 0; i < adjacents.length; i++) {
@@ -138,10 +139,10 @@ export function prims(graph) {
             }
           }
         }
-        addStates(states, temp, t, [], 7);
+        addStates(states, temp, t, [],"", 7);
       } else {
         arr.pop();
-        addStates(states, arr, t, [], 8);
+        addStates(states, arr, t, [], "",8);
       }
     }
     addStates(
@@ -149,6 +150,7 @@ export function prims(graph) {
       states[states.length - 1].highlighted,
       states[states.length - 1].tree,
       [],
+      "",
       9
     );
 
@@ -174,13 +176,14 @@ export function boruvkas(graph) {
         highlighted: [],
         tree: [],
         highlightedNodes: [],
+        text:"",
         status: 0
       }
     ];
     let nodes = graph.nodes;
     let edges = graph.edges;
 
-    addStates(states, [], [], [], 1);
+    addStates(states, [], [], [], "",1);
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
@@ -193,7 +196,7 @@ export function boruvkas(graph) {
       let tedge = states[states.length - 1].tree.slice();
       let hnode = []; //a copy of highlighted
 
-      addStates(states, hedge, tedge, hnode, 2);
+      addStates(states, hedge, tedge, hnode, "",2);
       previous = current;
       for (let v = 0; v < nodes.length; v++) {
         cheapest[nodes[v].id] = -1;
@@ -228,7 +231,7 @@ export function boruvkas(graph) {
       for (let i = 0; i < components.length; i++) {
         hnode = [];
         hedge = [];
-        addStates(states, hedge, tedge, hnode, 3);
+        addStates(states, hedge, tedge, hnode, "",3);
         for (
           let it = components[i].values(), val = null;
           (val = it.next().value);
@@ -237,7 +240,7 @@ export function boruvkas(graph) {
           hnode.push(val.id);
         }
         //Highlight the component nodes
-        addStates(states, hedge, tedge, hnode, 4);
+        addStates(states, hedge, tedge, hnode, "",4);
         for (
           let it = components[i].values(), val = null;
           (val = it.next().value);
@@ -247,20 +250,20 @@ export function boruvkas(graph) {
           if (e != -1) {
             hedge.push(e);
             //Highlight the cheapest edge of the component
-            addStates(states, hedge, tedge, hnode, 5);
+            addStates(states, hedge, tedge, hnode, "",5);
             let u = subset.find(e.source);
             let v = subset.find(e.target);
             if (u == v) continue;
             if (!subset.connected(u, v)) {
-              addStates(states, hedge, tedge, hnode, 6);
+              addStates(states, hedge, tedge, hnode,"", 6);
               MST.add(e);
               subset.union(u, v);
               tedge.push(e);
-              addStates(states, hedge, tedge, hnode, 7);
+              addStates(states, hedge, tedge, hnode,"", 7);
               num--;
             } else {
               hedge.pop();
-              addStates(states, hedge, tedge, hnode, 8);
+              addStates(states, hedge, tedge, hnode, "",8);
             }
           }
         }
@@ -268,7 +271,7 @@ export function boruvkas(graph) {
       current = num;
       if (current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    addStates(states, [], states[states.length - 1].tree, [], 9);
+    addStates(states, [], states[states.length - 1].tree, [], "",9);
 
     return states;
   } catch (error) {
@@ -288,12 +291,13 @@ export function parallel(graph) {
         highlighted: [],
         tree: [],
         highlightedNodes: [],
+        text:"",
         status: 0
       }
     ];
     let nodes = graph.nodes;
     let edges = graph.edges;
-    addStates(states, [], [], [], 1);
+    addStates(states, [], [], [], "",1);
     let subset = new UnionFind(nodes);
     let num = nodes.length;
 
@@ -307,7 +311,7 @@ export function parallel(graph) {
       let tedge = states[states.length - 1].tree.slice();
       let hnode = []; //a copy of highlighted
 
-      addStates(states, hedge, tedge, hnode, 2);
+      addStates(states, hedge, tedge, hnode, "",2);
 
       previous = current;
       for (let v = 0; v < nodes.length; v++) {
@@ -343,7 +347,7 @@ export function parallel(graph) {
       for (let i = 0; i < components.length; i++) {
         hnode = [];
         hedge = [];
-        addStates(states, hedge, tedge, hnode, 3);
+        addStates(states, hedge, tedge, hnode, "",3);
         for (
           let it = components[i].values(), val = null;
           (val = it.next().value);
@@ -352,12 +356,12 @@ export function parallel(graph) {
           hnode.push(val.id);
         }
 
-        addStates(states, hedge, tedge, hnode, 4);
+        addStates(states, hedge, tedge, hnode, "",4);
       }
       hnode = [];
       nodes.map(x => hnode.push(x.id));
       //Highlight all the component nodes
-      addStates(states, hedge, tedge, hnode, 5);
+      addStates(states, hedge, tedge, hnode,"", 5);
       let temp = new Set();
       for (let i = 0; i < components.length; i++) {
         for (
@@ -373,7 +377,7 @@ export function parallel(graph) {
       }
       //Highlight all the components' cheapest edges
       hedge = Array.from(temp);
-      addStates(states, hedge, tedge, hnode, 6);
+      addStates(states, hedge, tedge, hnode,"", 6);
       let copy = hedge.slice();
       for (let i = 0; i < copy.length; i++) {
         let e = copy[i];
@@ -381,27 +385,27 @@ export function parallel(graph) {
         hnode = [];
         if (e != -1) {
           hedge.push(e);
-          addStates(states, hedge, tedge, hnode, 7);
+          addStates(states, hedge, tedge, hnode, "",7);
           let u = subset.find(e.source);
           let v = subset.find(e.target);
           if (u == v) continue;
           if (!subset.connected(u, v)) {
-            addStates(states, hedge, tedge, hnode, 8);
+            addStates(states, hedge, tedge, hnode,"", 8);
             MST.add(e);
             subset.union(u, v);
             tedge.push(e);
-            addStates(states, hedge, tedge, hnode, 9);
+            addStates(states, hedge, tedge, hnode,"", 9);
             num--;
           } else {
             hedge.pop();
-            addStates(states, hedge, tedge, hnode, 10);
+            addStates(states, hedge, tedge, hnode, "",10);
           }
         }
       }
       current = num;
       if (current == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    addStates(states, [], states[states.length - 1].tree, [], 11);
+    addStates(states, [], states[states.length - 1].tree, [],"", 11);
 
     return states;
   } catch (error) {

@@ -45,12 +45,14 @@ describe("computation of the states of visualization of the algorithm", function
     highlighted: [{ source: "A", target: "B", weight: 2 }],
     tree: [],
     highlightedNodes: ["B"],
+    text:"",
     status: 7
   };
   const step30 = {
     highlighted: [],
     tree: [{ source: "A", target: "B", weight: 2 }],
     highlightedNodes: ["D"],
+    text:"",
     status: 3
   };
   const step50 = {
@@ -60,6 +62,7 @@ describe("computation of the states of visualization of the algorithm", function
       { source: "C", target: "D", weight: 4 }
     ],
     highlightedNodes: ["D", "R"],
+    text:"4 = 10 + 6",
     status: 5
   };
 
@@ -71,6 +74,7 @@ describe("computation of the states of visualization of the algorithm", function
       { source: "A", target: "R", weight: 5 },
       { source: "C", target: "R", weight: 6 }
     ],
+    text:"",
     highlightedNodes: [],
     status: 11
   };

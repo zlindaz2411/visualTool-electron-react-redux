@@ -11,11 +11,11 @@ import {
 const assert = require("assert");
 
 describe("Add States", function() {
-  let states = [{ highlighted: [], tree: [], highlightedNodes: [], status: 0 }];
-  addStates(states, [], [], [], 1);
+  let states = [{ highlighted: [], tree: [], highlightedNodes: [],text:"", status: 0 }];
+  addStates(states, [], [], [], "", 1);
   let res = [
-    { highlighted: [], tree: [], highlightedNodes: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 }
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 1 }
   ];
 
   it("should be empty priority queue at first", function() {

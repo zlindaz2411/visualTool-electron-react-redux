@@ -38,43 +38,49 @@ errorInput.addEdge( { source: 3, target: 1, weight: 7, highlight: false })
 
 describe("Kruskal's algorithm States", function() {
   const res = [
-    { highlighted: [], tree: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
+    { highlighted: [], tree: [], text:"",status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [],text:"", status: 1 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 2 },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 5
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 2
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
@@ -84,6 +90,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 5
     },
     {
@@ -93,6 +100,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 2
     },
     {
@@ -102,6 +110,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
@@ -111,6 +120,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
@@ -120,6 +130,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 6
     },
     {
@@ -129,6 +140,7 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
+      text:"",
       status: 7
     }
   ];
@@ -146,26 +158,29 @@ describe("Kruskal's algorithm States", function() {
 
 describe("Prim's algorithm States", function() {
   const res = [
-    { highlighted: [], tree: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
+    { highlighted: [], tree: [], text:"",status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 1 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 2 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 3 },
     {
       highlighted: [{ source: 1, target: 2 }],
       tree: [],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
       highlighted: [{ source: 1, target: 2 }],
       tree: [],
       highlightedNodes: [],
+      text:"",
       status: 5
     },
     {
       highlighted: [{ source: 1, target: 2 }],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
+      text:"",
       status: 6
     },
     {
@@ -174,24 +189,28 @@ describe("Prim's algorithm States", function() {
       ],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
+      text:"",
       status: 7
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
       highlighted: [{ source: 1, target: 3 }],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
       highlighted: [{ source: 1, target: 3 }],
       tree: [{ source: 1, target: 2 }],
       highlightedNodes: [],
+      text:"",
       status: 5
     },
     {
@@ -201,6 +220,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 6
     },
     {
@@ -210,6 +230,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 7
     },
     {
@@ -219,6 +240,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
@@ -228,6 +250,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 4
     },
     {
@@ -237,6 +260,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 5
     },
     {
@@ -246,6 +270,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 8
     },
     {
@@ -255,6 +280,7 @@ describe("Prim's algorithm States", function() {
         { source: 1, target: 3 }
       ],
       highlightedNodes: [],
+      text:"",
       status: 9
     }
   ];
@@ -272,69 +298,79 @@ describe("Prim's algorithm States", function() {
 
 describe("Boruvka's algorithm States", function() {
   const res = [
-    { highlighted: [], tree: [], highlightedNodes: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
-    { highlighted: [], tree: [], highlightedNodes: [1], status: 4 },
+    { highlighted: [], tree: [], highlightedNodes: [],text:"", status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [],text:"", status: 1 },
+    { highlighted: [], tree: [], highlightedNodes: [],text:"", status: 2 },
+    { highlighted: [], tree: [], highlightedNodes: [],text:"", status: 3 },
+    { highlighted: [], tree: [], highlightedNodes: [1],text:"", status: 4 },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
       highlightedNodes: [1],
+      text:"",
       status: 5
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
       highlightedNodes: [1],
+      text:"",
       status: 6
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [1],
+      text:"",
       status: 7
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [2],
+      text:"",
       status: 4
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [2],
+      text:"",
       status: 5
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [],
+      text:"",
       status: 3
     },
     {
       highlighted: [],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [3],
+      text:"",
       status: 4
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [3],
+      text:"",
       status: 5
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
       highlightedNodes: [3],
+      text:"",
       status: 6
     },
     {
@@ -344,6 +380,7 @@ describe("Boruvka's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [3],
+      text:"",
       status: 7
     },
     {
@@ -352,7 +389,7 @@ describe("Boruvka's algorithm States", function() {
         { source: 1, target: 2, weight: 4, highlight: false },
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 9
     }
   ];
@@ -370,19 +407,19 @@ describe("Boruvka's algorithm States", function() {
 
 describe("Boruvka Parallel Algorithm States", function() {
   const res = [
-    { highlighted: [], tree: [], highlightedNodes: [], status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 1 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 2 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
-    { highlighted: [], tree: [], highlightedNodes: [1], status: 4 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
-    { highlighted: [], tree: [], highlightedNodes: [2], status: 4 },
-    { highlighted: [], tree: [], highlightedNodes: [], status: 3 },
-    { highlighted: [], tree: [], highlightedNodes: [3], status: 4 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 1 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 2 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 3 },
+    { highlighted: [], tree: [], highlightedNodes: [1],text:"", status: 4 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 3 },
+    { highlighted: [], tree: [], highlightedNodes: [2],text:"", status: 4 },
+    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 3 },
+    { highlighted: [], tree: [], highlightedNodes: [3], text:"",status: 4 },
     {
       highlighted: [],
       tree: [],
-      highlightedNodes: [1, 2, 3],
+      highlightedNodes: [1, 2, 3],text:"",
       status: 5
     },
     {
@@ -391,37 +428,37 @@ describe("Boruvka Parallel Algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       tree: [],
-      highlightedNodes: [1, 2, 3],
+      highlightedNodes: [1, 2, 3],text:"",
       status: 6
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 7
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 8
     },
     {
       highlighted: [{ source: 1, target: 2, weight: 4, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 9
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 7
     },
     {
       highlighted: [{ source: 3, target: 1, weight: 7, highlight: false }],
       tree: [{ source: 1, target: 2, weight: 4, highlight: false }],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 8
     },
     {
@@ -430,7 +467,7 @@ describe("Boruvka Parallel Algorithm States", function() {
         { source: 1, target: 2, weight: 4, highlight: false },
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 9
     },
     {
@@ -439,7 +476,7 @@ describe("Boruvka Parallel Algorithm States", function() {
         { source: 1, target: 2, weight: 4, highlight: false },
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
-      highlightedNodes: [],
+      highlightedNodes: [],text:"",
       status: 11
     }
   ];

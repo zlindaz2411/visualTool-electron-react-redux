@@ -12,19 +12,19 @@ import {unionSet, getConnectedVertex, updateGateValue, findCheapest, getGatesVal
 export function esauWilliams(graph, capacity) {
   try {
     let edges = graph.edges.slice();
-    let states = [{ highlighted: [], tree: [], status: 0 }];
+    let text = ""
+    let states = [{ highlighted: [], tree: [], text:"", status: 0 }];
     let hnode = [];
     let tedge = [];
     let root = graph.root;
     let nodes = graph.nodes.slice();
-    let uf = new UnionFind(nodes);
-    
+    let uf = new UnionFind(nodes);  
     let CMST = new Set();
     let savings = new Map();
     let components = {};
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
     let gates = getGatesValues(rootAdjacents, root.id)
-    addStates(states, [], [], tedge, 1);
+    addStates(states, [],  tedge,[], "", 1);
     
     //Initialize the components to be vertex-set
     for (let i = 0; i < nodes.length; i++) {
@@ -33,7 +33,7 @@ export function esauWilliams(graph, capacity) {
     //While the edges in the CMST is less than the nodes length -1
     let len =  nodes.length;
     while (CMST.size <len- 1  && edges.length >0) {
-      addStates(states, [], [], tedge, 2);
+      addStates(states, [], tedge,[], "", 2);
       
       //For each node, set the tradeoff cost with the closest connected node
       for (let i = 0; i < nodes.length; i++) { 
@@ -41,7 +41,7 @@ export function esauWilliams(graph, capacity) {
         else {
           hnode = [];
           hnode.push(nodes[i].id)
-          addStates(states, [], tedge, hnode, 3);
+          addStates(states, [], tedge, hnode,"", 3);
           let cheapest = findCheapest(nodes[i].id, edges)
           
           let closest = cheapest[0]
@@ -52,10 +52,11 @@ export function esauWilliams(graph, capacity) {
             continue;
           };
           hnode.push(cheapest[1])
-          addStates(states, [], tedge, hnode, 4);
-          addStates(states, [], tedge, hnode, 5);
-          
           let gateValue = gates.get(nodes[i].id);
+          addStates(states, [], tedge, hnode, "",4);
+          text = closest.weight - gateValue + " = "  + closest.weight +  " + " + gateValue;
+          addStates(states, [], tedge, hnode,text, 5);
+          
           savings.set(nodes[i], closest.weight - gateValue);
         }
         hnode = [];
@@ -75,8 +76,8 @@ export function esauWilliams(graph, capacity) {
 
       hnode.push(source)
       hedge.push(edge)
-      addStates(states, [], tedge, hnode, 6);
-      addStates(states, hedge, tedge, hnode, 7);
+      addStates(states, [], tedge, hnode, "",6);
+      addStates(states, hedge, tedge, hnode,"", 7);
 
 
       //Check if two nodes do not form a cycle
@@ -92,7 +93,7 @@ export function esauWilliams(graph, capacity) {
         let c = target == root.id ? componentCapacity - 1 : componentCapacity;
         //Check if CMST U (u,v) doesn't violate capacity constraint
         if (c <= capacity) {
-          addStates(states, hedge, tedge, hnode, 8);
+          addStates(states, hedge, tedge, hnode, "",8);
           tedge.push(edge)
           //Update the components
           let union = unionSet(components[source], components[target])
@@ -112,12 +113,12 @@ export function esauWilliams(graph, capacity) {
         }
       }
 
-      addStates(states, [], tedge, [], 9);
+      addStates(states, [], tedge, [],"", 9);
       edges.splice(edges.indexOf(edge), 1);
-      addStates(states, [], tedge, [], 10);
+      addStates(states, [], tedge, [], "",10);
     }
     
-    addStates(states, [], tedge, [], 11);
+    addStates(states, [], tedge, [], "",11);
     if(CMST.size != len-1){
       throw ErrMessage.CMST_NOT_FOUND
     }

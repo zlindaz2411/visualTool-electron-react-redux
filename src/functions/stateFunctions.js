@@ -6,11 +6,12 @@
  * @param {*} hnode
  * @param {*} status
  */
-export function addStates(states, hedge, tedge, hnode, status) {
+export function addStates(states, hedge, tedge, hnode, text, status) {
   states.push({
     highlighted: hedge.slice(),
     tree: tedge.slice(),
     highlightedNodes: hnode.slice(),
+    text: text,
     status: status
   });
 }

@@ -40,11 +40,11 @@
         }
     }
 
-    .second_column{
+    .first_row{
         margin-left:2rem;
         border-radius: 2rem;
         box-shadow: 0 3px 8px #888888;
-        height:38rem;
+        height:30rem;
         border-spacing: 2rem;
         padding-top:1rem;
         background-color: $white;
@@ -57,6 +57,25 @@
             float: left;      
         }
     }
+
+    .second_row{
+      margin-left:2rem;
+      border-radius: 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 3px 8px #888888;
+      height:6rem;
+      border-spacing: 2rem;
+      padding-top:1rem;
+      background-color: $white;
+      
+      h3{
+          font-size:1.15rem;
+          padding-left:1rem;
+          padding-top:0.5rem;
+          clear: both; 
+          float: left;      
+      }
+  }
 
       .player{
 
