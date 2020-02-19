@@ -11,8 +11,15 @@
         margin: 0;
         padding: 0;
     }
+    h4{
+      margin-left:2.5rem;
+    }
+    h1, h2, h3, h5, h6 {
+      margin-left:2rem;
+    }
+
     button {
-        margin-left:1rem;
+        margin-left:2rem;
         margin-top: 1rem;
         margin-bottom: 1rem;
         background-color: $txtCol;

@@ -725,17 +725,14 @@ h3 {
 h4 {
   color: #50525E;
   font-size: 1.25rem;
-  font-weight: bold;
-  margin-left: 2.5em; }
+  font-weight: bold; }
 
 h5 {
-  margin-left: 1.5rem;
   color: #50525E;
   font-size: 1.3rem;
   font-weight: bold; }
 
 h6 {
-  margin-left: 1rem;
   color: #50525E;
   font-size: 1.25rem;
   font-weight: bold; }
@@ -925,8 +922,12 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .sidebar nav, .sidebar nav ul, .sidebar nav ul li {
     margin: 0;
     padding: 0; }
+  .sidebar h4 {
+    margin-left: 2.5rem; }
+  .sidebar h1, .sidebar h2, .sidebar h3, .sidebar h5, .sidebar h6 {
+    margin-left: 2rem; }
   .sidebar button {
-    margin-left: 1rem;
+    margin-left: 2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     background-color: #50525E;

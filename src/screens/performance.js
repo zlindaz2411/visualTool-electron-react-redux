@@ -205,7 +205,7 @@ class PerformancePage extends Component {
                   maintainAspectRatio: false,
                   title:{
                     display:true,
-                    text:"-1 = solution not found"
+                    text:"Edges = " + this.state.graph.edges.length +"; Nodes = " +  this.state.graph.nodes.length  +"; -1 = solution not found"
                   },
                   legend:{
                     display:false,
