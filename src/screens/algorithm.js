@@ -18,7 +18,6 @@ import {
   updateGraph,
   updateNodes
 } from "../functions/stateFunctions";
-import { Algorithm } from "../constants/algorithms";
 import {
   emptyGraphMessage,
   startOfAlgorithmMessage,
@@ -242,9 +241,9 @@ changeSpeed(){
         <div className="title">
           <h1>{this.state.pageName}</h1>
           <div className="sub_text">
-          <h2>
-           {this.props.subtext}
-          </h2>     
+          <textarea disabled>
+           {this.props.subText}
+          </textarea>     
         </div>
           <center>
             <div className="grid">

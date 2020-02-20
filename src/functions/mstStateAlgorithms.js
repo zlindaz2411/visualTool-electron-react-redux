@@ -41,18 +41,29 @@ export function kruskals(graph) {
         uf.union(u, v);
         t.push(edges[i]);
         addStates(states, arr, t, [],"", 5);
+        if(MST.size == nodes.length-1){
+          addStates(
+            states,
+            [],
+            states[states.length - 1].tree,
+            [],
+            "Total edges considered: "+ (i+1) +"/"+edges.length, 
+            7
+          );
+          return states;
+        }
       } else {
         arr.pop();
-        addStates(states, arr, t, [],"", 6);
+        addStates(states, [], t, [],"", 6);
       }
     }
 
     addStates(
       states,
-      states[states.length - 1].highlighted,
+      [],
       states[states.length - 1].tree,
       [],
-      "",
+      "Total edges considered: "+ edges.length +"/"+edges.length,
       7
     );
 
@@ -396,6 +407,7 @@ export function parallel(graph) {
             tedge.push(e);
             addStates(states, hedge, tedge, hnode,"", 9);
             num--;
+
           } else {
             hedge.pop();
             addStates(states, hedge, tedge, hnode, "",10);

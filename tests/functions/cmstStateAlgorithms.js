@@ -62,7 +62,7 @@ describe("computation of the states of visualization of the algorithm", function
       { source: "C", target: "D", weight: 4 }
     ],
     highlightedNodes: ["D", "R"],
-    text:"4 = 10 + 6",
+    text:"4 = 10 - 6",
     status: 5
   };
 

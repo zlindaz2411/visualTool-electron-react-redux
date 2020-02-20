@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
 import { kruskals } from "../functions/mstStateAlgorithms";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from '../screens/algorithm';
 
 /**
@@ -23,7 +23,7 @@ class KruskalPage extends Component {
 
   render() {
     return (
-      <AlgorithmPage pageName={Algorithm.KRUSKAL} data={this.state.data} states={kruskals(this.state.data)}></AlgorithmPage>
+      <AlgorithmPage pageName={Algorithm.KRUSKAL} data={this.state.data} subText={ProblemDescription.MSTP} states={kruskals(this.state.data)}></AlgorithmPage>
     );
   }
 }

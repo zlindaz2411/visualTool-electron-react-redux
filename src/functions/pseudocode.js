@@ -14,13 +14,18 @@ export function getPseudocode(name) {
         return kruskal;
       case "Kruskal with Constraint": //Kruskal for DCMST
         let kruskalConstrained = [];
-        kruskalConstrained.push("Sort the edge list E by weight (smallest first)");
         kruskalConstrained.push("Initialize the set T = empty set");
+        kruskalConstrained.push("Initialize the list U = nodes with degree -1 > constraint");
+        kruskalConstrained.push("Sort the edge list E by weight (smallest first) and remove edges adjacents to unsafe nodes");
         kruskalConstrained.push("for (i=0; i<edgeList.length; i++)");
         kruskalConstrained.push("\xa0 \xa0 e = edgelist[i]");
         kruskalConstrained.push("\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint");
         kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0add e to T");
-        kruskalConstrained.push("\xa0 \xa0else do nothing");
+        kruskalConstrained.push("for (i=0; i<U.length; i++)");
+        kruskalConstrained.push("\xa0 \xa0 adjacents = sorted adjacents edges of U[i]");
+        kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0for each adjacent in adjacents");
+        kruskalConstrained.push("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0if adding adjacent to T is acyclic and does not violate degree constraint");
+        kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0\xa0 \xa0 \xa0\xa0 \xa0add adjacent to T");
         kruskalConstrained.push("While there is still optimization");
         kruskalConstrained.push("\xa0 \xa02-opt");
         kruskalConstrained.push("return T");

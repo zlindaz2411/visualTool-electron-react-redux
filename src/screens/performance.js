@@ -186,10 +186,9 @@ class PerformancePage extends Component {
           <h1>Compare Performance</h1>
           </div>
           <div className="sub_text">
-          <h2>
-           Select algorithms that you want to compare the performance and click "Compare".&ensp;&ensp;
+           <h2>Select algorithms that you want to compare the performance and click "Compare".&ensp;&ensp;
             <span title ="Note that the parallel algorithm is implemented in parallel, due to the software problem (being single threaded), its performance is sequential" className ="tooltip">&#9432;</span>
-          </h2>  
+            </h2>
         </div>
         <center>
           <div className="grid">

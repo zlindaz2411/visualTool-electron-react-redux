@@ -241,14 +241,11 @@ class DrawPage extends Component {
           <h1>Draw</h1>  
         </div>
         <div className="sub_text">
-          <h2>
-            Submit the graph to be used for visualization and performance
-            comparison.&ensp;&ensp;
-            <span title ="Double click on empty space to draw a vertex.&#013; Drag from vertex to
-              vertex to create an edge.&#013; Right click on a vertex or an edge to
-              delete.&#013; Click on the weight and input a new value and press Enter
-              to change." className ="tooltip">&#9432;</span>
-          </h2>     
+          <textarea rows="3" disabled>
+            Double click on empty space to draw a vertex. Drag from vertex to vertex to create an edge. Right click on a vertex or an edge to
+            delete. Click on the weight and input a new value and press Enter to change.
+            Submit the graph to be used for visualization and performance comparison.
+          </textarea>     
         </div>
 
         <center>

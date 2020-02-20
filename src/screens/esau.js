@@ -11,7 +11,7 @@ import {
 
 import { drawGraph} from "../functions/d3Functions";
 import { esauWilliams } from "../functions/cmstStateAlgorithm";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm,ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import {validateNumber, validateEmpty} from "../functions/validator";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
@@ -140,7 +140,7 @@ render() {
                 buttonName="Submit">
 
               </InputDialog>
-              <AlgorithmPage pageName={Algorithm.ESAU} data={this.state.data} states={this.state.states}></AlgorithmPage>
+              <AlgorithmPage pageName={Algorithm.ESAU} data={this.state.data} subText={ProblemDescription.CMSTP} states={this.state.states}></AlgorithmPage>
     </div>
   
   );

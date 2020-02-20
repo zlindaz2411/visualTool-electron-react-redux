@@ -14,6 +14,18 @@
         padding-top: 1rem;
         text-align: center;
 
+        textarea{
+            background-color: #FCFCFF;
+            width: 75%;
+            color: $subCol;
+            white-space: normal;
+            text-align: justify;
+            -moz-text-align-last: center; /* Firefox 12+ */
+            text-align-last: center;
+            font-size: 1.5rem;
+         }
+         
+
         .tooltip{
             display:inline;
             position:relative;  
@@ -41,7 +53,7 @@
     }
 
     .canvas{
-        margin-top:3rem;
+        margin-top:3.15rem;
         border-radius: 2rem;
         box-shadow: 0 3px 8px #888888;
         height:38rem;
@@ -68,7 +80,6 @@
     .dialog_buttons button{
         margin:3rem;
         display: inline-block;
-     //   justify-content: space-between;
     }
     .action_buttons button{
         margin-left:3rem;
@@ -76,7 +87,6 @@
         margin-right:3rem;
         margin-top : 7rem;
         display: inline-block;
-     //   justify-content: space-between;
     }
 
     .load{

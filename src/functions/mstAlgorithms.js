@@ -23,6 +23,9 @@ export function kruskals(graph) {
         if(!uf.connected(u,v)){
            MST.add(edges[i])
            uf.union(u,v)
+           if(MST.size == nodes.length-1){
+               return MST;
+           }
         }
     }
     

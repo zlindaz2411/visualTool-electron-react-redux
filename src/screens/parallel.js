@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { data} from "../constants/defaultGraph";
 
 import { parallel } from "../functions/mstStateAlgorithms";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 
 /**
@@ -24,7 +24,7 @@ class ParallelPage extends Component {
 
 render() {
   return (
-    <AlgorithmPage pageName={Algorithm.PARALLEL} data={this.state.data} states={parallel(this.state.data)}></AlgorithmPage>
+    <AlgorithmPage pageName={Algorithm.PARALLEL} data={this.state.data} subText={ProblemDescription.MSTP} states={parallel(this.state.data)}></AlgorithmPage>
   );
 }
 }

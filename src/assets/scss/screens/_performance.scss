@@ -5,15 +5,16 @@
     padding: 0;
 
 
-
     .title{
         padding-top: 7.5rem;
         text-align: center;
     }
 
     .sub_text{
-        padding-top: 1rem;
+        padding-top: 1.5rem;
         text-align: center;
+
+        
     .tooltip{
         display:inline;
         position:relative;  
@@ -22,6 +23,8 @@
         font-weight: bold;
         color: $txtCol;
     }
+
+    
 
  .tooltip:hover:after {
     width: 12rem;
@@ -46,10 +49,11 @@
     }
 
     .first_column{
+        margin-top:2.15rem;
         margin-right:2rem;
         border-radius: 2rem;
-        box-shadow: 0 3px 8px #888888;
-        height:38rem;
+        box-shadow: 0 2px 8px #888888;
+        height:38.15rem;
         border-spacing: 2rem;
         background-color: $white;
 
@@ -61,14 +65,12 @@
         
     }
     .second_column{
+        margin-top:3rem;
         margin-left:2rem;
         border-radius: 2rem;
-        // box-shadow: 0 3px 8px #888888;
         height:38rem;
         border-spacing: 2rem;
         display: inline-block;
-        
-        // background-color: $white;
 
         .checkbox{
         padding-top: 1rem;
@@ -83,7 +85,7 @@
         margin-left:3rem;
         margin-bottom:3rem;
         margin-right:3rem;
-        margin-top : 7rem;
+        margin-top : 6rem;
     }
 
 

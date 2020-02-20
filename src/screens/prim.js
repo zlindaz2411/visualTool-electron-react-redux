@@ -10,9 +10,8 @@ import {
 
 import { drawGraph} from "../functions/d3Functions";
 import { prims } from "../functions/mstStateAlgorithms";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
-import { Graph } from "../functions/lib/graph";
 
 /**
  * Prim page which uses AlgorithmPage and pass the states produced by the prim function.
@@ -89,7 +88,7 @@ render() {
                   <button onClick={() => this.handleSubmit()}>Submit</button>
                 </center>
               </Dialog>
-              <AlgorithmPage pageName={Algorithm.PRIM} data={this.state.data} states={this.state.states}></AlgorithmPage>
+              <AlgorithmPage pageName={Algorithm.PRIM} data={this.state.data} subText={ProblemDescription.MSTP} states={this.state.states}></AlgorithmPage>
     </div>
   
   );

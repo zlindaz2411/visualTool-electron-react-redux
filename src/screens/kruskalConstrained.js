@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
 import { kruskalConstrained } from "../functions/dcmstStateAlgorithms";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm,ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import InputDialog from "../components/inputDialog";
 import {validateNumber, validateEmpty} from "../functions/validator";
@@ -76,7 +76,7 @@ class KruskalConstrainedPage extends Component {
         buttonName="Submit">
         </InputDialog>
       
-      <AlgorithmPage pageName={Algorithm.CONSTRAINED} data={this.state.data} states={this.state.states}></AlgorithmPage>
+      <AlgorithmPage pageName={Algorithm.CONSTRAINED} data={this.state.data} subText={ProblemDescription.DCMSTP} states={this.state.states}></AlgorithmPage>
       </div>
     );
   }

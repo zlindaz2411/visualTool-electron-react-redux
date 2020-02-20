@@ -998,6 +998,16 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .algorithm_wrap .sub_text {
     padding-top: 1rem;
     text-align: center; }
+  .algorithm_wrap textarea {
+    background-color: #FCFCFF;
+    width: 75%;
+    color: #94979D;
+    white-space: normal;
+    text-align: justify;
+    -moz-text-align-last: center;
+    /* Firefox 12+ */
+    text-align-last: center;
+    font-size: 1.5rem; }
   .algorithm_wrap .grid {
     padding-top: 5rem;
     max-width: 83%; }
@@ -1201,6 +1211,16 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   .about_wrap .sub_text {
     padding-top: 1rem;
     text-align: center; }
+    .about_wrap .sub_text textarea {
+      background-color: #FCFCFF;
+      width: 75%;
+      color: #94979D;
+      white-space: normal;
+      text-align: justify;
+      -moz-text-align-last: center;
+      /* Firefox 12+ */
+      text-align-last: center;
+      font-size: 1.5rem; }
     .about_wrap .sub_text .tooltip {
       display: inline;
       position: relative;
@@ -1223,7 +1243,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       border-width: 2px;
       border-style: solid; }
   .about_wrap .canvas {
-    margin-top: 3rem;
+    margin-top: 3.15rem;
     border-radius: 2rem;
     box-shadow: 0 3px 8px #888888;
     height: 38rem;
@@ -1298,7 +1318,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding-top: 7.5rem;
     text-align: center; }
   .performance_wrap .sub_text {
-    padding-top: 1rem;
+    padding-top: 1.5rem;
     text-align: center; }
     .performance_wrap .sub_text .tooltip {
       display: inline;
@@ -1325,10 +1345,11 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     padding-top: 5rem;
     max-width: 83%; }
   .performance_wrap .first_column {
+    margin-top: 2.15rem;
     margin-right: 2rem;
     border-radius: 2rem;
-    box-shadow: 0 3px 8px #888888;
-    height: 38rem;
+    box-shadow: 0 2px 8px #888888;
+    height: 38.15rem;
     border-spacing: 2rem;
     background-color: #ffffff; }
     .performance_wrap .first_column .chart {
@@ -1336,6 +1357,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       padding-left: 2rem;
       padding-right: 2rem; }
   .performance_wrap .second_column {
+    margin-top: 3rem;
     margin-left: 2rem;
     border-radius: 2rem;
     height: 38rem;
@@ -1351,4 +1373,4 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     margin-left: 3rem;
     margin-bottom: 3rem;
     margin-right: 3rem;
-    margin-top: 7rem; }
+    margin-top: 6rem; }

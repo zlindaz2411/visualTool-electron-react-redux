@@ -5,7 +5,7 @@ import { withRouter } from "react-router";
 import { data} from "../constants/defaultGraph";
 
 import { boruvkas } from "../functions/mstStateAlgorithms";
-import { Algorithm } from "../constants/algorithms";
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from '../screens/algorithm';
 
 /**
@@ -24,7 +24,7 @@ class BoruvkaPage extends Component {
 
 render() {
   return (
-    <AlgorithmPage  pageName={Algorithm.BORUVKA} data={this.state.data} states={boruvkas(this.state.data)}></AlgorithmPage>
+    <AlgorithmPage  pageName={Algorithm.BORUVKA} data={this.state.data} subText={ProblemDescription.MSTP} states={boruvkas(this.state.data)}></AlgorithmPage>
   );
 }
 }

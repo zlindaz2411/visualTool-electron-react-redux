@@ -100,49 +100,10 @@ describe("Kruskal's algorithm States", function() {
         { source: 3, target: 1, weight: 7, highlight: false }
       ],
       highlightedNodes: [],
-      text:"",
-      status: 2
-    },
-    {
-      highlighted: [{ source: 2, target: 3, weight: 8, highlight: false }],
-      tree: [
-        { source: 1, target: 2, weight: 4, highlight: false },
-        { source: 3, target: 1, weight: 7, highlight: false }
-      ],
-      highlightedNodes: [],
-      text:"",
-      status: 3
-    },
-    {
-      highlighted: [{ source: 2, target: 3, weight: 8, highlight: false }],
-      tree: [
-        { source: 1, target: 2, weight: 4, highlight: false },
-        { source: 3, target: 1, weight: 7, highlight: false }
-      ],
-      highlightedNodes: [],
-      text:"",
-      status: 4
-    },
-    {
-      highlighted: [],
-      tree: [
-        { source: 1, target: 2, weight: 4, highlight: false },
-        { source: 3, target: 1, weight: 7, highlight: false }
-      ],
-      highlightedNodes: [],
-      text:"",
-      status: 6
-    },
-    {
-      highlighted: [],
-      tree: [
-        { source: 1, target: 2, weight: 4, highlight: false },
-        { source: 3, target: 1, weight: 7, highlight: false }
-      ],
-      highlightedNodes: [],
-      text:"",
+      text:"Total edges considered: 2/3",
       status: 7
-    }
+    },
+    
   ];
   it("should return a list of kruskal's algorithm states", function() {
     assert.deepEqual(res, kruskals(graph));

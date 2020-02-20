@@ -2,49 +2,116 @@ import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 
 
-/**
- * Kruskals algorithm + 2 opt algorithm for computing DCMST
- * @param {*} edges
- * @param {*} nodes
- */
-export function kruskalConstrained(graph, degree) {
-  try {
-    //Sort the edges
-    let nodes = graph.nodes;
-    let edges = graph.edges.sort((a, b) => {
-      return a.weight - b.weight;
-    });
+// /**
+//  * Kruskals algorithm + 2 opt algorithm for computing DCMST
+//  * @param {*} edges
+//  * @param {*} nodes
+//  */
+// export function kruskalConstrained(graph, degree) {
+//   try {
+//     //Sort the edges
+//     let nodes = graph.nodes;
+//     let edges = graph.edges.sort((a, b) => {
+//       return a.weight - b.weight;
+//     });
     
-    // Initialize graph that'll contain the DCMST
-    let DCMST = new Set();
+//     // Initialize graph that'll contain the DCMST
+//     let DCMST = new Set();
 
-    let degrees = {}
+//     let degrees = {}
     
-    for(let i= 0;i<nodes.length;i++){
-        degrees[nodes[i].id] = 0;
-    }
-    let uf = new UnionFind(nodes);
-    // Add all edges to the Queue:
-    for (let i = 0; i < edges.length; i++) {
+//     for(let i= 0;i<nodes.length;i++){
+//         degrees[nodes[i].id] = 0;
+//     }
+//     let uf = new UnionFind(nodes);
+//     // Add all edges to the Queue:
+//     for (let i = 0; i < edges.length; i++) {
+//       let u = edges[i].source;
+//       let v = edges[i].target;
+
+
+//       //if edges[i] in MST is not acyclic
+//       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+//         DCMST.add(edges[i])
+//         degrees[u] +=1;
+//         degrees[v] +=1;
+//         uf.union(u,v)
+//      }
+//     }
+
+//     if (DCMST.size != nodes.length-1) {
+//       throw ErrMessage.DCMST_NOT_FOUND;
+//     }
+//     return states;
+//   } catch (error) {
+//     return error.toString();
+//   }
+// }
+
+export function kruskalConstrained(graph, degree) {
+  try{
+  //Sort the edges 
+  let nodes = graph.nodes
+  let degrees = {}
+  let unsafeNodes = new Set();
+  let map = new Map();
+  let edgesDegree = graph.edges
+  for(let i =0;i<edgesDegree.length;i++){
+    if(!map.has(edgesDegree[i].source)) map.set(edgesDegree[i].source,1)
+    else map.set(edgesDegree[i].source, map.get(edgesDegree[i].source)+1)
+    if(!map.has(edgesDegree[i].target)) map.set(edgesDegree[i].target,1)
+    else map.set(edgesDegree[i].target, map.get(edgesDegree[i].target)+1)
+    if(map.get(edgesDegree[i].source)-1 > degree) unsafeNodes.add(edgesDegree[i].source) 
+    if(map.get(edgesDegree[i].target)-1 > degree) unsafeNodes.add(edgesDegree[i].target) 
+  }
+  unsafeNodes = [...unsafeNodes]
+  
+  for(let i= 0;i<nodes.length;i++){
+      degrees[nodes[i].id] = 0;
+  }
+
+  let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
+  // Initialize graph that'll contain the MST
+  let MST = []
+  let uf = new UnionFind(nodes);
+  // Add all edges to the Queue:
+  for(let i =0;i<edges.length;i++){
       let u = edges[i].source;
       let v = edges[i].target;
-
-
+      if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
       //if edges[i] in MST is not acyclic
       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-        DCMST.add(edges[i])
-        degrees[u] +=1;
-        degrees[v] +=1;
-        uf.union(u,v)
-     }
+         MST.push(edges[i])
+         degrees[u] +=1;
+         degrees[v] +=1;
+         uf.union(u,v)
+      }
     }
-
-    if (DCMST.size != nodes.length-1) {
-      throw ErrMessage.DCMST_NOT_FOUND;
+  }
+  
+  for(let i=0;i<unsafeNodes.length; i++){
+    let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
+    
+    for(let j =0;j<adjacents.length;j++){
+        let u = adjacents[j].source;
+        let v = adjacents[j].target;
+        if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+          MST.push(adjacents[j])
+          degrees[u] +=1;
+          degrees[v] +=1;
+          uf.union(u,v)
+       }
     }
-    return states;
-  } catch (error) {
-    return error.toString();
+  }
+  two_opt(MST,graph)
+  //check if is a minimum spanning tree
+  if(MST.length != nodes.length-1){
+      throw ErrMessage.MST_NOT_FOUND
+  }
+  return MST;
+  }
+  catch(error){
+      return error.toString();
   }
 }
 
