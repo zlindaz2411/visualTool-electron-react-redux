@@ -255,12 +255,7 @@ class DrawPage extends Component {
           <div className="canvas">
             <div ref={this.imgRef} className="drawing"></div>
           </div>
-          {/* <Prompt
-            when={JSON.stringify(this.state.graph) !== JSON.stringify(this.state.initalGraph)}
-            message={'Unsaved changes'}
-          /> */}
-          
-            
+
             <Dialog
               title="Load Graph"
               isOpen={this.state.isDialogOpen}

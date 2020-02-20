@@ -1,6 +1,7 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 import {addStates} from './stateFunctions';
+import {getEdge, getWeight} from './dcmstAlgorithms';
 
 
 /**
@@ -54,6 +55,8 @@ export function kruskalConstrained(graph, degree) {
         addStates(states, arr, t, [], "",6);
       }
     }
+    
+    two_opt(MST,graph, states)
 
     addStates(
       states,
@@ -61,7 +64,7 @@ export function kruskalConstrained(graph, degree) {
       states[states.length - 1].tree,
       [],
       "",
-      7
+      9
     );
 
     if (MST.size != nodes.length-1) {
@@ -72,3 +75,40 @@ export function kruskalConstrained(graph, degree) {
     return error.toString();
   }
 }
+
+function two_opt(mst, originalGraph, states){
+  
+  let nodes = originalGraph.nodes
+  let minWeight = getWeight(mst);
+  while(true){
+    addStates(states, [], states[states.length - 1].tree, [], "", 7)
+    let startWeight = minWeight
+    for(let i=1; i<nodes.length; i++){
+      for(let j=i+2; j<nodes.length; j++){
+        let oldEdge1 = getEdge(mst, nodes[i-1].id, nodes[i].id)
+        let oldEdge2 = getEdge(mst, nodes[j-1].id, nodes[j].id)
+          if(oldEdge1 && oldEdge2){      
+            let newEdge1 =getEdge(originalGraph.edges, oldEdge1.source, oldEdge2.source)
+            let newEdge2 =getEdge(originalGraph.edges, oldEdge1.target, oldEdge2.target)
+            if(newEdge1 && newEdge2){
+              if(newEdge1.weight + newEdge2.weight < oldEdge1.weight + oldEdge2.weight){
+                 mst.splice(mst.indexOf(oldEdge1),1)
+                 mst.splice(mst.indexOf(oldEdge2),1)            
+                 mst.push(newEdge1)
+                 mst.push(newEdge2)
+                 minWeight = getWeight(mst)
+                 addStates(states, [], mst, [], "", 8)
+              }
+            }
+          }
+      }
+    }
+    if(startWeight == minWeight){
+      break;
+    }
+  }
+  
+  return mst;
+}
+
+

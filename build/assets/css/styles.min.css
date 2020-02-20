@@ -1257,6 +1257,8 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     .about_wrap .load .cardBtn {
       height: 13rem;
       width: 14rem;
+      margin-left: 2.5rem;
+      margin-right: 2.5rem;
       background-color: #ffffff;
       border-color: transparent;
       color: #50525E;

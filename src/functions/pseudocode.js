@@ -21,6 +21,8 @@ export function getPseudocode(name) {
         kruskalConstrained.push("\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint");
         kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0add e to T");
         kruskalConstrained.push("\xa0 \xa0else do nothing");
+        kruskalConstrained.push("While there is still optimization");
+        kruskalConstrained.push("\xa0 \xa02-opt");
         kruskalConstrained.push("return T");
         return kruskalConstrained;
       case "Prim": //Prim's
