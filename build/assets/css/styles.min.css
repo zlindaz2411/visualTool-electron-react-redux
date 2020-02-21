@@ -1041,7 +1041,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       padding-right: 1rem;
       padding-top: 0.5rem;
       clear: both;
-      float: left; }
+      text-align: left; }
   .algorithm_wrap .second_row {
     margin-left: 2rem;
     border-radius: 2rem;
