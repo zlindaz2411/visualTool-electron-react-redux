@@ -56,9 +56,8 @@ describe('compare performance of different algorithms on different input', funct
 
 describe('compare the weight computed by different algorithms ', function() {
     const res = [34,34,34,34,40,51]
-
     it('should return a list of four elements of performances when list has all the algorithms', function() {
-      assert.equal(res, comparePerformanceByWeight([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL, Algorithm.CONSTRAINED, Algorithm.ESAU], graph, 2, 3));
+      assert.deepEqual(res, comparePerformanceByWeight([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL, Algorithm.CONSTRAINED, Algorithm.ESAU], graph, 2, 3));
     });
 
 

@@ -168,6 +168,7 @@ export function kruskals(graph) {
 }
 }
 
+
   /**
   * Boruvka Parallel algorithm
   * @param {*} edges 
@@ -192,6 +193,7 @@ export function kruskals(graph) {
                     cheapest[nodes[v].id]= -1;
             }
 
+            
         //Let promises to handle the selection of hte cheapest edge(alternative of threads for Javascript)
         let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
         let result = await Promise.all(promises)

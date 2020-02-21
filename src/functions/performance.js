@@ -68,7 +68,7 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
             result.push(getWeight(boruvkas(graph)))
         }
         else if(list[i] == Algorithm.PARALLEL){
-               // parallel(graph).then((x) => {result.push(getWeight(x))})    
+            result.push(getWeight(boruvkas(graph)))    
         }
         else if((list[i] == Algorithm.ESAU)){
             if(esauWilliams(graph, capacity) == ErrMessage.CMST_NOT_FOUND){
@@ -83,7 +83,6 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
                 result.push(-1)
             }
             else{
-                console.log(kruskalConstrained(graph, degree))
                 result.push(getWeight(kruskalConstrained(graph, degree)))
             }
         }

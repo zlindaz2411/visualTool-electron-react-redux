@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
-import { CMSTdata} from "../constants/defaultGraph";
+import { data} from "../constants/defaultGraph";
 import {
   noRootSelectedMessage,
 } from "../constants/errorMessage";
@@ -31,7 +31,7 @@ class EsauPage extends Component {
       states: [],
       data:
        this.props.latestGraph == null
-          ? CMSTdata
+          ? data
           : this.props.latestGraph
     }
 }
