@@ -70,7 +70,6 @@ export function kruskals(graph) {
       // Take the smallest edge and add that to the new graph
       while (!edgeQueue.isEmpty()) {
         // Continue removing edges till we get an edge with an unexplored node
-        console.log(edgeQueue)
         let currentMinEdge = edgeQueue.extractMin();
        
         let u = currentMinEdge.element[0];

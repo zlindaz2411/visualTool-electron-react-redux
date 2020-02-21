@@ -53,7 +53,7 @@ export function kruskalConstrained(graph, degree) {
   //Sort the edges 
   let nodes = graph.nodes
   let degrees = {}
-  let unsafeNodes = populateUnsafeNodes(graph.edges)
+  let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
   
   for(let i= 0;i<nodes.length;i++){
       degrees[nodes[i].id] = 0;
@@ -69,7 +69,7 @@ export function kruskalConstrained(graph, degree) {
       let v = edges[i].target;
       if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
       //if edges[i] in MST is not acyclic
-      if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+      if(!uf.connected(u,v) && degrees[u] +1 <= degree && degrees[v]+1 <= degree){
          MST.push(edges[i])
          degrees[u] +=1;
          degrees[v] +=1;
@@ -165,7 +165,6 @@ function one_opt(mst, originalGraph, degrees, degree){
             mst.push(first)
             degrees[first.source] +=1;
             degrees[first.target] +=1;
-            addStates(states, [], mst, [], "", 13)
           }
           else{
             mst.push(second)
@@ -183,7 +182,6 @@ function one_opt(mst, originalGraph, degrees, degree){
             mst.push(second)
             degrees[second.source] +=1;
             degrees[second.target] +=1;
-            addStates(states, [], mst, [], "", 13)
           }
           else{
             mst.push(first)
@@ -250,7 +248,7 @@ export function getWeight(path){
     return weight
   }
 
-export function populateUnsafeNodes(edgesDegree){
+export function populateUnsafeNodes(edgesDegree, degree){
   let unsafeNodes = new Set();
   let map = new Map();
   for(let i =0;i<edgesDegree.length;i++){

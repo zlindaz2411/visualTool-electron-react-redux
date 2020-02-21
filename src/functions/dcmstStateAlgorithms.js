@@ -74,7 +74,7 @@ export function kruskalConstrained(graph, degree) {
   let degrees = {}
   let arr = []; //a copy of highlighted
   let t = []
-  unsafeNodes = populateUnsafeNodes(graph.edges)
+  let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
   
   for(let i= 0;i<nodes.length;i++){
       degrees[nodes[i].id] = 0;
@@ -149,6 +149,7 @@ export function kruskalConstrained(graph, degree) {
   return states;
   }
   catch(error){
+    console.log(error.toString())
       return error.toString();
   }
 }

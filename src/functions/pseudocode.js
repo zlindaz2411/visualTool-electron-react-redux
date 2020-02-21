@@ -4,7 +4,7 @@ export function getPseudocode(name) {
       case "Kruskal": //Kruskal's
         let kruskal = [];
         kruskal.push("Sort the edge list E by weight (smallest first)");
-        kruskal.push("Initialize the set T = empty set");
+        kruskal.push("Initialize the tree T to be empty");
         kruskal.push("for (i=0; i<edgeList.length; i++)");
         kruskal.push("\xa0 \xa0 e = edgelist[i]");
         kruskal.push("\xa0 \xa0 if adding e to T is acyclic");
@@ -14,7 +14,7 @@ export function getPseudocode(name) {
         return kruskal;
       case "Kruskal with Constraint": //Kruskal for DCMST
         let kruskalConstrained = [];
-        kruskalConstrained.push("Initialize the set T = empty set");
+        kruskalConstrained.push("Initialize the tree T to be empty");
         kruskalConstrained.push("Initialize the list U = nodes with degree -1 > constraint");
         kruskalConstrained.push("Sort the edge list E by weight (smallest first) and remove edges adjacents to unsafe nodes");
         kruskalConstrained.push("for (i=0; i<edgeList.length; i++)");
@@ -33,7 +33,7 @@ export function getPseudocode(name) {
       case "Prim": //Prim's
         let prim = [];
         prim.push("Select a root node r");
-        prim.push("Initialize the set T = empty set");
+        prim.push("Initialize the tree T to be empty");
         prim.push("Add the edges connected of r to a priority queue Q");
         prim.push("while (!Q.isEmpty)");
         prim.push("\xa0 \xa0Dequeue the shortest edge (u,v) from the queue");
@@ -47,7 +47,7 @@ export function getPseudocode(name) {
         return prim;
       case "Boruvka": //Borvska's
         let boruvka = [];
-        boruvka.push("Initialize the set T = empty set");
+        boruvka.push("Initialize the tree T to be empty");
         boruvka.push("Initialize the F = map of one-vertex trees to its component");
         boruvka.push("while(T is not MST)");
         boruvka.push(
@@ -62,7 +62,7 @@ export function getPseudocode(name) {
         return boruvka;
       case "Boruvka Parallel": // Parallel Boruvska
         let boruvkaParallel = [];
-        boruvkaParallel.push("Initialize the set T = empty set");
+        boruvkaParallel.push("Initialize the tree T to be empty");
         boruvkaParallel.push("Initialize the F = map of one-vertex trees to its component");
         boruvkaParallel.push("while(T is not MST)");
         boruvkaParallel.push(
@@ -80,7 +80,7 @@ export function getPseudocode(name) {
         return boruvkaParallel;
         case "Esau Williams": // Esau Wiliams pseudocode
         let esauWilliams = [];
-        esauWilliams.push("Initialize the set CMST = empty set");
+        esauWilliams.push("Initialize the tree CMST to be empty");
         esauWilliams.push("Initialize L = edge list");
         esauWilliams.push("while(CMST edge list size < node list -1)");
         esauWilliams.push(

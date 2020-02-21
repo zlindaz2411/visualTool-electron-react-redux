@@ -114,10 +114,6 @@ export function prims(graph) {
       let t = states[states.length - 1].tree.slice();
 
       addStates(states, arr, t, [],"", 3);
-
-      for(let i= 0;i<edgeQueue.items.length;i++){
-        console.log(edgeQueue.items[i])
-      }
       
       let currentMinEdge = edgeQueue.extractMin();
 

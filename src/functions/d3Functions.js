@@ -241,9 +241,8 @@ function createEdges(svg, data, draw) {
               e.preventDefault();
               let text = input.node().value;
               if(validateNumber(text) && !validateEmpty(text)){
-                d.weight = text;
-                removeAll();
-                drawGraph(data, draw);
+                  updateWeight(d, text, data, draw)
+                  console.log(d)
               }
               else{
                   onlyNumberErrorMessage();
@@ -253,6 +252,7 @@ function createEdges(svg, data, draw) {
       }
     });
 }
+
 
 /**
  * Create nodes for the graph
@@ -468,3 +468,18 @@ function handleDeleteEdge(element, data, draw) {
   removeAll();
   drawGraph(data, draw);
 }
+
+
+/**
+ * Update weight
+ * @param {*} d 
+ * @param {*} text
+ * @param {*} data 
+ * @param {*} draw 
+ */
+function updateWeight(d,text, data, draw){
+  data.edges[data.edges.indexOf(d)].weight =parseInt(text)
+  removeAll();
+  drawGraph(data, draw);
+}
+
