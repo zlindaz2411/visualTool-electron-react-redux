@@ -1,7 +1,7 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 import {addStates} from './stateFunctions';
-import {getEdge, getWeight} from './dcmstAlgorithms';
+import {getEdge, getWeight, populateUnsafeNodes, findIndex, getCommonEnd} from './dcmstAlgorithms';
 
 
 /**
@@ -74,18 +74,7 @@ export function kruskalConstrained(graph, degree) {
   let degrees = {}
   let arr = []; //a copy of highlighted
   let t = []
-  let unsafeNodes = new Set();
-  let map = new Map();
-  let edgesDegree = graph.edges
-  for(let i =0;i<edgesDegree.length;i++){
-    if(!map.has(edgesDegree[i].source)) map.set(edgesDegree[i].source,1)
-    else map.set(edgesDegree[i].source, map.get(edgesDegree[i].source)+1)
-    if(!map.has(edgesDegree[i].target)) map.set(edgesDegree[i].target,1)
-    else map.set(edgesDegree[i].target, map.get(edgesDegree[i].target)+1)
-    if(map.get(edgesDegree[i].source)-1 > degree) unsafeNodes.add(edgesDegree[i].source) 
-    if(map.get(edgesDegree[i].target)-1 > degree) unsafeNodes.add(edgesDegree[i].target) 
-  }
-  unsafeNodes = [...unsafeNodes]
+  unsafeNodes = populateUnsafeNodes(graph.edges)
   
   for(let i= 0;i<nodes.length;i++){
       degrees[nodes[i].id] = 0;
@@ -209,7 +198,7 @@ function one_opt(mst, originalGraph, degrees, degree, states){
             degrees[first.target] +=1;
           }
       }
-    }
+      }
       }
     }
 }
@@ -217,44 +206,6 @@ function one_opt(mst, originalGraph, degrees, degree, states){
 return mst;
 }
 
-
-function findIndex(edge, edges){
-  for(let i=0;i<edges.length;i++){
-    if(edges[i].source == edge.source && edges[i].target ==edge.target || 
-      edges[i].target == edge.source && edges[i].source == edge.target){   
-     return i;
-      }
-  };
-  return -1
-}
-
-function getCommonEnd(edge, edges, nodes){
-    let candidate = [] 
-    for(let i =0;i<nodes.length;i++){
-        let temp = findEdge(edge,edges, nodes[i])
-        if(temp.length ==2 && candidate.indexOf(temp) == -1){
-          candidate.push(temp)
-        }
-    }
-  return candidate
-}
-
-function findEdge(edge, edges, node){
-   let found = []
-    for(let i=0;i<edges.length;i++){
-      if(edges[i].source == edge.source && edges[i].target ==node.id || 
-        edges[i].target == edge.source && edges[i].source ==node.id)
-       {
-         found.push(edges[i])
-       }
-       if(edges[i].target == edge.target && edges[i].source ==node.id || 
-        edges[i].source == edge.target && edges[i].target ==node.id)
-       {
-         found.push(edges[i])
-       }
-   };
-   return found;
-}
 
 
 function two_opt(mst, originalGraph, states){

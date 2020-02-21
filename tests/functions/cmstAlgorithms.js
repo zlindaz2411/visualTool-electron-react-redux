@@ -58,14 +58,14 @@ errorInput.addEdge({ source: 2, target: 3, weight: 8, highlight: false });
 errorInput.addEdge({ source: 3, target: 1, weight: 7, highlight: false });
 
 describe("esau williams algorithm computes a suboptimal constrained minimum spanning tree given a graph", function() {
-  const result = new Set([
+  const result = [
     { source: "G", target: "F", weight: 8 },
     { source: "D", target: "F", weight: 5 },
     { source: "B", target: "E", weight: 6 },
-    { source: "A", target: "C", weight: 6 },
     { source: "A", target: "B", weight: 5 },
+    { source: "A", target: "C", weight: 6 },
     { source: "A", target: "D", weight: 9 }
-  ]);
+  ];
   it("should return  a suboptimal constrained minimum spanning tree given a graph", function() {
     assert.deepEqual(result, esauWilliams(graph, 3));
   });

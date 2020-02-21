@@ -19,7 +19,7 @@ export function kruskals(graph) {
       return a.weight - b.weight;
     });
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST = []
     addStates(states, [], [], [],"", 1);
 
     let uf = new UnionFind(nodes);
@@ -37,11 +37,11 @@ export function kruskals(graph) {
       //if edges[i] in MST is not acyclic
       addStates(states, arr, t, [],"", 4);
       if (!uf.connected(u, v)) {
-        MST.add(edges[i]);
+        MST.push(edges[i]);
         uf.union(u, v);
         t.push(edges[i]);
         addStates(states, arr, t, [],"", 5);
-        if(MST.size == nodes.length-1){
+        if(MST.length == nodes.length-1){
           addStates(
             states,
             [],
@@ -67,7 +67,7 @@ export function kruskals(graph) {
       7
     );
 
-    if (MST.size != nodes.length-1) {
+    if (MST.length != nodes.length-1) {
       throw ErrMessage.MST_NOT_FOUND;
     }
     return states;
@@ -86,12 +86,11 @@ export function prims(graph) {
   try {
     let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST = []
     addStates(states, [], [], [],"", 1);
     // Select first node as starting node
     let s = graph.root;
     let nodes = graph.nodes;
-    let edges = graph.edges;
     // Create a Priority Queue and explored set
     let edgeQueue = new PriorityQueueHeap();
     let explored = new Set();
@@ -116,6 +115,10 @@ export function prims(graph) {
 
       addStates(states, arr, t, [],"", 3);
 
+      for(let i= 0;i<edgeQueue.items.length;i++){
+        console.log(edgeQueue.items[i])
+      }
+      
       let currentMinEdge = edgeQueue.extractMin();
 
       let u = currentMinEdge.element[0];
@@ -127,7 +130,7 @@ export function prims(graph) {
 
       if (!explored.has(v)) {
         explored.add(v);
-        MST.add([u, v, currentMinEdge.priority]);
+        MST.push([u, v, currentMinEdge.priority]);
         t.push({ source: u, target: v });
         addStates(states, arr, t, [], "",6);
         let temp = arr.slice();
@@ -198,7 +201,7 @@ export function boruvkas(graph) {
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST = []
     let previous = 0;
     let current = num;
     let cheapest = [];
@@ -267,7 +270,7 @@ export function boruvkas(graph) {
             if (u == v) continue;
             if (!subset.connected(u, v)) {
               addStates(states, hedge, tedge, hnode,"", 6);
-              MST.add(e);
+              MST.push(e);
               subset.union(u, v);
               tedge.push(e);
               addStates(states, hedge, tedge, hnode,"", 7);
@@ -313,7 +316,7 @@ export function parallel(graph) {
     let num = nodes.length;
 
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST =[]
     let previous = 0;
     let current = num;
     let cheapest = [];
@@ -402,7 +405,7 @@ export function parallel(graph) {
           if (u == v) continue;
           if (!subset.connected(u, v)) {
             addStates(states, hedge, tedge, hnode,"", 8);
-            MST.add(e);
+            MST.push(e);
             subset.union(u, v);
             tedge.push(e);
             addStates(states, hedge, tedge, hnode,"", 9);

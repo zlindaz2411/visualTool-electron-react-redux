@@ -21,6 +21,7 @@ describe("Priority Queue class constructor", function() {
   });
 
 
+  });
   describe("Priority Queue Heap class insert", function() {
     let input =[]
     let pq = new PriorityQueueHeap();

@@ -1,9 +1,8 @@
-import {comparePerformance, calculateTime} from "../../src/functions/performance";
+import {comparePerformanceByTime, comparePerformanceByWeight, calculateTime} from "../../src/functions/performance";
 import {Algorithm} from "../../src/constants/algorithms";
 import {performance} from 'perf_hooks';
 const assert = require('assert');
 
-describe('compare performance of different algorithms on different input', function() {
     /**
  * Correct input: connected graph
  */
@@ -36,25 +35,37 @@ const input= {
     ],
     };
 
+
+describe('compare performance of different algorithms on different input', function() {
+
     it('should return a list of four elements of performances when list has all the algorithms', function() {
-      assert.equal(4, comparePerformance([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL], input).length);
+      assert.equal(4, comparePerformanceByTime([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL], input).length);
     });
 
     it('should return a list of three elements of performances when list has three algorithms', function() {
-        assert.equal(3, comparePerformance([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.PARALLEL], input).length);
+        assert.equal(3, comparePerformanceByTime([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.PARALLEL], input).length);
       });
 
     it('should return a list of two elements of performances when list has two algorithms', function() {
-    assert.equal(2, comparePerformance([Algorithm.KRUSKAL, Algorithm.PRIM], input).length);
+    assert.equal(2, comparePerformanceByTime([Algorithm.KRUSKAL, Algorithm.PRIM], input).length);
     });
 
     it('should return a list of one elements of performances when list has one algorithms', function() {
-    assert.equal(1, comparePerformance([Algorithm.KRUSKAL], input).length);
+    assert.equal(1, comparePerformanceByTime([Algorithm.KRUSKAL], input).length);
     });
 
     it('should return a list of zero elements of performances when list has no algorithm', function() {
-        assert.equal(0, comparePerformance([], input).length);
+        assert.equal(0, comparePerformanceByTime([], input).length);
         });
+
+});
+
+describe('compare the weight computed by different algorithms ', function() {
+
+    
+    it('should return a list of four elements of performances when list has all the algorithms', function() {
+      assert.equal(4, comparePerformanceByWeight([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL], input).length);
+    });
 
 
 });

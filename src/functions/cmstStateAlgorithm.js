@@ -19,7 +19,7 @@ export function esauWilliams(graph, capacity) {
     let root = graph.root;
     let nodes = graph.nodes.slice();
     let uf = new UnionFind(nodes);  
-    let CMST = new Set();
+    let CMST =[]
     let savings = new Map();
     let components = {};
     let rootAdjacents = graph.getAdjacentsOfNode(root.id);
@@ -32,7 +32,7 @@ export function esauWilliams(graph, capacity) {
     }
     //While the edges in the CMST is less than the nodes length -1
     let len =  nodes.length;
-    while (CMST.size <len- 1  && edges.length >0) {
+    while (CMST.length <len- 1  && edges.length >0) {
       addStates(states, [], tedge,[], "", 2);
       
       //For each node, set the tradeoff cost with the closest connected node
@@ -108,7 +108,7 @@ export function esauWilliams(graph, capacity) {
 
           updateGateValue(components[source], gates);
           uf.union(source, target);
-          CMST.add(edge);
+          CMST.push(edge);
           
         }
       }
@@ -119,7 +119,7 @@ export function esauWilliams(graph, capacity) {
     }
     
     addStates(states, [], tedge, [], "",11);
-    if(CMST.size != len-1){
+    if(CMST.length != len-1){
       throw ErrMessage.CMST_NOT_FOUND
     }
     return states;

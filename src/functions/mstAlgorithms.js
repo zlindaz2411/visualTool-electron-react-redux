@@ -13,7 +13,7 @@ export function kruskals(graph) {
     let nodes = graph.nodes
     let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST = []
     let uf = new UnionFind(nodes);
     // Add all edges to the Queue:
     for(let i =0;i<edges.length;i++){
@@ -21,16 +21,16 @@ export function kruskals(graph) {
         let v = edges[i].target;
         //if edges[i] in MST is not acyclic
         if(!uf.connected(u,v)){
-           MST.add(edges[i])
+           MST.push(edges[i])
            uf.union(u,v)
-           if(MST.size == nodes.length-1){
+           if(MST.length == nodes.length-1){
                return MST;
            }
         }
     }
     
     //check if is a minimum spanning tree
-    if(MST.size != nodes.length-1){
+    if(MST.length != nodes.length-1){
         throw ErrMessage.MST_NOT_FOUND
     }
     return MST;
@@ -47,69 +47,69 @@ export function kruskals(graph) {
   * @param {*} nodes 
   */
  export function prims(graph) {
-    try{
-    // Initialize graph that'll contain the MST
-    let nodes = graph.nodes
-    let edges = graph.edges
-    let MST = new Set();
-    // Select first node as starting node
-    let s = nodes[0];
-    // Create a Priority Queue and explored set
-    let edgeQueue = new PriorityQueueHeap();
-    let explored = new Set();
-    explored.add(s.id);
- 
-    // Add all edges from this starting node to the PQ taking weights as priority
-    let adjacents = graph.getAdjacentsOfNode(s.id);
-    for (let i = 0; i < adjacents.length; i++) {
-      if (adjacents[i].source != s.id)
-        edgeQueue.insert([s.id, adjacents[i].source], adjacents[i].weight);
-      if (adjacents[i].target != s.id)
-        edgeQueue.insert([s.id, adjacents[i].target], adjacents[i].weight);
-    }
+    try {
+      // Initialize graph that'll contain the MST
+      let MST = []
+      // Select first node as starting node
+      
+      let nodes = graph.nodes;
+      let s = nodes[0];
+      // Create a Priority Queue and explored set
+      let edgeQueue = new PriorityQueueHeap();
+      let explored = new Set();
+      explored.add(s.id);
+      // Add all edges from this starting node to the PQ taking weights as priority
+      let adjacents = graph.getAdjacentsOfNode(s.id);
+      for (let i = 0; i < adjacents.length; i++) {
+        if (adjacents[i].source != s.id)
+          edgeQueue.insert([s.id, adjacents[i].source], adjacents[i].weight);
+        if (adjacents[i].target != s.id)
+          edgeQueue.insert([s.id, adjacents[i].target], adjacents[i].weight);
+      }
 
-    // Take the smallest edge and add that to the new graph
-    while (!edgeQueue.isEmpty()) {
-       // Continue removing edges till we get an edge with an unexplored node
-       let currentMinEdge = edgeQueue.extractMin();
-       let u = currentMinEdge.element[0]
-       let v =  currentMinEdge.element[1]
-       if(!explored.has(v)){
-            explored.add(v);
-            MST.add([u,v,currentMinEdge.priority]);
-            let adjacents = graph.getAdjacentsOfNode(v)
-        for (let i = 0; i < adjacents.length; i++) {
-            //Check if the endpoints has been explored, if not, add to MST and add to the priority queue the adjacent edges
-          if (adjacents[i].source != v) {
-            if (!explored.has(adjacents[i].source)) {
-              edgeQueue.insert(
-                [v, adjacents[i].source],
-                adjacents[i].weight
-              );
+      // Take the smallest edge and add that to the new graph
+      while (!edgeQueue.isEmpty()) {
+        // Continue removing edges till we get an edge with an unexplored node
+        console.log(edgeQueue)
+        let currentMinEdge = edgeQueue.extractMin();
+       
+        let u = currentMinEdge.element[0];
+        let v = currentMinEdge.element[1];
+  
+        if (!explored.has(v)) {
+          explored.add(v);
+          MST.push({source: u, target: v, weight:currentMinEdge.priority});
+          let adjacents = graph.getAdjacentsOfNode(v)
+          for (let i = 0; i < adjacents.length; i++) {
+            if (adjacents[i].source != v) {
+              if (!explored.has(adjacents[i].source)) {
+                edgeQueue.insert(
+                  [v, adjacents[i].source],
+                  adjacents[i].weight
+                );
+              }
             }
-          }
-          if (adjacents[i].target != v) {
-            if (!explored.has(adjacents[i].target)) {
-              edgeQueue.insert(
-                [v, adjacents[i].target],
-                adjacents[i].weight
-              );
+            if (adjacents[i].target != v) {
+              if (!explored.has(adjacents[i].target)) {
+                edgeQueue.insert(
+                  [v, adjacents[i].target],
+                  adjacents[i].weight
+                );
+              }
             }
           }
         }
-       };
+      }
+  
+      if(explored.size != nodes.length) {
+        throw ErrMessage.MST_NOT_FOUND;
+      }
+      return MST;
+    } catch (error) {
+      return error.toString();
     }
-
-    //check if is a minimum spanning tree
-    if(explored.size != nodes.length){
-        throw ErrMessage.MST_NOT_FOUND
-    }
-    return MST;
-    }
-    catch(error){
-        return error.toString();
-    }
- }
+  }
+  
 
   /**
   * Boruvka algorithm
@@ -123,7 +123,7 @@ export function kruskals(graph) {
     let subset = new UnionFind(nodes);
     let num = nodes.length;
     // Initialize graph that'll contain the MST
-    let MST = new Set();
+    let MST = []
     let cheapest = [];
     let previous = 0;
     let current = num;
@@ -153,7 +153,7 @@ export function kruskals(graph) {
                 let v = subset.find(e.target);
                 if(u==v) continue;
                 if(!subset.connected(u,v)){
-                    MST.add(e);
+                    MST.push(e);
                     subset.union(u,v);
                     num--;
                 }
@@ -181,7 +181,7 @@ export function kruskals(graph) {
         let subset = new UnionFind(nodes);
         let num = nodes.length;
         // Initialize graph that'll contain the MST
-        let MST = new Set();
+        let MST =[]
         let cheapest = [];
         let previous = 0;
         let current = num;
@@ -206,7 +206,7 @@ export function kruskals(graph) {
                 let v = subset.find(e.target);
                 if(u==v) continue;
                 if(!subset.connected(u,v)){
-                    MST.add(e);
+                    MST.push(e);
                     subset.union(u,v);
                     num--;
                 }

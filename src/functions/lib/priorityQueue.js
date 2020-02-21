@@ -22,25 +22,25 @@ export class PriorityQueueHeap {
     this.items.push(qElement);
     this.bubbleUp(this.items.length - 1);
   }
+
   /**
    * Restore the heap order after adding element to the heap
    * @param {*} currentIndex 
    */
   bubbleUp(currentIndex) {
     while (currentIndex > 0) {
-      let parentIndex = Math.floor(currentIndex / 2);
+      let parentIndex = Math.floor((currentIndex -1) / 2)
       if (
         this.items[parentIndex].priority > this.items[currentIndex].priority
       ) {
-        let temp = this.items[parentIndex];
-        this.items[parentIndex] = this.items[currentIndex];
-        this.items[currentIndex] = temp;
+        this.swap(parentIndex, currentIndex)
         currentIndex = parentIndex;
       } else {
         break;
       }
     }
   }
+
 
   /**
    * Extract the minimum element which is at root
@@ -50,7 +50,6 @@ export class PriorityQueueHeap {
     if(this.isEmpty()) throw "No element"
     let result = this.items[0];
     let leaf = this.items.pop();
-
     if (this.items.length > 0) {
       this.items[0] = leaf;
       this.bubbleDown(0);
@@ -66,36 +65,34 @@ export class PriorityQueueHeap {
    * @param {*} currentIndex 
    */
   bubbleDown(currentIndex) {
-    while (true) {
-      let child2Index = (currentIndex + 1) * 2;
-      let child1Index = child2Index - 1;
-      let swap = null;
-      if (child1Index < this.items.length) {
-        let child1 = this.items[child1Index];
-        if (this.items[currentIndex].priority > child1.priority) {
-          swap = child1Index;
-        }
+      let left = (currentIndex  * 2 +1)
+      let right =  (currentIndex  * 2 +2)
+      let swap = currentIndex;
+      if (left < this.items.length && this.items[currentIndex].priority > this.items[left].priority) {
+          swap = left;
       }
 
-      if (child2Index < this.items.length) {
-        let child2 = this.items[child2Index];
-        if (
-          swap == null
-            ? this.items[currentIndex].priority
-            : this.items[child1Index].priority > child2.priority
-        ) {
-          swap = child2Index;
-        }
+      if (right < this.items.length && this.items[right].priority < this.items[swap].priority) {
+          swap = right;
       }
 
-      if (swap == null) break;
-
-      let temp = this.items[currentIndex];
-      this.items[currentIndex] = this.items[swap];
-      this.items[swap] = temp;
-      currentIndex = swap;
+      if (swap != currentIndex){
+      this.swap(currentIndex,swap)
+      this.bubbleDown(swap)
+      }
     }
+
+    /**
+     * Swap two elements
+     * @param {*} currentIndex 
+     * @param {*} swap 
+     */
+  swap(currentIndex, swap){
+    let temp = this.items[currentIndex];
+    this.items[currentIndex] = this.items[swap];
+    this.items[swap] = temp;
   }
+  
 
   /**
    * Check if heap is ermpty

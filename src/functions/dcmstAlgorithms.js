@@ -53,18 +53,7 @@ export function kruskalConstrained(graph, degree) {
   //Sort the edges 
   let nodes = graph.nodes
   let degrees = {}
-  let unsafeNodes = new Set();
-  let map = new Map();
-  let edgesDegree = graph.edges
-  for(let i =0;i<edgesDegree.length;i++){
-    if(!map.has(edgesDegree[i].source)) map.set(edgesDegree[i].source,1)
-    else map.set(edgesDegree[i].source, map.get(edgesDegree[i].source)+1)
-    if(!map.has(edgesDegree[i].target)) map.set(edgesDegree[i].target,1)
-    else map.set(edgesDegree[i].target, map.get(edgesDegree[i].target)+1)
-    if(map.get(edgesDegree[i].source)-1 > degree) unsafeNodes.add(edgesDegree[i].source) 
-    if(map.get(edgesDegree[i].target)-1 > degree) unsafeNodes.add(edgesDegree[i].target) 
-  }
-  unsafeNodes = [...unsafeNodes]
+  let unsafeNodes = populateUnsafeNodes(graph.edges)
   
   for(let i= 0;i<nodes.length;i++){
       degrees[nodes[i].id] = 0;
@@ -103,7 +92,7 @@ export function kruskalConstrained(graph, degree) {
        }
     }
   }
-  two_opt(MST,graph)
+  one_opt(MST,graph, degrees, degree)
   //check if is a minimum spanning tree
   if(MST.length != nodes.length-1){
       throw ErrMessage.MST_NOT_FOUND
@@ -155,10 +144,124 @@ export function getEdge(edges,source, target){
   return null
 }
 
-export function getWeight(path){
-  let weight = 0;
-  for(let i= 0;i<path.length; i++){
-    weight +=path[i].weight
-  }
-  return weight
+
+
+function one_opt(mst, originalGraph, degrees, degree){
+  for(let i=0; i<mst.length; i++){
+    let endPoints = getCommonEnd(mst[i],originalGraph.edges, originalGraph.nodes)
+    for(let m =0;m<endPoints.length;m++){
+      let first = endPoints[m][0]
+      let second = endPoints[m][1]
+      let firstIndex = findIndex(first, mst)
+      let secondIndex = findIndex(second,mst)
+      if(first && second){
+     
+      if(first.weight < second.weight){
+        if(firstIndex== -1 && secondIndex != -1 ){
+          mst.splice(secondIndex,1)
+          degrees[second.source] -=1;
+          degrees[second.target] -=1;
+          if(degrees[first.source]+1<= degree && degrees[first.target]+1 <=degree){
+            mst.push(first)
+            degrees[first.source] +=1;
+            degrees[first.target] +=1;
+            addStates(states, [], mst, [], "", 13)
+          }
+          else{
+            mst.push(second)
+            degrees[second.source] +=1;
+            degrees[second.target] +=1;
+          }
+        }
+      }
+      else if(second.weight < first.weight){
+        if(secondIndex== -1 && firstIndex != -1 ){
+          mst.splice(firstIndex,1)
+          degrees[first.source] -=1;
+          degrees[first.target] -=1;
+          if(degrees[second.source]+1 <= degree && degrees[second.target]+1 <= degree){
+            mst.push(second)
+            degrees[second.source] +=1;
+            degrees[second.target] +=1;
+            addStates(states, [], mst, [], "", 13)
+          }
+          else{
+            mst.push(first)
+            degrees[first.source] +=1;
+            degrees[first.target] +=1;
+          }
+      }
+      }
+      }
+    }
 }
+
+return mst;
+}
+
+
+export function findIndex(edge, edges){
+  for(let i=0;i<edges.length;i++){
+    if(edges[i].source == edge.source && edges[i].target ==edge.target || 
+      edges[i].target == edge.source && edges[i].source == edge.target){   
+     return i;
+      }
+  };
+  return -1
+}
+
+export function getCommonEnd(edge, edges, nodes){
+    let candidate = [] 
+    for(let i =0;i<nodes.length;i++){
+        let temp = findEdge(edge,edges, nodes[i])
+        if(temp.length ==2 && candidate.indexOf(temp) == -1){
+          candidate.push(temp)
+        }
+    }
+  return candidate
+}
+
+export function findEdge(edge, edges, node){
+   let found = []
+    for(let i=0;i<edges.length;i++){
+      if(edges[i].source == edge.source && edges[i].target ==node.id || 
+        edges[i].target == edge.source && edges[i].source ==node.id)
+       {
+         found.push(edges[i])
+       }
+       if(edges[i].target == edge.target && edges[i].source ==node.id || 
+        edges[i].source == edge.target && edges[i].target ==node.id)
+       {
+         found.push(edges[i])
+       }
+   };
+   return found;
+}
+
+/**
+ * Get the sum of the weights of a path
+ * @param {*} path 
+ */
+export function getWeight(path){
+    let weight = 0;
+    for(let i= 0;i<path.length; i++){
+      weight +=path[i].weight
+    }
+    return weight
+  }
+
+export function populateUnsafeNodes(edgesDegree){
+  let unsafeNodes = new Set();
+  let map = new Map();
+  for(let i =0;i<edgesDegree.length;i++){
+    if(!map.has(edgesDegree[i].source)) map.set(edgesDegree[i].source,1)
+    else map.set(edgesDegree[i].source, map.get(edgesDegree[i].source)+1)
+    if(!map.has(edgesDegree[i].target)) map.set(edgesDegree[i].target,1)
+    else map.set(edgesDegree[i].target, map.get(edgesDegree[i].target)+1)
+    if(map.get(edgesDegree[i].source)-degree > 1) unsafeNodes.add(edgesDegree[i].source) 
+    if(map.get(edgesDegree[i].target)-degree > 1) unsafeNodes.add(edgesDegree[i].target) 
+  }
+  return [...unsafeNodes]
+}
+
+

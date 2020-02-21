@@ -81,13 +81,14 @@
         }
     }
 
-    .actionButton{
+    .action_buttons button{
+        width: 16rem;
         margin-left:3rem;
         margin-bottom:3rem;
         margin-right:3rem;
         margin-top : 6rem;
+        display: inline-block;
     }
-
 
 
 

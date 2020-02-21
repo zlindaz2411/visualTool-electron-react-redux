@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
 import { Line } from "react-chartjs-2";
 import InputDialog from "../components/inputDialog";
-import { comparePerformance } from "../functions/performance";
+import { comparePerformanceByTime, comparePerformanceByWeight } from "../functions/performance";
 
 import { Algorithm } from "../constants/algorithms";
 import { data} from "../constants/defaultGraph";
@@ -123,7 +123,7 @@ class PerformancePage extends Component {
   /**
    * Get the running time of each selected algorithm and update the dataset of the graph
    */
-  handleFormSubmit(e) {
+  handleFormSubmit(e, weight) {
     e.preventDefault();
     if(this.state.graph  == null){
       emptyGraphMessage();
@@ -141,21 +141,24 @@ class PerformancePage extends Component {
         ]
     })
     }
-    this.setState({
-      data: {
-        labels: selected,
-        datasets: [
-          {
-            fill: false,
-            borderColor: "#D9E9D6",
-            pointBorderColor: "#50535D",
-            pointRadius: 3,
-            pointBackgroundColor: "#50535D",
-            data: comparePerformance(selected, this.state.graph,  this.state.degree, this.state.capacity)
-          }
-        ]
-      }
+    else{
+      let temp = weight ? comparePerformanceByWeight(selected, this.state.graph,  this.state.degree, this.state.capacity): comparePerformanceByTime(selected, this.state.graph,  this.state.degree, this.state.capacity)
+      this.setState({
+        data: {
+          labels: selected,
+          datasets: [
+            {
+              fill: false,
+              borderColor: "#D9E9D6",
+              pointBorderColor: "#50535D",
+              pointRadius: 3,
+              pointBackgroundColor: "#50535D",
+              data: temp
+            }
+          ]
+        }
     });
+    }
     }
   }
 
@@ -181,7 +184,6 @@ class PerformancePage extends Component {
         handleChange={e =>  this.handleChange(e, true)}
         buttonName="Submit">
         </InputDialog>
-      
         <div className="title">
           <h1>Compare Performance</h1>
           </div>
@@ -233,7 +235,11 @@ class PerformancePage extends Component {
                 </form>
               </div>
             </div>
-            <button onClick={this.handleFormSubmit.bind(this)} className = "actionButton">Compare</button>
+            <div className="action_buttons">
+            <button onClick={(e) => this.handleFormSubmit(e, false)} className = "actionButton">Compare by Time</button>
+            <button onClick={(e) => this.handleFormSubmit(e, true)} className = "actionButton">Compare by Weight</button>
+          </div>
+           
           </div>
           
         </center>
