@@ -76,6 +76,27 @@ describe("Get pseudocode based on different input", function() {
     assert.deepEqual(parallel, getPseudocode(Algorithm.PARALLEL));
   });
 
+  const kruskalConstrained = [
+    "Initialize the tree T to be empty",
+    "Add to the tree edges adjacent to nodes with degree 1",
+    "For each node k with degree 2",
+    "\xa0 \xa0 i, j = endpoint of edges adjacent to k",
+    "\xa0 \xa0 \xa0 \xa0\xa0if(there isn't a path between i and j (apart from the one with k))",
+    "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0Add adjacent edges of k to T",
+    "Sort the edge list E by weight (smallest first)",
+    "for (i=0; i<edgeList.length; i++)",
+    "\xa0 \xa0 e = edgelist[i]",
+    "\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint",
+    "\xa0 \xa0 \xa0\xa0 \xa0add e to T",
+    "While there is still optimization",
+    "\xa0 \xa02-opt",
+    "return T"
+  ]
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(kruskalConstrained, getPseudocode(Algorithm.CONSTRAINED));
+  });
+
   const esau = [
     "Initialize the tree CMST to be empty",
     "Initialize L = edge list",
@@ -172,7 +193,26 @@ describe("Set up pseucodoe map based on different input", function() {
   it("should return an empty with wrong input", function() {
     assert.deepEqual(new Map(), setUpPseudocodeMap("error", index));
   });
+ 
+  const constrainedMap = new Map();
+  constrainedMap.set("Initialize the tree T to be empty",true)
+  constrainedMap.set(  "Add to the tree edges adjacent to nodes with degree 1",false)
+  constrainedMap.set(  "For each node k with degree 2",false)
+  constrainedMap.set(  "\xa0 \xa0 i, j = endpoint of edges adjacent to k",false)
+  constrainedMap.set(  "\xa0 \xa0 \xa0 \xa0\xa0if(there isn't a path between i and j (apart from the one with k))",false)
+  constrainedMap.set(  "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0Add adjacent edges of k to T",false)
+  constrainedMap.set(  "Sort the edge list E by weight (smallest first)",false)
+  constrainedMap.set(  "for (i=0; i<edgeList.length; i++)",false)
+  constrainedMap.set(  "\xa0 \xa0 e = edgelist[i]",false)
+  constrainedMap.set(  "\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint",false)
+  constrainedMap.set(  "\xa0 \xa0 \xa0\xa0 \xa0add e to T",false)
+  constrainedMap.set(  "While there is still optimization",false)
+  constrainedMap.set(  "\xa0 \xa02-opt",false)
+  constrainedMap.set( "return T", false)
 
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(constrainedMap, setUpPseudocodeMap(Algorithm.CONSTRAINED, index));
+  });
     
   
   const parallelMap = new Map();

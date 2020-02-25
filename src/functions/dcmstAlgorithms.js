@@ -1,5 +1,7 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
+import {getWeight} from '../functions/util';
+import {addStates} from './stateFunctions';
 
 
 // /**
@@ -48,66 +50,187 @@ import { ErrMessage } from "../constants/errorMessage";
 //   }
 // }
 
+// export function kruskalConstrained(graph, degree) {
+//   try{
+//   //Sort the edges 
+//   let nodes = graph.nodes
+//   let degrees = {}
+//   let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
+  
+//   for(let i= 0;i<nodes.length;i++){
+//       degrees[nodes[i].id] = 0;
+//   }
+
+//   let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
+//   // Initialize graph that'll contain the MST
+//   let MST = []
+//   let uf = new UnionFind(nodes);
+//   // Add all edges to the Queue:
+//   for(let i =0;i<edges.length;i++){
+//       let u = edges[i].source;
+//       let v = edges[i].target;
+//       if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
+//       //if edges[i] in MST is not acyclic
+//       if(!uf.connected(u,v) && degrees[u] +1 <= degree && degrees[v]+1 <= degree){
+//          MST.push(edges[i])
+//          degrees[u] +=1;
+//          degrees[v] +=1;
+//          uf.union(u,v)
+//       }
+//     }
+//   }
+  
+//   for(let i=0;i<unsafeNodes.length; i++){
+//     let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
+    
+//     for(let j =0;j<adjacents.length;j++){
+//         let u = adjacents[j].source;
+//         let v = adjacents[j].target;
+//         if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+//           MST.push(adjacents[j])
+//           degrees[u] +=1;
+//           degrees[v] +=1;
+//           uf.union(u,v)
+//        }
+//     }
+//   }
+//   two_opt(MST,graph)
+//   //check if is a minimum spanning tree
+//   if(MST.length != nodes.length-1){
+//       throw ErrMessage.DCMST_NOT_FOUND
+//   }
+//   return MST;
+//   }
+//   catch(error){
+//       return error.toString();
+//   }
+// }
+
 export function kruskalConstrained(graph, degree) {
   try{
-  //Sort the edges 
-  let nodes = graph.nodes
-  let degrees = {}
-  let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
-  
-  for(let i= 0;i<nodes.length;i++){
-      degrees[nodes[i].id] = 0;
+  let DCMST = [];
+  let totalDegree = new Map();
+  let nodes = graph.nodes;
+  let edges = graph.edges.slice();
+  let possibleDegrees = [];
+  let degrees = {};
+  let uf = new UnionFind(nodes);
+  for (let i = 0; i < nodes.length; i++) {
+    degrees[nodes[i].id] = 0;
   }
 
-  let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
-  // Initialize graph that'll contain the MST
-  let MST = []
-  let uf = new UnionFind(nodes);
-  // Add all edges to the Queue:
-  for(let i =0;i<edges.length;i++){
-      let u = edges[i].source;
-      let v = edges[i].target;
-      if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
-      //if edges[i] in MST is not acyclic
-      if(!uf.connected(u,v) && degrees[u] +1 <= degree && degrees[v]+1 <= degree){
-         MST.push(edges[i])
-         degrees[u] +=1;
-         degrees[v] +=1;
-         uf.union(u,v)
+  for (let i = 0; i < nodes.length; i++) {
+    let adjacents = graph.getAdjacentsOfNode(nodes[i].id);
+    if (!totalDegree.has(adjacents.length)) {
+      totalDegree.set(adjacents.length, [nodes[i].id]);
+    } else {
+      let temp = totalDegree.get(adjacents.length);
+      temp.push(nodes[i].id);
+      totalDegree.set(adjacents.length, temp);
+    }
+    if (possibleDegrees.indexOf(adjacents.length) == -1)
+      possibleDegrees.push(adjacents.length);
+  }
+
+  let nodeWithDegreeTwo = totalDegree.get(2);
+  if(nodeWithDegreeTwo){
+  for (let j = 0; j < nodeWithDegreeTwo.length; j++) {
+    let adjacents = graph.getAdjacentsOfNode(nodeWithDegreeTwo[j]);
+    let v = getOtherEndPoint(adjacents[0], nodeWithDegreeTwo[j]);
+    let u = getOtherEndPoint(adjacents[1], nodeWithDegreeTwo[j]);
+    if (checkNoPath(v, u, graph)) {
+      DCMST = DCMST.concat(adjacents);
+      uf.union(u, v);
+      edges.splice(edges.indexOf(adjacents[0]), 1);
+      edges.splice(edges.indexOf(adjacents[1]), 1);
+      degrees[u] += 1;
+      degrees[v] += 1;
+      degrees[nodeWithDegreeTwo[j]] += 2;
       }
     }
   }
   
-  for(let i=0;i<unsafeNodes.length; i++){
-    let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
+  let nodeWithDegreeOne = totalDegree.get(1);
+  if(nodeWithDegreeOne){
+  for (let j = 0; j < nodeWithDegreeOne.length; j++) {
+    let degreeOne = graph.getAdjacentsOfNode(nodeWithDegreeOne[j])[0];
+    DCMST.push(degreeOne);
+    edges.splice(edges.indexOf(degreeOne), 1);
+    uf.union(degreeOne.source, degreeOne.target);
+    degrees[degreeOne.source] += 1;
+    degrees[degreeOne.target] += 1;
     
-    for(let j =0;j<adjacents.length;j++){
-        let u = adjacents[j].source;
-        let v = adjacents[j].target;
-        if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-          MST.push(adjacents[j])
-          degrees[u] +=1;
-          degrees[v] +=1;
-          uf.union(u,v)
-       }
+  }
+  }
+
+    edges = edges.sort((a, b) => a.weight - b.weight);
+    for (let i = 0; i < edges.length; i++) {
+      let u = edges[i].source;
+      let v = edges[i].target;
+      // console.log(u + " s "+ v + " " + (!uf.connected(u,v)))
+      if (
+        !uf.connected(u, v) &&
+        degrees[u] + 1 <= degree &&
+        degrees[v] + 1 <= degree
+      ) {
+        DCMST.push(edges[i]);
+        degrees[u] += 1;
+        degrees[v] += 1;
+
+        uf.union(u, v);
+        if (DCMST.length == nodes.length - 1) {
+          two_opt(DCMST, graph, null)
+          return DCMST;
+        }
+      }
     }
-  }
-  one_opt(MST,graph, degrees, degree)
-  //check if is a minimum spanning tree
-  if(MST.length != nodes.length-1){
-      throw ErrMessage.MST_NOT_FOUND
-  }
-  return MST;
-  }
-  catch(error){
-      return error.toString();
-  }
+  
+  two_opt(DCMST, graph, null)
+  if(DCMST.length != nodes.length-1) throw ErrMessage.DCMST_NOT_FOUND
+    
+  return DCMST;
+}catch(e){
+  return e.toString();
+}
 }
 
-function two_opt(mst, originalGraph){
+export function checkNoPath(source, target, graph) {
+  let queue = [];
+  let visited = {};
+  let path = 0;
+
+  for (let i = 0; i < graph.nodes.length; i++) {
+    visited[graph.nodes[i].id] = false;
+  }
+
+  queue.push(source);
+  while (queue.length != 0) {
+    let u = queue.shift();
+    if (u == target) {
+      path++;
+      if (path >= 2) {
+        return false;
+      }
+      continue;
+    }
+    visited[u] = true;
+    let adjacents = graph.getAdjacentsOfNode(u);
+    if(adjacents.length !=0)
+    for (let i = 0; i < adjacents.length; i++) {
+      let v = getOtherEndPoint(adjacents[i], u);
+      if (!visited[v]) {
+        queue.push(v);
+      }
+    }
+  }
+  return true;
+}
+
+export function two_opt(mst, originalGraph, states){
   let nodes = originalGraph.nodes
   let minWeight = getWeight(mst);
   while(true){
+    if(states) addStates(states, [], states[states.length - 1].tree, [], "", 11)
     let startWeight = minWeight
     for(let i=1; i<nodes.length; i++){
       for(let j=i+2; j<nodes.length; j++){
@@ -123,6 +246,7 @@ function two_opt(mst, originalGraph){
                  mst.push(newEdge1)
                  mst.push(newEdge2)
                  minWeight = getWeight(mst)
+                 if(states) addStates(states, [], mst, [], "", 12)
               }
             }
           }
@@ -144,122 +268,13 @@ export function getEdge(edges,source, target){
   return null
 }
 
-
-
-function one_opt(mst, originalGraph, degrees, degree){
-  for(let i=0; i<mst.length; i++){
-    let endPoints = getCommonEnd(mst[i],originalGraph.edges, originalGraph.nodes)
-    for(let m =0;m<endPoints.length;m++){
-      let first = endPoints[m][0]
-      let second = endPoints[m][1]
-      let firstIndex = findIndex(first, mst)
-      let secondIndex = findIndex(second,mst)
-      if(first && second){
-     
-      if(first.weight < second.weight){
-        if(firstIndex== -1 && secondIndex != -1 ){
-          mst.splice(secondIndex,1)
-          degrees[second.source] -=1;
-          degrees[second.target] -=1;
-          if(degrees[first.source]+1<= degree && degrees[first.target]+1 <=degree){
-            mst.push(first)
-            degrees[first.source] +=1;
-            degrees[first.target] +=1;
-          }
-          else{
-            mst.push(second)
-            degrees[second.source] +=1;
-            degrees[second.target] +=1;
-          }
-        }
-      }
-      else if(second.weight < first.weight){
-        if(secondIndex== -1 && firstIndex != -1 ){
-          mst.splice(firstIndex,1)
-          degrees[first.source] -=1;
-          degrees[first.target] -=1;
-          if(degrees[second.source]+1 <= degree && degrees[second.target]+1 <= degree){
-            mst.push(second)
-            degrees[second.source] +=1;
-            degrees[second.target] +=1;
-          }
-          else{
-            mst.push(first)
-            degrees[first.source] +=1;
-            degrees[first.target] +=1;
-          }
-      }
-      }
-      }
-    }
-}
-
-return mst;
-}
-
-
-export function findIndex(edge, edges){
-  for(let i=0;i<edges.length;i++){
-    if(edges[i].source == edge.source && edges[i].target ==edge.target || 
-      edges[i].target == edge.source && edges[i].source == edge.target){   
-     return i;
-      }
-  };
-  return -1
-}
-
-export function getCommonEnd(edge, edges, nodes){
-    let candidate = [] 
-    for(let i =0;i<nodes.length;i++){
-        let temp = findEdge(edge,edges, nodes[i])
-        if(temp.length ==2 && candidate.indexOf(temp) == -1){
-          candidate.push(temp)
-        }
-    }
-  return candidate
-}
-
-export function findEdge(edge, edges, node){
-   let found = []
-    for(let i=0;i<edges.length;i++){
-      if(edges[i].source == edge.source && edges[i].target ==node.id || 
-        edges[i].target == edge.source && edges[i].source ==node.id)
-       {
-         found.push(edges[i])
-       }
-       if(edges[i].target == edge.target && edges[i].source ==node.id || 
-        edges[i].source == edge.target && edges[i].target ==node.id)
-       {
-         found.push(edges[i])
-       }
-   };
-   return found;
-}
-
-/**
- * Get the sum of the weights of a path
- * @param {*} path 
- */
-export function getWeight(path){
-    let weight = 0;
-    for(let i= 0;i<path.length; i++){
-      weight +=path[i].weight
-    }
-    return weight
+export function getOtherEndPoint(edge, source) {
+  if(edge){
+    if (edge.source == source) return edge.target;
+    else return edge.source;
   }
-
-export function populateUnsafeNodes(edgesDegree, degree){
-  let unsafeNodes = new Set();
-  let map = new Map();
-  for(let i =0;i<edgesDegree.length;i++){
-    if(!map.has(edgesDegree[i].source)) map.set(edgesDegree[i].source,1)
-    else map.set(edgesDegree[i].source, map.get(edgesDegree[i].source)+1)
-    if(!map.has(edgesDegree[i].target)) map.set(edgesDegree[i].target,1)
-    else map.set(edgesDegree[i].target, map.get(edgesDegree[i].target)+1)
-    if(map.get(edgesDegree[i].source)-degree > 1) unsafeNodes.add(edgesDegree[i].source) 
-    if(map.get(edgesDegree[i].target)-degree > 1) unsafeNodes.add(edgesDegree[i].target) 
-  }
-  return [...unsafeNodes]
 }
+
+
 
 

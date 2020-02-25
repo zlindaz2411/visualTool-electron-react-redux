@@ -1,7 +1,7 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 import {addStates} from './stateFunctions';
-import {getEdge, getWeight, populateUnsafeNodes, findIndex, getCommonEnd} from './dcmstAlgorithms';
+import {checkNoPath, getOtherEndPoint, two_opt} from './dcmstAlgorithms';
 
 
 /**
@@ -66,181 +66,197 @@ import {getEdge, getWeight, populateUnsafeNodes, findIndex, getCommonEnd} from '
 //   }
 // }
 
+// export function kruskalConstrained(graph, degree) {
+//   try{
+//   //Sort the edges 
+//   let nodes = graph.nodes
+//   let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
+//   let degrees = {}
+//   let arr = []; //a copy of highlighted
+//   let t = []
+//   let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
+  
+//   for(let i= 0;i<nodes.length;i++){
+//       degrees[nodes[i].id] = 0;
+//   }
+
+//   addStates(states, [], [], [],"", 1);
+//   addStates(states, [], [], [],"", 2);
+
+//   let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
+//   // Initialize graph that'll contain the MST
+//   let MST = []
+//   let uf = new UnionFind(nodes);
+//   // Add all edges to the Queue:
+//   for(let i =0;i<edges.length;i++){
+//       arr = []
+//       let u = edges[i].source;
+//       let v = edges[i].target;
+
+//       //if edges[i] in MST is not acyclic
+//       if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
+//       //if edges[i] in MST is not acyclic
+//       addStates(states, [], t, [],"", 3);
+//       arr.push(edges[i]);
+//       addStates(states, arr, t, [],"", 4);
+//       addStates(states, arr, t, [],"", 5);
+//       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+//          MST.push(edges[i])
+//          degrees[u] +=1;
+//          degrees[v] +=1;
+//          uf.union(u,v)
+//          t.push(edges[i]);
+//          addStates(states, [], t, [],"", 6);
+//       }
+//     }
+//   }
+//   arr = []
+//   for(let i=0;i<unsafeNodes.length; i++){
+//     addStates(states, [], t, [],"", 7);
+//     let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
+//     addStates(states, [], t, [],"", 8);
+//     for(let j =0;j<adjacents.length;j++){
+//         arr = [];
+//         addStates(states, [], t, [],"", 9);
+//         let u = adjacents[j].source;
+//         let v = adjacents[j].target;
+//         arr.push(adjacents[j])
+//         addStates(states, arr, t, [],"", 10);
+//         if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
+//           MST.push(adjacents[j])
+//           degrees[u] +=1;
+//           degrees[v] +=1;
+//           uf.union(u,v)
+//           t.push(adjacents[j]);
+//           addStates(states, [], t, [],"", 11);
+//        }
+//     }
+//   }
+//   one_opt(MST, graph, degrees,degree,states)
+//   //check if is a minimum spanning tree
+//   if(MST.length != nodes.length-1){
+//       throw ErrMessage.DCMST_NOT_FOUND
+//   }
+//   addStates(
+//     states,
+//     [],
+//     states[states.length - 1].tree,
+//     [],
+//     "",
+//     14
+//   );
+  
+//   return states;
+//   }
+//   catch(error){
+//     console.log(error.toString())
+//       return error.toString();
+//   }
+// }
 export function kruskalConstrained(graph, degree) {
   try{
-  //Sort the edges 
-  let nodes = graph.nodes
+  let DCMST = [];
+  let totalDegree = new Map();
+  let nodes = graph.nodes;
+  let edges = graph.edges.slice();
+  let degrees = {};
+  let uf = new UnionFind(nodes);
+  for (let i = 0; i < nodes.length; i++) {
+    degrees[nodes[i].id] = 0;
+  }
   let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
-  let degrees = {}
-  let arr = []; //a copy of highlighted
-  let t = []
-  let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
-  
-  for(let i= 0;i<nodes.length;i++){
-      degrees[nodes[i].id] = 0;
+  for (let i = 0; i < nodes.length; i++) {
+    let adjacents = graph.getAdjacentsOfNode(nodes[i].id);
+    if (!totalDegree.has(adjacents.length)) {
+      totalDegree.set(adjacents.length, [nodes[i].id]);
+    } else {
+      let temp = totalDegree.get(adjacents.length);
+      temp.push(nodes[i].id);
+      totalDegree.set(adjacents.length, temp);
+    }
   }
 
-  addStates(states, [], [], [],"", 1);
-  addStates(states, [], [], [],"", 2);
+  let t = [];
+    
+  let nodeWithDegreeOne = totalDegree.get(1);
+  if(nodeWithDegreeOne){
+  for (let j = 0; j < nodeWithDegreeOne.length; j++) {
+    let degreeOne = graph.getAdjacentsOfNode(nodeWithDegreeOne[j])[0];
+    DCMST.push(degreeOne);
+    t.push(degreeOne);
+    edges.splice(edges.indexOf(degreeOne), 1);
+    uf.union(degreeOne.source, degreeOne.target);
+    degrees[degreeOne.source] += 1;
+    degrees[degreeOne.target] += 1; 
+  }
+  }
+  addStates(states, [], t, [], "", 1)
 
-  let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
-  // Initialize graph that'll contain the MST
-  let MST = []
-  let uf = new UnionFind(nodes);
-  // Add all edges to the Queue:
-  for(let i =0;i<edges.length;i++){
-      arr = []
+
+  let nodeWithDegreeTwo = totalDegree.get(2);
+  if(nodeWithDegreeTwo){
+  for (let j = 0; j < nodeWithDegreeTwo.length; j++) {
+    let hnode = [];
+    hnode.push(nodeWithDegreeTwo[j])
+    addStates(states, [], t, hnode, "", 2)
+    let adjacents = graph.getAdjacentsOfNode(nodeWithDegreeTwo[j]);
+    let v = getOtherEndPoint(adjacents[0], nodeWithDegreeTwo[j]);
+    let u = getOtherEndPoint(adjacents[1], nodeWithDegreeTwo[j]);
+    hnode.push(v)
+    hnode.push(u)
+
+    addStates(states, adjacents, t, hnode, "", 3)
+    addStates(states, adjacents, t, hnode, "", 4)
+    if (checkNoPath(v, u, graph)) {
+      DCMST = DCMST.concat(adjacents);
+      uf.union(u, v);
+      edges.splice(edges.indexOf(adjacents[0]), 1);
+      edges.splice(edges.indexOf(adjacents[1]), 1);
+      degrees[u] += 1;
+      degrees[v] += 1;
+      t= t.concat(adjacents)
+      degrees[nodeWithDegreeTwo[j]] += 2;
+      addStates(states, [], t, hnode, "", 5)
+      }
+    }
+  }
+
+    addStates(states, [], t, [], "", 6)
+    edges = edges.sort((a, b) => a.weight - b.weight);
+    for (let i = 0; i < edges.length; i++) {
+      addStates(states, [], t, [], "", 7)
       let u = edges[i].source;
       let v = edges[i].target;
-
-      //if edges[i] in MST is not acyclic
-      if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
-      //if edges[i] in MST is not acyclic
-      addStates(states, [], t, [],"", 3);
-      arr.push(edges[i]);
-      addStates(states, arr, t, [],"", 4);
-      addStates(states, arr, t, [],"", 5);
-      if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-         MST.push(edges[i])
-         degrees[u] +=1;
-         degrees[v] +=1;
-         uf.union(u,v)
-         t.push(edges[i]);
-         addStates(states, [], t, [],"", 6);
-      }
-    }
-  }
-  arr = []
-  for(let i=0;i<unsafeNodes.length; i++){
-    addStates(states, [], t, [],"", 7);
-    let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
-    addStates(states, [], t, [],"", 8);
-    for(let j =0;j<adjacents.length;j++){
-        arr = [];
-        addStates(states, [], t, [],"", 9);
-        let u = adjacents[j].source;
-        let v = adjacents[j].target;
-        arr.push(adjacents[j])
-        addStates(states, arr, t, [],"", 10);
-        if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-          MST.push(adjacents[j])
-          degrees[u] +=1;
-          degrees[v] +=1;
-          uf.union(u,v)
-          t.push(adjacents[j]);
-          addStates(states, [], t, [],"", 11);
-       }
-    }
-  }
-  one_opt(MST, graph, degrees,degree,states)
-  //check if is a minimum spanning tree
-  if(MST.length != nodes.length-1){
-      throw ErrMessage.MST_NOT_FOUND
-  }
-  addStates(
-    states,
-    [],
-    states[states.length - 1].tree,
-    [],
-    "",
-    14
-  );
-  
-  return states;
-  }
-  catch(error){
-    console.log(error.toString())
-      return error.toString();
-  }
-}
-
-function one_opt(mst, originalGraph, degrees, degree, states){
-  for(let i=0; i<mst.length; i++){
-    let endPoints = getCommonEnd(mst[i],originalGraph.edges, originalGraph.nodes)
-    for(let m =0;m<endPoints.length;m++){
-      let first = endPoints[m][0]
-      let second = endPoints[m][1]
-      let firstIndex = findIndex(first, mst)
-      let secondIndex = findIndex(second,mst)
-      if(first && second){
-     
-      if(first.weight < second.weight){
-        if(firstIndex== -1 && secondIndex != -1 ){
-          mst.splice(secondIndex,1)
-          degrees[second.source] -=1;
-          degrees[second.target] -=1;
-          if(degrees[first.source]+1<= degree && degrees[first.target]+1 <=degree){
-            mst.push(first)
-            degrees[first.source] +=1;
-            degrees[first.target] +=1;
-            addStates(states, [], mst, [], "", 13)
-          }
-          else{
-            mst.push(second)
-            degrees[second.source] +=1;
-            degrees[second.target] +=1;
-          }
+      addStates(states, [edges[i]], t, [], "", 8)
+      // console.log(u + " s "+ v + " " + (!uf.connected(u,v)))
+      addStates(states, [edges[i]], t, [], "", 9)
+      if (
+        !uf.connected(u, v) &&
+        degrees[u] + 1 <= degree &&
+        degrees[v] + 1 <= degree
+      ) {
+        DCMST.push(edges[i]);
+        degrees[u] += 1;
+        degrees[v] += 1;
+        t.push(edges[i])
+        uf.union(u, v);
+        addStates(states, [], t, [], "", 10)
+        if (DCMST.length == nodes.length - 1) {
+          two_opt(DCMST, graph, states)
+          addStates(states, [], t, [], "", 13) 
+          return states;
         }
       }
-      else if(second.weight < first.weight){
-        if(secondIndex== -1 && firstIndex != -1 ){
-          mst.splice(firstIndex,1)
-          degrees[first.source] -=1;
-          degrees[first.target] -=1;
-          if(degrees[second.source]+1 <= degree && degrees[second.target]+1 <= degree){
-            mst.push(second)
-            degrees[second.source] +=1;
-            degrees[second.target] +=1;
-            addStates(states, [], mst, [], "", 13)
-          }
-          else{
-            mst.push(first)
-            degrees[first.source] +=1;
-            degrees[first.target] +=1;
-          }
-      }
-      }
-      }
     }
-}
-
-return mst;
-}
-
-
-
-function two_opt(mst, originalGraph, states){
-  let nodes = originalGraph.nodes
-  let minWeight = getWeight(mst);
-  while(true){
-    addStates(states, [], states[states.length - 1].tree, [], "", 12)
-    let startWeight = minWeight
-    for(let i=1; i<nodes.length; i++){
-      for(let j=i+2; j<nodes.length; j++){
-        let oldEdge1 = getEdge(mst, nodes[i-1].id, nodes[i].id)
-        let oldEdge2 = getEdge(mst, nodes[j-1].id, nodes[j].id)
-          if(oldEdge1 && oldEdge2){      
-            let newEdge1 =getEdge(originalGraph.edges, oldEdge1.source, oldEdge2.source)
-            let newEdge2 =getEdge(originalGraph.edges, oldEdge1.target, oldEdge2.target)
-            if(newEdge1 && newEdge2){
-              if(newEdge1.weight + newEdge2.weight < oldEdge1.weight + oldEdge2.weight){
-                 mst.splice(mst.indexOf(oldEdge1),1)
-                 mst.splice(mst.indexOf(oldEdge2),1)            
-                 mst.push(newEdge1)
-                 mst.push(newEdge2)
-                 minWeight = getWeight(mst)
-                 addStates(states, [], mst, [], "", 13)
-              }
-            }
-          }
-      }
-    }
-    if(startWeight == minWeight){
-      break;
-    }
-  }
   
-  return mst;
+  two_opt(DCMST, graph, states)
+  if(DCMST.length != nodes.length-1) throw ErrMessage.DCMST_NOT_FOUND
+  addStates(states, [], t, [], "", 13) 
+  return states;
+  }catch(e){
+    return e.toString();
+  }
 }
+
 
 
