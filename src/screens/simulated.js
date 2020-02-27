@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
-import { kruskalConstrained } from "../functions/dcmstStateAlgorithms";
+import { simulatedAnnealing } from "../functions/dcmstStateAlgorithms";
 import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import InputDialog from "../components/inputDialog";
@@ -37,7 +37,7 @@ class SimulatedAnnealingPage extends Component {
     else{
       this.setState({
         isDialogOpen: false,
-        states: kruskalConstrained(this.state.data, this.state.degree)
+        states: simulatedAnnealing(this.state.data, this.state.degree)
       });
     }
   }

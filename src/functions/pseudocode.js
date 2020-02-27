@@ -1,7 +1,12 @@
-/**Pseudocode of Kruskal's, Prim's, Borvska's and Borvska Parallel algorithm */
+
+import {Algorithm} from '../constants/algorithms'
+/**
+ * Get the pseudocode based on the name of the algorithm
+ * @param {*} name 
+ */
 export function getPseudocode(name) {
     switch (name) {
-      case "Kruskal": //Kruskal's
+      case Algorithm.KRUSKAL: //Kruskal's
         let kruskal = [];
         kruskal.push("Sort the edge list E by weight (smallest first)");
         kruskal.push("Initialize the tree T to be empty");
@@ -12,7 +17,7 @@ export function getPseudocode(name) {
         kruskal.push("\xa0 \xa0else do nothing");
         kruskal.push("return T");
         return kruskal;
-      case "Kruskal with Constraint": //Kruskal for DCMST
+      case Algorithm.CONSTRAINED: //Kruskal for DCMST
         //let kruskalConstrained = [];
         // kruskalConstrained.push("Initialize the tree T to be empty");
         // kruskalConstrained.push("Initialize the list U = nodes with degree -1 > constraint");
@@ -45,7 +50,7 @@ export function getPseudocode(name) {
         kruskalConstrained.push("\xa0 \xa02-opt");
         kruskalConstrained.push("return T");
         return kruskalConstrained;
-      case "Prim": //Prim's
+      case Algorithm.PRIM: //Prim's
         let prim = [];
         prim.push("Select a root node r");
         prim.push("Initialize the tree T to be empty");
@@ -60,7 +65,7 @@ export function getPseudocode(name) {
         prim.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         prim.push("return T");
         return prim;
-      case "Boruvka": //Borvska's
+      case Algorithm.BORUVKA: //Borvska's
         let boruvka = [];
         boruvka.push("Initialize the tree T to be empty");
         boruvka.push("Initialize the F = map of one-vertex trees to its component");
@@ -75,7 +80,7 @@ export function getPseudocode(name) {
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
         boruvka.push("return T");
         return boruvka;
-      case "Boruvka Parallel": // Parallel Boruvska
+      case Algorithm.PARALLEL: // Parallel Boruvska
         let boruvkaParallel = [];
         boruvkaParallel.push("Initialize the tree T to be empty");
         boruvkaParallel.push("Initialize the F = map of one-vertex trees to its component");
@@ -93,7 +98,7 @@ export function getPseudocode(name) {
         boruvkaParallel.push("return T");
 
         return boruvkaParallel;
-        case "Esau Williams": // Esau Wiliams pseudocode
+        case Algorithm.ESAU: // Esau Wiliams pseudocode
         let esauWilliams = [];
         esauWilliams.push("Initialize the tree CMST to be empty");
         esauWilliams.push("Initialize L = edge list");
@@ -111,6 +116,18 @@ export function getPseudocode(name) {
         esauWilliams.push("return CMST(suboptimal solution)");
 
         return esauWilliams;
+        case Algorithm.SIMULATED:
+          let simulated = [];
+          simulated.push("Initialize the tree DCMST to be empty");
+          simulated.push("Initialize the tree MST by computing any MST algorithms");
+          simulated.push("While k_level < k_max(5000)");
+          simulated.push("\xa0 \xa0 Remove one edge from MST");
+          simulated.push("\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST");
+          simulated.push("\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 DCMST = MST");
+          simulated.push("\xa0 \xa0 k_level +=1");
+          simulated.push("return DCMST");
+          return simulated
       default:
         return [];
     }
