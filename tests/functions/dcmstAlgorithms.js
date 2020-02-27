@@ -1,9 +1,8 @@
 import {
   kruskalConstrained,
-  getEdge,
   checkNoPath,
   getOtherEndPoint,
-  two_opt
+  simulatedAnnealing
 } from "../../src/functions/dcmstAlgorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
 import { Graph } from "../../src/functions/lib/graph";
@@ -64,6 +63,7 @@ describe("kruskal constrained algorithm computes an appoximate solution to degre
     { source: "B", target: "D", weight: 6 },
     { source: "G", target: "F", weight: 8 },
     { source: "C", target: "E", weight: 9 }
+
   ];
   it("should return a suboptimal degree constrained minimum spanning tree given a graph", function() {
     assert.deepEqual(result, kruskalConstrained(graph, 2));
@@ -72,6 +72,25 @@ describe("kruskal constrained algorithm computes an appoximate solution to degre
   
   it("should return an error message when the input is invalid", function() {
     assert.equal(ErrMessage.DCMST_NOT_FOUND, kruskalConstrained(errorInput, 3));
+  });
+});
+
+describe("simulated annealing algorithm computes an appoximate solution to degree constrained minimum spanning problem", function() {
+  const result = [
+    { source: "A", target: "C", weight: 6 },
+    { source: "G", target: "F", weight: 8 },
+    { source: "C", target: "D", weight: 7 },
+    { source: "B", target: "E", weight: 6 },
+    { source: "D", target: "F", weight: 5 },
+    { source: "A", target: "B", weight: 5 },
+  ];
+  it("should return a suboptimal degree constrained minimum spanning tree given a graph", function() {
+    assert.deepEqual(result.length, simulatedAnnealing(graph, 2).length);
+  });
+
+  
+  it("should return an error message when the input is invalid", function() {
+    assert.equal(ErrMessage.DCMST_NOT_FOUND, simulatedAnnealing(errorInput, 3));
   });
 });
 
@@ -99,33 +118,3 @@ describe("Given one node of the edge return other endpoint ", function() {
 });
 
 
-describe("Find the edge in the edge list given only source and target", function() {
-  it("should return the edge in the edge list", function() {
-    assert.deepEqual( { source: "A", target: "B", weight: 5 }, getEdge(graph.edges,"A", "B"));
-  });
-  it("should return null if there isn't", function() {
-    assert.deepEqual(null, getEdge(errorInput.edges, 1, 4));
-  });
-});
-
-describe("Two-opt edge exchange", function() {
-  let input = new Graph();
-  input.addNode({id:"A"})
-  input.addNode({id:"B"})
-  input.addNode({id:"C"})
-  input.addNode({id:"D"})
-  input.addEdge({source: "B", target:"A", weight:10})
-  input.addEdge({source: "C", target:"A", weight:2})
-  input.addEdge({source: "A", target:"D", weight:9})
-  input.addEdge({source: "B", target:"C", weight:9})
-  input.addEdge({source: "B", target:"D", weight:2})
-  input.addEdge({source: "C", target:"D", weight:7})
-
-  let mst = [{source: "A", target:"B", weight:10},{source: "A", target:"D", weight:9}, {source: "B", target:"C", weight:9}, {source: "C", target:"D", weight:7}]
-  let after = [{source: "A", target:"D", weight:9},{source: "B", target:"C", weight:9}, {source: "C", target:"A", weight:2}, {source: "B", target:"D", weight:2}]
-  two_opt(mst, input)
-  it("mst should be optimized after 2-opt operation", function() {
-    assert.deepEqual(mst, after);
-  });
-
-});

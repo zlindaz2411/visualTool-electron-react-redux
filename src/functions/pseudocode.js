@@ -124,7 +124,7 @@ export function getPseudocode(name) {
           simulated.push("\xa0 \xa0 Remove one edge from MST");
           simulated.push("\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST");
           simulated.push("\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)");
-          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 DCMST = MST");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST");
           simulated.push("\xa0 \xa0 k_level +=1");
           simulated.push("return DCMST");
           return simulated

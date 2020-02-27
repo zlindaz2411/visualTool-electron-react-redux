@@ -1,9 +1,9 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 import { addStates } from "./stateFunctions";
-import {getWeight, isConnected} from '../functions/util';
+import {getWeight, isConnected,two_opt} from '../functions/util';
 import {kruskals} from './mstAlgorithms';
-import { checkNoPath, getOtherEndPoint, two_opt, getComponentsEdge, getDegree,isDegreeViolated } from "./dcmstAlgorithms";
+import { checkNoPath, getOtherEndPoint, getComponentsEdge, getDegree,isDegreeViolated } from "./dcmstAlgorithms";
 
 /**
  * Kruskals Constrained degree algorithm
@@ -171,6 +171,7 @@ export function kruskalConstrained(graph, degree) {
     for (let i = 0; i < nodes.length; i++) {
       degrees[nodes[i].id] = 0;
     }
+    
     let states = [{ highlighted: [], tree: [], text: "", status: 0 }];
     for (let i = 0; i < nodes.length; i++) {
       let adjacents = graph.getAdjacentsOfNode(nodes[i].id);
@@ -272,7 +273,7 @@ export function simulatedAnnealing(graph, degree) {
   try {
     //Initial configuration MST
     let MST = kruskals(graph);
-
+    if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
     let states = [{ highlighted: [], tree: [], text: "", status: 0 }];
     addStates(states, MST, [], [], "", 1);
 

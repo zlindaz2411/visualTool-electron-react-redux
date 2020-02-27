@@ -97,6 +97,24 @@ describe("Get pseudocode based on different input", function() {
     assert.deepEqual(kruskalConstrained, getPseudocode(Algorithm.CONSTRAINED));
   });
 
+
+  const simulated = [
+    "Initialize the tree DCMST to be empty",
+    "Initialize the tree MST by computing any MST algorithms",
+    "While k_level < k_max(5000)",
+    "\xa0 \xa0 Remove one edge from MST",
+    "\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST",
+    "\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)",
+    "\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST",
+    "\xa0 \xa0 k_level +=1",
+    
+    "return DCMST"
+  ]
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(simulated, getPseudocode(Algorithm.SIMULATED));
+  });
+
   const esau = [
     "Initialize the tree CMST to be empty",
     "Initialize L = edge list",
@@ -212,6 +230,22 @@ describe("Set up pseucodoe map based on different input", function() {
 
   it("should return the pseudocode of kruskal algorithm", function() {
     assert.deepEqual(constrainedMap, setUpPseudocodeMap(Algorithm.CONSTRAINED, index));
+  });
+
+  const simulatedMap  = new Map();
+  simulatedMap.set( "Initialize the tree DCMST to be empty",true)
+  simulatedMap.set( "Initialize the tree MST by computing any MST algorithms",false)
+  simulatedMap.set( "While k_level < k_max(5000)",false)
+  simulatedMap.set( "\xa0 \xa0 Remove one edge from MST",false)
+  simulatedMap.set( "\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST",false)
+  simulatedMap.set( "\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST",false)
+  simulatedMap.set( "\xa0 \xa0 k_level +=1",false)
+  simulatedMap.set(  "return DCMST", false)
+
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(simulatedMap, setUpPseudocodeMap(Algorithm.SIMULATED, index));
   });
     
   

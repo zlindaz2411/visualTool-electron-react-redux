@@ -1,6 +1,6 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
-import {getWeight, isConnected} from '../functions/util';
+import {getWeight, isConnected, two_opt} from '../functions/util';
 import {kruskals} from './mstAlgorithms';
 import {addStates} from './stateFunctions';
 
@@ -214,7 +214,7 @@ export function simulatedAnnealing(graph, degree){
   try{
   //Initial configuration MST
   let MST = kruskals(graph)
-
+  if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
   let degrees = getDegree(MST)
   let K_LEVEL = 0;
   let DCMST = [];
@@ -370,59 +370,8 @@ export function checkNoPath(source, target, graph) {
   return true;
 }
 
-/**
- * Two-opt 
- * @param {*} mst 
- * @param {*} originalGraph 
- * @param {*} states 
- */
-export function two_opt(mst, originalGraph, states){
-  let nodes = originalGraph.nodes
-  let minWeight = getWeight(mst);
-  while(true){
-    if(states) addStates(states, [], states[states.length - 1].tree, [], "", 11)
-    let startWeight = minWeight
-    for(let i=1; i<nodes.length; i++){
-      for(let j=i+2; j<nodes.length; j++){
-        let oldEdge1 = getEdge(mst, nodes[i-1].id, nodes[i].id)
-        let oldEdge2 = getEdge(mst, nodes[j-1].id, nodes[j].id)
-          if(oldEdge1 && oldEdge2){      
-            let newEdge1 =getEdge(originalGraph.edges, oldEdge1.source, oldEdge2.source)
-            let newEdge2 =getEdge(originalGraph.edges, oldEdge1.target, oldEdge2.target)
-            if(newEdge1 && newEdge2){
-              if(newEdge1.weight + newEdge2.weight < oldEdge1.weight + oldEdge2.weight){
-                 mst.splice(mst.indexOf(oldEdge1),1)
-                 mst.splice(mst.indexOf(oldEdge2),1)            
-                 mst.push(newEdge1)
-                 mst.push(newEdge2)
-                 minWeight = getWeight(mst)
-                 if(states) addStates(states, [], mst, [], "", 12)
-              }
-            }
-          }
-      }
-    }
-    if(startWeight == minWeight){
-      break;
-    }
-  }
-  
-  return mst;
-}
 
-/**
- * Return the edge that has the two nodes; else return null
- * @param {*} edges 
- * @param {*} source 
- * @param {*} target 
- */
-export function getEdge(edges,source, target){
-  for(let i=0;i<edges.length; i++){
-    if(edges[i].source == source && edges[i].target == target) return edges[i]
-    else if(edges[i].source == target && edges[i].target == source) return edges[i]
-  }
-  return null
-}
+
 
 /**
  * Get the other endpoint of the edge given one point
