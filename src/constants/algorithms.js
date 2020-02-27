@@ -7,6 +7,7 @@ export const Algorithm = {
     BORUVKA: "Boruvka",
     PARALLEL: "Boruvka Parallel",
     CONSTRAINED: "Kruskal with Constraint",
+    SIMULATED: "Simulated Annealing",
     ESAU : "Esau Williams"
 };
 

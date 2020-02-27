@@ -1,6 +1,5 @@
 import {comparePerformanceByTime, comparePerformanceByWeight, calculateTime} from "../../src/functions/performance";
 import {Algorithm} from "../../src/constants/algorithms";
-import {performance} from 'perf_hooks';
 import {Graph} from '../../src/functions/lib/graph';
 const assert = require('assert');
 
@@ -55,26 +54,9 @@ describe('compare performance of different algorithms on different input', funct
 });
 
 describe('compare the weight computed by different algorithms ', function() {
-    const res = [34,34,34,34,41,51]
+    const res = [34,34,34,34,41, 40, 51]
     it('should return a list of four elements of performances when list has all the algorithms', function() {
-      assert.deepEqual(res, comparePerformanceByWeight([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL, Algorithm.CONSTRAINED, Algorithm.ESAU], graph, 2, 3));
-    });
-
-
-});
-
-describe('calculate time', function() {
-    let startTime = performance.now();
-    for(let i=0;i<10;i++){
-        //do nothing
-    }
-    let endTime = performance.now();
-    const result = endTime - startTime;
-    const funcRes = calculateTime(function(){for(let i=0;i<10;i++){
-        //do nothing
-    }});
-    it('should return a minimum spanning tree', function() {
-      assert.equal(Math.round(result), Math.round(funcRes));
+      assert.deepEqual(res, comparePerformanceByWeight([Algorithm.KRUSKAL, Algorithm.PRIM, Algorithm.BORUVKA, Algorithm.PARALLEL, Algorithm.CONSTRAINED,Algorithm.SIMULATED, Algorithm.ESAU], graph, 2, 3));
     });
 
 

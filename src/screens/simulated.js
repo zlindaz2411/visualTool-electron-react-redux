@@ -4,16 +4,16 @@ import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
 import { kruskalConstrained } from "../functions/dcmstStateAlgorithms";
-import { Algorithm,ProblemDescription } from "../constants/algorithms";
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import InputDialog from "../components/inputDialog";
 import {validateNumber, validateEmpty} from "../functions/validator";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
 
 /**
- * Kruskal Constrained page which uses AlgorithmPage and pass the states produced by the modified kruskal algorithm
+ * SimulatedAnnealing page which uses AlgorithmPage and pass the states produced by the Simulated Annealing function
  */
-class KruskalConstrainedPage extends Component {
+class SimulatedAnnealingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +40,7 @@ class KruskalConstrainedPage extends Component {
         states: kruskalConstrained(this.state.data, this.state.degree)
       });
     }
-    }
+  }
 
   /**
    * Submit the degree value
@@ -76,7 +76,7 @@ class KruskalConstrainedPage extends Component {
         buttonName="Submit">
         </InputDialog>
       
-      <AlgorithmPage pageName={Algorithm.CONSTRAINED} data={this.state.data} subText={ProblemDescription.DCMSTP} states={this.state.states}></AlgorithmPage>
+      <AlgorithmPage pageName={Algorithm.SIMULATED} data={this.state.data} subText={ProblemDescription.DCMSTP} states={this.state.states}></AlgorithmPage>
       </div>
     );
   }
@@ -88,5 +88,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, {})(KruskalConstrainedPage));
+export default withRouter(connect(mapStateToProps, {})(SimulatedAnnealingPage));
 

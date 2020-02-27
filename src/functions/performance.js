@@ -1,7 +1,7 @@
 import {Algorithm} from '../constants/algorithms';
 import {kruskals, prims, boruvkas, parallel} from '../functions/mstAlgorithms'
 import {esauWilliams} from '../functions/cmstAlgorithms'
-import {kruskalConstrained} from'./dcmstAlgorithms'
+import {kruskalConstrained, simulatedAnnealing} from'./dcmstAlgorithms'
 import {performance} from 'perf_hooks'
 import {ErrMessage} from'../constants/errorMessage'
 import {getWeight} from '../functions/util'
@@ -44,6 +44,15 @@ export function comparePerformanceByTime(list, graph,degree, capacity){
             result.push(calculateTime(function() {kruskalConstrained(graph, degree)}))
             }
         }
+        else if(list[i] == Algorithm.SIMULATED){
+            if(simulatedAnnealing(graph, degree) == ErrMessage.DCMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
+            result.push(calculateTime(function() {simulatedAnnealing(graph, degree)}))
+            }
+        }
+
     }
     return result;
 }
@@ -86,6 +95,14 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
                 result.push(getWeight(kruskalConstrained(graph, degree)))
             }
         }
+        else if(list[i] == Algorithm.SIMULATED){
+            if(simulatedAnnealing(graph, degree) == ErrMessage.DCMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
+            result.push(getWeight(simulatedAnnealing(graph, degree)))
+            }
+        }
     }
     return result;
 }
@@ -94,7 +111,7 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
  * Calculate time from start time to end time
  * @param {*} func 
  */
-export function calculateTime(func){
+function calculateTime(func){
     
     let startTime = performance.now();
     func();

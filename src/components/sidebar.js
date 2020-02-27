@@ -91,8 +91,16 @@ class Sidebar extends Component {
                             <NavLink   className = "inactive" activeClassName="active" to={{
                                 pathname:"/kruskalConstrained"
                             }
-                        }alt="EsauPage"  replace>
+                        }alt="KruskalConstrained"  replace>
                              <h4>Kruskal Constraint</h4>
+                            </NavLink> 
+                        </li>
+                        <li>   
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/simulated"
+                            }
+                        }alt="Simulated"  replace>
+                             <h4>Simulated Annealing</h4>
                             </NavLink> 
                         </li>
                         </div>

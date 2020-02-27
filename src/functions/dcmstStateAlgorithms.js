@@ -153,8 +153,16 @@ import {checkNoPath, getOtherEndPoint, two_opt} from './dcmstAlgorithms';
 //       return error.toString();
 //   }
 // }
+
+
+/**
+ * Modified version of kruskal algorithm to find approximate solution for DCMSTP
+ * @param {*} graph 
+ * @param {*} degree 
+ */
 export function kruskalConstrained(graph, degree) {
   try{
+    console.log(graph)
   let DCMST = [];
   let totalDegree = new Map();
   let nodes = graph.nodes;
@@ -193,6 +201,7 @@ export function kruskalConstrained(graph, degree) {
   addStates(states, [], t, [], "", 1)
 
 
+
   let nodeWithDegreeTwo = totalDegree.get(2);
   if(nodeWithDegreeTwo){
   for (let j = 0; j < nodeWithDegreeTwo.length; j++) {
@@ -220,6 +229,7 @@ export function kruskalConstrained(graph, degree) {
       }
     }
   }
+  console.log(DCMST)
 
     addStates(states, [], t, [], "", 6)
     edges = edges.sort((a, b) => a.weight - b.weight);
@@ -228,7 +238,6 @@ export function kruskalConstrained(graph, degree) {
       let u = edges[i].source;
       let v = edges[i].target;
       addStates(states, [edges[i]], t, [], "", 8)
-      // console.log(u + " s "+ v + " " + (!uf.connected(u,v)))
       addStates(states, [edges[i]], t, [], "", 9)
       if (
         !uf.connected(u, v) &&
@@ -242,17 +251,19 @@ export function kruskalConstrained(graph, degree) {
         uf.union(u, v);
         addStates(states, [], t, [], "", 10)
         if (DCMST.length == nodes.length - 1) {
+          
           two_opt(DCMST, graph, states)
           addStates(states, [], t, [], "", 13) 
           return states;
         }
       }
     }
-  
+
   two_opt(DCMST, graph, states)
   if(DCMST.length != nodes.length-1) throw ErrMessage.DCMST_NOT_FOUND
   addStates(states, [], t, [], "", 13) 
   return states;
+  
   }catch(e){
     return e.toString();
   }

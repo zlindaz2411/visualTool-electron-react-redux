@@ -69,6 +69,7 @@ describe("kruskal constrained algorithm computes an appoximate solution to degre
     assert.deepEqual(result, kruskalConstrained(graph, 2));
   });
 
+  
   it("should return an error message when the input is invalid", function() {
     assert.equal(ErrMessage.DCMST_NOT_FOUND, kruskalConstrained(errorInput, 3));
   });

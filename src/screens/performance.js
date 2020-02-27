@@ -32,6 +32,7 @@ class PerformancePage extends Component {
         Algorithm.BORUVKA,
         Algorithm.PARALLEL,
         Algorithm.CONSTRAINED,
+        Algorithm.SIMULATED,
         Algorithm.ESAU
       ],
       graph: this.props.latestGraph == null ? data :  this.props.latestGraph,
@@ -104,7 +105,7 @@ class PerformancePage extends Component {
   handleCheckboxChange(e) {
     const name = e.target.name;
     if(e.target.checked) {
-      if(name == Algorithm.CONSTRAINED){
+      if(name == Algorithm.CONSTRAINED || name == Algorithm.SIMULATED){
         this.setState({
           isDegreeDialogOpen:true
         })
