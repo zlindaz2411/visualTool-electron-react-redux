@@ -1,4 +1,4 @@
-import { kruskalConstrained } from "../../src/functions/dcmstStateAlgorithms";
+import { kruskalConstrained, simulatedAnnealing} from "../../src/functions/dcmstStateAlgorithms";
 import { ErrMessage } from "../../src/constants/errorMessage";
 import { Graph } from "../../src/functions/lib/graph";
 const assert = require("assert");
@@ -253,5 +253,24 @@ describe("computation of the states of visualization of the algorithm", function
 
   it("should return an error message when the input is invalid", function() {
     assert.equal(ErrMessage.DCMST_NOT_FOUND, kruskalConstrained(errorInput, 3));
+  });
+});
+
+
+describe("computation of the states of visualization of the simulated annealing algorithm", function() {
+  const step0 = {
+    highlighted: [],
+    status: 0,
+    text: '',
+    tree: []
+  }
+
+  it("should return a the same state of the state at index 0", function() {
+    assert.deepEqual(step0, simulatedAnnealing(graph, 2)[0]);
+  });
+
+
+  it("should return an error message when the input is invalid", function() {
+    assert.equal(ErrMessage.DCMST_NOT_FOUND, simulatedAnnealing(errorInput, 3));
   });
 });

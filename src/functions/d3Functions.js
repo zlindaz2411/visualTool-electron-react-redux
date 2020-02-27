@@ -242,7 +242,6 @@ function createEdges(svg, data, draw) {
               let text = input.node().value;
               if(validateNumber(text) && !validateEmpty(text)){
                   updateWeight(d, text, data, draw)
-                  console.log(d)
               }
               else{
                   onlyNumberErrorMessage();

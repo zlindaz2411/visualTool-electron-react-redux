@@ -331,7 +331,6 @@ export function simulatedAnnealing(graph, degree) {
     addStates(states, [], DCMST, [], "", 8);
     return states;
   } catch (e) {
-    console.log(e.toString())
     return e.toString();
   }
 }

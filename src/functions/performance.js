@@ -67,7 +67,6 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
     let result = [];
     for(let i =0;i<list.length;i++){
         if(list[i] == Algorithm.KRUSKAL ){
-            console.log(kruskals(graph))
             result.push(getWeight(kruskals(graph)))
         }
         else if(list[i] == Algorithm.PRIM){
