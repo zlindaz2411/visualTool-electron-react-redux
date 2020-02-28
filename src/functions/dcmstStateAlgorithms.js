@@ -271,64 +271,58 @@ export function kruskalConstrained(graph, degree) {
  */
 export function simulatedAnnealing(graph, degree) {
   try {
-    //Initial configuration MST
     let MST = kruskals(graph);
+    console.log(MST)
     if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
-    let states = [{ highlighted: [], tree: [], text: "", status: 0 }];
-    addStates(states, MST, [], [], "", 1);
-
-    let degrees = getDegree(MST);
+    let states = [{ highlighted: MST, tree: [], text: "", status: 0 }];
     let K_LEVEL = 0;
     let DCMST = [];
-    let MAX_TEMP_LEVEL = 2000;
+    let alpha = 0.9;
+    let TEMP_RANGE = 5000;
+    let MAX_TEMP_LEVEL = 100 * graph.edges;
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
-      addStates(states, MST, [], [], "", 2);
-      let TEMP_RANGE = MAX_TEMP_LEVEL / K_LEVEL;
-      //Delete a random edge from the current configuration
+      addStates(states, MST, [], [], "", 1);
+      TEMP_RANGE *= alpha;
       let edgeIndex = Math.floor(Math.random() * MST.length);
       let edge = MST[edgeIndex];
       MST.splice(edgeIndex, 1);
-      addStates(states, MST, [], [], "", 3);
-      //Decrease the degree of the edge endpoints
-      degrees[edge.source] -= 1;
-      degrees[edge.target] -= 1;
-
-      //Get the edges that connect the graph
+      addStates(states, MST, [], [], "", 2);
       let connectingEdges = getComponentsEdge(graph, MST);
-
-      //Get a random edge from the edges that connect the components and add to MST
       let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
       let newEdge = connectingEdges[newEdgeIndex];
       MST.push(newEdge);
+      addStates(states, MST, [], [], "", 3);
       addStates(states, MST, [], [], "", 4);
-      //Increase the degree of the edge endpoints
-      degrees[newEdge.source] += 1;
-      degrees[newEdge.target] += 1;
-      addStates(states, MST, [], [], "", 5);
-      //Check if the degree is not violated and the graph is connected
-      if (!isDegreeViolated(degrees, degree) && isConnected(graph.nodes, MST)) {
+      if (
+        !isDegreeViolated(getDegree(MST), degree) &&
+        isConnected(graph.nodes, MST)
+      ) {
         let newWeight = getWeight(MST);
-        //If the new weight is better than the old weight, update the DCMST and the weight
-        if (newWeight < weight) {
+        let acceptanceProb = newWeight - weight;
+        addStates(states, MST, [], [], "", 5);
+        if (acceptanceProb < 0) {
           weight = getWeight(MST);
           DCMST = MST.slice();
           addStates(states, [], DCMST, [], "", 6);
         } else {
-          // let prob = Math.E ** ((weight - newWeight)/TEMP_RANGE);
-          // let realNum = [0,1][Math.floor(Math.random() * 2)];
-          // if(prob >= realNum){
-          //     weight = getWeight(MST)
-          //     DCMST = MST.slice();
-          // }
+          let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
+          let realNum = [0, 1][Math.floor(Math.random() * 2)];
+          if (prob > realNum) {
+            addStates(states, MST, [], [], "exp(newWeight- weight)/Temperature_k = " + prob + " < " + realNum, 7);
+            weight = getWeight(MST);
+            DCMST = MST.slice();
+            addStates(states, [], DCMST, [], "", 8);
+          } else {
+            MST.pop();
+            MST.push(edge);
+          }
         }
       }
-      addStates(states, MST, [], [], "", 7);
+      addStates(states, MST, [], [], "", 9);
       K_LEVEL++;
     }
-    if (DCMST.length != graph.nodes.length - 1)
-      throw ErrMessage.DCMST_NOT_FOUND;
-    addStates(states, [], DCMST, [], "", 8);
+    addStates(states, [], DCMST, [], "", 10);
     return states;
   } catch (e) {
     return e.toString();

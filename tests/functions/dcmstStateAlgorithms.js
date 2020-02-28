@@ -259,7 +259,27 @@ describe("computation of the states of visualization of the algorithm", function
 
 describe("computation of the states of visualization of the simulated annealing algorithm", function() {
   const step0 = {
-    highlighted: [],
+    highlighted: [{
+           "source": "A",
+            "target": "B",
+            "weight": 2,
+          },
+          {
+            "source": "B",
+            "target": "C",
+            "weight": 3,
+          },
+          {
+            "source": "C",
+            "target": "D",
+            "weight": 4,
+          },
+          {
+            "source": "C",
+            "target": "R",
+            "weight": 6,
+          }
+      ],
     status: 0,
     text: '',
     tree: []

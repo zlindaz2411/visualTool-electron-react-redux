@@ -118,15 +118,17 @@ export function getPseudocode(name) {
         return esauWilliams;
         case Algorithm.SIMULATED:
           let simulated = [];
-          simulated.push("Initialize the tree DCMST to be empty");
-          simulated.push("Initialize the tree MST by computing any MST algorithms");
-          simulated.push("While k_level < k_max(5000)");
-          simulated.push("\xa0 \xa0 Remove one edge from MST");
-          simulated.push("\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST");
-          simulated.push("\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)");
-          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST");
-          simulated.push("\xa0 \xa0 k_level +=1");
-          simulated.push("return DCMST");
+          simulated.push("Initialize the tree T by computing any MST algorithms",);
+          simulated.push("While k_level < k_max(100 * graph.edges)");
+          simulated.push("\xa0 \xa0 Remove one edge from T");
+          simulated.push("\xa0 \xa0 Add a random edge connecting the T from the original graph to T");
+          simulated.push("\xa0 \xa0 if(new T does not violate degree constraint)");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
+          simulated.push("\xa0 \xa0 k_level += 1");
+          simulated.push("return T");
           return simulated
       default:
         return [];

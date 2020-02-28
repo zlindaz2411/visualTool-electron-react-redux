@@ -99,16 +99,17 @@ describe("Get pseudocode based on different input", function() {
 
 
   const simulated = [
-    "Initialize the tree DCMST to be empty",
-    "Initialize the tree MST by computing any MST algorithms",
-    "While k_level < k_max(5000)",
-    "\xa0 \xa0 Remove one edge from MST",
-    "\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST",
-    "\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)",
-    "\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST",
-    "\xa0 \xa0 k_level +=1",
-    
-    "return DCMST"
+    "Initialize the tree T by computing any MST algorithms",
+    "While k_level < k_max(100 * graph.edges)",
+    "\xa0 \xa0 Remove one edge from T",
+    "\xa0 \xa0 Add a random edge connecting the T from the original graph to T",
+    "\xa0 \xa0 if(new T does not violate degree constraint)",
+    "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",
+    "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",
+    "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",
+    "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",
+    "\xa0 \xa0 k_level += 1",
+    "return T"
   ]
 
   it("should return the pseudocode of kruskal algorithm", function() {
@@ -233,17 +234,19 @@ describe("Set up pseucodoe map based on different input", function() {
   });
 
   const simulatedMap  = new Map();
-  simulatedMap.set( "Initialize the tree DCMST to be empty",true)
-  simulatedMap.set( "Initialize the tree MST by computing any MST algorithms",false)
-  simulatedMap.set( "While k_level < k_max(5000)",false)
-  simulatedMap.set( "\xa0 \xa0 Remove one edge from MST",false)
-  simulatedMap.set( "\xa0 \xa0 Add an random edge connecting the MST from the original graph to MST",false)
-  simulatedMap.set( "\xa0 \xa0 if(new MST does not violate degree constraint and has smaller weight)",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 DCMST = new MST",false)
-  simulatedMap.set( "\xa0 \xa0 k_level +=1",false)
-  simulatedMap.set(  "return DCMST", false)
-
-
+  simulatedMap.set( "Initialize the tree T by computing any MST algorithms",true)
+  simulatedMap.set( "While k_level < k_max(100 * graph.edges)",false)
+  simulatedMap.set( "\xa0 \xa0 Remove one edge from T",false)
+  simulatedMap.set( "\xa0 \xa0 Add a random edge connecting the T from the original graph to T",false)
+  simulatedMap.set( "\xa0 \xa0 if(new T does not violate degree constraint)",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
+  simulatedMap.set( "\xa0 \xa0 k_level += 1",false)
+  simulatedMap.set(  "return T", false)
+  
+  
   it("should return the pseudocode of kruskal algorithm", function() {
     assert.deepEqual(simulatedMap, setUpPseudocodeMap(Algorithm.SIMULATED, index));
   });

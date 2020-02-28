@@ -1,9 +1,8 @@
 import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
-import {getWeight, isConnected, two_opt} from '../functions/util';
-import {kruskals} from './mstAlgorithms';
-import {addStates} from './stateFunctions';
-
+import { getWeight, isConnected, two_opt } from "../functions/util";
+import { kruskals } from "./mstAlgorithms";
+import { addStates } from "./stateFunctions";
 
 // /**
 //  * Kruskals algorithm + 2 opt algorithm for computing DCMST
@@ -17,12 +16,12 @@ import {addStates} from './stateFunctions';
 //     let edges = graph.edges.sort((a, b) => {
 //       return a.weight - b.weight;
 //     });
-    
+
 //     // Initialize graph that'll contain the DCMST
 //     let DCMST = new Set();
 
 //     let degrees = {}
-    
+
 //     for(let i= 0;i<nodes.length;i++){
 //         degrees[nodes[i].id] = 0;
 //     }
@@ -31,7 +30,6 @@ import {addStates} from './stateFunctions';
 //     for (let i = 0; i < edges.length; i++) {
 //       let u = edges[i].source;
 //       let v = edges[i].target;
-
 
 //       //if edges[i] in MST is not acyclic
 //       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
@@ -53,11 +51,11 @@ import {addStates} from './stateFunctions';
 
 // export function kruskalConstrained(graph, degree) {
 //   try{
-//   //Sort the edges 
+//   //Sort the edges
 //   let nodes = graph.nodes
 //   let degrees = {}
 //   let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
-  
+
 //   for(let i= 0;i<nodes.length;i++){
 //       degrees[nodes[i].id] = 0;
 //   }
@@ -80,10 +78,10 @@ import {addStates} from './stateFunctions';
 //       }
 //     }
 //   }
-  
+
 //   for(let i=0;i<unsafeNodes.length; i++){
 //     let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
-    
+
 //     for(let j =0;j<adjacents.length;j++){
 //         let u = adjacents[j].source;
 //         let v = adjacents[j].target;
@@ -109,69 +107,67 @@ import {addStates} from './stateFunctions';
 
 /**
  * Modified version of kruskal algorithm to find approximate solution for DCMSTP
- * @param {*} graph 
- * @param {*} degree 
+ * @param {*} graph
+ * @param {*} degree
  */
 export function kruskalConstrained(graph, degree) {
-  try{
-  let DCMST = [];
-  let totalDegree = new Map();
-  let nodes = graph.nodes;
-  let edges = graph.edges.slice();
-  let possibleDegrees = [];
-  let degrees = {};
-  let uf = new UnionFind(nodes);
-  for (let i = 0; i < nodes.length; i++) {
-    degrees[nodes[i].id] = 0;
-  }
-
-  //Get the initial degree for each node
-  for (let i = 0; i < nodes.length; i++) {
-    let adjacents = graph.getAdjacentsOfNode(nodes[i].id);
-    if (!totalDegree.has(adjacents.length)) {
-      totalDegree.set(adjacents.length, [nodes[i].id]);
-    } else {
-      let temp = totalDegree.get(adjacents.length);
-      temp.push(nodes[i].id);
-      totalDegree.set(adjacents.length, temp);
+  try {
+    let DCMST = [];
+    let totalDegree = new Map();
+    let nodes = graph.nodes;
+    let edges = graph.edges.slice();
+    let possibleDegrees = [];
+    let degrees = {};
+    let uf = new UnionFind(nodes);
+    for (let i = 0; i < nodes.length; i++) {
+      degrees[nodes[i].id] = 0;
     }
-    if (possibleDegrees.indexOf(adjacents.length) == -1)
-      possibleDegrees.push(adjacents.length);
-  }
 
+    //Get the initial degree for each node
+    for (let i = 0; i < nodes.length; i++) {
+      let adjacents = graph.getAdjacentsOfNode(nodes[i].id);
+      if (!totalDegree.has(adjacents.length)) {
+        totalDegree.set(adjacents.length, [nodes[i].id]);
+      } else {
+        let temp = totalDegree.get(adjacents.length);
+        temp.push(nodes[i].id);
+        totalDegree.set(adjacents.length, temp);
+      }
+      if (possibleDegrees.indexOf(adjacents.length) == -1)
+        possibleDegrees.push(adjacents.length);
+    }
 
-  //Add all the edges adjacents to node with degree 1 to the DCMST
-  let nodeWithDegreeOne = totalDegree.get(1);
-  if(nodeWithDegreeOne){
-  for (let j = 0; j < nodeWithDegreeOne.length; j++) {
-    let degreeOne = graph.getAdjacentsOfNode(nodeWithDegreeOne[j])[0];
-    DCMST.push(degreeOne);
-    edges.splice(edges.indexOf(degreeOne), 1);
-    uf.union(degreeOne.source, degreeOne.target);
-    degrees[degreeOne.source] += 1;
-    degrees[degreeOne.target] += 1;
-    
-  }
-  }
-
-  //Check the edges adjacents to node with degree 2. If there isn't a path between them apart from going though the considering node. Add to the DCMST
-  let nodeWithDegreeTwo = totalDegree.get(2);
-  if(nodeWithDegreeTwo){
-  for (let j = 0; j < nodeWithDegreeTwo.length; j++) {
-    let adjacents = graph.getAdjacentsOfNode(nodeWithDegreeTwo[j]);
-    let v = getOtherEndPoint(adjacents[0], nodeWithDegreeTwo[j]);
-    let u = getOtherEndPoint(adjacents[1], nodeWithDegreeTwo[j]);
-    if (checkNoPath(v, u, graph)) {
-      DCMST = DCMST.concat(adjacents);
-      uf.union(u, v);
-      edges.splice(edges.indexOf(adjacents[0]), 1);
-      edges.splice(edges.indexOf(adjacents[1]), 1);
-      degrees[u] += 1;
-      degrees[v] += 1;
-      degrees[nodeWithDegreeTwo[j]] += 2;
+    //Add all the edges adjacents to node with degree 1 to the DCMST
+    let nodeWithDegreeOne = totalDegree.get(1);
+    if (nodeWithDegreeOne) {
+      for (let j = 0; j < nodeWithDegreeOne.length; j++) {
+        let degreeOne = graph.getAdjacentsOfNode(nodeWithDegreeOne[j])[0];
+        DCMST.push(degreeOne);
+        edges.splice(edges.indexOf(degreeOne), 1);
+        uf.union(degreeOne.source, degreeOne.target);
+        degrees[degreeOne.source] += 1;
+        degrees[degreeOne.target] += 1;
       }
     }
-  }
+
+    //Check the edges adjacents to node with degree 2. If there isn't a path between them apart from going though the considering node. Add to the DCMST
+    let nodeWithDegreeTwo = totalDegree.get(2);
+    if (nodeWithDegreeTwo) {
+      for (let j = 0; j < nodeWithDegreeTwo.length; j++) {
+        let adjacents = graph.getAdjacentsOfNode(nodeWithDegreeTwo[j]);
+        let v = getOtherEndPoint(adjacents[0], nodeWithDegreeTwo[j]);
+        let u = getOtherEndPoint(adjacents[1], nodeWithDegreeTwo[j]);
+        if (checkNoPath(v, u, graph)) {
+          DCMST = DCMST.concat(adjacents);
+          uf.union(u, v);
+          edges.splice(edges.indexOf(adjacents[0]), 1);
+          edges.splice(edges.indexOf(adjacents[1]), 1);
+          degrees[u] += 1;
+          degrees[v] += 1;
+          degrees[nodeWithDegreeTwo[j]] += 2;
+        }
+      }
+    }
 
     //Classic Kruskal method
     edges = edges.sort((a, b) => a.weight - b.weight);
@@ -189,154 +185,142 @@ export function kruskalConstrained(graph, degree) {
 
         uf.union(u, v);
         if (DCMST.length == nodes.length - 1) {
-          two_opt(DCMST, graph, null)
+          two_opt(DCMST, graph, null);
           return DCMST;
         }
       }
     }
-  
-  //Improve the solution using two-opt
-  two_opt(DCMST, graph, null)
-  if(DCMST.length != nodes.length-1) throw ErrMessage.DCMST_NOT_FOUND
-    
-  return DCMST;
-}catch(e){
-  return e.toString();
-}
+
+    //Improve the solution using two-opt
+    two_opt(DCMST, graph, null);
+    if (DCMST.length != nodes.length - 1) throw ErrMessage.DCMST_NOT_FOUND;
+
+    return DCMST;
+  } catch (e) {
+    return e.toString();
+  }
 }
 
 /**
  * Simulated Annealing gives approximate solution to the degree constrained minimum spanning tree
- * @param {*} graph 
- * @param {*} degree 
+ * @param {*} graph
+ * @param {*} degree
  */
-export function simulatedAnnealing(graph, degree){
-  try{
-  //Initial configuration MST
-  let MST = kruskals(graph)
-  if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
-  let degrees = getDegree(MST)
-  let K_LEVEL = 0;
-  let DCMST = [];
-  let MAX_TEMP_LEVEL = 2000;
-  let weight = Number.MAX_SAFE_INTEGER;
-  let weights = [];
-  while(K_LEVEL<MAX_TEMP_LEVEL){
-      weights.push(weight)
-      let TEMP_RANGE = MAX_TEMP_LEVEL/K_LEVEL
-      if(weights>5){
-          weights.shift();
-      }
-          //Delete a random edge from the current configuration
-          let edgeIndex = Math.floor((Math.random() * MST.length))
-          let edge = MST[edgeIndex]
-          MST.splice(edgeIndex, 1)
-          //Decrease the degree of the edge endpoints
-          degrees[edge.source] -=1
-          degrees[edge.target] -=1
+export function simulatedAnnealing(graph, degree) {
+  try {
+    let MST = kruskals(graph);
+    if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
+    let K_LEVEL = 0;
+    let DCMST = [];
+    let alpha = 0.9;
+    let TEMP_RANGE = 5000;
+    let MAX_TEMP_LEVEL = 100 * graph.edges;
+    let weight = Number.MAX_SAFE_INTEGER;
+    while (K_LEVEL < MAX_TEMP_LEVEL) {
+      TEMP_RANGE *= alpha;
+      let edgeIndex = Math.floor(Math.random() * MST.length);
+      let edge = MST[edgeIndex];
+      MST.splice(edgeIndex, 1);
+      let connectingEdges = getComponentsEdge(graph, MST);
+      let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
+      let newEdge = connectingEdges[newEdgeIndex];
+      MST.push(newEdge);
 
-          //Get the edges that connect the graph
-          let connectingEdges = getComponentsEdge(graph, MST)
-
-          //Get a random edge from the edges that connect the components and add to MST
-          let newEdgeIndex = Math.floor((Math.random() * connectingEdges.length))
-          let newEdge = connectingEdges[newEdgeIndex]
-          MST.push(newEdge)
-          //Increase the degree of the edge endpoints
-          degrees[newEdge.source] +=1
-          degrees[newEdge.target] +=1
-
-          //Check if the degree is not violated and the graph is connected
-          if(!isDegreeViolated(degrees, degree) && isConnected(graph.nodes, MST)){   
-              let newWeight = getWeight(MST)
-              //If the new weight is better than the old weight, update the DCMST and the weight
-              if(newWeight< weight){
-                  weight = getWeight(MST)
-                  DCMST = MST.slice();
-              }else{
-                  // let prob = Math.E ** ((weight - newWeight)/TEMP_RANGE);
-                  // let realNum = [0,1][Math.floor(Math.random() * 2)];    
-                  // if(prob >= realNum){                      
-                  //     weight = getWeight(MST)
-                  //     DCMST = MST.slice();
-                  // }
-              }
+      if (
+        !isDegreeViolated(getDegree(MST), degree) &&
+        isConnected(graph.nodes, MST)
+      ) {
+        let newWeight = getWeight(MST);
+        let acceptanceProb = newWeight - weight;
+        if (acceptanceProb < 0) {
+          //  console.log(degrees)
+          weight = getWeight(MST);
+          DCMST = MST.slice();
+        } else {
+          let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
+          let realNum = [0, 1][Math.floor(Math.random() * 2)];
+          if (prob > realNum) {
+            weight = getWeight(MST);
+            DCMST = MST.slice();
+          } else {
+            MST.pop();
+            MST.push(edge);
           }
-      if(weights.length == 5) if(checkConverged(weights)) break;
+        }
+      }
       K_LEVEL++;
+    }
+
+    return DCMST;
+  } catch (e) {
+    return e.toString();
   }
-  if(DCMST.length != graph.nodes.length-1) throw ErrMessage.DCMST_NOT_FOUND
-  return DCMST
-}catch(e){
-  return e.toString()
-}
 }
 
 /**
  * Check if the weights are the same
- * @param {*} weights 
+ * @param {*} weights
  */
-export function checkConverged(weights){
-  for(let i= 0;i<weights.length-1;i++){
-      if(weights[i] != weights[i+1]) return false
+export function checkConverged(weights) {
+  for (let i = 0; i < weights.length - 1; i++) {
+    if (weights[i] != weights[i + 1]) return false;
   }
   return true;
 }
 
-
 /**
  * Get the degree of the graph
- * @param {*} edges 
+ * @param {*} edges
  */
-export function getDegree(edges){
-  let map = {}
-  for(let i =0;i<edges.length;i++){
-    if(!map[edges[i].source]) map[edges[i].source] =1
-    else if(map[edges[i].source]) map[edges[i].source]+=1
-    if(!map[edges[i].target]) map[edges[i].target] =1
-    else if(map[edges[i].target]) map[edges[i].target]+=1
+export function getDegree(edges) {
+  let map = {};
+  for (let i = 0; i < edges.length; i++) {
+    if (!map[edges[i].source]) map[edges[i].source] = 1;
+    else if (map[edges[i].source]) map[edges[i].source] += 1;
+    if (!map[edges[i].target]) map[edges[i].target] = 1;
+    else if (map[edges[i].target]) map[edges[i].target] += 1;
   }
-  return map
+  return map;
 }
 
 /**
  * Get all the possible edges that connect the graph
- * @param {*} graph 
- * @param {*} MST 
+ * @param {*} graph
+ * @param {*} MST
  */
-export function getComponentsEdge(graph, MST){
-  let edges = graph.edges
-  let nodes = graph.nodes
-  let candidates =[]
-  for(let i =0;i<edges.length;i++){
-      MST.push(edges[i])
-      if(isConnected(nodes, MST)){
-          candidates.push(edges[i])
-      }
-      MST.pop();
+export function getComponentsEdge(graph, MST) {
+  let edges = graph.edges;
+  let nodes = graph.nodes;
+  let candidates = [];
+  for (let i = 0; i < edges.length; i++) {
+    MST.push(edges[i]);
+    if (isConnected(nodes, MST)) {
+      candidates.push(edges[i]);
+    }
+    MST.pop();
   }
-  return candidates
+  return candidates;
 }
 
 /**
  * Check if degree is violated
- * @param {*} degrees 
- * @param {*} degree 
+ * @param {*} degrees
+ * @param {*} degree
  */
-export function isDegreeViolated(degrees, degree){
-  for(const [key, value] of Object.entries(degrees)){
-      if(value > degree){
-          return true
-      }
+export function isDegreeViolated(degrees, degree) {
+  for (const [key, value] of Object.entries(degrees)) {
+    if (value > degree) {
+      return true;
+    }
   }
   return false;
 }
 
 /**
  * Check if there isn't more than 1 one path from a source to a target node
- * @param {*} source 
- * @param {*} target 
- * @param {*} graph 
+ * @param {*} source
+ * @param {*} target
+ * @param {*} graph
  */
 export function checkNoPath(source, target, graph) {
   let queue = [];
@@ -359,32 +343,25 @@ export function checkNoPath(source, target, graph) {
     }
     visited[u] = true;
     let adjacents = graph.getAdjacentsOfNode(u);
-    if(adjacents.length !=0)
-    for (let i = 0; i < adjacents.length; i++) {
-      let v = getOtherEndPoint(adjacents[i], u);
-      if (!visited[v]) {
-        queue.push(v);
+    if (adjacents.length != 0)
+      for (let i = 0; i < adjacents.length; i++) {
+        let v = getOtherEndPoint(adjacents[i], u);
+        if (!visited[v]) {
+          queue.push(v);
+        }
       }
-    }
   }
   return true;
 }
 
-
-
-
 /**
  * Get the other endpoint of the edge given one point
- * @param {*} edge 
- * @param {*} source 
+ * @param {*} edge
+ * @param {*} source
  */
 export function getOtherEndPoint(edge, source) {
-  if(edge){
+  if (edge) {
     if (edge.source == source) return edge.target;
     else return edge.source;
   }
 }
-
-
-
-

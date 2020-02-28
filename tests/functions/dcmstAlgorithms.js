@@ -76,17 +76,6 @@ describe("kruskal constrained algorithm computes an appoximate solution to degre
 });
 
 describe("simulated annealing algorithm computes an appoximate solution to degree constrained minimum spanning problem", function() {
-  const result = [
-    { source: "A", target: "C", weight: 6 },
-    { source: "G", target: "F", weight: 8 },
-    { source: "C", target: "D", weight: 7 },
-    { source: "B", target: "E", weight: 6 },
-    { source: "D", target: "F", weight: 5 },
-    { source: "A", target: "B", weight: 5 },
-  ];
-  it("should return a suboptimal degree constrained minimum spanning tree given a graph", function() {
-    assert.deepEqual(result.length, simulatedAnnealing(graph, 2).length);
-  });
 
   
   it("should return an error message when the input is invalid", function() {
