@@ -105,7 +105,7 @@ describe("Get pseudocode based on different input", function() {
     "\xa0 \xa0 Add a random edge connecting the T from the original graph to T",
     "\xa0 \xa0 if(new T does not violate degree constraint)",
     "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",
-    "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",
+    "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T",
     "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",
     "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",
     "\xa0 \xa0 k_level += 1",
@@ -240,7 +240,7 @@ describe("Set up pseucodoe map based on different input", function() {
   simulatedMap.set( "\xa0 \xa0 Add a random edge connecting the T from the original graph to T",false)
   simulatedMap.set( "\xa0 \xa0 if(new T does not violate degree constraint)",false)
   simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T",false)
   simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",false)
   simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
   simulatedMap.set( "\xa0 \xa0 k_level += 1",false)

@@ -124,7 +124,7 @@ export function getPseudocode(name) {
           simulated.push("\xa0 \xa0 Add a random edge connecting the T from the original graph to T");
           simulated.push("\xa0 \xa0 if(new T does not violate degree constraint)");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)");
-          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 k_level += 1");

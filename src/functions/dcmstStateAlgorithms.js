@@ -279,7 +279,7 @@ export function simulatedAnnealing(graph, degree) {
     let DCMST = [];
     let alpha = 0.9;
     let TEMP_RANGE = 5000;
-    let MAX_TEMP_LEVEL = 100 * graph.edges;
+    let MAX_TEMP_LEVEL = 100 * graph.edges.length;
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
       addStates(states, MST, [], [], "", 1);
@@ -308,8 +308,8 @@ export function simulatedAnnealing(graph, degree) {
         } else {
           let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
           let realNum = [0, 1][Math.floor(Math.random() * 2)];
+          addStates(states, MST, [], [], "exp(newWeight- weight)/Temperature_k = " + prob + " > " + realNum, 7);
           if (prob > realNum) {
-            addStates(states, MST, [], [], "exp(newWeight- weight)/Temperature_k = " + prob + " < " + realNum, 7);
             weight = getWeight(MST);
             DCMST = MST.slice();
             addStates(states, [], DCMST, [], "", 8);

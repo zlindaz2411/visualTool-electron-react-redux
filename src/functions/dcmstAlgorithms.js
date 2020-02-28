@@ -214,7 +214,7 @@ export function simulatedAnnealing(graph, degree) {
     let DCMST = [];
     let alpha = 0.9;
     let TEMP_RANGE = 5000;
-    let MAX_TEMP_LEVEL = 100 * graph.edges;
+    let MAX_TEMP_LEVEL = 100 * graph.edges.length;
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
       TEMP_RANGE *= alpha;
