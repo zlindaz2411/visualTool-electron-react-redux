@@ -167,6 +167,72 @@ export function kruskals(graph) {
     return error.toString();
 }
 }
+  /**
+  * Boruvka Parallel algorithm
+  * @param {*} edges 
+  * @param {*} nodes 
+  */
+ export function parallel(graph) {
+  try{
+      let nodes = graph.nodes
+      let edges = graph.edges
+      let subset = new UnionFind(nodes);
+      let num = nodes.length;
+      // Initialize graph that'll contain the MST
+      let MST =[]
+      let cheapest = [];
+      let previous = 0;
+      let current = num;
+      while(num>1){
+          previous = current;
+
+          //Initialize the cheapest list to be -1
+          for(let v=0;v<nodes.length;v++){
+                  cheapest[nodes[v].id]= -1;
+          }
+
+      let worker = new Worker('../src/functions/worker.js');
+        
+      for(let i =0;i<edges.length;i++){
+        let edge = edges[i]
+        let u = subset.find(edge.source);
+        let v = subset.find(edge.target);
+        worker.postMessage({cheapest: cheapest, edge:edge, u: u, v:v})
+        }
+     
+      worker.onmessage = function(event) {
+        cheapest = event.data;
+      //For each cheapest edge, check if they belong to the same component, if yes add to the MST
+      for(let i =0;i<nodes.length;i++){
+        let e = cheapest[nodes[i].id];
+        if(e!=-1){
+            let u = subset.find(e.source);
+            let v = subset.find(e.target);
+            if(u==v) continue;
+            if(!subset.connected(u,v)){
+                MST.push(e);
+                subset.union(u,v);
+                num--;
+            }
+        }
+    }
+    current = num;
+    //If the number of component has not changed
+    if(current == previous) throw "MST not found";
+    }
+        return MST  
+      };
+      // //Let promises to handle the selection of hte cheapest edge(alternative of threads for Javascript)
+      // let promises = edges.map(async (edge) =>  {await findCheapest(edge, subset, cheapest)})
+      // let result = await Promise.all(promises)
+         
+  
+
+      }catch(error){
+      return error.toString();
+      }
+}
+
 
 
   /**
@@ -174,7 +240,7 @@ export function kruskals(graph) {
   * @param {*} edges 
   * @param {*} nodes 
   */
- export async function parallel(graph) {
+ export async function parallelPromise(graph) {
     try{
         let nodes = graph.nodes
          let edges = graph.edges
@@ -217,6 +283,7 @@ export function kruskals(graph) {
         //If the number of component has not changed
         if(current == previous) throw "MST not found";
         }
+        console.log(MST.length)
         return MST  
         }catch(error){
         return error.toString();

@@ -1,5 +1,5 @@
 import {Algorithm} from '../constants/algorithms';
-import {kruskals, prims, boruvkas, parallel} from '../functions/mstAlgorithms'
+import {kruskals, prims, boruvkas, parallel, parallelPromise} from '../functions/mstAlgorithms'
 import {esauWilliams} from '../functions/cmstAlgorithms'
 import {kruskalConstrained, simulatedAnnealing} from'./dcmstAlgorithms'
 import {performance} from 'perf_hooks'
@@ -70,6 +70,7 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
             result.push(getWeight(kruskals(graph)))
         }
         else if(list[i] == Algorithm.PRIM){
+            getWeight(prims(graph))
             result.push(getWeight(prims(graph)))
         }
         else if(list[i] == Algorithm.BORUVKA){

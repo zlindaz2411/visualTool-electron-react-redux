@@ -272,7 +272,6 @@ export function kruskalConstrained(graph, degree) {
 export function simulatedAnnealing(graph, degree) {
   try {
     let MST = kruskals(graph);
-    console.log(MST)
     if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
     let states = [{ highlighted: MST, tree: [], text: "", status: 0 }];
     let K_LEVEL = 0;
