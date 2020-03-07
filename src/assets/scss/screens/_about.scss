@@ -1,0 +1,22 @@
+.about_wrap {
+    position: fixed;
+    margin-left: 15rem;
+    width: 100% - 17%;
+    padding: 0;
+
+    .area{
+        padding-top: 5rem;
+    textarea{
+    
+        background-color: #FCFCFF;
+        width: 75%;
+        color: $subCol;
+        white-space: normal;
+        text-align: justify;
+        -moz-text-align-last: center; /* Firefox 12+ */
+        text-align-last: center;
+        font-size: 1.5rem;
+     }
+    }
+     
+}

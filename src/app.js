@@ -15,6 +15,7 @@ import ParallelPage from './screens/parallel';
 import HomePage from './screens/home';
 import PerformancePage from './screens/performance';
 import DrawPage from './screens/draw';
+import AboutPage from './screens/about';
 
 
 
@@ -23,6 +24,11 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
+                <Route path="/about" render={props => (
+                        <MainLayout>
+                            <AboutPage {...props} />
+                        </MainLayout>
+                    )}/>
                 <Route path="/esau" render={props => (
                         <MainLayout>
                             <EsauPage {...props} />

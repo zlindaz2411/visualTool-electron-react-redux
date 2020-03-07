@@ -27,45 +27,45 @@ graph2.addEdge(  { source: 9, target: 3, weight: 5, highlight: false, tree: fals
 
 
 let graph = new Graph();
-// graph.addNode({ id: 1, x: 30, y: 150, highlight: false })
-// graph.addNode({ id: 2, x: 110, y: 150, highlight: false })
-// graph.addNode({ id: 3, x: 70, y: 50, highlight: false })
-// graph.addNode({ id: 4, x: 50, y: 250, highlight: false })
-// graph.addNode({ id: 5, x: 100, y: 250, highlight: false })
-// graph.addEdge(  { source: 1, target: 2, weight: 2, highlight: false, tree: false });
-// graph.addEdge(  { source: 1, target: 3, weight: 10, highlight: false, tree: false });
-// graph.addEdge(  { source: 1, target: 4, weight: 12, highlight: false, tree: false });
-// graph.addEdge(  { source: 1, target: 5, weight: 5, highlight: false, tree: false });
-// graph.addEdge(  { source: 2, target: 3, weight: 3, highlight: false, tree: false });
-// graph.addEdge(  { source: 2, target: 4, weight: 15, highlight: false, tree: false });
-// graph.addEdge(  { source: 2, target: 5, weight: 8, highlight: false, tree: false });
-// graph.addEdge(  { source: 3, target: 4, weight: 4, highlight: false, tree: false });
-// graph.addEdge(  { source: 3, target: 5, weight: 6, highlight: false, tree: false });
-// graph.addEdge(  { source: 4, target: 5, weight: 10, highlight: false, tree: false });
+graph.addNode({ id: 1, x: 30, y: 150, highlight: false })
+graph.addNode({ id: 2, x: 110, y: 150, highlight: false })
+graph.addNode({ id: 3, x: 70, y: 50, highlight: false })
+graph.addNode({ id: 4, x: 50, y: 250, highlight: false })
+graph.addNode({ id: 5, x: 100, y: 250, highlight: false })
+graph.addEdge(  { source: 1, target: 2, weight: 2, highlight: false, tree: false });
+graph.addEdge(  { source: 1, target: 3, weight: 10, highlight: false, tree: false });
+graph.addEdge(  { source: 1, target: 4, weight: 12, highlight: false, tree: false });
+graph.addEdge(  { source: 1, target: 5, weight: 5, highlight: false, tree: false });
+graph.addEdge(  { source: 2, target: 3, weight: 3, highlight: false, tree: false });
+graph.addEdge(  { source: 2, target: 4, weight: 15, highlight: false, tree: false });
+graph.addEdge(  { source: 2, target: 5, weight: 8, highlight: false, tree: false });
+graph.addEdge(  { source: 3, target: 4, weight: 4, highlight: false, tree: false });
+graph.addEdge(  { source: 3, target: 5, weight: 6, highlight: false, tree: false });
+graph.addEdge(  { source: 4, target: 5, weight: 10, highlight: false, tree: false });
 
-let num = 5000
-let more = 5000
-for (let i = 0; i < num; i++) {
-  let node = {id:i}
-  graph.addNode(node);
-}
-for (let i = 0; i < num-1; i++) {
-  let edge = {source:i, target:i+1}
-  graph.addEdge(edge);
-}
-let i =0;
-while(i<more){
-  let source =graph.nodes[Math.floor((Math.random() *graph.nodes.length))].id;
-  let target =graph.nodes[Math.floor((Math.random() *graph.nodes.length))].id
-  if(source != target) {
-    let edge = {source:source, target:target}
-    graph.addEdge(edge);
-  }
-  else{
-    i--;
-  }
-  i++
-} 
+// let num = 5000
+// let more = 5000
+// for (let i = 0; i < num; i++) {
+//   let node = {id:i}
+//   graph.addNode(node);
+// }
+// for (let i = 0; i < num-1; i++) {
+//   let edge = {source:i, target:i+1, weight: Math.floor((Math.random() * 20))}
+//   graph.addEdge(edge);
+// }
+// let i =0;
+// while(i<more){
+//   let source =graph.nodes[Math.floor((Math.random() *graph.nodes.length))].id;
+//   let target =graph.nodes[Math.floor((Math.random() *graph.nodes.length))].id
+//   if(source != target) {
+//     let edge = {source:source, target:target, weight: Math.floor((Math.random() * 20))}
+//     graph.addEdge(edge);
+//   }
+//   else{
+//     i--;
+//   }
+//   i++
+// } 
 /**
  * Example of graph
  */

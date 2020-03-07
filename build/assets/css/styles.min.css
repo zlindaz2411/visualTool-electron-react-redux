@@ -918,7 +918,10 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
   background: #D9E9D6;
   padding: 0;
   height: 100%;
-  z-index: 1; }
+  z-index: 1;
+  overflow-y: scroll;
+  top: 0;
+  bottom: 0; }
   .sidebar nav, .sidebar nav ul, .sidebar nav ul li {
     margin: 0;
     padding: 0; }
@@ -1160,6 +1163,24 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     border-radius: 50%;
     background: #84C262;
     cursor: pointer; }
+
+.about_wrap {
+  position: fixed;
+  margin-left: 15rem;
+  width: 83%;
+  padding: 0; }
+  .about_wrap .area {
+    padding-top: 5rem; }
+    .about_wrap .area textarea {
+      background-color: #FCFCFF;
+      width: 75%;
+      color: #94979D;
+      white-space: normal;
+      text-align: justify;
+      -moz-text-align-last: center;
+      /* Firefox 12+ */
+      text-align-last: center;
+      font-size: 1.5rem; }
 
 .canvasDialog {
   margin-top: 2rem;

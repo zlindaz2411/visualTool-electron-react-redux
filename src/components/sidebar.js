@@ -121,8 +121,13 @@ class Sidebar extends Component {
                         </li>
                         </div>
                         <li>   
-                            <NavLink   className = "inactive" activeClassName="active" to="/performance" alt="PerformancePage"  replace>
+                            <NavLink   className = "algorithms" activeClassName="active" to="/performance" alt="PerformancePage"  replace>
                              <h5>Performance</h5>
+                            </NavLink> 
+                        </li>
+                        <li>   
+                            <NavLink   className = "algorithms" activeClassName="active" to="/about" alt="AboutPage"  replace>
+                             <h5>About</h5>
                             </NavLink> 
                         </li>
                     </ul>

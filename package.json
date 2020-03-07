@@ -3,7 +3,7 @@
   "productName": "Visual Minimum Spanning Tree",
   "version": "1.13.0",
   "description": "Visual Minimum Spanning Tree is an algorithm visualization app developed by Linda Zhou",
-  "main": "index.js",
+  "main": "main.js",
   "author": "Linda Zhou <k1763829@kcl.ac.uk>",
   "license": "",
   "build": {
@@ -38,7 +38,7 @@
     "electron:dev": "NODE_ENV=dev electron .",
     "pack": "electron-builder --dir",
     "dist": "NODE_ENV=prod electron-builder",
-    "test": "mocha --require @babel/register ./tests/**/*.js",
+    "test": "mocha --require @babel/register \"./{,!(node_modules)/**/}*.test.js\"",
     "coverage": "nyc --reporter html --reporter text npm test",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -93,6 +93,7 @@
     "react-spinners": "^0.6.1",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
+    "spectron": "^10.0.1",
     "tingodb": "^0.6.1",
     "webpack-cli": "^3.3.10"
   }
