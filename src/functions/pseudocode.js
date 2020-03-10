@@ -51,28 +51,28 @@ export function getPseudocode(name) {
         return prim;
       case Algorithm.BORUVKA: //Borvska's
         let boruvka = [];
-        boruvka.push("Initialize the F = map of one-vertex trees to its component");
-        boruvka.push("while(Number of components > 1)");
+        boruvka.push("Initialize the components = node list");
+        boruvka.push("while(number of components > 1)");
         boruvka.push(
-          "\xa0 \xa0foreach (component in F)"
+          "\xa0 \xa0foreach(component in components)"
         );
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0c = component");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find smallest edge for c");
-        boruvka.push("Contract edges");
-        boruvka.push("return T");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for c");
+        boruvka.push("combine components");
+        boruvka.push("return components");
         return boruvka;
       case Algorithm.PARALLEL: // Parallel Boruvska
         let boruvkaParallel = [];
-        boruvkaParallel.push("Initialize the F = map of one-vertex trees to its component");
-        boruvkaParallel.push("while(Number of components > 1)");
+        boruvkaParallel.push("Initialize the components = node list");
+        boruvkaParallel.push("while(number of components > 1)");
         boruvkaParallel.push(
-          "\xa0 \xa0foreach (component in F)"
+          "\xa0 \xa0foreach(component in components)"
         );
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component");
         boruvkaParallel.push("\xa0 \xa0(Concurrent Thread Execution");
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)");
-        boruvkaParallel.push("Contract edges");
-        boruvkaParallel.push("return T");
+        boruvkaParallel.push("combine components");
+        boruvkaParallel.push("return components");
 
         return boruvkaParallel;
         case Algorithm.ESAU: // Esau Wiliams pseudocode
@@ -96,15 +96,16 @@ export function getPseudocode(name) {
         case Algorithm.SIMULATED:
           let simulated = [];
           simulated.push("Initialize the tree T by computing any MST algorithms",);
-          simulated.push("While k_level < k_max(100 * graph.edges)");
-          simulated.push("\xa0 \xa0 Remove one edge from T");
-          simulated.push("\xa0 \xa0 Add a random edge connecting the T from the original graph to T");
+          simulated.push("While k_level < k_max(1000) || weight T has not been changed for over 300 times");
+          simulated.push("\xa0 \xa0 Remove a random edge from T");
+          simulated.push("\xa0 \xa0 Add a random edge connecting T");
           simulated.push("\xa0 \xa0 if(new T does not violate degree constraint)");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 k_level += 1");
+          simulated.push("\xa0 \xa0 Temprature_k *= cooling rate (0.9)");
           simulated.push("return T");
           return simulated
       default:

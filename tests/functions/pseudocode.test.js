@@ -40,16 +40,13 @@ describe("Get pseudocode based on different input", function() {
   });
 
   const boruvka = [
-    "Initialize the tree T to be empty",
-    "Initialize the F = map of one-vertex trees to its component",
-    "while(T is not MST)",
-    "\xa0 \xa0foreach (component in F)",
+    "Initialize the components = node list",
+    "while(number of components > 1)",
+    "\xa0 \xa0foreach(component in components)",
     "\xa0 \xa0 \xa0 \xa0 \xa0c = component",
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0e = smallest edge for c",
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)",
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T",
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing",
-    "return T"
+    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for c",
+    "combine components",
+    "return components"
   ];
 
   it("should return the pseudocode of kruskal algorithm", function() {
@@ -58,18 +55,14 @@ describe("Get pseudocode based on different input", function() {
 
 
   const parallel = [
-    "Initialize the tree T to be empty",
-    "Initialize the F = map of one-vertex trees to its component",
-    "while(T is not MST)",
-    "\xa0 \xa0foreach (component in F)",
+   "Initialize the components = node list",
+    "while(number of components > 1)",
+    "\xa0 \xa0foreach(component in components)",
     "\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component",
     "\xa0 \xa0(Concurrent Thread Execution",
     "\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)",
-    "\xa0 \xa0foreach (smallest edge of each component)",
-    "\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)",
-    "\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T",
-    "\xa0 \xa0 \xa0 \xa0 \xa0else do nothing",
-    "return T"
+    "combine components",
+    "return components"
   ];
 
   it("should return the pseudocode of kruskal algorithm", function() {
@@ -181,28 +174,20 @@ describe("Set up pseucodoe map based on different input", function() {
   });
 
   const boruvkaMap = new Map();
-  boruvkaMap.set("Initialize the tree T to be empty", true);
   boruvkaMap.set(
-    "Initialize the F = map of one-vertex trees to its component",
-    false
+    "Initialize the components = node list",
+    true
   );
-  boruvkaMap.set("while(T is not MST)", false);
-  boruvkaMap.set("\xa0 \xa0foreach (component in F)", false);
+  boruvkaMap.set("while(number of components > 1)", false);
+  boruvkaMap.set("\xa0 \xa0foreach(component in components)", false);
   boruvkaMap.set("\xa0 \xa0 \xa0 \xa0 \xa0c = component", false);
   boruvkaMap.set(
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0e = smallest edge for c",
+    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for c",
     false
   );
   boruvkaMap.set(
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)",
-    false
-  );
-  boruvkaMap.set(
-    "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T",
-    false
-  );
-  boruvkaMap.set("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing", false);
-  boruvkaMap.set("return T", false);
+    "combine components", false);
+  boruvkaMap.set("return components", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka", function() {
     assert.deepEqual(boruvkaMap, setUpPseudocodeMap(Algorithm.BORUVKA, index));
@@ -214,7 +199,7 @@ describe("Set up pseucodoe map based on different input", function() {
   });
  
   const constrainedMap = new Map();
-  constrainedMap.set("Initialize the tree T to be empty",true)
+  constrainedMap.set( "Initialize the tree T to be empty",true)
   constrainedMap.set(  "Add to the tree edges adjacent to nodes with degree 1",false)
   constrainedMap.set(  "For each node k with degree 2",false)
   constrainedMap.set(  "\xa0 \xa0 i, j = endpoint of edges adjacent to k",false)
@@ -253,13 +238,12 @@ describe("Set up pseucodoe map based on different input", function() {
     
   
   const parallelMap = new Map();
-  parallelMap.set("Initialize the tree T to be empty", true);
   parallelMap.set(
-    "Initialize the F = map of one-vertex trees to its component",
-    false
+   "Initialize the components = node list",
+    true
   );
-  parallelMap.set("while(T is not MST)", false);
-  parallelMap.set("\xa0 \xa0foreach (component in F)", false);
+  parallelMap.set("while(number of components > 1)", false);
+  parallelMap.set("\xa0 \xa0foreach(component in components)", false);
   parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component", false);
   parallelMap.set(
     "\xa0 \xa0(Concurrent Thread Execution",
@@ -270,14 +254,8 @@ describe("Set up pseucodoe map based on different input", function() {
     false
   );
   parallelMap.set(
-    "\xa0 \xa0foreach (smallest edge of each component)",
-    false
-  );
-  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)", false);
-  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T", false);
-  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing", false);
-  
-  parallelMap.set("return T", false);
+    "combine components",false);
+  parallelMap.set("return components", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka parallel", function() {
     assert.deepEqual(parallelMap, setUpPseudocodeMap(Algorithm.PARALLEL, index));

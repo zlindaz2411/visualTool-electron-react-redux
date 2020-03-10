@@ -64,7 +64,8 @@ function findAdjancentsVertices(node, edges){
  * @param {*} states 
  */
 export function two_opt(mst, originalGraph, states){
-  let nodes = originalGraph.nodes
+  let nodes = originalGraph.nodes;
+  let times = 0;
   let minWeight = getWeight(mst);
   while(true){
     if(states) addStates(states, [], states[states.length - 1].tree, [], "", 11)
@@ -83,7 +84,8 @@ export function two_opt(mst, originalGraph, states){
                  mst.push(newEdge1)
                  mst.push(newEdge2)
                  minWeight = getWeight(mst)
-                 if(states) addStates(states, [], mst, [], "", 12)
+                 times++;
+                 if(states) addStates(states, [], mst, [], "2-opt * " + times , 12)
               }
             }
           }
@@ -94,7 +96,7 @@ export function two_opt(mst, originalGraph, states){
     }
   }
   
-  return mst;
+  return times;
 }
 
 /**

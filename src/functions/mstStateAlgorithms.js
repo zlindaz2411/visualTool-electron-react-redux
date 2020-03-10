@@ -130,19 +130,20 @@ export function prims(graph) {
       if (!explored.has(v)) {
         explored.add(v);
         MST.push([u, v, currentMinEdge.priority]);
+        t.push({ source: u, target: v });
         if(MST.length == nodes.length-1){
           addStates(
             states,
-            states[states.length - 1].highlighted,
-            states[states.length - 1].tree,
             [],
-            "Total edges dequeued: "+ dequeueTimes +"/"+edges.length,
+            t,
+            [],
+            "Total edges dequeued: "+ dequeueTimes +"/"+ graph.edges.length,
             9
           );
           return states;
         }
-        t.push({ source: u, target: v });
-        addStates(states, arr, t, [], "",6);
+       
+        addStates(states, [], t, [], "",6);
         let temp = arr.slice();
         let adjacents = graph.getAdjacentsOfNode(v)
         for (let i = 0; i < adjacents.length; i++) {
@@ -163,18 +164,18 @@ export function prims(graph) {
             }
           }
         }
-        addStates(states, temp, t, [],"", 7);
+        addStates(states, [], t, [],"", 7);
       } else {
         arr.pop();
-        addStates(states, arr, t, [], "",8);
+        addStates(states, [], t, [], "",8);
       }
     }
     addStates(
       states,
-      states[states.length - 1].highlighted,
+      [],
       states[states.length - 1].tree,
       [],
-      "Total edges dequeued: "+ dequeueTimes +"/"+edges.length,
+      "Total edges dequeued: "+ dequeueTimes +"/"+graph.edges.length,
       9
     );
 
@@ -212,14 +213,17 @@ export function boruvkas(graph) {
     // Initialize graph that'll contain the MST
     let MST = []
     let previous = 0;
-    let current = num;
     let cheapest = [];
+    let times  = 0;
+
+
     while (num > 1) {
+      times++;
       let hedge = []; //a copy of highlighted
       let hnode = []; //a copy of highlighted
 
       addStates(states, hedge, MST, hnode, "Number of components: "+num, 1);
-      previous = current;
+      previous = num;
       for (let v = 0; v < nodes.length; v++) {
         cheapest[nodes[v].id] = -1;
       }
@@ -295,11 +299,11 @@ export function boruvkas(graph) {
       if (num == previous) throw ErrMessage.MST_NOT_FOUND;
     }
 
-    addStates(states, [], states[states.length - 1].tree, [], "",6);
+    addStates(states, [], states[states.length - 1].tree, [], "Total number of iterations: "+times,6);
 
     return states;
   } catch (error) {
-    console.log(error.toString())
+    return error.toString()
   }
 }
 
@@ -323,20 +327,20 @@ export function parallel(graph) {
     let edges = graph.edges;
     let subset = new UnionFind(nodes);
     let num = nodes.length;
-
+    let times = 0;
     // Initialize graph that'll contain the MST
     let MST =[]
     let previous = 0;
-    let current = num;
-    let cheapest = [];
+    let cheapest = []
     while (num > 1) {
+      times++;
       let hedge = []; //a copy of highlighted
       let tedge = states[states.length - 1].tree.slice();
       let hnode = []; //a copy of highlighted
 
-      addStates(states, hedge, tedge, hnode, "",1);
+      addStates(states, hedge, tedge, hnode, "Number of components: "+num, 1);
 
-      previous = current;
+      previous = num;
       for (let v = 0; v < nodes.length; v++) {
         cheapest[nodes[v].id] = -1;
       }
@@ -418,11 +422,9 @@ export function parallel(graph) {
       }
     }
       addStates(states, [], tedge, [], "",6);
-      current = num;
-      if (current == previous) throw ErrMessage.MST_NOT_FOUND;
+      if (num == previous) throw ErrMessage.MST_NOT_FOUND;
     }
-    addStates(states, [], states[states.length - 1].tree, [],"", 7);
-
+    addStates(states, [], states[states.length - 1].tree, [], "Total number of executing in parallel: "+times,7);
     return states;
   } catch (error) {
     return error.toString();

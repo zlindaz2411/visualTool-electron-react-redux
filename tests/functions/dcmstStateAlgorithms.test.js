@@ -243,7 +243,7 @@ describe("computation of the states of visualization of the algorithm", function
         { source: 'D', target: 'R', weight: 10 }
       ],
       highlightedNodes: [],
-      text: '',
+      text: "Performed 0 2-opt optimizations",
       status: 13
     }
 

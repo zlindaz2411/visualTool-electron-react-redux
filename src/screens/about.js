@@ -23,7 +23,7 @@ class AboutPage extends Component {
             <div className ="area">
             <textarea rows="20" disabled>
                 This system is built for educational purpose to teach newcomers
-                with the Minimum Spanning Tree and related NP-hard problems and also to help people already familiar 
+                the Minimum Spanning Tree problem and related NP-hard problems and also to help people already familiar 
                 with the subject to gain a better understanding of the topic.
 
             </textarea>

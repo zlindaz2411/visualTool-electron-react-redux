@@ -160,7 +160,8 @@ export function kruskals(graph) {
                     num--;
                 }
             }
-        }
+
+          }
 
     //If the number of component has not changed
     if(num == previous) throw ErrMessage.MST_NOT_FOUND;
@@ -185,7 +186,6 @@ export function kruskals(graph) {
       let MST =[]
       let cheapest = [];
       let previous = 0;
-      let current = num;
       while(num>1){
           previous = current;
 
@@ -220,9 +220,8 @@ export function kruskals(graph) {
             }
         }
     }
-    current = num;
     //If the number of component has not changed
-    if(current == previous) throw "MST not found";
+    if(num == previous) throw "MST not found";
     }
         return MST  
       };

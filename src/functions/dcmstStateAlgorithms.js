@@ -248,16 +248,16 @@ export function kruskalConstrained(graph, degree) {
         uf.union(u, v);
         addStates(states, [], t, [], "", 10);
         if (DCMST.length == nodes.length - 1) {
-          two_opt(DCMST, graph, states);
-          addStates(states, [], t, [], "", 13);
+          let times = two_opt(DCMST, graph, states);
+          addStates(states, [], t, [], "Performed " +times+" 2-opt optimizations", 13);
           return states;
         }
       }
     }
 
-    two_opt(DCMST, graph, states);
+    let times = two_opt(DCMST, graph, states);
     if (DCMST.length != nodes.length - 1) throw ErrMessage.DCMST_NOT_FOUND;
-    addStates(states, [], t, [], "", 13);
+    addStates(states, [], t, [], "Performed " +times+" 2-opt optimizations", 13);
     return states;
   } catch (e) {
     return e.toString();
@@ -282,7 +282,6 @@ export function simulatedAnnealing(graph, degree) {
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
       addStates(states, MST, [], [], "", 1);
-      TEMP_RANGE *= alpha;
       let edgeIndex = Math.floor(Math.random() * MST.length);
       let edge = MST[edgeIndex];
       MST.splice(edgeIndex, 1);
@@ -319,9 +318,11 @@ export function simulatedAnnealing(graph, degree) {
         }
       }
       addStates(states, MST, [], [], "", 9);
+      addStates(states, MST, [], [], "Temperature_k = " + TEMP_RANGE + " *= 0.9 = " + TEMP_RANGE*0.9, 10);
       K_LEVEL++;
+      TEMP_RANGE *= alpha;
     }
-    addStates(states, [], DCMST, [], "", 10);
+    addStates(states, [], DCMST, [], "", 11);
     return states;
   } catch (e) {
     return e.toString();
