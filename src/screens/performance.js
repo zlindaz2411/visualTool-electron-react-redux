@@ -89,8 +89,6 @@ class PerformancePage extends Component {
     else this.setState({ textDegree: event.target.value });
   }
 
-
-
   componentDidMount() {
     if(this.state.graph == null){
       emptyGraphMessage();

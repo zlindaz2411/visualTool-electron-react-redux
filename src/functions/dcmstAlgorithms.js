@@ -214,9 +214,12 @@ export function simulatedAnnealing(graph, degree) {
     let DCMST = [];
     let alpha = 0.9;
     let TEMP_RANGE = 5000;
-    let MAX_TEMP_LEVEL = 100 * graph.edges.length;
+    let MAX_TEMP_LEVEL = 1000;
     let weight = Number.MAX_SAFE_INTEGER;
+    let time =0 ;
+    let prev = 0;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
+      prev = weight;
       TEMP_RANGE *= alpha;
       let edgeIndex = Math.floor(Math.random() * MST.length);
       let edge = MST[edgeIndex];
@@ -242,13 +245,18 @@ export function simulatedAnnealing(graph, degree) {
           if (prob > realNum) {
             weight = getWeight(MST);
             DCMST = MST.slice();
-          } else {
-            MST.pop();
-            MST.push(edge);
           }
         }
       }
-      K_LEVEL++;
+    
+      if(prev != weight && time <300){
+        time = 0;
+    }
+    if(time>=300){
+      return DCMST
+    }
+    K_LEVEL++;
+    time++;
     }
 
     return DCMST;

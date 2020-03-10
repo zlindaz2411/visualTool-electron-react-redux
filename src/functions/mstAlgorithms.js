@@ -78,6 +78,9 @@ export function kruskals(graph) {
         if (!explored.has(v)) {
           explored.add(v);
           MST.push({source: u, target: v, weight:currentMinEdge.priority});
+          if(MST.length == nodes.length-1){
+            return MST;
+         }
           let adjacents = graph.getAdjacentsOfNode(v)
           for (let i = 0; i < adjacents.length; i++) {
             if (adjacents[i].source != v) {
@@ -125,9 +128,8 @@ export function kruskals(graph) {
     let MST = []
     let cheapest = [];
     let previous = 0;
-    let current = num;
     while(num>1){
-        previous = current;
+        previous = num;
 
         //Initialize the cheapest list to be -1
         for(let v=0;v<nodes.length;v++){
@@ -144,6 +146,7 @@ export function kruskals(graph) {
                 if(cheapest[v] == -1 || edges[i].weight < cheapest[v].weight) cheapest[v]=edges[i]
             }
         }
+        
         //For each cheapest edge, check if they belong to the same component, if yes add to the MST
         for(let i =0;i<nodes.length;i++){
             let e = cheapest[nodes[i].id];
@@ -157,10 +160,10 @@ export function kruskals(graph) {
                     num--;
                 }
             }
-    }
-    current = num;
+        }
+
     //If the number of component has not changed
-    if(current == previous) throw ErrMessage.MST_NOT_FOUND;
+    if(num == previous) throw ErrMessage.MST_NOT_FOUND;
     }
     return MST  
 }catch(error){
@@ -200,6 +203,7 @@ export function kruskals(graph) {
         worker.postMessage({cheapest: cheapest, edge:edge, u: u, v:v})
         }
      
+      //Receives the message
       worker.onmessage = function(event) {
         cheapest = event.data;
       //For each cheapest edge, check if they belong to the same component, if yes add to the MST

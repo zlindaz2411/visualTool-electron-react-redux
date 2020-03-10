@@ -18,22 +18,6 @@ export function getPseudocode(name) {
         kruskal.push("return T");
         return kruskal;
       case Algorithm.CONSTRAINED: //Kruskal for DCMST
-        //let kruskalConstrained = [];
-        // kruskalConstrained.push("Initialize the tree T to be empty");
-        // kruskalConstrained.push("Initialize the list U = nodes with degree -1 > constraint");
-        // kruskalConstrained.push("Sort the edge list E by weight (smallest first) and remove edges adjacents to unsafe nodes");
-        // kruskalConstrained.push("for (i=0; i<edgeList.length; i++)");
-        // kruskalConstrained.push("\xa0 \xa0 e = edgelist[i]");
-        // kruskalConstrained.push("\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint");
-        // kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0add e to T");
-        // kruskalConstrained.push("for (i=0; i<U.length; i++)");
-        // kruskalConstrained.push("\xa0 \xa0 adjacents = sorted adjacents edges of U[i]");
-        // kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0for each adjacent in adjacents");
-        // kruskalConstrained.push("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0if adding adjacent to T is acyclic and does not violate degree constraint");
-        // kruskalConstrained.push("\xa0 \xa0 \xa0\xa0 \xa0\xa0 \xa0 \xa0\xa0 \xa0add adjacent to T");
-        // kruskalConstrained.push("While there is still optimization");
-        // kruskalConstrained.push("\xa0 \xa02-opt");
-        // kruskalConstrained.push("return T");
         let kruskalConstrained = [];
         kruskalConstrained.push("Initialize the tree T to be empty");
         kruskalConstrained.push("Add to the tree edges adjacent to nodes with degree 1");
@@ -67,34 +51,27 @@ export function getPseudocode(name) {
         return prim;
       case Algorithm.BORUVKA: //Borvska's
         let boruvka = [];
-        boruvka.push("Initialize the tree T to be empty");
         boruvka.push("Initialize the F = map of one-vertex trees to its component");
-        boruvka.push("while(T is not MST)");
+        boruvka.push("while(Number of components > 1)");
         boruvka.push(
           "\xa0 \xa0foreach (component in F)"
         );
         boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0c = component");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0e = smallest edge for c");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0if(e not in T)");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0Add e to T");
-        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
+        boruvka.push("\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find smallest edge for c");
+        boruvka.push("Contract edges");
         boruvka.push("return T");
         return boruvka;
       case Algorithm.PARALLEL: // Parallel Boruvska
         let boruvkaParallel = [];
-        boruvkaParallel.push("Initialize the tree T to be empty");
         boruvkaParallel.push("Initialize the F = map of one-vertex trees to its component");
-        boruvkaParallel.push("while(T is not MST)");
+        boruvkaParallel.push("while(Number of components > 1)");
         boruvkaParallel.push(
           "\xa0 \xa0foreach (component in F)"
         );
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component");
         boruvkaParallel.push("\xa0 \xa0(Concurrent Thread Execution");
         boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)");
-        boruvkaParallel.push("\xa0 \xa0foreach (smallest edge of each component)");
-        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0if(smallest edge not in T)");
-        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0\xa0 \xa0 \xa0 \xa0Add smallest edge to T");
-        boruvkaParallel.push("\xa0 \xa0 \xa0 \xa0 \xa0else do nothing");
+        boruvkaParallel.push("Contract edges");
         boruvkaParallel.push("return T");
 
         return boruvkaParallel;
