@@ -75,6 +75,7 @@ Please note that you must have installed project dependencies and run a build be
 
 ### Folder Structure
 
+```bash
 ├── build
 │   ├── assets
 │   │   ├── css
@@ -207,6 +208,7 @@ Please note that you must have installed project dependencies and run a build be
 ├── main.js
 ├── package.json
 └── README.md
+```
 
 
 
