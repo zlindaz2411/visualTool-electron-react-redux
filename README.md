@@ -16,6 +16,7 @@ The application is an educational tool which allows user: to draw a graph (udire
 * Webpack
 * SASS
 
+
 ## Prerequisite
 You must have the following software installed on your computer.
 
@@ -71,5 +72,141 @@ yarn run dist
 Once complete the system will output a 'dist' folder with your packaged app.
 
 Please note that you must have installed project dependencies and run a build before attempting to package your app.
+
+### Folder Structure
+
+├── build
+│   ├── assets
+│   │   ├── css
+│   │   │   └── styles.min.css
+│   │   ├── graphics
+│   │   │   ├── graph.png
+│   │   │   └── logo.png
+│   │   ├── images
+│   │   │   └── graph.png
+│   │   └── instruction.pdf
+│   ├── bundle.js
+│   ├── index.html
+│   └── static_assets
+│       ├── instruction.pdf
+│       ├── linux
+│       │   └── icon.png
+│       ├── mac
+│       │   └── icon.png
+│       └── win
+│           └── icon.png
+├── data
+│   └── graphs.db
+├── src
+│   ├── actions
+│   │   ├── draw.js
+│   │   └── types.js
+│   ├── app.js
+│   ├── assets
+│   │   ├── images
+│   │   │   ├── graph.png
+│   │   │   └── logo.png
+│   │   ├── scss
+│   │   │   ├── _config.scss
+│   │   │   ├── base
+│   │   │   │   ├── _css_grid.scss
+│   │   │   │   ├── _default.scss
+│   │   │   │   ├── _forms.scss
+│   │   │   │   └── _normalize.scss
+│   │   │   ├── component
+│   │   │   │   ├── _dialog.scss
+│   │   │   │   ├── _inputDialog.scss
+│   │   │   │   └── _sidebar.scss
+│   │   │   ├── lib
+│   │   │   │   ├── _react-confirm-alert.scss
+│   │   │   │   └── _toastr.scss
+│   │   │   ├── screens
+│   │   │   │   ├── _about.scss
+│   │   │   │   ├── _algorithm.scss
+│   │   │   │   ├── _draw.scss
+│   │   │   │   ├── _esau.scss
+│   │   │   │   ├── _home.scss
+│   │   │   │   ├── _performance.scss
+│   │   │   │   └── _prim.scss
+│   │   │   └── styles.scss
+│   │   └── static_assets
+│   │       ├── instruction.pdf
+│   │       ├── linux
+│   │       │   └── icon.png
+│   │       ├── mac
+│   │       │   └── icon.png
+│   │       └── win
+│   │           └── icon.png
+│   ├── client.js
+│   ├── components
+│   │   ├── dialog.js
+│   │   ├── inputDialog.js
+│   │   └── sidebar.js
+│   ├── constants
+│   │   ├── algorithms.js
+│   │   ├── defaultGraph.js
+│   │   ├── errorMessage.js
+│   │   └── visualizationConstants.js
+│   ├── functions
+│   │   ├── cmstAlgorithms.js
+│   │   ├── cmstStateAlgorithm.js
+│   │   ├── d3Functions.js
+│   │   ├── dcmstAlgorithms.js
+│   │   ├── dcmstStateAlgorithms.js
+│   │   ├── lib
+│   │   │   ├── graph.js
+│   │   │   ├── priorityQueue.js
+│   │   │   └── unionFind.js
+│   │   ├── mstAlgorithms.js
+│   │   ├── mstStateAlgorithms.js
+│   │   ├── performance.js
+│   │   ├── pseudocode.js
+│   │   ├── stateFunctions.js
+│   │   ├── util.js
+│   │   ├── validator.js
+│   │   └── worker.js
+│   ├── layouts
+│   │   └── mainLayout.js
+│   ├── reducers
+│   │   ├── drawReducer
+│   │   │   └── index.js
+│   │   └── index.js
+│   ├── renderer
+│   │   └── index.html
+│   └── screens
+│       ├── about.js
+│       ├── algorithm.js
+│       ├── boruvka.js
+│       ├── draw.js
+│       ├── esau.js
+│       ├── home.js
+│       ├── kruskal.js
+│       ├── kruskalConstrained.js
+│       ├── parallel.js
+│       ├── performance.js
+│       ├── prim.js
+│       └── simulated.js
+├── tests
+│   ├── functions
+│   │   ├── cmstAlgorithms.test.js
+│   │   ├── cmstStateAlgorithms.test.js
+│   │   ├── dcmstAlgorithms.test.js
+│   │   ├── dcmstStateAlgorithms.test.js
+│   │   ├── graph.test.js
+│   │   ├── mstAlgorithms.test.js
+│   │   ├── mstStateAlgorithms.test.js
+│   │   ├── performance.test.js
+│   │   ├── priorityQueue.test.js
+│   │   ├── pseudocode.test.js
+│   │   ├── stateFunctions.test.js
+│   │   ├── unionFind.test.js
+│   │   └── util.test.js
+│   └── redux
+│       └── drawReducer.test.js
+├── webpack.js
+├── main.js
+├── package.json
+└── README.md
+
 
 
