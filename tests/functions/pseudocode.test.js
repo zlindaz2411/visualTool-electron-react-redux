@@ -115,8 +115,8 @@ describe("Get pseudocode based on different input", function() {
     "while(CMST edge list size < node list -1)",
     "\xa0 \xa0foreach (node i in nodeList)",
     "\xa0 \xa0 \xa0 \xa0 \xa0j = closest node to i",
-    "\xa0 \xa0 \xa0 \xa0 \xa0tradeoff = cost(i,j) - gate(i,r)",
-    "\xa0 \xa0cheapestNode = find node with the lowest tradeoff",
+    "\xa0 \xa0 \xa0 \xa0 \xa0savings(i) = cost(i,j) - gate(i,r)",
+    "\xa0 \xa0cheapestNode = find node with the lowest savings",
     "\xa0 \xa0cheapestEdge = find cheapest edge adjacent to cheapestNode",
     "\xa0 \xa0if(adding cheapest edge to CMST is acyclic and the subtree to which the endpoints of cheapest belongs to is at most given capacity)",
     "\xa0 \xa0 \xa0 \xa0 \xa0Add cheapestEdge to CMST",
@@ -271,11 +271,11 @@ describe("Set up pseucodoe map based on different input", function() {
   esauMap.set( "\xa0 \xa0foreach (node i in nodeList)", false);
   esauMap.set("\xa0 \xa0 \xa0 \xa0 \xa0j = closest node to i", false);
   esauMap.set(
-    "\xa0 \xa0 \xa0 \xa0 \xa0tradeoff = cost(i,j) - gate(i,r)",
+    "\xa0 \xa0 \xa0 \xa0 \xa0savings(i) = cost(i,j) - gate(i,r)",
     false
   );
   esauMap.set(
-    "\xa0 \xa0cheapestNode = find node with the lowest tradeoff",
+    "\xa0 \xa0cheapestNode = find node with the lowest savings",
     false
   );
   esauMap.set(

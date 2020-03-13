@@ -84,7 +84,7 @@ export function getPseudocode(name) {
           "\xa0 \xa0foreach (node i in nodeList)"
         );
         esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0j = closest node to i");
-        esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0tradeoff = cost(i,j) - gate(i,r)");
+        esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0savings(i) = cost(i,j) - gate(i,r)");
         esauWilliams.push("\xa0 \xa0cheapestNode = find node with the lowest tradeoff");
         esauWilliams.push("\xa0 \xa0cheapestEdge = find cheapest edge adjacent to cheapestNode");
         esauWilliams.push("\xa0 \xa0if(adding cheapest edge to CMST is acyclic and the subtree to which the endpoints of cheapest belongs to is at most given capacity)");

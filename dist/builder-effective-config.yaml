@@ -1,0 +1,24 @@
+directories:
+  output: dist
+  buildResources: build
+mac:
+  category: public.app-category.utilities
+  icon: build/static_assets/mac/icon.png
+win:
+  target: nsis
+  icon: build/static_assets/win/icon.png
+linux:
+  target:
+    - deb
+    - AppImage
+  icon: build/static_assets/linux/icon.png
+extraResources:
+  - filter:
+      - data/**
+files:
+  - filter:
+      - node_modules/
+      - build/
+      - static_assets/
+      - '*'
+electronVersion: 2.0.18
