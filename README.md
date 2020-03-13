@@ -20,29 +20,23 @@ The application is an educational tool which allows user: to draw a graph (udire
 ## Prerequisite
 You must have the following software installed on your computer.
 
-* Node or Yarn 
+* Node or Yarn (Preferably)
 * Git command line tools
+
+## Note
+If running the following commands doesn't work, try adding "sudo". For example: 
+```
+sudo yarn install.
+```
 
 ## How to run the app
 ### Download & Install Dependencies on your machine 
-1) Clone the repo
-```
-git clone <CloneURL>
-```
 
-2)	Cd to the cloned repo
+1)	Install the dependencies of the application
 
 ```
 yarn install OR npm install
 ```
-
-
-2)	Install the dependencies of the applicaiton
-
-```
-yarn install OR npm install
-```
-
 
 ### Run a Build
 
@@ -60,7 +54,19 @@ Run the project
 yarn run electron:dev OR npm run electron:dev 
 ```
 
+### Run the tests & code coverage
 
+Run the test 
+```
+yarn run test or npm run test
+
+```
+
+Run the code coverage
+```
+yarn run coverage or npm run coverage
+
+```
 
 ### Package Application
 Run the following command to package the application.
@@ -75,6 +81,7 @@ Please note that you must have installed project dependencies and run a build be
 
 ### Folder Structure
 
+```bash
 ├── build
 │   ├── assets
 │   │   ├── css
@@ -207,6 +214,7 @@ Please note that you must have installed project dependencies and run a build be
 ├── main.js
 ├── package.json
 └── README.md
+```
 
 
 
