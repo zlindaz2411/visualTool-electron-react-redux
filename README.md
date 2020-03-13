@@ -20,29 +20,23 @@ The application is an educational tool which allows user: to draw a graph (udire
 ## Prerequisite
 You must have the following software installed on your computer.
 
-* Node or Yarn 
+* Node or Yarn (Preferrably)
 * Git command line tools
 
 ## How to run the app
 ### Download & Install Dependencies on your machine 
-1) Clone the repo
-```
-git clone <CloneURL>
-```
 
-2)	Cd to the cloned repo
+1)	Install the dependencies of the application
 
 ```
 yarn install OR npm install
 ```
 
-
-2)	Install the dependencies of the applicaiton
+If it doesn't work, tru:
 
 ```
-yarn install OR npm install
+sudo yarn install OR sudo npm install
 ```
-
 
 ### Run a Build
 
