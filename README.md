@@ -23,6 +23,12 @@ You must have the following software installed on your computer.
 * Node or Yarn (Preferrably)
 * Git command line tools
 
+## Note
+If running the following commands doesn't work, try adding "sudo". For example: 
+```
+sudo yarn install.
+```
+
 ## How to run the app
 ### Download & Install Dependencies on your machine 
 
@@ -30,12 +36,6 @@ You must have the following software installed on your computer.
 
 ```
 yarn install OR npm install
-```
-
-If it doesn't work, tru:
-
-```
-sudo yarn install OR sudo npm install
 ```
 
 ### Run a Build
@@ -54,7 +54,19 @@ Run the project
 yarn run electron:dev OR npm run electron:dev 
 ```
 
+### Run the tests & code coverage
 
+Run the test 
+```
+yarn run test or npm run test
+
+```
+
+Run the code coverage
+```
+yarn run coverage or npm run coverage
+
+```
 
 ### Package Application
 Run the following command to package the application.
