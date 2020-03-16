@@ -2,108 +2,6 @@ import { UnionFind } from "./lib/unionFind";
 import { ErrMessage } from "../constants/errorMessage";
 import { getWeight, isConnected, two_opt } from "../functions/util";
 import { kruskals } from "./mstAlgorithms";
-import { addStates } from "./stateFunctions";
-
-// /**
-//  * Kruskals algorithm + 2 opt algorithm for computing DCMST
-//  * @param {*} edges
-//  * @param {*} nodes
-//  */
-// export function kruskalConstrained(graph, degree) {
-//   try {
-//     //Sort the edges
-//     let nodes = graph.nodes;
-//     let edges = graph.edges.sort((a, b) => {
-//       return a.weight - b.weight;
-//     });
-
-//     // Initialize graph that'll contain the DCMST
-//     let DCMST = new Set();
-
-//     let degrees = {}
-
-//     for(let i= 0;i<nodes.length;i++){
-//         degrees[nodes[i].id] = 0;
-//     }
-//     let uf = new UnionFind(nodes);
-//     // Add all edges to the Queue:
-//     for (let i = 0; i < edges.length; i++) {
-//       let u = edges[i].source;
-//       let v = edges[i].target;
-
-//       //if edges[i] in MST is not acyclic
-//       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-//         DCMST.add(edges[i])
-//         degrees[u] +=1;
-//         degrees[v] +=1;
-//         uf.union(u,v)
-//      }
-//     }
-
-//     if (DCMST.size != nodes.length-1) {
-//       throw ErrMessage.DCMST_NOT_FOUND;
-//     }
-//     return states;
-//   } catch (error) {
-//     return error.toString();
-//   }
-// }
-
-// export function kruskalConstrained(graph, degree) {
-//   try{
-//   //Sort the edges
-//   let nodes = graph.nodes
-//   let degrees = {}
-//   let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
-
-//   for(let i= 0;i<nodes.length;i++){
-//       degrees[nodes[i].id] = 0;
-//   }
-
-//   let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
-//   // Initialize graph that'll contain the MST
-//   let MST = []
-//   let uf = new UnionFind(nodes);
-//   // Add all edges to the Queue:
-//   for(let i =0;i<edges.length;i++){
-//       let u = edges[i].source;
-//       let v = edges[i].target;
-//       if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
-//       //if edges[i] in MST is not acyclic
-//       if(!uf.connected(u,v) && degrees[u] +1 <= degree && degrees[v]+1 <= degree){
-//          MST.push(edges[i])
-//          degrees[u] +=1;
-//          degrees[v] +=1;
-//          uf.union(u,v)
-//       }
-//     }
-//   }
-
-//   for(let i=0;i<unsafeNodes.length; i++){
-//     let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
-
-//     for(let j =0;j<adjacents.length;j++){
-//         let u = adjacents[j].source;
-//         let v = adjacents[j].target;
-//         if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-//           MST.push(adjacents[j])
-//           degrees[u] +=1;
-//           degrees[v] +=1;
-//           uf.union(u,v)
-//        }
-//     }
-//   }
-//   two_opt(MST,graph)
-//   //check if is a minimum spanning tree
-//   if(MST.length != nodes.length-1){
-//       throw ErrMessage.DCMST_NOT_FOUND
-//   }
-//   return MST;
-//   }
-//   catch(error){
-//       return error.toString();
-//   }
-// }
 
 /**
  * Modified version of kruskal algorithm to find approximate solution for DCMSTP
@@ -169,7 +67,7 @@ export function kruskalConstrained(graph, degree) {
       }
     }
 
-    //Classic Kruskal method
+    //Classic Kruskal method with degree constrained
     edges = edges.sort((a, b) => a.weight - b.weight);
     for (let i = 0; i < edges.length; i++) {
       let u = edges[i].source;
@@ -230,8 +128,7 @@ export function simulatedAnnealing(graph, degree) {
       MST.push(newEdge);
 
       if (
-        !isDegreeViolated(getDegree(MST), degree) &&
-        isConnected(graph.nodes, MST)
+        !isDegreeViolated(getDegree(MST), degree)
       ) {
         let newWeight = getWeight(MST);
         let acceptanceProb = newWeight - weight;

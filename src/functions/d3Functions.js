@@ -92,11 +92,12 @@ export function createSVG(data, draw) {
       if (draw == "draw") {
         let x = document.querySelector(canvas).getBoundingClientRect().left;
         let y = document.querySelector(canvas).getBoundingClientRect().top;
-        data.addNode({
+        let node = {
           id: id,
           x: Math.round(xScale(d3.event.x - x)),
           y: Math.round(yScale(d3.event.y - y))
-        })
+        }
+        if(node) data.addNode(node)
         removeAll();
         drawGraph(data, draw);
       }
@@ -391,34 +392,40 @@ function dragged(d, nodes) {
  * @param {*} edges
  */
 function dragEnded(d, data, draw) {
-  if (destination == null || destination.id == selectedNode.id)
-    d3.select("#toDrag").remove();
-  else {
-    const weight = calculateWeight(selectedNode, destination);
-    const newEdge = {
-      source: selectedNode.id,
-      target: destination.id,
-      weight: weight,
-      highlight: false,
-      tree: false
-    };
-    let exists = false;
-    for (let i = 0; i < data.edges.length; i++) {
-      if (
-        (data.edges[i].source == newEdge.source &&
-          data.edges[i].target == newEdge.target) ||
-        (data.edges[i].source == newEdge.target &&
-          data.edges[i].target == newEdge.source)
-      ) {
-        exists = true;
+  if(selectedNode){
+    if (!destination || destination.id == selectedNode.id || data.nodes.indexOf(selectedNode)==-1){
+      d3.select("#toDrag").remove();
+    }
+    else {
+      const weight = calculateWeight(selectedNode, destination);
+      const newEdge = {
+        source: selectedNode.id,
+        target: destination.id,
+        weight: weight,
+        highlight: false,
+        tree: false
+      };
+      let exists = false;
+      for (let i = 0; i < data.edges.length; i++) {
+        if (
+          (data.edges[i].source == newEdge.source &&
+            data.edges[i].target == newEdge.target) ||
+          (data.edges[i].source == newEdge.target &&
+            data.edges[i].target == newEdge.source)
+        ) {
+          exists = true;
+        }
+      }
+      if (!exists && newEdge) {
+        data.addEdge(newEdge);
       }
     }
-    if (!exists) data.addEdge(newEdge);
+    selectedNode = null;
+    selectedCircle = null;
+    
+    removeAll();
+    drawGraph(data, draw);
   }
-  selectedNode = null;
-  selectedCircle = null;
-  removeAll();
-  drawGraph(data, draw);
 }
 
 /**
