@@ -9,8 +9,8 @@ let mainWindow;
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
         minHeight:800,
-        minWidth: 1100,
-        width: 1100, 
+        minWidth: 1130,
+        width: 1130, 
         height: 800,
         backgroundColor: '#FCFCFF',
         fullscreen:false,

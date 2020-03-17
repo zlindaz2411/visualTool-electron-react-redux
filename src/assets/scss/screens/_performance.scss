@@ -77,8 +77,28 @@
         padding-left: 1rem;
         padding-right: 1rem;
         float: left;
+       // display: inline-block;
+       // position: relative;
         clear: left;
+        text-justify: inter-word;
+        text-align-last: left;
+       // display: table;
+     
+
+       input {
+        float:left
+      }
+            label{
+                float:left;
+                word-break: break-all;
+            }
+        
         }
+        // label.checkbox-label input[type=checkbox]{
+        //     position: relative;
+        //     vertical-align: middle;
+        //     bottom: 1px;
+        // }
     }
 
     .action_buttons button{

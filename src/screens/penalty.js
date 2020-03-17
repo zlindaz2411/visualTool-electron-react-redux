@@ -11,9 +11,9 @@ import {validateNumber, validateEmpty} from "../functions/validator";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
 
 /**
- * SimulatedAnnealing page which uses AlgorithmPage and pass the states produced by the Simulated Annealing function
+ * SimulatedAnnealingPenalty page which uses AlgorithmPage and pass the states produced by the Simulated Annealing with penalty function
  */
-class SimulatedAnnealingPage extends Component {
+class SimulatedAnnealingPenaltyPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +76,7 @@ class SimulatedAnnealingPage extends Component {
         buttonName="Submit">
         </InputDialog>
       
-      <AlgorithmPage pageName={Algorithm.SIMULATED} data={this.state.data} subText={ProblemDescription.DCMSTP + " This version of Simulated Annealing only operates in a feasible search space."} states={this.state.states}></AlgorithmPage>
+      <AlgorithmPage pageName={Algorithm.PENALTY} data={this.state.data} subText={ProblemDescription.DCMSTP + " This version of Simulated Annealing operates in a search space that allows infeasible intermediate solutions by adding a penalty."} states={this.state.states}></AlgorithmPage>
       </div>
     );
   }
@@ -88,5 +88,5 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, {})(SimulatedAnnealingPage));
+export default withRouter(connect(mapStateToProps, {})(SimulatedAnnealingPenaltyPage));
 

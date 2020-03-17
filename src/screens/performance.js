@@ -33,6 +33,7 @@ class PerformancePage extends Component {
         Algorithm.PARALLEL,
         Algorithm.CONSTRAINED,
         Algorithm.SIMULATED,
+        Algorithm.PENALTY,
         Algorithm.ESAU
       ],
       graph: this.props.latestGraph == null ? data :  this.props.latestGraph,
@@ -218,10 +219,11 @@ class PerformancePage extends Component {
             <div className="column column_4_12">
               <div className="second_column">
                 <form >
+                  {/* <div className = "checkbox"> */}
                   {this.state.algos.map((algo, i) => (
                     <div className="checkbox">
-                    
-                      <label key={i}>
+                      <label  key={i}>
+      
                         <input
                           type="checkbox"
                           name={algo}
@@ -230,7 +232,9 @@ class PerformancePage extends Component {
                         {algo}
                       </label> 
                     </div>
+                    
                   ))}
+                  {/* </div> */}
                 </form>
               </div>
             </div>

@@ -8,6 +8,7 @@ import MainLayout from './layouts/mainLayout';
 import KruskalPage from './screens/kruskal';
 import KruskalConstrainedPage from './screens/kruskalConstrained';
 import SimulatedAnnealingPage from './screens/simulated';
+import SimulatedAnnealingPenaltyPage from './screens/penalty';
 import EsauPage from './screens/esau';
 import PrimPage from './screens/prim';
 import BoruvkaPage from './screens/boruvka';
@@ -47,6 +48,11 @@ class App extends Component {
                     <Route path="/simulated" render={props => (
                         <MainLayout>
                              <SimulatedAnnealingPage {...props} />
+                        </MainLayout>
+                    )}/>
+                     <Route path="/penalty" render={props => (
+                        <MainLayout>
+                             <SimulatedAnnealingPenaltyPage {...props} />
                         </MainLayout>
                     )}/>
                       <Route path="/prim" render={props => (

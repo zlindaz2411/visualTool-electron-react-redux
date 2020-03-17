@@ -5,10 +5,11 @@ export const Algorithm = {
     KRUSKAL: "Kruskal",
     PRIM: "Prim",
     BORUVKA: "Boruvka",
-    PARALLEL: "Boruvka Parallel",
-    CONSTRAINED: "Kruskal with Constraint",
-    SIMULATED: "Simulated Annealing",
-    ESAU : "Esau Williams"
+    PARALLEL: "Boruvka parallel",
+    CONSTRAINED: "Kruskal with constraint",
+    SIMULATED: "Simulated annealing",
+    PENALTY: "Simulated annealing with penalty",
+    ESAU : "Esau-Williams"
 };
 
 /**

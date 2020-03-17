@@ -5,155 +5,6 @@ import {getWeight, isConnected,two_opt} from '../functions/util';
 import {kruskals} from './mstAlgorithms';
 import { checkNoPath, getOtherEndPoint, getComponentsEdge, getDegree,isDegreeViolated } from "./dcmstAlgorithms";
 
-/**
- * Kruskals Constrained degree algorithm
- * Get all the states that are each step of the algorithm
- * @param {*} edges
- * @param {*} nodes
- */
-// export function kruskalConstrained(graph, degree) {
-//   try {
-//     let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
-//     //Sort the edges
-//     let nodes = graph.nodes;
-//     let edges = graph.edges.sort((a, b) => {
-//       return a.weight - b.weight;
-//     });
-
-//     // Initialize graph that'll contain the MST
-//     let MST = new Set();
-
-//     let degrees = {}
-
-//     for(let i= 0;i<nodes.length;i++){
-//         degrees[nodes[i].id] = 0;
-//     }
-//     addStates(states, [], [], [],"", 1);
-
-//     let uf = new UnionFind(nodes);
-//     // Add all edges to the Queue:
-//     for (let i = 0; i < edges.length; i++) {
-//       let arr = []; //a copy of highlighted
-//       let t = states[states.length - 1].tree.slice();
-
-//       addStates(states, arr, t, [],"", 2);
-//       let u = edges[i].source;
-//       let v = edges[i].target;
-
-//       arr.push(edges[i]);
-//       addStates(states, arr, t, [],"", 3);
-//       //if edges[i] in MST is not acyclic
-//       addStates(states, arr, t, [],"", 4);
-//       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-//         MST.add(edges[i])
-//         degrees[u] +=1;
-//         degrees[v] +=1;
-//         t.push(edges[i]);
-//         addStates(states, arr, t, [], "",5);
-//         uf.union(u,v)
-//      } else {
-//         arr.pop();
-//         addStates(states, arr, t, [], "",6);
-//       }
-//     }
-
-//     two_opt(MST,graph, states)
-//     if (MST.size != nodes.length-1) {
-//       throw ErrMessage.MST_NOT_FOUND;
-//     }
-//     return states;
-//   } catch (error) {
-//     return error.toString();
-//   }
-// }
-
-// export function kruskalConstrained(graph, degree) {
-//   try{
-//   //Sort the edges
-//   let nodes = graph.nodes
-//   let states = [{ highlighted: [], tree: [], text:"",status: 0 }];
-//   let degrees = {}
-//   let arr = []; //a copy of highlighted
-//   let t = []
-//   let unsafeNodes = populateUnsafeNodes(graph.edges, degree)
-
-//   for(let i= 0;i<nodes.length;i++){
-//       degrees[nodes[i].id] = 0;
-//   }
-
-//   addStates(states, [], [], [],"", 1);
-//   addStates(states, [], [], [],"", 2);
-
-//   let edges = graph.edges.sort((a,b) => {return a.weight - b.weight;});
-//   // Initialize graph that'll contain the MST
-//   let MST = []
-//   let uf = new UnionFind(nodes);
-//   // Add all edges to the Queue:
-//   for(let i =0;i<edges.length;i++){
-//       arr = []
-//       let u = edges[i].source;
-//       let v = edges[i].target;
-
-//       //if edges[i] in MST is not acyclic
-//       if(unsafeNodes.indexOf(u) == -1 && unsafeNodes.indexOf(v) == -1){
-//       //if edges[i] in MST is not acyclic
-//       addStates(states, [], t, [],"", 3);
-//       arr.push(edges[i]);
-//       addStates(states, arr, t, [],"", 4);
-//       addStates(states, arr, t, [],"", 5);
-//       if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-//          MST.push(edges[i])
-//          degrees[u] +=1;
-//          degrees[v] +=1;
-//          uf.union(u,v)
-//          t.push(edges[i]);
-//          addStates(states, [], t, [],"", 6);
-//       }
-//     }
-//   }
-//   arr = []
-//   for(let i=0;i<unsafeNodes.length; i++){
-//     addStates(states, [], t, [],"", 7);
-//     let adjacents = graph.getAdjacentsOfNode(unsafeNodes[i]).sort((a,b) => {return a.weight - b.weight;});
-//     addStates(states, [], t, [],"", 8);
-//     for(let j =0;j<adjacents.length;j++){
-//         arr = [];
-//         addStates(states, [], t, [],"", 9);
-//         let u = adjacents[j].source;
-//         let v = adjacents[j].target;
-//         arr.push(adjacents[j])
-//         addStates(states, arr, t, [],"", 10);
-//         if(!uf.connected(u,v) && degrees[u]+1 <= degree && degrees[v]+1 <= degree){
-//           MST.push(adjacents[j])
-//           degrees[u] +=1;
-//           degrees[v] +=1;
-//           uf.union(u,v)
-//           t.push(adjacents[j]);
-//           addStates(states, [], t, [],"", 11);
-//        }
-//     }
-//   }
-//   one_opt(MST, graph, degrees,degree,states)
-//   //check if is a minimum spanning tree
-//   if(MST.length != nodes.length-1){
-//       throw ErrMessage.DCMST_NOT_FOUND
-//   }
-//   addStates(
-//     states,
-//     [],
-//     states[states.length - 1].tree,
-//     [],
-//     "",
-//     14
-//   );
-
-//   return states;
-//   }
-//   catch(error){
-//     console.log(error.toString())
-//       return error.toString();
-//   }
-// }
 
 /**
  * Modified version of kruskal algorithm to find approximate solution for DCMSTP
@@ -285,44 +136,45 @@ export function simulatedAnnealing(graph, degree) {
       let edgeIndex = Math.floor(Math.random() * MST.length);
       let edge = MST[edgeIndex];
       MST.splice(edgeIndex, 1);
-      addStates(states, MST, [], [], "", 2);
       let connectingEdges = getComponentsEdge(graph, MST);
       let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
       let newEdge = connectingEdges[newEdgeIndex];
       MST.push(newEdge);
-      addStates(states, MST, [], [], "", 3);
-      addStates(states, MST, [], [], "", 4);
+      addStates(states, MST, [], [], "Neighbourhood is generated by randomly deleting an edge from the current configuration and randomly adding an edge connecting the two components.", 2);
+    
+      let notViolated = !isDegreeViolated(getDegree(MST), degree)
+      addStates(states, MST, [], [], notViolated + "", 3);
       if (
-        !isDegreeViolated(getDegree(MST), degree) &&
-        isConnected(graph.nodes, MST)
+        notViolated
       ) {
         let newWeight = getWeight(MST);
         let acceptanceProb = newWeight - weight;
-        addStates(states, MST, [], [], "", 5);
+        addStates(states, MST, [], [], newWeight + " < " + weight, 4);
         if (acceptanceProb < 0) {
           weight = getWeight(MST);
           DCMST = MST.slice();
-          addStates(states, [], DCMST, [], "", 6);
+          addStates(states, [], DCMST, [], "", 5);
         } else {
           let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
           let realNum = [0, 1][Math.floor(Math.random() * 2)];
-          addStates(states, MST, [], [], "exp(newWeight- weight)/Temperature_k = " + prob + " > " + realNum, 7);
+          addStates(states, MST, [], [], "exp(newWeight- weight)/Temperature_k = " + prob + " > " + realNum, 6);
           if (prob > realNum) {
             weight = getWeight(MST);
             DCMST = MST.slice();
-            addStates(states, [], DCMST, [], "", 8);
+            addStates(states, [], DCMST, [], "", 7);
           } else {
             MST.pop();
             MST.push(edge);
           }
         }
       }
-      addStates(states, MST, [], [], "", 9);
-      addStates(states, MST, [], [], "Temperature_k = " + TEMP_RANGE + " *= 0.9 = " + TEMP_RANGE*0.9, 10);
+      addStates(states, MST, [], [], "", 8);
+      addStates(states, MST, [], [], "Temperature_k = " + TEMP_RANGE + " *= 0.9 = " + TEMP_RANGE*0.9, 9);
       K_LEVEL++;
       TEMP_RANGE *= alpha;
     }
-    addStates(states, [], DCMST, [], "", 11);
+    if(DCMST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND
+    addStates(states, [], DCMST, [], "", 10);
     return states;
   } catch (e) {
     return e.toString();

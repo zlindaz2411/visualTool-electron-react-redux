@@ -1012,7 +1012,7 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     text-align-last: center;
     font-size: 1.5rem; }
   .algorithm_wrap .grid {
-    padding-top: 5rem;
+    padding-top: 3.15rem;
     max-width: 83%; }
   .algorithm_wrap .actionButton {
     margin-left: 3rem;
@@ -1053,14 +1053,13 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
     height: 6rem;
     border-spacing: 2rem;
     padding-top: 1rem;
-    background-color: #ffffff; }
+    background-color: #ffffff;
+    text-align: left; }
     .algorithm_wrap .second_row h3 {
       font-size: 1.15rem;
       padding-left: 1rem;
       padding-top: 0.5rem;
-      padding-right: 1rem;
-      clear: both;
-      float: left; }
+      padding-right: 1rem; }
   .algorithm_wrap .player {
     /* Mouse-over effects */ }
     .algorithm_wrap .player .speedDiv {
@@ -1389,7 +1388,14 @@ form .save:focus, form .save:active, form .save.active, form :focus:active {
       padding-left: 1rem;
       padding-right: 1rem;
       float: left;
-      clear: left; }
+      clear: left;
+      text-justify: inter-word;
+      text-align-last: left; }
+      .performance_wrap .second_column .checkbox input {
+        float: left; }
+      .performance_wrap .second_column .checkbox label {
+        float: left;
+        word-break: break-all; }
   .performance_wrap .action_buttons button {
     width: 16rem;
     margin-left: 3rem;

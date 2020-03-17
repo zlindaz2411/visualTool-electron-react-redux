@@ -241,7 +241,7 @@ changeSpeed(){
         <div className="title">
           <h1>{this.state.pageName}</h1>
           <div className="sub_text">
-          <textarea disabled>
+          <textarea rows="3" disabled >
            {this.props.subText}
           </textarea>     
         </div>

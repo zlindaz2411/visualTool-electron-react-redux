@@ -100,7 +100,15 @@ class Sidebar extends Component {
                                 pathname:"/simulated"
                             }
                         }alt="Simulated"  replace>
-                             <h4>Simulated Annealing</h4>
+                             <h4>Simulated Annealing (1)</h4>
+                            </NavLink> 
+                        </li>
+                        <li>   
+                            <NavLink   className = "inactive" activeClassName="active" to={{
+                                pathname:"/penalty"
+                            }
+                        }alt="Simulated"  replace>
+                             <h4>Simulated Annealing (2)</h4>
                             </NavLink> 
                         </li>
                         </div>

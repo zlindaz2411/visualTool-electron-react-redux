@@ -85,7 +85,7 @@ export function getPseudocode(name) {
         );
         esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0j = closest node to i");
         esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0savings(i) = cost(i,j) - gate(i,r)");
-        esauWilliams.push("\xa0 \xa0cheapestNode = find node with the lowest tradeoff");
+        esauWilliams.push("\xa0 \xa0cheapestNode = find node with the lowest savings");
         esauWilliams.push("\xa0 \xa0cheapestEdge = find cheapest edge adjacent to cheapestNode");
         esauWilliams.push("\xa0 \xa0if(adding cheapest edge to CMST is acyclic and the subtree to which the endpoints of cheapest belongs to is at most given capacity)");
         esauWilliams.push("\xa0 \xa0 \xa0 \xa0 \xa0Add cheapestEdge to CMST");
@@ -95,17 +95,16 @@ export function getPseudocode(name) {
         return esauWilliams;
         case Algorithm.SIMULATED:
           let simulated = [];
-          simulated.push("Initialize the tree T by computing any MST algorithms",);
-          simulated.push("While k_level < k_max(1000) || weight T has not been changed for over 300 times");
-          simulated.push("\xa0 \xa0 Remove a random edge from T");
-          simulated.push("\xa0 \xa0 Add a random edge connecting T");
+          simulated.push("Initialize the tree T by computing any MST algorithms");
+          simulated.push("While k_level < k_max(1000)");
+          simulated.push("\xa0 \xa0 newT = generateNeighbourhood(T)");
           simulated.push("\xa0 \xa0 if(new T does not violate degree constraint)");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 k_level += 1");
-          simulated.push("\xa0 \xa0 Temprature_k *= cooling rate (0.9)");
+          simulated.push("\xa0 \xa0 Temperature_k *= cooling rate (0.9)");
           simulated.push("return T");
           return simulated
       default:

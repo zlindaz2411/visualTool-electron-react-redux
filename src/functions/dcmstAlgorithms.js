@@ -114,8 +114,7 @@ export function simulatedAnnealing(graph, degree) {
     let TEMP_RANGE = 5000;
     let MAX_TEMP_LEVEL = 1000;
     let weight = Number.MAX_SAFE_INTEGER;
-    let time =0 ;
-    let prev = 0;
+
     while (K_LEVEL < MAX_TEMP_LEVEL) {
       prev = weight;
       TEMP_RANGE *= alpha;
@@ -133,7 +132,6 @@ export function simulatedAnnealing(graph, degree) {
         let newWeight = getWeight(MST);
         let acceptanceProb = newWeight - weight;
         if (acceptanceProb < 0) {
-          //  console.log(degrees)
           weight = getWeight(MST);
           DCMST = MST.slice();
         } else {
@@ -143,19 +141,16 @@ export function simulatedAnnealing(graph, degree) {
             weight = getWeight(MST);
             DCMST = MST.slice();
           }
+          else {
+            MST.pop();
+            MST.push(edge);
+          }
         }
       }
     
-      if(prev != weight && time <300){
-        time = 0;
-    }
-    if(time>=300){
-      return DCMST
-    }
     K_LEVEL++;
-    time++;
     }
-
+    if(DCMST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND;
     return DCMST;
   } catch (e) {
     return e.toString();
