@@ -116,15 +116,10 @@ export function simulatedAnnealing(graph, degree) {
     let weight = Number.MAX_SAFE_INTEGER;
 
     while (K_LEVEL < MAX_TEMP_LEVEL) {
-      prev = weight;
       TEMP_RANGE *= alpha;
-      let edgeIndex = Math.floor(Math.random() * MST.length);
-      let edge = MST[edgeIndex];
-      MST.splice(edgeIndex, 1);
-      let connectingEdges = getComponentsEdge(graph, MST);
-      let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
-      let newEdge = connectingEdges[newEdgeIndex];
-      MST.push(newEdge);
+
+      let oldMST = MST.slice();
+      generateNeighbourhood(MST, graph, function(){})
 
       if (
         !isDegreeViolated(getDegree(MST), degree)
@@ -141,9 +136,8 @@ export function simulatedAnnealing(graph, degree) {
             weight = getWeight(MST);
             DCMST = MST.slice();
           }
-          else {
-            MST.pop();
-            MST.push(edge);
+          else{
+            MST = oldMST.slice();
           }
         }
       }
@@ -153,20 +147,125 @@ export function simulatedAnnealing(graph, degree) {
     if(DCMST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND;
     return DCMST;
   } catch (e) {
-    return e.toString();
+    console.log(e.toString());
   }
 }
 
-/**
- * Check if the weights are the same
- * @param {*} weights
- */
-export function checkConverged(weights) {
-  for (let i = 0; i < weights.length - 1; i++) {
-    if (weights[i] != weights[i + 1]) return false;
+export function simulatedAnnealingPenalty(graph, degree) {
+  try {
+    let MST = kruskals(graph);
+    if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
+    let K_LEVEL = 0;
+    let alpha = 0.9;
+    let TEMP_RANGE = 5000;
+    let MAX_TEMP_LEVEL = 1000;
+
+    let weight = Number.MAX_SAFE_INTEGER;
+    let constraintObjective = Number.MAX_SAFE_INTEGER;
+
+    let penalty = 1;
+    let degrees = getDegree(MST);
+
+    while (K_LEVEL < MAX_TEMP_LEVEL) {
+      TEMP_RANGE *= alpha;
+
+      let oldMST = MST.slice();
+      generateNeighbourhood(MST, graph, function(){})
+
+      let isViolated = isDegreeViolated(degrees, degree)
+      
+      if(isViolated){
+        penalty++
+      }
+      else{
+        penalty--;
+      }
+
+      degrees = getDegree(MST);
+
+      if(penalty<graph.nodes.length/2){
+        let newWeight = costFunction(MST, degrees, degree, penalty)
+        let acceptanceProb = newWeight - weight;
+        let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
+        let realNum = [0, 1][Math.floor(Math.random() * 2)];
+        if (acceptanceProb < 0 || prob > realNum) {
+          weight = newWeight
+          constraintObjective = getViolated(degrees, degree)
+        } else {
+           MST = oldMST.slice();
+         }
+      }
+      else{
+        let newConstraint = getViolated(degrees, degree)
+        let acceptanceProb = newConstraint - constraintObjective;
+        let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
+        let realNum = [0, 1][Math.floor(Math.random() * 2)];
+        if (acceptanceProb < 0 || prob > realNum) {
+          constraintObjective = newConstraint
+          weight = getWeight(MST)
+        }else{
+          MST = oldMST.slice();
+        }
+      }
+
+
+    K_LEVEL++;
+    }
+    if(isDegreeViolated(getDegree(MST), degree) || MST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND
+    return MST;
+  } catch (e) {
+    return e.toString
   }
-  return true;
 }
+
+
+export function costFunction(MST, degrees, degree, violatedTimes){
+  let newWeight = getWeight(MST);
+  let violation = getViolated(degrees, degree)
+  newWeight = newWeight + violatedTimes * violation;
+  return newWeight
+}
+
+/**
+ * Get the sum of the violated vertices
+ * @param {*} degrees 
+ * @param {*} degree 
+ */
+export function getViolated(degrees, degree){
+  let violation = 0;
+  for(let [key, value] of Object.entries(degrees)){
+    if(value>degree){
+      violation += value - degree;
+    }
+  }
+  return violation;
+}
+
+/**
+ * Generate the neighbourhood of the MST: we randomly delete an edge and randomly add an edge to connect the components.
+ * @param {*} MST 
+ * @param {*} graph 
+ */
+export function generateNeighbourhood(MST, graph, addStatefunc){
+  let edgeIndex = Math.floor(Math.random() * MST.length);
+  let edge = MST[edgeIndex];
+  MST.splice(edgeIndex, 1);
+  let connectingEdges = getComponentsEdge(graph, MST);
+  let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
+  let newEdge = connectingEdges[newEdgeIndex];
+
+  //The new edge should be different from the removed one
+  while(newEdge.source == edge.source && newEdge.target == edge.target){
+    newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
+    newEdge = connectingEdges[newEdgeIndex];
+  }
+  MST.push(newEdge);
+
+  addStatefunc()
+
+  return MST;
+}
+
 
 /**
  * Get the degree of the graph

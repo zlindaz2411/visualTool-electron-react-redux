@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
-import { simulatedAnnealing } from "../functions/dcmstStateAlgorithms";
+import { simulatedAnnealingPenalty } from "../functions/dcmstStateAlgorithms";
 import { Algorithm, ProblemDescription } from "../constants/algorithms";
 import AlgorithmPage from './algorithm';
 import InputDialog from "../components/inputDialog";
@@ -37,7 +37,7 @@ class SimulatedAnnealingPenaltyPage extends Component {
     else{
       this.setState({
         isDialogOpen: false,
-        states: simulatedAnnealing(this.state.data, this.state.degree)
+        states: simulatedAnnealingPenalty(this.state.data, this.state.degree)
       });
     }
   }

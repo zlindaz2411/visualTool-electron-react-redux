@@ -104,7 +104,7 @@ class PerformancePage extends Component {
   handleCheckboxChange(e) {
     const name = e.target.name;
     if(e.target.checked) {
-      if(name == Algorithm.CONSTRAINED || name == Algorithm.SIMULATED){
+      if(name == Algorithm.CONSTRAINED || name == Algorithm.SIMULATED || name == Algorithm.PENALTY){
         this.setState({
           isDegreeDialogOpen:true
         })

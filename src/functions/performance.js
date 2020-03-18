@@ -1,7 +1,7 @@
 import {Algorithm} from '../constants/algorithms';
-import {kruskals, prims, boruvkas, parallel, parallelPromise} from '../functions/mstAlgorithms'
+import {kruskals, prims, boruvkas, parallel} from '../functions/mstAlgorithms'
 import {esauWilliams} from '../functions/cmstAlgorithms'
-import {kruskalConstrained, simulatedAnnealing} from'./dcmstAlgorithms'
+import {kruskalConstrained, simulatedAnnealing, simulatedAnnealingPenalty} from'./dcmstAlgorithms'
 import {performance} from 'perf_hooks'
 import {ErrMessage} from'../constants/errorMessage'
 import {getWeight} from '../functions/util'
@@ -50,6 +50,14 @@ export function comparePerformanceByTime(list, graph,degree, capacity){
             }
             else{
             result.push(calculateTime(function() {simulatedAnnealing(graph, degree)}))
+            }
+        }
+        else if(list[i] == Algorithm.PENALTY){
+            if(simulatedAnnealingPenalty(graph, degree) == ErrMessage.DCMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
+            result.push(calculateTime(function() {simulatedAnnealingPenalty(graph, degree)}))
             }
         }
 
@@ -103,6 +111,15 @@ export function comparePerformanceByWeight(list, graph, degree, capacity){
             result.push(getWeight(simulatedAnnealing(graph, degree)))
             }
         }
+        else if(list[i] == Algorithm.PENALTY){
+            if(simulatedAnnealingPenalty(graph, degree) == ErrMessage.DCMST_NOT_FOUND){
+                result.push(-1)
+            }
+            else{
+            result.push(getWeight(simulatedAnnealingPenalty(graph, degree)))
+            }
+        }
+        
     }
     return result;
 }

@@ -96,9 +96,9 @@ describe("Get pseudocode based on different input", function() {
     "While k_level < k_max(1000)",
     "\xa0 \xa0 newT = generateNeighbourhood(T)",
     "\xa0 \xa0 if(new T does not violate degree constraint)",
-    "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",
+    "\xa0 \xa0 \xa0 \xa0\xa0 if(weight(newT) < weight(T))",
     "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T",
-    "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",
+    "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(weight(newT) - weight(T))/Temperature_k > random[0,1])",
     "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",
     "\xa0 \xa0 k_level += 1",
     "\xa0 \xa0 Temperature_k *= cooling rate (0.9)",
@@ -221,11 +221,11 @@ describe("Set up pseucodoe map based on different input", function() {
   const simulatedMap  = new Map();
   simulatedMap.set( "Initialize the tree T by computing any MST algorithms",true)
   simulatedMap.set( "While k_level < k_max(1000)",false)
-  simulatedMap.set("\xa0 \xa0 newT = generateNeighbourhood(T)",false)
+  simulatedMap.set("\xa0 \xa0 new T = generateNeighbourhood(T)",false)
   simulatedMap.set( "\xa0 \xa0 if(new T does not violate degree constraint)",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 if(weight(newT) < weight(T))",false)
   simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])",false)
+  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(weight(newT) - weight(T))/Temperature_k > random[0,1])",false)
   simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
   simulatedMap.set( "\xa0 \xa0 k_level += 1",false)
   simulatedMap.set(  "\xa0 \xa0 Temperature_k *= cooling rate (0.9)",false)

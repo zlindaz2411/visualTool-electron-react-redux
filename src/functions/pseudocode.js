@@ -97,16 +97,34 @@ export function getPseudocode(name) {
           let simulated = [];
           simulated.push("Initialize the tree T by computing any MST algorithms");
           simulated.push("While k_level < k_max(1000)");
-          simulated.push("\xa0 \xa0 newT = generateNeighbourhood(T)");
+          simulated.push("\xa0 \xa0 new T = generateNeighbourhood(T)");
           simulated.push("\xa0 \xa0 if(new T does not violate degree constraint)");
-          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(newWeight < weight)");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 if(weight(newT) < weight(T))");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T");
-          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(newWeight - weight)/Temperature_k > random[0,1])");
+          simulated.push("\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(weight(newT) - weight(T))/Temperature_k > random[0,1])");
           simulated.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
           simulated.push("\xa0 \xa0 k_level += 1");
           simulated.push("\xa0 \xa0 Temperature_k *= cooling rate (0.9)");
           simulated.push("return T");
           return simulated
+          case Algorithm.PENALTY:
+            let penalty = [];
+            penalty.push("Initialize the tree T by computing any MST algorithms");
+            penalty.push("While k_level < k_max(1000)");
+            penalty.push("\xa0 \xa0 newT = generateNeighbourhood(T)");
+            penalty.push("\xa0 \xa0 if(newT violates degree constraint)");
+            penalty.push("\xa0 \xa0 \xa0 \xa0 \xa0penalty +=1");
+            penalty.push("\xa0 \xa0 else penalty -=1");
+            penalty.push("\xa0 \xa0 if(penalty < number of nodes / 2)");
+            penalty.push("\xa0 \xa0 \xa0 \xa0\xa0 if(penalised weight(newT)  < weight(T) or exp(penalised weight(newT) - weight(T))/Temperature_k > random[0,1]))");
+            penalty.push("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T");
+            penalty.push("\xa0 \xa0 else");
+            penalty.push("\xa0 \xa0 \xa0 \xa0\xa0 if(constraint(newT) < constraint(T) or exp(constraint(newT) - constraint(T))/Temperature_k > random[0,1]))");
+            penalty.push("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T");
+            penalty.push("\xa0 \xa0 k_level += 1");
+            penalty.push("\xa0 \xa0 Temperature_k *= cooling rate (0.9)");
+            penalty.push("return T");
+            return penalty
       default:
         return [];
     }
