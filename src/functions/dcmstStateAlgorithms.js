@@ -125,13 +125,15 @@ export function simulatedAnnealing(graph, degree) {
     let MST = kruskals(graph);
     if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
     let states = [{ highlighted: MST, tree: [], text: "", status: 0 }];
+    // console.log(MST)
     let K_LEVEL = 0;
     let DCMST = [];
     let alpha = 0.9;
     let TEMP_RANGE = 5000;
-    let MAX_TEMP_LEVEL = 100 * graph.edges.length;
+    let MAX_TEMP_LEVEL = 1000;
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
+      // console.log(MST)
       addStates(states, MST, [], [], "", 1);
 
       let oldMST = MST.slice();
@@ -181,9 +183,9 @@ export function simulatedAnnealing(graph, degree) {
 
 
 export function simulatedAnnealingPenalty(graph, degree) {
-  try {
-    let states = [{ highlighted: MST, tree: [], text: "", status: 0 }];
+  try {    
     let MST = kruskals(graph);
+    let states = [{ highlighted: MST, tree: [], text: "", status: 0 }];
     if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
     let K_LEVEL = 0;
     let alpha = 0.9;
@@ -193,7 +195,7 @@ export function simulatedAnnealingPenalty(graph, degree) {
     let weight = Number.MAX_SAFE_INTEGER;
     let constraintObjective = Number.MAX_SAFE_INTEGER;
 
-    let penalty = 1;
+    let violatedTimes = 0;
     let degrees = getDegree(MST);
 
     while (K_LEVEL < MAX_TEMP_LEVEL) {
@@ -209,11 +211,11 @@ export function simulatedAnnealingPenalty(graph, degree) {
       
       addStates(states, MST, [], [], isViolated+"", 3);
       if(isViolated){
-        penalty++
+        violatedTimes++
         addStates(states, MST, [], [], penalty, 4);
       }
       else{
-        penalty--;
+        violatedTimes--;
         addStates(states, MST, [], [], penalty, 5);
       }
 
@@ -222,7 +224,7 @@ export function simulatedAnnealingPenalty(graph, degree) {
       addStates(states, MST, [], [], "", 6);
       if(penalty<graph.nodes.length/2){
         addStates(states, MST, [], [], "", 7);
-        let newWeight = costFunction(MST, degrees, degree, penalty)
+        let newWeight = costFunction(MST, degrees, degree, violatedTimes)
         let acceptanceProb = newWeight - weight;
         let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
         let realNum = [0, 1][Math.floor(Math.random() * 2)];
@@ -257,6 +259,6 @@ export function simulatedAnnealingPenalty(graph, degree) {
     addStates(states, [], MST,[], "", 14);
     return states;
   } catch (e) {
-    console.log(e)
+    return e.toString();
   }
 }

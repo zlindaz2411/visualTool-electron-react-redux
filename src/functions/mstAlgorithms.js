@@ -286,7 +286,6 @@ export function kruskals(graph) {
         //If the number of component has not changed
         if(current == previous) throw "MST not found";
         }
-        console.log(MST.length)
         return MST  
         }catch(error){
         return error.toString();

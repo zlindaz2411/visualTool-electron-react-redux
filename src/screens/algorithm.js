@@ -383,6 +383,7 @@ changeSpeed(){
    * Else display the next state of the algorithm
    */
   next() {
+   
     this.setState({
       index: (this.state.index += 1),
       value: this.state.index

@@ -147,7 +147,7 @@ export function simulatedAnnealing(graph, degree) {
     if(DCMST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND;
     return DCMST;
   } catch (e) {
-    console.log(e.toString());
+    return e.toString();
   }
 }
 
@@ -163,7 +163,7 @@ export function simulatedAnnealingPenalty(graph, degree) {
     let weight = Number.MAX_SAFE_INTEGER;
     let constraintObjective = Number.MAX_SAFE_INTEGER;
 
-    let penalty = 1;
+    let violatedTimes = 0;
     let degrees = getDegree(MST);
 
     while (K_LEVEL < MAX_TEMP_LEVEL) {
@@ -175,16 +175,16 @@ export function simulatedAnnealingPenalty(graph, degree) {
       let isViolated = isDegreeViolated(degrees, degree)
       
       if(isViolated){
-        penalty++
+        violatedTimes++
       }
       else{
-        penalty--;
+        violatedTimes--;
       }
 
       degrees = getDegree(MST);
 
       if(penalty<graph.nodes.length/2){
-        let newWeight = costFunction(MST, degrees, degree, penalty)
+        let newWeight = costFunction(MST, degrees, degree, violatedTimes)
         let acceptanceProb = newWeight - weight;
         let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
         let realNum = [0, 1][Math.floor(Math.random() * 2)];
