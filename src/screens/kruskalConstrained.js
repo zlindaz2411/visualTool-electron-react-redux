@@ -1,13 +1,13 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import { data } from "../constants/defaultGraph";
 import { kruskalConstrained } from "../functions/dcmstStateAlgorithms";
-import { Algorithm,ProblemDescription } from "../constants/algorithms";
-import AlgorithmPage from './algorithm';
+import { Algorithm, ProblemDescription } from "../constants/algorithms";
+import AlgorithmPage from "./algorithm";
 import InputDialog from "../components/inputDialog";
-import {validateNumber, validateEmpty} from "../functions/validator";
+import { validateNumber, validateEmpty } from "../functions/validator";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
 
 /**
@@ -19,39 +19,40 @@ class KruskalConstrainedPage extends Component {
     this.state = {
       degree: "",
       isDialogOpen: true,
-      states:[],
-      data:
-        this.props.latestGraph == null
-          ? data
-          : this.props.latestGraph
-    }
+      states: [],
+      data: this.props.latestGraph == null ? data : this.props.latestGraph
+    };
   }
 
   /**
    * Handle close dialog. If no number entered pop up error message, else close.
    */
   handleClose() {
-    if(!validateNumber(this.state.degree) || validateEmpty(this.state.degree)){
-       onlyNumberErrorMessage();
-    }
-    else{
+    if (
+      !validateNumber(this.state.degree) ||
+      validateEmpty(this.state.degree)
+    ) {
+      onlyNumberErrorMessage();
+    } else {
       this.setState({
         isDialogOpen: false,
         states: kruskalConstrained(this.state.data, this.state.degree)
       });
     }
-    }
+  }
 
   /**
    * Submit the degree value
-   * @param {*} e 
+   * @param {*} e
    */
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
-    if(validateNumber(this.state.degree) && !validateEmpty(this.state.degree)){
-       this.handleClose();
-    }
-    else{
+    if (
+      validateNumber(this.state.degree) &&
+      !validateEmpty(this.state.degree)
+    ) {
+      this.handleClose();
+    } else {
       onlyNumberErrorMessage();
     }
   }
@@ -66,17 +67,22 @@ class KruskalConstrainedPage extends Component {
   render() {
     return (
       <div>
-        <InputDialog 
-        handleClose={() => this.handleClose()}
-        isOpen={this.state.isDialogOpen}
-        title="Enter a number for the degree"
-        submitAction={e => this.handleSubmit(e)}
-        value={this.state.degree}
-        handleChange={e => this.handleChange(e)}
-        buttonName="Submit">
-        </InputDialog>
-      
-      <AlgorithmPage pageName={Algorithm.CONSTRAINED} data={this.state.data} subText={ProblemDescription.DCMSTP} states={this.state.states}></AlgorithmPage>
+        <InputDialog
+          handleClose={() => this.handleClose()}
+          isOpen={this.state.isDialogOpen}
+          title="Enter a number for the degree"
+          submitAction={e => this.handleSubmit(e)}
+          value={this.state.degree}
+          handleChange={e => this.handleChange(e)}
+          buttonName="Submit"
+        ></InputDialog>
+
+        <AlgorithmPage
+          pageName={Algorithm.CONSTRAINED}
+          data={this.state.data}
+          subText={ProblemDescription.DCMSTP}
+          states={this.state.states}
+        ></AlgorithmPage>
       </div>
     );
   }
@@ -89,4 +95,3 @@ function mapStateToProps(state) {
 }
 
 export default withRouter(connect(mapStateToProps, {})(KruskalConstrainedPage));
-

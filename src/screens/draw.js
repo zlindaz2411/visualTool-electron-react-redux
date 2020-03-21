@@ -2,13 +2,13 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import {Prompt} from "react-router-dom";
+import { Prompt } from "react-router-dom";
 import htmlToImage from "html-to-image";
 
 import Dialog from "../components/dialog";
 import InputDialog from "../components/inputDialog";
 
-import {resetEmptyGraph} from "../constants/defaultGraph";
+import { resetEmptyGraph } from "../constants/defaultGraph";
 
 import {
   removeAll,
@@ -38,7 +38,7 @@ class DrawPage extends Component {
       selectedGraph: null,
       isSaveDialogOpen: false,
       graph: new Graph(),
-      name: "",
+      name: ""
     };
   }
 
@@ -81,7 +81,7 @@ class DrawPage extends Component {
     this.setState({
       isDialogOpen: false,
       isSaveDialogOpen: false,
-      name:"",
+      name: ""
     });
   }
 
@@ -101,16 +101,21 @@ class DrawPage extends Component {
     if (!graph) {
       graphNotSelectedMessage();
     } else {
-    this.setState(
-      {
-        graph: new Graph(graph.root, graph.nodes, graph.edges, graph.adjacents),
-        selectedGraph: null,
-      },
-      () => {
-        this.draw();
-        this.handleClose();
-      }
-    );
+      this.setState(
+        {
+          graph: new Graph(
+            graph.root,
+            graph.nodes,
+            graph.edges,
+            graph.adjacents
+          ),
+          selectedGraph: null
+        },
+        () => {
+          this.draw();
+          this.handleClose();
+        }
+      );
     }
   }
 
@@ -169,7 +174,7 @@ class DrawPage extends Component {
   saveNewGraph(e) {
     e.preventDefault();
     let clone = Object.assign({}, this.state.graph);
-    if(clone._id) delete clone._id;
+    if (clone._id) delete clone._id;
     if (!this.state.name) {
       confirmAlert({
         title: `Warning!`,
@@ -238,14 +243,16 @@ class DrawPage extends Component {
     return (
       <div className="about_wrap">
         <div className="title">
-          <h1>Draw</h1>  
+          <h1>Draw</h1>
         </div>
         <div className="sub_text">
           <textarea rows="3" disabled>
-            Double click on empty space to draw a vertex. Drag from vertex to vertex to create an edge. Right click on a vertex or an edge to
-            delete. Click on the weight and input a new value and press Enter to change.
-            Submit the graph to be used for visualization and performance comparison.
-          </textarea>     
+            Double click on empty space to draw a vertex. Drag from vertex to
+            vertex to create an edge. Right click on a vertex or an edge to
+            delete. Click on the weight and input a new value and press Enter to
+            change. Submit the graph to be used for visualization and
+            performance comparison.
+          </textarea>
         </div>
 
         <center>
@@ -253,46 +260,44 @@ class DrawPage extends Component {
             <div ref={this.imgRef} className="drawing"></div>
           </div>
 
-            <Dialog
-              title="Load Graph"
-              isOpen={this.state.isDialogOpen}
-              handleClose={() => this.handleClose()}
-            >
-              <div className="load">
-                {this.props.graphs.map((graph, index) => (
-                  <button
-                    onClick={() => this.handleSelectGraph(graph)}
-                    className="cardBtn"
-                  >
-                    <img className="graph" src={graph.image}></img>
-                    {graph.name}
-                  </button>
-                ))}
-              </div>
-              <div className="dialog_buttons">
+          <Dialog
+            title="Load Graph"
+            isOpen={this.state.isDialogOpen}
+            handleClose={() => this.handleClose()}
+          >
+            <div className="load">
+              {this.props.graphs.map((graph, index) => (
                 <button
-                  onClick={() =>
-                    this.handleDeleteGraph(this.state.selectedGraph)
-                  }
+                  onClick={() => this.handleSelectGraph(graph)}
+                  className="cardBtn"
                 >
-                  Delete
+                  <img className="graph" src={graph.image}></img>
+                  {graph.name}
                 </button>
-                <button
-                  onClick={() => this.handleLoadGraph(this.state.selectedGraph)}
-                >
-                  Load
-                </button>
-              </div>
-            </Dialog>
-            <InputDialog
-              handleClose={() => this.handleClose()}
-              isOpen={this.state.isSaveDialogOpen}
-              title="Enter a name for the graph"
-              submitAction={e => this.saveNewGraph(e)}
-              value={this.state.name}
-              handleChange={e => this.handleChange(e)}
-              buttonName="Save"
-            ></InputDialog>
+              ))}
+            </div>
+            <div className="dialog_buttons">
+              <button
+                onClick={() => this.handleDeleteGraph(this.state.selectedGraph)}
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => this.handleLoadGraph(this.state.selectedGraph)}
+              >
+                Load
+              </button>
+            </div>
+          </Dialog>
+          <InputDialog
+            handleClose={() => this.handleClose()}
+            isOpen={this.state.isSaveDialogOpen}
+            title="Enter a name for the graph"
+            submitAction={e => this.saveNewGraph(e)}
+            value={this.state.name}
+            handleChange={e => this.handleChange(e)}
+            buttonName="Save"
+          ></InputDialog>
           <div className="action_buttons">
             <button onClick={() => this.openModal()}>Load</button>
             <button onClick={() => this.save()}>Save</button>

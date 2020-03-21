@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import { data} from "../constants/defaultGraph";
+import { data } from "../constants/defaultGraph";
 
 import { boruvkas } from "../functions/mstStateAlgorithms";
 import { Algorithm, ProblemDescription } from "../constants/algorithms";
-import AlgorithmPage from '../screens/algorithm';
+import AlgorithmPage from "../screens/algorithm";
 
 /**
  * Boruvka page which uses AlgorithmPage and pass the states produced by the boruvka function
@@ -15,20 +15,21 @@ class BoruvkaPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data:
-        this.props.latestGraph == null
-          ? data
-          : this.props.latestGraph
-    }
-}
+      data: this.props.latestGraph == null ? data : this.props.latestGraph
+    };
+  }
 
-render() {
-  return (
-    <AlgorithmPage  pageName={Algorithm.BORUVKA} data={this.state.data} subText={ProblemDescription.MSTP} states={boruvkas(this.state.data)}></AlgorithmPage>
-  );
+  render() {
+    return (
+      <AlgorithmPage
+        pageName={Algorithm.BORUVKA}
+        data={this.state.data}
+        subText={ProblemDescription.MSTP}
+        states={boruvkas(this.state.data)}
+      ></AlgorithmPage>
+    );
+  }
 }
-}
-
 
 function mapStateToProps(state) {
   return {
@@ -36,8 +37,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default withRouter(
-  connect(mapStateToProps, { })(
-    BoruvkaPage
-  )
-);
+export default withRouter(connect(mapStateToProps, {})(BoruvkaPage));

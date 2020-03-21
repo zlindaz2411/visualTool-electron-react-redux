@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { onlyNumberErrorMessage } from "../constants/errorMessage";
-import {Algorithm} from"../constants/algorithms";
-import {validateNumber, validateEmpty} from "../functions/validator";
+import { Algorithm } from "../constants/algorithms";
+import { validateNumber, validateEmpty } from "../functions/validator";
 
 const radius = 10;
 const margin = 15;
@@ -17,12 +17,12 @@ let yScale = 0;
  * @param {*} draw
  */
 export function setWidthHeight(graph, draw) {
-  if(draw){
-  w = document.querySelector(".canvas").getBoundingClientRect().width;
-  h = document.querySelector(".canvas").getBoundingClientRect().height;
-  }else{
-    w = 400
-    h = 380
+  if (draw) {
+    w = document.querySelector(".canvas").getBoundingClientRect().width;
+    h = document.querySelector(".canvas").getBoundingClientRect().height;
+  } else {
+    w = 400;
+    h = 380;
   }
   setScales(graph.nodes, draw);
 }
@@ -82,7 +82,8 @@ export function createSVG(data, draw) {
   const drawing = draw == Algorithm.PRIM ? ".drawingDialog" : ".drawing";
   const canvas = draw == Algorithm.PRIM ? ".canvasDialog" : ".canvas";
 
-  let id = data.nodes.length!=0 ? data.nodes[data.nodes.length-1].id+1 : 0;
+  let id =
+    data.nodes.length != 0 ? data.nodes[data.nodes.length - 1].id + 1 : 0;
   const svg = d3
     .select(drawing)
     .append("svg")
@@ -96,8 +97,8 @@ export function createSVG(data, draw) {
           id: id,
           x: Math.round(xScale(d3.event.x - x)),
           y: Math.round(yScale(d3.event.y - y))
-        }
-        if(node) data.addNode(node)
+        };
+        if (node) data.addNode(node);
         removeAll();
         drawGraph(data, draw);
       }
@@ -231,7 +232,7 @@ function createEdges(svg, data, draw) {
           .append("input")
           .attr("size", 5)
           .attr("value", function() {
-            return d.weight
+            return d.weight;
           })
           .on("blur", function() {
             svg.select("foreignObject").remove();
@@ -241,18 +242,16 @@ function createEdges(svg, data, draw) {
             if (e.keyCode == 13) {
               e.preventDefault();
               let text = input.node().value;
-              if(validateNumber(text) && !validateEmpty(text)){
-                  updateWeight(d, text, data, draw)
-              }
-              else{
-                  onlyNumberErrorMessage();
+              if (validateNumber(text) && !validateEmpty(text)) {
+                updateWeight(d, text, data, draw);
+              } else {
+                onlyNumberErrorMessage();
               }
             }
           });
       }
     });
 }
-
 
 /**
  * Create nodes for the graph
@@ -392,11 +391,14 @@ function dragged(d, nodes) {
  * @param {*} edges
  */
 function dragEnded(d, data, draw) {
-  if(selectedNode){
-    if (!destination || destination.id == selectedNode.id || data.nodes.indexOf(selectedNode)==-1){
+  if (selectedNode) {
+    if (
+      !destination ||
+      destination.id == selectedNode.id ||
+      data.nodes.indexOf(selectedNode) == -1
+    ) {
       d3.select("#toDrag").remove();
-    }
-    else {
+    } else {
       const weight = calculateWeight(selectedNode, destination);
       const newEdge = {
         source: selectedNode.id,
@@ -422,7 +424,7 @@ function dragEnded(d, data, draw) {
     }
     selectedNode = null;
     selectedCircle = null;
-    
+
     removeAll();
     drawGraph(data, draw);
   }
@@ -450,15 +452,15 @@ function calculateWeight(source, destination) {
  */
 function handleDeleteNode(element, data, draw) {
   d3.event.preventDefault();
-  let adjacents = data.getAdjacentsOfNode(element.id)
+  let adjacents = data.getAdjacentsOfNode(element.id);
   for (let i = 0; i < adjacents.length; i++) {
-    let index = data.edges.indexOf(adjacents[i])
-    if(index !=-1){
-     data.removeEdge(data.edges.indexOf(adjacents[i]))
-     i--;
+    let index = data.edges.indexOf(adjacents[i]);
+    if (index != -1) {
+      data.removeEdge(data.edges.indexOf(adjacents[i]));
+      i--;
     }
   }
-  data.removeNode(data.nodes.indexOf(element))
+  data.removeNode(data.nodes.indexOf(element));
   removeAll();
   drawGraph(data, draw);
 }
@@ -470,22 +472,20 @@ function handleDeleteNode(element, data, draw) {
  */
 function handleDeleteEdge(element, data, draw) {
   d3.event.preventDefault();
-  data.removeEdge(data.edges.indexOf(element))
+  data.removeEdge(data.edges.indexOf(element));
   removeAll();
   drawGraph(data, draw);
 }
-
 
 /**
  * Update weight
- * @param {*} d 
+ * @param {*} d
  * @param {*} text
- * @param {*} data 
- * @param {*} draw 
+ * @param {*} data
+ * @param {*} draw
  */
-function updateWeight(d,text, data, draw){
-  data.edges[data.edges.indexOf(d)].weight =parseInt(text)
+function updateWeight(d, text, data, draw) {
+  data.edges[data.edges.indexOf(d)].weight = parseInt(text);
   removeAll();
   drawGraph(data, draw);
 }
-

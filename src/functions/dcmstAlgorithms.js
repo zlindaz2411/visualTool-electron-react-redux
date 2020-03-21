@@ -107,7 +107,7 @@ export function kruskalConstrained(graph, degree) {
 export function simulatedAnnealing(graph, degree) {
   try {
     let MST = kruskals(graph);
-    if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
+    if (MST == ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND;
     let K_LEVEL = 0;
     let DCMST = [];
     let alpha = 0.9;
@@ -119,11 +119,9 @@ export function simulatedAnnealing(graph, degree) {
       TEMP_RANGE *= alpha;
 
       let oldMST = MST.slice();
-      generateNeighbourhood(MST, graph, function(){})
+      generateNeighbourhood(MST, graph, function() {});
 
-      if (
-        !isDegreeViolated(getDegree(MST), degree)
-      ) {
+      if (!isDegreeViolated(getDegree(MST), degree)) {
         let newWeight = getWeight(MST);
         let acceptanceProb = newWeight - weight;
         if (acceptanceProb < 0) {
@@ -135,16 +133,16 @@ export function simulatedAnnealing(graph, degree) {
           if (prob > realNum) {
             weight = getWeight(MST);
             DCMST = MST.slice();
-          }
-          else{
+          } else {
             MST = oldMST.slice();
           }
         }
       }
-    
-    K_LEVEL++;
+
+      K_LEVEL++;
     }
-    if(DCMST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND;
+    if (DCMST.length != graph.nodes.length - 1)
+      throw ErrMessage.DCMST_NOT_FOUND;
     return DCMST;
   } catch (e) {
     return e.toString();
@@ -154,7 +152,7 @@ export function simulatedAnnealing(graph, degree) {
 export function simulatedAnnealingPenalty(graph, degree) {
   try {
     let MST = kruskals(graph);
-    if(MST== ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND
+    if (MST == ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND;
     let K_LEVEL = 0;
     let alpha = 0.9;
     let TEMP_RANGE = 5000;
@@ -170,71 +168,71 @@ export function simulatedAnnealingPenalty(graph, degree) {
       TEMP_RANGE *= alpha;
 
       let oldMST = MST.slice();
-      generateNeighbourhood(MST, graph, function(){})
+      generateNeighbourhood(MST, graph, function() {});
 
-      let isViolated = isDegreeViolated(degrees, degree)
-      
-      if(isViolated){
-        violatedTimes++
-      }
-      else{
+      let isViolated = isDegreeViolated(degrees, degree);
+
+      if (isViolated) {
+        violatedTimes++;
+      } else {
         violatedTimes--;
       }
 
       degrees = getDegree(MST);
 
-      if(penalty<graph.nodes.length/2){
-        let newWeight = costFunction(MST, degrees, degree, violatedTimes)
+      if (penalty < graph.nodes.length / 2) {
+        let newWeight = costFunction(MST, degrees, degree, violatedTimes);
         let acceptanceProb = newWeight - weight;
         let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
         let realNum = [0, 1][Math.floor(Math.random() * 2)];
         if (acceptanceProb < 0 || prob > realNum) {
-          weight = newWeight
-          constraintObjective = getViolated(degrees, degree)
+          weight = newWeight;
+          constraintObjective = getViolated(degrees, degree);
         } else {
-           MST = oldMST.slice();
-         }
-      }
-      else{
-        let newConstraint = getViolated(degrees, degree)
+          MST = oldMST.slice();
+        }
+      } else {
+        let newConstraint = getViolated(degrees, degree);
         let acceptanceProb = newConstraint - constraintObjective;
         let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
         let realNum = [0, 1][Math.floor(Math.random() * 2)];
         if (acceptanceProb < 0 || prob > realNum) {
-          constraintObjective = newConstraint
-          weight = getWeight(MST)
-        }else{
+          constraintObjective = newConstraint;
+          weight = getWeight(MST);
+        } else {
           MST = oldMST.slice();
         }
       }
 
-
-    K_LEVEL++;
+      K_LEVEL++;
     }
-    if(isDegreeViolated(getDegree(MST), degree) || MST.length != graph.nodes.length -1) throw ErrMessage.DCMST_NOT_FOUND
+    if (
+      isDegreeViolated(getDegree(MST), degree) ||
+      MST.length != graph.nodes.length - 1
+    )
+      throw ErrMessage.DCMST_NOT_FOUND;
     return MST;
   } catch (e) {
-    return e.toString
+    return e.toString;
   }
 }
 
-
-export function costFunction(MST, degrees, degree, violatedTimes){
+export function costFunction(MST, degrees, degree, violatedTimes) {
   let newWeight = getWeight(MST);
-  let violation = getViolated(degrees, degree)
+  let violation = getViolated(degrees, degree);
   newWeight = newWeight + violatedTimes * violation;
-  return newWeight
+  return newWeight;
 }
 
 /**
  * Get the sum of the violated vertices
- * @param {*} degrees 
- * @param {*} degree 
+ * @param {*} degrees
+ * @param {*} degree
  */
-export function getViolated(degrees, degree){
+export function getViolated(degrees, degree) {
   let violation = 0;
-  for(let [key, value] of Object.entries(degrees)){
-    if(value>degree){
+  for (let [key, value] of Object.entries(degrees)) {
+    if (value > degree) {
       violation += value - degree;
     }
   }
@@ -243,10 +241,10 @@ export function getViolated(degrees, degree){
 
 /**
  * Generate the neighbourhood of the MST: we randomly delete an edge and randomly add an edge to connect the components.
- * @param {*} MST 
- * @param {*} graph 
+ * @param {*} MST
+ * @param {*} graph
  */
-export function generateNeighbourhood(MST, graph, addStatefunc){
+export function generateNeighbourhood(MST, graph, addStatefunc) {
   let edgeIndex = Math.floor(Math.random() * MST.length);
   let edge = MST[edgeIndex];
   MST.splice(edgeIndex, 1);
@@ -255,17 +253,16 @@ export function generateNeighbourhood(MST, graph, addStatefunc){
   let newEdge = connectingEdges[newEdgeIndex];
 
   //The new edge should be different from the removed one
-  while(newEdge.source == edge.source && newEdge.target == edge.target){
+  while (newEdge.source == edge.source && newEdge.target == edge.target) {
     newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
     newEdge = connectingEdges[newEdgeIndex];
   }
   MST.push(newEdge);
 
-  addStatefunc()
+  addStatefunc();
 
   return MST;
 }
-
 
 /**
  * Get the degree of the graph

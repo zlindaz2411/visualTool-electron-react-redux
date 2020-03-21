@@ -5,11 +5,8 @@ import {
   MdSkipNext,
   MdPause
 } from "react-icons/md";
-
 import { getPseudocode, setUpPseudocodeMap } from "../functions/pseudocode";
-
 import { removeAll, drawGraph, setWidthHeight } from "../functions/d3Functions";
-
 import {
   resetTree,
   resetHighlight,
@@ -26,7 +23,7 @@ import {
   ErrMessage
 } from "../constants/errorMessage";
 
-import { SPEEDS,COLORS } from "../constants/visualizationConstants";
+import { SPEEDS, COLORS } from "../constants/visualizationConstants";
 
 /**
  * The main algorithm component that has the pseudocode, graph and handles the logic of visualization.
@@ -41,22 +38,20 @@ class AlgorithmPage extends Component {
       start: false,
       loading: false,
       index: 0,
-      timer:null,
-      pageName : this.props.pageName,
+      timer: null,
+      pageName: this.props.pageName,
       maxValue: 0,
       value: 0,
       speed: 0,
       play: false,
       pseudocode: getPseudocode(this.props.pageName),
       pseudoMap: null,
-      data: this.props.data,
+      data: this.props.data
     };
   }
-  
-
 
   componentDidMount() {
-    if(this.state.data == null) {
+    if (this.state.data == null) {
       emptyGraphMessage();
     } else {
       if (
@@ -72,7 +67,6 @@ class AlgorithmPage extends Component {
       }
     }
   }
-
 
   /**
    * When user leaves the page, clear interval
@@ -92,98 +86,106 @@ class AlgorithmPage extends Component {
   /**
    * Set interval
    */
-  setTimer(){
-    if(this.state.timer) {
+  setTimer() {
+    if (this.state.timer) {
       clearInterval(this.state.timer);
     }
-    if(this.state.play){
-    let timer = setInterval(() => {
-      if (this.state.index < this.state.states.length - 1) {
-        this.next();
-      } else {
-        clearInterval(timer);
-      }
-    }, SPEEDS[this.state.speed]);
-    this.setState({
-      timer : timer
-    })
-  }
+    if (this.state.play) {
+      let timer = setInterval(() => {
+        if (this.state.index < this.state.states.length - 1) {
+          this.next();
+        } else {
+          clearInterval(timer);
+        }
+      }, SPEEDS[this.state.speed]);
+      this.setState({
+        timer: timer
+      });
+    }
   }
 
   /**
    * Restart the animation when the end is reached
    */
-  restart(){
-    if(this.state.index == this.state.states.length -1){
-      this.setState({
-        index : 0,
-        pseudoMap: setUpPseudocodeMap(
-          this.state.pageName,
-          0,
-        ),
-        value: 0,
-      },()=>{
-        this.resetGraph();
-        this.draw();
-      })
-      
-      }
+  restart() {
+    if (this.state.index == this.state.states.length - 1) {
+      this.setState(
+        {
+          index: 0,
+          pseudoMap: setUpPseudocodeMap(this.state.pageName, 0),
+          value: 0
+        },
+        () => {
+          this.resetGraph();
+          this.draw();
+        }
+      );
+    }
   }
 
   /**
    * Toggle start: if is true set icon to be pause, else play
    */
   togglePlay() {
-      this.restart();
-      this.setState(
-        {
-          play: !this.state.play
-        },
-        () => {
-          if(this.state.play) {
-            this.setTimer();
-          }
-          else{
-            clearInterval(this.state.timer);
-          }
+    this.restart();
+    this.setState(
+      {
+        play: !this.state.play
+      },
+      () => {
+        if (this.state.play) {
+          this.setTimer();
+        } else {
+          clearInterval(this.state.timer);
         }
-      );
-    }
-  
-
-/**
- * Update speed slider
- */
-changeSpeed(){
-  var input = this.speedRef;
-  var currentVal = parseInt(input.current.value);
-  this.setState({
-    speed: currentVal
-  },
-  ()=>{
-    this.setTimer();
+      }
+    );
   }
-  )
- }
 
- /**
-  * Reset graph
-  */
- resetGraph(){
+  /**
+   * Update speed slider
+   */
+  changeSpeed() {
+    var input = this.speedRef;
+    var currentVal = parseInt(input.current.value);
+    this.setState(
+      {
+        speed: currentVal
+      },
+      () => {
+        this.setTimer();
+      }
+    );
+  }
+
+  /**
+   * Reset graph
+   */
+  resetGraph() {
     resetHighlight(this.state.data.edges);
     resetTree(this.state.data.edges);
     resetNodes(this.state.data.nodes);
- }
+  }
 
   /**
    * Update graph
    */
-  updateGraph(){
-    updateGraph(this.state.states[this.state.index].tree, this.state.data.edges,true);
-    updateGraph(this.state.states[this.state.index].highlighted,  this.state.data.edges,false);
-    updateNodes(this.state.states[this.state.index].highlightedNodes, this.state.data.nodes);
+  updateGraph() {
+    updateGraph(
+      this.state.states[this.state.index].tree,
+      this.state.data.edges,
+      true
+    );
+    updateGraph(
+      this.state.states[this.state.index].highlighted,
+      this.state.data.edges,
+      false
+    );
+    updateNodes(
+      this.state.states[this.state.index].highlightedNodes,
+      this.state.data.nodes
+    );
   }
-
 
   /**
    * Move slider, update the graph and the pseudocode
@@ -192,10 +194,10 @@ changeSpeed(){
     this.resetGraph();
     var input = this.sliderRef;
     var currentVal = parseInt(input.current.value);
-    if(currentVal== this.state.states.length -1){
+    if (currentVal == this.state.states.length - 1) {
       this.setState({
-        play:false,
-      })
+        play: false
+      });
     }
     this.setState(
       {
@@ -204,7 +206,7 @@ changeSpeed(){
           this.state.pageName,
           this.state.states[currentVal].status
         ),
-        index: currentVal,
+        index: currentVal
       },
       () => {
         this.updateGraph();
@@ -218,19 +220,27 @@ changeSpeed(){
    * If not, alert an error dialog. Otherwise, start the visualization
    */
   handleStart() {
-    if(this.state.data == null) {
+    if (this.state.data == null) {
       emptyGraphMessage();
     } else {
       const res = this.props.states;
-      if (res == ErrMessage.MST_NOT_FOUND || res == ErrMessage.CMST_NOT_FOUND || res == ErrMessage.DCMST_NOT_FOUND) algorithmErrorMessage();
+      if (
+        res == ErrMessage.MST_NOT_FOUND ||
+        res == ErrMessage.CMST_NOT_FOUND ||
+        res == ErrMessage.DCMST_NOT_FOUND
+      )
+        algorithmErrorMessage();
       else {
         this.setState({
           start: true,
           pseudoMap: setUpPseudocodeMap(this.state.pageName, 0),
           states: res,
-          maxValue:res.length-1
-        });
-        this.draw();
+          maxValue: res.length - 1
+        },() =>{
+          this.updateGraph();
+          this.draw();
+        })
+
       }
     }
   }
@@ -241,10 +251,10 @@ changeSpeed(){
         <div className="title">
           <h1>{this.state.pageName}</h1>
           <div className="sub_text">
-          <textarea rows="3" disabled >
-           {this.props.subText}
-          </textarea>     
-        </div>
+            <textarea rows="3" disabled>
+              {this.props.subText}
+            </textarea>
+          </div>
           <center>
             <div className="grid">
               <div className="column column_7_12">
@@ -271,9 +281,12 @@ changeSpeed(){
                   ))}
                 </div>
                 <div id="pseudo_canvas" className="second_row">
-                  <h3> {this.state.states && this.state.states[this.state.index].text}</h3>
+                  <h3>
+                    {" "}
+                    {this.state.states &&
+                      this.state.states[this.state.index].text}
+                  </h3>
                 </div>
-                
               </div>
             </div>
           </center>
@@ -281,66 +294,68 @@ changeSpeed(){
             {this.state.start ? (
               <div className="player">
                 <table align="center">
-        <tr>
-            <td>
-            <div className = "speedDiv" >
-                <label>0.5x</label>
-                <input
-                  type="range"
-                  max={SPEEDS.length-1}
-                  value={this.state.speed}
-                  className="speed"
-                  ref={this.speedRef}
-                  onInput={() => this.changeSpeed()}
-                ></input>
-                <label>2.0x</label>
-                </div>
-            </td>
-            <td>
-                <div id="playDiv">
-                <button
-                  onClick={() => this.previous()}
-                  className="player-controls"
-                >
-                  <MdSkipPrevious></MdSkipPrevious>
-                </button>
-                {!this.state.play && (
-                  <button
-                    onClick={() => this.togglePlay()}
-                    className="player-controls"
-                  >
-                    <MdPlayArrow></MdPlayArrow>
-                  </button>
-                )}
-                {this.state.play && (
-                  <button
-                    onClick={() => this.togglePlay()}
-                    className="player-controls"
-                  >
-                    <MdPause></MdPause>
-                  </button>
-                )}
-                <button onClick={() => this.next()} className="player-controls">
-                  <MdSkipNext></MdSkipNext>
-                </button>
-                <input
-                  type="range"
-                  max={this.state.maxValue}
-                  value={this.state.value}
-                  className="slider"
-                  ref={this.sliderRef}
-                  onInput={() => this.onInput()}
-                ></input>
-
-                </div>
-            </td>
-        </tr>
-    </table>
-               
-                
+                  <tr>
+                    <td>
+                      <div className="speedDiv">
+                        <label>0.5x</label>
+                        <input
+                          type="range"
+                          max={SPEEDS.length - 1}
+                          value={this.state.speed}
+                          className="speed"
+                          ref={this.speedRef}
+                          onInput={() => this.changeSpeed()}
+                        ></input>
+                        <label>2.0x</label>
+                      </div>
+                    </td>
+                    <td>
+                      <div id="playDiv">
+                        <button
+                          onClick={() => this.previous()}
+                          className="player-controls"
+                        >
+                          <MdSkipPrevious></MdSkipPrevious>
+                        </button>
+                        {!this.state.play && (
+                          <button
+                            onClick={() => this.togglePlay()}
+                            className="player-controls"
+                          >
+                            <MdPlayArrow></MdPlayArrow>
+                          </button>
+                        )}
+                        {this.state.play && (
+                          <button
+                            onClick={() => this.togglePlay()}
+                            className="player-controls"
+                          >
+                            <MdPause></MdPause>
+                          </button>
+                        )}
+                        <button
+                          onClick={() => this.next()}
+                          className="player-controls"
+                        >
+                          <MdSkipNext></MdSkipNext>
+                        </button>
+                        <input
+                          type="range"
+                          max={this.state.maxValue}
+                          value={this.state.value}
+                          className="slider"
+                          ref={this.sliderRef}
+                          onInput={() => this.onInput()}
+                        ></input>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </div>
             ) : (
-              <button class = "actionButton" onClick={() => this.handleStart()}>Visualize</button>
+              <button class="actionButton" onClick={() => this.handleStart()}>
+                Visualize
+              </button>
             )}
           </center>
         </div>
@@ -377,22 +392,20 @@ changeSpeed(){
     this.draw();
   }
 
-
   /**
    * When next button is clicked: if it's at the end, display error message
    * Else display the next state of the algorithm
    */
   next() {
-   
     this.setState({
       index: (this.state.index += 1),
       value: this.state.index
     });
-    if(this.state.index == this.state.states.length -1 ){
+    if (this.state.index == this.state.states.length - 1) {
       this.setState({
-        play:false,
+        play: false
       }),
-      clearInterval(this.state.timer);
+        clearInterval(this.state.timer);
     }
     if (this.state.index >= this.state.states.length) {
       this.setState({
@@ -418,6 +431,4 @@ changeSpeed(){
   }
 }
 
-
 export default AlgorithmPage;
-

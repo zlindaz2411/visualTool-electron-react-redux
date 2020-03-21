@@ -1,10 +1,10 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
-import graphReducer from './drawReducer';
+import graphReducer from "./drawReducer";
 
 const rootReducer = combineReducers({
-    graph: graphReducer,
+  graph: graphReducer
 });
 
 const store = createStore(rootReducer, {}, applyMiddleware(thunk));

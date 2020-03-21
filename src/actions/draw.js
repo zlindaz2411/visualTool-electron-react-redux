@@ -1,66 +1,65 @@
-import { ADD_GRAPH, FETCH_GRAPHS, PASS_GRAPH} from './types';
+import { ADD_GRAPH, FETCH_GRAPHS, PASS_GRAPH } from "./types";
 
-import electron from 'electron';
+import electron from "electron";
 const { ipcRenderer } = electron;
-
 
 /**
  * Add new graph to nedb
- * @param {*} graph 
+ * @param {*} graph
  */
 export const addGraph = graph => dispatch => {
-    ipcRenderer.send('addGraph', graph);
-    ipcRenderer.on('graph:added', (event, newGraph) => {
-        var tempObj = {
-            newGraph,
-        }
-        dispatch({
-            type: ADD_GRAPH,
-            payload: tempObj
-        });
+  ipcRenderer.send("addGraph", graph);
+  ipcRenderer.on("graph:added", (event, newGraph) => {
+    var tempObj = {
+      newGraph
+    };
+    dispatch({
+      type: ADD_GRAPH,
+      payload: tempObj
     });
+  });
 };
 
 /**
  * Fetch all the graphs from nedb
  */
 export function fetchGraphs() {
-    return dispatch => {
-        ipcRenderer.send('fetchGraphs');
-        ipcRenderer.on('graphs:fetched', (event, graphs) => {
-            dispatch({
-                type: FETCH_GRAPHS,
-                payload: graphs,
-            });
-        });
-    }
+  return dispatch => {
+    ipcRenderer.send("fetchGraphs");
+    ipcRenderer.on("graphs:fetched", (event, graphs) => {
+      dispatch({
+        type: FETCH_GRAPHS,
+        payload: graphs
+      });
+    });
+  };
 }
 
 /**
  * Delete graph from dedb
- * @param {*} id 
+ * @param {*} id
  */
-export function deleteGraph(id){
-    return dispatch => {
-        ipcRenderer.send('deleteGraph', id);
-        ipcRenderer.on('graph:deleted', (event, graphs) => {
-            dispatch({
-                type: FETCH_GRAPHS,
-                payload: graphs
-            });
-        });
-    }
+export function deleteGraph(id) {
+  return dispatch => {
+    ipcRenderer.send("deleteGraph", id);
+    ipcRenderer.on("graph:deleted", (event, graphs) => {
+      dispatch({
+        type: FETCH_GRAPHS,
+        payload: graphs
+      });
+    });
+  };
 }
 
 /**
  * Pass graph from page to page
- * @param {*} id 
+ * @param {*} id
  */
-export function passGraph(graph){
-    return dispatch => {
-            dispatch({
-                type: PASS_GRAPH,
-                latestGraph : graph,
-        })
-    }
+export function passGraph(graph) {
+  return dispatch => {
+    dispatch({
+      type: PASS_GRAPH,
+      latestGraph: graph
+    });
+  };
 }
