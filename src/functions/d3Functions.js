@@ -418,7 +418,7 @@ function dragEnded(d, data, draw) {
           exists = true;
         }
       }
-      if (!exists && newEdge) {
+      if (!exists && newEdge && data.nodes.indexOf(destination) != -1) {
         data.addEdge(newEdge);
       }
     }
