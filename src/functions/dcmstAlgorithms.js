@@ -180,7 +180,7 @@ export function simulatedAnnealingPenalty(graph, degree) {
 
       degrees = getDegree(MST);
 
-      if (penalty < graph.nodes.length / 2) {
+      if (violatedTimes < graph.nodes.length / 2) {
         let newWeight = costFunction(MST, degrees, degree, violatedTimes);
         let acceptanceProb = newWeight - weight;
         let prob = Math.E ** (-acceptanceProb / TEMP_RANGE);
@@ -210,10 +210,10 @@ export function simulatedAnnealingPenalty(graph, degree) {
       isDegreeViolated(getDegree(MST), degree) ||
       MST.length != graph.nodes.length - 1
     )
-      throw ErrMessage.DCMST_NOT_FOUND;
+    throw ErrMessage.DCMST_NOT_FOUND;
     return MST;
   } catch (e) {
-    return e.toString;
+    return e.toString();
   }
 }
 
