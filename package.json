@@ -55,7 +55,6 @@
     "react-confirm-alert": "2.0.5",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
-    "toastr": "2.1.4",
     "webpack": "^4.41.2"
   },
   "dependencies": {
