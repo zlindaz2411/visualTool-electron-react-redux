@@ -11,18 +11,19 @@ import {
 const assert = require("assert");
 
 describe("Add States", function() {
-  let states = [{ highlighted: [], tree: [], highlightedNodes: [],text:"", status: 0 }];
+  let states = [
+    { highlighted: [], tree: [], highlightedNodes: [], text: "", status: 0 }
+  ];
   addStates(states, [], [], [], "", 1);
   let res = [
-    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 0 },
-    { highlighted: [], tree: [], highlightedNodes: [], text:"",status: 1 }
+    { highlighted: [], tree: [], highlightedNodes: [], text: "", status: 0 },
+    { highlighted: [], tree: [], highlightedNodes: [], text: "", status: 1 }
   ];
 
   it("should be empty priority queue at first", function() {
     assert.deepEqual(res, states);
   });
 });
-
 
 describe("Reset edges", function() {
   const edgesT = [
@@ -45,7 +46,6 @@ describe("Reset edges", function() {
   it("should set the tree attribute of each edge of a list of edges to false", function() {
     assert.deepEqual(resultT, edgesT);
   });
-
 
   const edgesE = [
     { source: 1, target: 2, weight: 4, highlight: true, tree: true },
@@ -94,7 +94,7 @@ describe("Reset nodes", function() {
 describe("Reset root", function() {
   const data = { root: 1 };
 
-  const result = { root: {}};
+  const result = { root: {} };
 
   resetRoot(data);
 
@@ -104,74 +104,72 @@ describe("Reset root", function() {
 });
 
 describe("Update graph:update which edge needs to be highlighted or is a tree", function() {
-    const array = [
-        { source: 1, target: 2, weight: 4, highlight: false, tree: false },
-        { source: 2, target: 3, weight: 8, highlight: false, tree: false },
-        { source: 3, target: 4, weight: 7, highlight: false, tree: false },
-      ];
-    const edgesT = [
-        { source: 1, target: 2, weight: 4, highlight: false, tree: false },
-        { source: 2, target: 3, weight: 8, highlight: false, tree: false },
-        { source: 3, target: 4, weight: 7, highlight: false, tree: false },
-        { source: 4, target: 5, weight: 9, highlight: false, tree: false },
-        { source: 5, target: 6, weight: 10, highlight: false, tree: false }
-      ];
-    const resultT = [
-        { source: 1, target: 2, weight: 4, highlight: false, tree: true },
-        { source: 2, target: 3, weight: 8, highlight: false, tree: true },
-        { source: 3, target: 4, weight: 7, highlight: false, tree: true },
-        { source: 4, target: 5, weight: 9, highlight: false, tree: false },
-        { source: 5, target: 6, weight: 10, highlight: false, tree: false }
-      ];
+  const array = [
+    { source: 1, target: 2, weight: 4, highlight: false, tree: false },
+    { source: 2, target: 3, weight: 8, highlight: false, tree: false },
+    { source: 3, target: 4, weight: 7, highlight: false, tree: false }
+  ];
+  const edgesT = [
+    { source: 1, target: 2, weight: 4, highlight: false, tree: false },
+    { source: 2, target: 3, weight: 8, highlight: false, tree: false },
+    { source: 3, target: 4, weight: 7, highlight: false, tree: false },
+    { source: 4, target: 5, weight: 9, highlight: false, tree: false },
+    { source: 5, target: 6, weight: 10, highlight: false, tree: false }
+  ];
+  const resultT = [
+    { source: 1, target: 2, weight: 4, highlight: false, tree: true },
+    { source: 2, target: 3, weight: 8, highlight: false, tree: true },
+    { source: 3, target: 4, weight: 7, highlight: false, tree: true },
+    { source: 4, target: 5, weight: 9, highlight: false, tree: false },
+    { source: 5, target: 6, weight: 10, highlight: false, tree: false }
+  ];
 
-    updateGraph(array, edgesT, true)
-  
-    it("should set the matching edges tree attribute to be true", function() {
-      assert.deepEqual(resultT, edgesT);
-    });
+  updateGraph(array, edgesT, true);
 
-    const edgesE= [
-        { source: 1, target: 2, weight: 4, highlight: false, tree: false },
-        { source: 2, target: 3, weight: 8, highlight: false, tree: false },
-        { source: 3, target: 4, weight: 7, highlight: false, tree: false },
-        { source: 4, target: 5, weight: 9, highlight: false, tree: false },
-        { source: 5, target: 6, weight: 10, highlight: false, tree: false }
-      ];
-  
-      const resultE = [
-        { source: 1, target: 2, weight: 4, highlight: true, tree: false },
-        { source: 2, target: 3, weight: 8, highlight: true, tree: false },
-        { source: 3, target: 4, weight: 7, highlight: true, tree: false },
-        { source: 4, target: 5, weight: 9, highlight: false, tree: false },
-        { source: 5, target: 6, weight: 10, highlight: false, tree: false }
-      ];
-
-    updateGraph(array, edgesE, false)
-    it("should set the matching edges highlight attribute to be true", function() {
-        assert.deepEqual(resultE, edgesE);
-      });
+  it("should set the matching edges tree attribute to be true", function() {
+    assert.deepEqual(resultT, edgesT);
   });
 
+  const edgesE = [
+    { source: 1, target: 2, weight: 4, highlight: false, tree: false },
+    { source: 2, target: 3, weight: 8, highlight: false, tree: false },
+    { source: 3, target: 4, weight: 7, highlight: false, tree: false },
+    { source: 4, target: 5, weight: 9, highlight: false, tree: false },
+    { source: 5, target: 6, weight: 10, highlight: false, tree: false }
+  ];
+
+  const resultE = [
+    { source: 1, target: 2, weight: 4, highlight: true, tree: false },
+    { source: 2, target: 3, weight: 8, highlight: true, tree: false },
+    { source: 3, target: 4, weight: 7, highlight: true, tree: false },
+    { source: 4, target: 5, weight: 9, highlight: false, tree: false },
+    { source: 5, target: 6, weight: 10, highlight: false, tree: false }
+  ];
+
+  updateGraph(array, edgesE, false);
+  it("should set the matching edges highlight attribute to be true", function() {
+    assert.deepEqual(resultE, edgesE);
+  });
+});
 
 describe("Update matching nodes to be highlighted", function() {
-  const array = [ 1, 2 ];
+  const array = [1, 2];
   const nodes = [
     { id: 1, x: 20, y: 200, highlight: false },
     { id: 2, x: 80, y: 100, highlight: false },
     { id: 3, x: 200, y: 100, highlight: false },
-    { id: 4, x: 320, y: 100, highlight: false },
+    { id: 4, x: 320, y: 100, highlight: false }
   ];
   const result = [
     { id: 1, x: 20, y: 200, highlight: true },
     { id: 2, x: 80, y: 100, highlight: true },
     { id: 3, x: 200, y: 100, highlight: false },
-    { id: 4, x: 320, y: 100, highlight: false },
-    ];
+    { id: 4, x: 320, y: 100, highlight: false }
+  ];
 
-  updateNodes(array, nodes, true)
+  updateNodes(array, nodes, true);
 
   it("should set the matching nodes attribute to be true", function() {
     assert.deepEqual(nodes, result);
   });
 });
-  

@@ -125,35 +125,34 @@ describe("Set up Gate values", function() {
   graph.addEdge({ source: "C", target: "E", weight: 9 });
   graph.addEdge({ source: "D", target: "E", weight: 10 });
 
-  const rootAdjacents = graph.getAdjacentsOfNode('A')
+  const rootAdjacents = graph.getAdjacentsOfNode("A");
   const result = new Map();
-  result.set("B", 5)
-  result.set("C", 6)
-  result.set("D", 9)
-  result.set("E", 10)
+  result.set("B", 5);
+  result.set("C", 6);
+  result.set("D", 9);
+  result.set("E", 10);
 
   it("Set up the inital gate values", function() {
     assert.deepEqual(result, getGatesValues(rootAdjacents, graph.root.id));
   });
 });
 
-
 describe("Update Gate values", function() {
   const result = new Map();
-  result.set("B", 5)
-  result.set("C", 6)
-  result.set("D", 9)
-  result.set("E", 10)
+  result.set("B", 5);
+  result.set("C", 6);
+  result.set("D", 9);
+  result.set("E", 10);
 
-  const component = new Set(["B","C"])
+  const component = new Set(["B", "C"]);
 
   const after = new Map();
-  after.set("B", 5)
-  after.set("C", 5)
-  after.set("D", 9)
-  after.set("E", 10)
+  after.set("B", 5);
+  after.set("C", 5);
+  after.set("D", 9);
+  after.set("E", 10);
 
-  updateGateValue(component, result)
+  updateGateValue(component, result);
   it("should return the correct result after updateing gate values", function() {
     assert.deepEqual(result, after);
   });

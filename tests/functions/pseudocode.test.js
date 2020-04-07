@@ -53,9 +53,8 @@ describe("Get pseudocode based on different input", function() {
     assert.deepEqual(boruvka, getPseudocode(Algorithm.BORUVKA));
   });
 
-
   const parallel = [
-   "Initialize the components = node list",
+    "Initialize the components = node list",
     "while(number of components > 1)",
     "\xa0 \xa0foreach(component in components)",
     "\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component",
@@ -84,12 +83,11 @@ describe("Get pseudocode based on different input", function() {
     "While there is still optimization",
     "\xa0 \xa02-opt",
     "return T"
-  ]
+  ];
 
   it("should return the pseudocode of kruskal algorithm", function() {
     assert.deepEqual(kruskalConstrained, getPseudocode(Algorithm.CONSTRAINED));
   });
-
 
   const simulated = [
     "Initialize the tree T by computing any MST algorithms",
@@ -103,7 +101,7 @@ describe("Get pseudocode based on different input", function() {
     "\xa0 \xa0 k_level += 1",
     "\xa0 \xa0 Temperature_k *= cooling rate (0.9)",
     "return T"
-  ]
+  ];
 
   it("should return the pseudocode of kruskal algorithm", function() {
     assert.deepEqual(simulated, getPseudocode(Algorithm.SIMULATED));
@@ -174,10 +172,7 @@ describe("Set up pseucodoe map based on different input", function() {
   });
 
   const boruvkaMap = new Map();
-  boruvkaMap.set(
-    "Initialize the components = node list",
-    true
-  );
+  boruvkaMap.set("Initialize the components = node list", true);
   boruvkaMap.set("while(number of components > 1)", false);
   boruvkaMap.set("\xa0 \xa0foreach(component in components)", false);
   boruvkaMap.set("\xa0 \xa0 \xa0 \xa0 \xa0c = component", false);
@@ -185,91 +180,113 @@ describe("Set up pseucodoe map based on different input", function() {
     "\xa0 \xa0 \xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for c",
     false
   );
-  boruvkaMap.set(
-    "combine components", false);
+  boruvkaMap.set("combine components", false);
   boruvkaMap.set("return components", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka", function() {
     assert.deepEqual(boruvkaMap, setUpPseudocodeMap(Algorithm.BORUVKA, index));
   });
 
-
   it("should return an empty with wrong input", function() {
     assert.deepEqual(new Map(), setUpPseudocodeMap("error", index));
   });
- 
+
   const constrainedMap = new Map();
-  constrainedMap.set( "Initialize the tree T to be empty",true)
-  constrainedMap.set(  "Add to the tree edges adjacent to nodes with degree 1",false)
-  constrainedMap.set(  "For each node k with degree 2",false)
-  constrainedMap.set(  "\xa0 \xa0 i, j = endpoint of edges adjacent to k",false)
-  constrainedMap.set(  "\xa0 \xa0 \xa0 \xa0\xa0if(there isn't a path between i and j (apart from the one with k))",false)
-  constrainedMap.set(  "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0Add adjacent edges of k to T",false)
-  constrainedMap.set(  "Sort the edge list E by weight (smallest first)",false)
-  constrainedMap.set(  "for (i=0; i<edgeList.length; i++)",false)
-  constrainedMap.set(  "\xa0 \xa0 e = edgelist[i]",false)
-  constrainedMap.set(  "\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint",false)
-  constrainedMap.set(  "\xa0 \xa0 \xa0\xa0 \xa0add e to T",false)
-  constrainedMap.set(  "While there is still optimization",false)
-  constrainedMap.set(  "\xa0 \xa02-opt",false)
-  constrainedMap.set( "return T", false)
-
-  it("should return the pseudocode of kruskal algorithm", function() {
-    assert.deepEqual(constrainedMap, setUpPseudocodeMap(Algorithm.CONSTRAINED, index));
-  });
-
-  const simulatedMap  = new Map();
-  simulatedMap.set( "Initialize the tree T by computing any MST algorithms",true)
-  simulatedMap.set( "While k_level < k_max(1000)",false)
-  simulatedMap.set("\xa0 \xa0 new T = generateNeighbourhood(T)",false)
-  simulatedMap.set( "\xa0 \xa0 if(new T does not violate degree constraint)",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 if(weight(new T) < weight(T))",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(weight(new T) - weight(T))/Temperature_k > random[0,1])",false)
-  simulatedMap.set( "\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T",false)
-  simulatedMap.set( "\xa0 \xa0 k_level += 1",false)
-  simulatedMap.set(  "\xa0 \xa0 Temperature_k *= cooling rate (0.9)",false)
- 
-  simulatedMap.set(  "return T", false)
-  
-  
-  it("should return the pseudocode of kruskal algorithm", function() {
-    assert.deepEqual(simulatedMap, setUpPseudocodeMap(Algorithm.SIMULATED, index));
-  });
-    
-  
-  const parallelMap = new Map();
-  parallelMap.set(
-   "Initialize the components = node list",
-    true
-  );
-  parallelMap.set("while(number of components > 1)", false);
-  parallelMap.set("\xa0 \xa0foreach(component in components)", false);
-  parallelMap.set("\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component", false);
-  parallelMap.set(
-    "\xa0 \xa0(Concurrent Thread Execution",
+  constrainedMap.set("Initialize the tree T to be empty", true);
+  constrainedMap.set(
+    "Add to the tree edges adjacent to nodes with degree 1",
     false
   );
+  constrainedMap.set("For each node k with degree 2", false);
+  constrainedMap.set("\xa0 \xa0 i, j = endpoint of edges adjacent to k", false);
+  constrainedMap.set(
+    "\xa0 \xa0 \xa0 \xa0\xa0if(there isn't a path between i and j (apart from the one with k))",
+    false
+  );
+  constrainedMap.set(
+    "\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0Add adjacent edges of k to T",
+    false
+  );
+  constrainedMap.set("Sort the edge list E by weight (smallest first)", false);
+  constrainedMap.set("for (i=0; i<edgeList.length; i++)", false);
+  constrainedMap.set("\xa0 \xa0 e = edgelist[i]", false);
+  constrainedMap.set(
+    "\xa0 \xa0 if adding e to T is acyclic and does not violate degree constraint",
+    false
+  );
+  constrainedMap.set("\xa0 \xa0 \xa0\xa0 \xa0add e to T", false);
+  constrainedMap.set("While there is still optimization", false);
+  constrainedMap.set("\xa0 \xa02-opt", false);
+  constrainedMap.set("return T", false);
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(
+      constrainedMap,
+      setUpPseudocodeMap(Algorithm.CONSTRAINED, index)
+    );
+  });
+
+  const simulatedMap = new Map();
+  simulatedMap.set(
+    "Initialize the tree T by computing any MST algorithms",
+    true
+  );
+  simulatedMap.set("While k_level < k_max(1000)", false);
+  simulatedMap.set("\xa0 \xa0 new T = generateNeighbourhood(T)", false);
+  simulatedMap.set(
+    "\xa0 \xa0 if(new T does not violate degree constraint)",
+    false
+  );
+  simulatedMap.set(
+    "\xa0 \xa0 \xa0 \xa0\xa0 if(weight(new T) < weight(T))",
+    false
+  );
+  simulatedMap.set("\xa0 \xa0 \xa0 \xa0\xa0 \xa0\xa0 T = new T", false);
+  simulatedMap.set(
+    "\xa0 \xa0 \xa0 \xa0\xa0 else if(exp(weight(new T) - weight(T))/Temperature_k > random[0,1])",
+    false
+  );
+  simulatedMap.set("\xa0 \xa0 \xa0 \xa0\xa0  \xa0\xa0 T = new T", false);
+  simulatedMap.set("\xa0 \xa0 k_level += 1", false);
+  simulatedMap.set("\xa0 \xa0 Temperature_k *= cooling rate (0.9)", false);
+
+  simulatedMap.set("return T", false);
+
+  it("should return the pseudocode of kruskal algorithm", function() {
+    assert.deepEqual(
+      simulatedMap,
+      setUpPseudocodeMap(Algorithm.SIMULATED, index)
+    );
+  });
+
+  const parallelMap = new Map();
+  parallelMap.set("Initialize the components = node list", true);
+  parallelMap.set("while(number of components > 1)", false);
+  parallelMap.set("\xa0 \xa0foreach(component in components)", false);
+  parallelMap.set(
+    "\xa0 \xa0 \xa0 \xa0 \xa0create a thread for component",
+    false
+  );
+  parallelMap.set("\xa0 \xa0(Concurrent Thread Execution", false);
   parallelMap.set(
     "\xa0 \xa0 \xa0 \xa0 \xa0find the smallest edge for component)",
     false
   );
-  parallelMap.set(
-    "combine components",false);
+  parallelMap.set("combine components", false);
   parallelMap.set("return components", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of boruvka parallel", function() {
-    assert.deepEqual(parallelMap, setUpPseudocodeMap(Algorithm.PARALLEL, index));
+    assert.deepEqual(
+      parallelMap,
+      setUpPseudocodeMap(Algorithm.PARALLEL, index)
+    );
   });
 
   const esauMap = new Map();
   esauMap.set("Initialize the tree CMST to be empty", true);
-  esauMap.set(
-    "Initialize L = edge list",
-    false
-  );
+  esauMap.set("Initialize L = edge list", false);
   esauMap.set("while(CMST edge list size < node list -1)", false);
-  esauMap.set( "\xa0 \xa0foreach (node i in nodeList)", false);
+  esauMap.set("\xa0 \xa0foreach (node i in nodeList)", false);
   esauMap.set("\xa0 \xa0 \xa0 \xa0 \xa0j = closest node to i", false);
   esauMap.set(
     "\xa0 \xa0 \xa0 \xa0 \xa0savings(i) = cost(i,j) - gate(i,r)",
@@ -283,16 +300,18 @@ describe("Set up pseucodoe map based on different input", function() {
     "\xa0 \xa0cheapestEdge = find cheapest edge adjacent to cheapestNode",
     false
   );
-  esauMap.set("\xa0 \xa0if(adding cheapest edge to CMST is acyclic and the subtree to which the endpoints of cheapest belongs to is at most given capacity)", false);
+  esauMap.set(
+    "\xa0 \xa0if(adding cheapest edge to CMST is acyclic and the subtree to which the endpoints of cheapest belongs to is at most given capacity)",
+    false
+  );
   esauMap.set("\xa0 \xa0 \xa0 \xa0 \xa0Add cheapestEdge to CMST", false);
   esauMap.set("\xa0 \xa0remove cheapestEdge from L", false);
-  
+
   esauMap.set("return CMST(suboptimal solution)", false);
 
   it("should return true the first line of the pseudocode, and false other lines of pseudocode of esau williams", function() {
     assert.deepEqual(esauMap, setUpPseudocodeMap(Algorithm.ESAU, index));
   });
-
 
   it("should return an empty with wrong input", function() {
     assert.deepEqual(new Map(), setUpPseudocodeMap("error", index));

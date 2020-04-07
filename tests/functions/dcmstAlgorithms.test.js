@@ -63,21 +63,17 @@ describe("kruskal constrained algorithm computes an appoximate solution to degre
     { source: "B", target: "D", weight: 6 },
     { source: "G", target: "F", weight: 8 },
     { source: "C", target: "E", weight: 9 }
-
   ];
   it("should return a suboptimal degree constrained minimum spanning tree given a graph", function() {
     assert.deepEqual(result, kruskalConstrained(graph, 2));
   });
 
-  
   it("should return an error message when the input is invalid", function() {
     assert.equal(ErrMessage.DCMST_NOT_FOUND, kruskalConstrained(errorInput, 3));
   });
 });
 
 describe("simulated annealing algorithm computes an appoximate solution to degree constrained minimum spanning problem", function() {
-
-  
   it("should return an error message when the input is invalid", function() {
     assert.equal(ErrMessage.DCMST_NOT_FOUND, simulatedAnnealing(errorInput, 3));
   });
@@ -99,11 +95,11 @@ describe("Check if there is a more than one path reachable from node u to v", fu
   });
 });
 
-
 describe("Given one node of the edge return other endpoint ", function() {
   it("should return the other endpoint", function() {
-    assert.deepEqual("B", getOtherEndPoint( { source: "A", target: "B", weight: 5 }, "A"));
+    assert.deepEqual(
+      "B",
+      getOtherEndPoint({ source: "A", target: "B", weight: 5 }, "A")
+    );
   });
 });
-
-

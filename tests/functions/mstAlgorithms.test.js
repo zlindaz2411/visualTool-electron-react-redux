@@ -70,14 +70,14 @@ describe("kruskal algorithm should find the minimum spanning tree given a graph"
 
 describe("prim algorithm should find the minimum spanning tree given a graph", function() {
   const result = [
-    {source: 1, target: 2, weight:4},
-    {source: 1, target: 8, weight:8},
-    {source: 8, target: 7, weight:7},
-    {source: 7, target: 6, weight:2},
-    {source: 6, target: 4, weight:1},
-    {source: 7, target: 9, weight:6}, 
-    {source: 9, target: 3, weight:2},
-    {source: 4, target: 5, weight:9},
+    { source: 1, target: 2, weight: 4 },
+    { source: 1, target: 8, weight: 8 },
+    { source: 8, target: 7, weight: 7 },
+    { source: 7, target: 6, weight: 2 },
+    { source: 6, target: 4, weight: 1 },
+    { source: 7, target: 9, weight: 6 },
+    { source: 9, target: 3, weight: 2 },
+    { source: 4, target: 5, weight: 9 }
   ];
   it("should return a minimum spanning tree", function() {
     assert.deepEqual(result, prims(graph));
@@ -95,14 +95,11 @@ describe("boruvka algorithm should find the minimum spanning tree given a graph"
     { source: 4, target: 6, weight: 1, highlight: false },
     { source: 4, target: 5, weight: 9, highlight: false },
     { source: 6, target: 7, weight: 2, highlight: false },
-  
+
     { source: 7, target: 8, weight: 7, highlight: false },
     { source: 2, target: 3, weight: 8, highlight: false },
-    
-    { source: 7, target: 9, weight: 6, highlight: false },
-  
-   
-   
+
+    { source: 7, target: 9, weight: 6, highlight: false }
   ];
 
   it("should return a minimum spanning tree", function() {
@@ -124,7 +121,7 @@ describe("boruvka parallel algorithm should find the minimum spanning tree given
     { source: 7, target: 8, weight: 7, highlight: false },
     { source: 2, target: 3, weight: 8, highlight: false },
     { source: 4, target: 5, weight: 9, highlight: false }
-  ]
+  ];
 
   // it("should return a minimum spanning tree", function() {
   //   assert.deepEqual(result, parallel(graph))
