@@ -152,6 +152,7 @@ export function simulatedAnnealing(graph, degree) {
 export function simulatedAnnealingPenalty(graph, degree) {
   try {
     let MST = kruskals(graph);
+ 
     if (MST == ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND;
     let K_LEVEL = 0;
     let alpha = 0.9;
@@ -160,9 +161,10 @@ export function simulatedAnnealingPenalty(graph, degree) {
 
     let weight = Number.MAX_SAFE_INTEGER;
     let constraintObjective = Number.MAX_SAFE_INTEGER;
-
     let violatedTimes = 0;
     let degrees = getDegree(MST);
+
+
 
     while (K_LEVEL < MAX_TEMP_LEVEL) {
       TEMP_RANGE *= alpha;
@@ -251,12 +253,8 @@ export function generateNeighbourhood(MST, graph, addStatefunc) {
   let connectingEdges = getComponentsEdge(graph, MST);
   let newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
   let newEdge = connectingEdges[newEdgeIndex];
-
-  //The new edge should be different from the removed one
-  while (newEdge.source == edge.source && newEdge.target == edge.target) {
-    newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
-    newEdge = connectingEdges[newEdgeIndex];
-  }
+  newEdgeIndex = Math.floor(Math.random() * connectingEdges.length);
+  newEdge = connectingEdges[newEdgeIndex];
   MST.push(newEdge);
 
   addStatefunc();

@@ -320,6 +320,7 @@ class DrawPage extends Component {
       },
       () => {
         createBlankCanvas(this.state.graph, "draw");
+        this.props.passGraph(null);
       }
     );
   }

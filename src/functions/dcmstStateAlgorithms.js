@@ -147,7 +147,6 @@ export function simulatedAnnealing(graph, degree) {
     let MST = kruskals(graph);
     if (MST == ErrMessage.MST_NOT_FOUND) throw ErrMessage.DCMST_NOT_FOUND;
     let states = [{ highlighted: MST.slice(), tree: [], text: "", status: 0 }];
-    // console.log(MST)
     let K_LEVEL = 0;
     let DCMST = [];
     let alpha = 0.9;
@@ -155,7 +154,6 @@ export function simulatedAnnealing(graph, degree) {
     let MAX_TEMP_LEVEL = 1000;
     let weight = Number.MAX_SAFE_INTEGER;
     while (K_LEVEL < MAX_TEMP_LEVEL) {
-      // console.log(MST)
       addStates(states, MST.slice(), [], [], "", 1);
 
       let oldMST = MST.slice();

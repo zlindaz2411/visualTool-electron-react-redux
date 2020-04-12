@@ -35,6 +35,7 @@ export function kruskals(graph) {
     if (MST.length != nodes.length - 1) {
       throw ErrMessage.MST_NOT_FOUND;
     }
+    
     return MST;
   } catch (error) {
     return error.toString();
